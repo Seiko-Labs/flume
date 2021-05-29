@@ -54,7 +54,7 @@ const IoPorts = ({
   const triggerRecalculation = React.useContext(ConnectionRecalculateContext);
   const resolvedInputs = useTransputs(inputs, 'input', nodeId, inputData, connections);
   const resolvedOutputs = useTransputs(outputs, 'output', nodeId, inputData, connections);
-  
+
   return (
     <div className={styles.wrapper}>
       {resolvedInputs.length ? (
@@ -131,16 +131,6 @@ const Input = ({
         e.stopPropagation();
       }}
     >
-      {!hidePort ? (
-        <Port
-          type={type}
-          color={color}
-          name={name}
-          nodeId={nodeId}
-          isInput
-          triggerRecalculation={triggerRecalculation}
-        />
-      ) : null}
       {(!controls.length || noControls || isConnected) && (
         <label className={styles.portLabel}>{label || defaultLabel}</label>
       )}
@@ -167,6 +157,16 @@ const Input = ({
           </div>
         )
         : null}
+      {!hidePort ? (
+        <Port
+          type={type}
+          color={color}
+          name={name}
+          nodeId={nodeId}
+          isInput
+          triggerRecalculation={triggerRecalculation}
+        />
+      ) : null}
     </div>
   );
 };
@@ -177,9 +177,19 @@ const Output = ({
   nodeId,
   type,
   inputTypes,
+  // isConnected,
   triggerRecalculation
 }) => {
   const { label: defaultLabel, color } = inputTypes[type] || {};
+
+  // const prevConnected = usePrevious(isConnected);
+  //
+  // React.useEffect(() => {
+  //   console.log(isConnected, prevConnected)
+  //   if (isConnected !== prevConnected) {
+  //
+  //   }triggerRecalculation();
+  // }, [isConnected, prevConnected, triggerRecalculation]);
 
   return (
     <div
@@ -190,7 +200,6 @@ const Output = ({
         e.stopPropagation();
       }}
     >
-      <label className={styles.portLabel}>{label || defaultLabel}</label>
       <Port
         type={type}
         name={name}
@@ -198,6 +207,7 @@ const Output = ({
         nodeId={nodeId}
         triggerRecalculation={triggerRecalculation}
       />
+      <label className={styles.portLabel}>{label || defaultLabel}</label>
     </div>
   );
 };
@@ -321,6 +331,40 @@ const Port = ({
         }
       }
     }
+    // if (isOutput) {
+    //   const {
+    //     inputNodeId: outputNodeId,
+    //     inputPortName: outputPortName,
+    //     outputNodeId: inputNodeId,
+    //     outputPortName: inputPortName
+    //   } = lineInToPort.current.dataset;
+    //   nodesDispatch({
+    //     type: "REMOVE_CONNECTION",
+    //     output: { nodeId: inputNodeId, portName: inputPortName },
+    //     input: { nodeId: outputNodeId, portName: outputPortName }
+    //   });
+    //   if (droppedOnPort) {
+    //     const {
+    //       portName: connectToPortName,
+    //       nodeId: connectToNodeId,
+    //       portType: connectToPortType,
+    //       portTransputType: connectToTransputType
+    //     } = e.target.dataset;
+    //     const isNotSameNode = outputNodeId !== connectToNodeId;
+    //     if (isNotSameNode && connectToTransputType !== "input") {
+    //       const outputWillAcceptConnection = inputTypes[
+    //         connectToPortType
+    //         ].acceptTypes.includes(type);
+    //       if (outputWillAcceptConnection) {
+    //         nodesDispatch({
+    //           type: "ADD_CONNECTION",
+    //           output: { nodeId: connectToNodeId, portName: connectToPortName },
+    //           input: { nodeId: outputNodeId, portName: outputPortName }
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
     setIsDragging(false);
     document.removeEventListener("mouseup", handleDragEnd);
     document.removeEventListener("mousemove", handleDrag);

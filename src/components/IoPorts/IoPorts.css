@@ -8,8 +8,25 @@
 .inputs{
   display: flex;
   flex-direction: column;
+  margin-left: auto;
   justify-content: flex-end;
+  align-items: flex-end;
   width: 100%;
+.transput{
+&:last-child{
+.portLabel, .port{
+  margin-bottom: 5px;
+}
+}
+}
+&:first-child{
+   margin-top: 5px;
+ }
+}
+.outputs{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   margin-bottom: 10px;
   &:last-child{
     margin-bottom: 0px;
@@ -27,29 +44,13 @@
     }
   }
 }
-.outputs{
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  justify-content: flex-end;
-  align-items: flex-end;
-  width: 100%;
-  .transput{
-    &:last-child{
-      .portLabel, .port{
-        margin-bottom: 5px;
-      }
-    }
-  }
-  &:first-child{
-    margin-top: 5px;
-  }
-}
 .transput{
   display: flex;
   align-items: center;
   margin-top: 6px;
   margin-bottom: 6px;
+  width: 100%;
+  justify-content: flex-start;
   &:first-child{
     margin-top: 0px;
   }
@@ -73,6 +74,7 @@
 .portLabel{
   font-size: 13px;
   font-weight: 400;
+  width: 100%;
 }
 .port{
   width: 12px;
