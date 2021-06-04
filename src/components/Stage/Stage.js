@@ -8,7 +8,7 @@ import orderBy from "lodash/orderBy";
 import clamp from "lodash/clamp";
 import { STAGE_ID } from '../../constants'
 
-const Stage = ({
+const Stage = React.forwardRef(({
   scale,
   translate,
   editorId,
@@ -21,11 +21,10 @@ const Stage = ({
   dispatchComments,
   disableComments,
   disablePan,
-  disableZoom
-}) => {
+  disableZoom,
+}, wrapper) => {
   const nodeTypes = React.useContext(NodeTypesContext);
   const dispatchNodes = React.useContext(NodeDispatchContext);
-  const wrapper = React.useRef();
   const translateWrapper = React.useRef();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [menuCoordinates, setMenuCoordinates] = React.useState({ x: 0, y: 0 });
@@ -231,5 +230,5 @@ const Stage = ({
       {outerStageChildren}
     </Draggable>
   );
-};
+});
 export default Stage;

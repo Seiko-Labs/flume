@@ -12,7 +12,7 @@ export default () => {
     console.log = log => {
       Log(log);
       if(typeof log === 'object'){
-        setOutput(JSON.stringify(log))
+        //setOutput(log)
       }
     }
     return () => {

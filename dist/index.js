@@ -8,6 +8,7 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
 var ReactDOM = _interopDefault(require('react-dom'));
+require('react-drag-to-select');
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -555,6 +556,10 @@ function isObject(value) {
 var isObject_1 = isObject;
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -4354,7 +4359,7 @@ var STAGE_ID = '__node_editor_stage__';
 var DRAG_CONNECTION_ID = '__node_editor_drag_connection__';
 var CONNECTIONS_ID = '__node_editor_connections__';
 
-var Stage = function Stage(_ref) {
+var Stage = React__default.forwardRef(function (_ref, wrapper) {
   var scale = _ref.scale,
       translate = _ref.translate,
       editorId = _ref.editorId,
@@ -4371,7 +4376,6 @@ var Stage = function Stage(_ref) {
 
   var nodeTypes = React__default.useContext(NodeTypesContext);
   var dispatchNodes = React__default.useContext(NodeDispatchContext);
-  var wrapper = React__default.useRef();
   var translateWrapper = React__default.useRef();
 
   var _React$useState = React__default.useState(false),
@@ -4592,7 +4596,7 @@ var Stage = function Stage(_ref) {
     ),
     outerStageChildren
   );
-};
+});
 
 var css$2 = ".Node_wrapper__3SmT7{\n  background: rgba(91, 96, 99, 0.9);\n  border-radius: 5px;\n  box-shadow: 0px 4px 8px rgba(0,0,0,.4);\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  z-index: 1;\n  cursor: default;\n}\n.Node_label__3MmhF{\n  font-size: 13px;\n  text-transform: uppercase;\n  padding: 5px;\n  background: #464b4e;\n  border-radius: 5px 5px 0px 0px;\n  margin: 0px;\n  margin-bottom: 3px;\n  border-bottom: 1px solid rgba(0,0,0,.15);\n}\n";
 var styles$2 = { "wrapper": "Node_wrapper__3SmT7", "label": "Node_label__3MmhF" };
@@ -6022,11 +6026,12 @@ var Port = function Port(_ref7) {
   );
 };
 
-var Node = function Node(_ref) {
+var Node = React.forwardRef(function (_ref, nodeWrapper) {
   var id = _ref.id,
       width = _ref.width,
       height = _ref.height,
       x = _ref.x,
+      isSelected = _ref.isSelected,
       y = _ref.y,
       _ref$delay = _ref.delay,
       stageRect = _ref.stageRect,
@@ -6035,6 +6040,8 @@ var Node = function Node(_ref) {
       inputData = _ref.inputData,
       onDragStart = _ref.onDragStart,
       onDragEnd = _ref.onDragEnd,
+      shouldUpdateConnections = _ref.shouldUpdateConnections,
+      onDragHandle = _ref.onDragHandle,
       onDrag = _ref.onDrag;
 
   var cache = React__default.useContext(CacheContext);
@@ -6048,9 +6055,6 @@ var Node = function Node(_ref) {
       inputs = _nodeTypes$type$input === undefined ? [] : _nodeTypes$type$input,
       _nodeTypes$type$outpu = _nodeTypes$type.outputs,
       outputs = _nodeTypes$type$outpu === undefined ? [] : _nodeTypes$type$outpu;
-
-
-  var nodeWrapper = React__default.useRef();
 
   var _React$useState = React__default.useState(false),
       _React$useState2 = slicedToArray(_React$useState, 2),
@@ -6113,6 +6117,11 @@ var Node = function Node(_ref) {
     }
   };
 
+  React.useEffect(function () {
+    console.log(shouldUpdateConnections);
+    shouldUpdateConnections && updateNodeConnections();
+  }, [shouldUpdateConnections]);
+
   var stopDrag = function stopDrag(e, coordinates) {
     nodesDispatch(_extends({
       type: "SET_NODE_COORDINATES"
@@ -6124,6 +6133,15 @@ var Node = function Node(_ref) {
   var handleDrag = function handleDrag(_ref4) {
     var x = _ref4.x,
         y = _ref4.y;
+
+    var oldPositions = nodeWrapper.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+
+    if (oldPositions.length === 3) {
+      onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+      // console.log(
+      //   x - Number(oldPositions[1]),
+      //   y - Number(oldPositions[2]))
+    }
 
     nodeWrapper.current.style.transform = "translate(" + x + "px," + y + "px)";
     updateNodeConnections();
@@ -6166,6 +6184,7 @@ var Node = function Node(_ref) {
       className: styles$2.wrapper,
       style: {
         width: width,
+        border: isSelected ? '2px solid skyblue' : 'none',
         transform: "translate(" + x + "px, " + y + "px)"
       },
       onDragStart: startDrag,
@@ -6209,7 +6228,7 @@ var Node = function Node(_ref) {
       })
     ) : null
   );
-};
+});
 
 var css$9 = ".Comment_wrapper__1Pnbd {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  padding: 5px;\n  background: rgba(147, 154, 158, 0.7);\n  border-radius: 5px;\n  border-bottom-right-radius: 2px;\n  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);\n  min-width: 80px;\n  font-size: 14px;\n  display: flex;\n  text-shadow: 0px 1px rgba(255,255,255,.1);\n  border: 1px solid rgba(168, 176, 181, 0.7);\n  user-select: none;\n}\n  .Comment_wrapper__1Pnbd[data-color=\"red\"]{\n    background: rgba(213, 84, 103, 0.65);\n    border-color: rgba(227, 85, 119, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"purple\"]{\n    background: rgba(153, 83, 196, 0.65);\n    border-color: rgba(156, 85, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"blue\"]{\n    background: rgba(76, 142, 203, 0.65);\n    border-color: rgba(85, 159, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"green\"]{\n    background: rgba(70, 200, 130, 0.65);\n    border-color: rgba(85, 227, 150, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"yellow\"]{\n    background: rgba(200, 167, 63, 0.65);\n    border-color: rgba(227, 213, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"orange\"]{\n    background: rgba(215, 123, 64, 0.65);\n    border-color: rgba(227, 149, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"pink\"]{\n    background: rgba(255, 102, 208, 0.65);\n    border-color: rgba(242, 131, 228, 0.65);\n  }\n.Comment_text__Ie2nX{\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  white-space: pre-wrap;\n  cursor: default;\n}\n.Comment_resizeThumb__20KWn {\n  width: 10px;\n  height: 10px;\n  border-radius: 4px 0px 4px 0px;\n  position: absolute;\n  right: 0px;\n  bottom: 0px;\n  overflow: hidden;\n  cursor: nwse-resize;\n}\n.Comment_resizeThumb__20KWn::before,\n  .Comment_resizeThumb__20KWn::after {\n    content: \"\";\n    position: absolute;\n    right: 0px;\n    top: 0px;\n    width: 250%;\n    height: 0px;\n    border-top: 1px solid rgba(0, 0, 0, 0.7);\n    border-bottom: 2px solid rgba(255, 255, 255, 0.7);\n    transform-origin: center right;\n    transform: rotate(-45deg) scale(0.5);\n  }\n.Comment_resizeThumb__20KWn::after {\n    transform: rotate(-45deg) translateY(3px) scale(0.5);\n  }\n.Comment_textarea__2Rze3 {\n  resize: none;\n  width: calc(100% + 2px);\n  height: calc(100% + 2px);\n  border-radius: 3px;\n  background: rgba(255,255,255,.1);\n  border: none;\n  outline: none;\n  margin: -2px;\n  margin-top: -1px;\n  padding-top: 0px;\n  font-size: 14px;\n}\n.Comment_textarea__2Rze3::placeholder{\n    color: rgba(0,0,0,.5);\n  }\n";
 var styles$9 = { "wrapper": "Comment_wrapper__1Pnbd", "text": "Comment_text__Ie2nX", "resizeThumb": "Comment_resizeThumb__20KWn", "textarea": "Comment_textarea__2Rze3" };
@@ -7496,6 +7515,12 @@ var css$d = ".styles_dragWrapper__1P7RD{\n  z-index: 9999;\n  position: absolute
 var styles$d = { "dragWrapper": "styles_dragWrapper__1P7RD", "debugWrapper": "styles_debugWrapper__2OSbY" };
 styleInject(css$d);
 
+var dist = createCommonjsModule(function (module, exports) {
+Object.defineProperty(exports,"__esModule",{value:true});var _jsx=function(){var REACT_ELEMENT_TYPE=typeof Symbol==="function"&&Symbol.for&&Symbol.for("react.element")||60103;return function createRawReactElement(type,props,key,children){var defaultProps=type&&type.defaultProps;var childrenLength=arguments.length-3;if(!props&&childrenLength!==0){props={};}if(props&&defaultProps){for(var propName in defaultProps){if(props[propName]===void 0){props[propName]=defaultProps[propName];}}}else if(!props){props=defaultProps||{};}if(childrenLength===1){props.children=children;}else if(childrenLength>1){var childArray=Array(childrenLength);for(var i=0;i<childrenLength;i++){childArray[i]=arguments[i+3];}props.children=childArray;}return {$$typeof:REACT_ELEMENT_TYPE,type:type,key:key===undefined?null:""+key,ref:null,props:props,_owner:null}}}();var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}}();var _react2=_interopRequireDefault(React__default);var _propTypes2=_interopRequireDefault(PropTypes);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}function _toConsumableArray(arr){if(Array.isArray(arr)){for(var i=0,arr2=Array(arr.length);i<arr.length;i++){arr2[i]=arr[i];}return arr2}else{return Array.from(arr)}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass;}function getOffset(props){var offset={top:0,left:0};if(props.offset){offset=Object.assign({},props.offset);}else if(props.target){var boundingBox=props.target.getBoundingClientRect();offset.top=boundingBox.top+window.scrollY;offset.left=boundingBox.left+window.scrollX;}return offset}var Selection=function(_React$PureComponent){_inherits(Selection,_React$PureComponent);function Selection(props){_classCallCheck(this,Selection);var _this=_possibleConstructorReturn(this,(Selection.__proto__||Object.getPrototypeOf(Selection)).call(this,props));_this.bind=function(){_this.props.target.addEventListener("mousedown",_this.onMouseDown);_this.props.target.addEventListener("touchstart",_this.onTouchStart);};_this.reset=function(){if(_this.props.target){_this.props.target.removeEventListener("mousedown",_this.onMouseDown);}};_this.init=function(e,x,y){if(_this.props.ignoreTargets){var Target=e.target;if(!Target.matches){var defaultMatches=function defaultMatches(s){return [].indexOf.call(window.document.querySelectorAll(s),_this)!==-1};Target.matches=Target.matchesSelector||Target.mozMatchesSelector||Target.msMatchesSelector||Target.oMatchesSelector||Target.webkitMatchesSelector||defaultMatches;}if(Target.matches&&Target.matches(_this.props.ignoreTargets.join(","))){return false}}var nextState={};nextState.mouseDown=true;nextState.startPoint={x:(x-_this.state.offset.left)/_this.state.zoom,y:(y-_this.state.offset.top)/_this.state.zoom};_this.setState(nextState);return true};_this.onMouseDown=function(e){if(_this.props.disabled||e.button===2||e.nativeEvent&&e.nativeEvent.which===2){return}if(_this.init(e,e.pageX,e.pageY)){window.document.addEventListener("mousemove",_this.onMouseMove);window.document.addEventListener("mouseup",_this.onMouseUp);}};_this.onTouchStart=function(e){if(_this.props.disabled||!e.touches||!e.touches[0]||e.touches.length>1){return}if(_this.init(e,e.touches[0].pageX,e.touches[0].pageY)){window.document.addEventListener("touchmove",_this.onTouchMove);window.document.addEventListener("touchend",_this.onMouseUp);}};_this.onMouseUp=function(){window.document.removeEventListener("touchmove",_this.onTouchMove);window.document.removeEventListener("mousemove",_this.onMouseMove);window.document.removeEventListener("mouseup",_this.onMouseUp);window.document.removeEventListener("touchend",_this.onMouseUp);_this.setState({mouseDown:false,startPoint:null,endPoint:null,selectionBox:null});if(_this.props.onSelectionChange){_this.props.onSelectionChange(_this.selectedChildren);}if(_this.props.onHighlightChange){_this.highlightedChildren=[];_this.props.onHighlightChange(_this.highlightedChildren);}_this.selectedChildren=[];};_this.onMouseMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint={x:(e.pageX-_this.state.offset.left)/_this.state.zoom,y:(e.pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint)});}};_this.onTouchMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint2={x:(e.touches[0].pageX-_this.state.offset.left)/_this.state.zoom,y:(e.touches[0].pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint2,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint2)});}};_this.lineIntersects=function(lineA,lineB){return lineA[1]>=lineB[0]&&lineB[1]>=lineA[0]};_this.boxIntersects=function(boxA,boxB){var boxAProjection={x:[boxA.left,boxA.left+boxA.width],y:[boxA.top,boxA.top+boxA.height]};var boxBProjection={x:[boxB.left,boxB.left+boxB.width],y:[boxB.top,boxB.top+boxB.height]};return _this.lineIntersects(boxAProjection.x,boxBProjection.x)&&_this.lineIntersects(boxAProjection.y,boxBProjection.y)};_this.updateCollidingChildren=function(selectionBox){_this.selectedChildren=[];if(_this.props.elements){_this.props.elements.forEach(function(ref,$index){if(ref){var refBox=ref.getBoundingClientRect();var tmpBox={top:(refBox.top-_this.state.offset.top+window.scrollY)/_this.state.zoom,left:(refBox.left-_this.state.offset.left+window.scrollX)/_this.state.zoom,width:ref.clientWidth,height:ref.clientHeight};if(_this.boxIntersects(selectionBox,tmpBox)){_this.selectedChildren.push($index);}}});}if(_this.props.onHighlightChange&&JSON.stringify(_this.highlightedChildren)!==JSON.stringify(_this.selectedChildren)){var _onHighlightChange=_this.props.onHighlightChange;_this.highlightedChildren=[].concat(_toConsumableArray(_this.selectedChildren));if(window.requestAnimationFrame){window.requestAnimationFrame(function(){_onHighlightChange(_this.highlightedChildren);});}else{_onHighlightChange(_this.highlightedChildren);}}};_this.calculateSelectionBox=function(startPoint,endPoint){if(!_this.state.mouseDown||!startPoint||!endPoint){return null}var left=Math.min(startPoint.x,endPoint.x)-1;var top=Math.min(startPoint.y,endPoint.y)-1;var width=Math.abs(startPoint.x-endPoint.x)+1;var height=Math.abs(startPoint.y-endPoint.y)+1;return {left:left,top:top,width:width,height:height}};_this.state={mouseDown:false,startPoint:null,endPoint:null,selectionBox:null,offset:getOffset(props),zoom:props.zoom||1};_this.selectedChildren=[];_this.highlightedChildren=[];return _this}_createClass(Selection,[{key:"componentDidMount",value:function componentDidMount(){this.reset();this.bind();}},{key:"componentWillReceiveProps",value:function componentWillReceiveProps(nextProps){this.setState({offset:getOffset(nextProps)});}},{key:"componentDidUpdate",value:function componentDidUpdate(){this.reset();this.bind();if(this.state.mouseDown&&this.state.selectionBox){this.updateCollidingChildren(this.state.selectionBox);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.reset();window.document.removeEventListener("mousemove",this.onMouseMove);window.document.removeEventListener("mouseup",this.onMouseUp);}},{key:"render",value:function render(){var style=Object.assign({position:"absolute",background:"rgba(159, 217, 255, 0.3)",border:"solid 1px rgba(123, 123, 123, 0.61)",zIndex:9,cursor:"crosshair"},this.props.style);if(this.state.selectionBox){style=Object.assign({},style,this.state.selectionBox);}if(!this.state.mouseDown||!this.state.endPoint||!this.state.startPoint){return null}return _jsx("div",{className:"react-ds-border",style:style})}}]);return Selection}(_react2.default.PureComponent);exports.default=Selection;
+});
+
+var Selection = unwrapExports(dist);
+
 var LoopError = function (_Error) {
   inherits(LoopError, _Error);
 
@@ -7653,7 +7678,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       onCommentsChange = _ref.onCommentsChange,
       initialScale = _ref.initialScale,
       _ref$spaceToPan = _ref.spaceToPan,
-      spaceToPan = _ref$spaceToPan === undefined ? false : _ref$spaceToPan,
+      spaceToPan = _ref$spaceToPan === undefined ? true : _ref$spaceToPan,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === undefined ? false : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
@@ -7679,6 +7704,8 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       toasts = _React$useReducer2[0],
       dispatchToasts = _React$useReducer2[1];
 
+  var editorRef = React.useRef();
+
   var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer, { nodeTypes: nodeTypes, portTypes: portTypes, cache: cache, circularBehavior: circularBehavior, context: context }, setSideEffectToasts), {}, function () {
     return getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context);
   }),
@@ -7686,10 +7713,27 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       nodes = _React$useReducer4[0],
       dispatchNodes = _React$useReducer4[1];
 
+  var previousNodes = usePrevious$1(nodes);
+
   var _React$useReducer5 = React__default.useReducer(commentsReducer, initialComments || {}),
       _React$useReducer6 = slicedToArray(_React$useReducer5, 2),
       comments = _React$useReducer6[0],
       dispatchComments = _React$useReducer6[1];
+
+  var _useState = React.useState([]),
+      _useState2 = slicedToArray(_useState, 2),
+      nodeRefs = _useState2[0],
+      setNodesRef = _useState2[1];
+
+  var _useState3 = React.useState([]),
+      _useState4 = slicedToArray(_useState3, 2),
+      selectedNodes = _useState4[0],
+      setSelectedNodes = _useState4[1];
+
+  var _useState5 = React.useState(null),
+      _useState6 = slicedToArray(_useState5, 2),
+      isDragging = _useState6[0],
+      setDragging = _useState6[1];
 
   React__default.useEffect(function () {
     dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
@@ -7713,6 +7757,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   }, [nodes, editorId, stageState]);
 
   var recalculateStageRect = function recalculateStageRect() {
+    setDragging(true);
     stage.current = document.getElementById("" + STAGE_ID + editorId).getBoundingClientRect();
   };
 
@@ -7724,7 +7769,34 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   }, [shouldRecalculateConnections, recalculateConnections]);
 
   var triggerRecalculation = function triggerRecalculation() {
+    setDragging(false);
     setShouldRecalculateConnections(true);
+  };
+
+  var dragSelectedNodes = function dragSelectedNodes(excludedNodeId, deltaX, deltaY) {
+    if (selectedNodes.length) {
+      if (selectedNodes.includes(excludedNodeId)) {
+        selectedNodes.forEach(function (id) {
+          if (id !== excludedNodeId) {
+            var nodeRef = nodeRefs.find(function (_ref2) {
+              var _ref3 = slicedToArray(_ref2, 1),
+                  nId = _ref3[0].id;
+
+              return nId === id;
+            })[1];
+            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+            if (oldPositions.length === 3) nodeRef.current.style.transform = "translate(" + (Number(oldPositions[1]) + deltaX) + "px," + (Number(oldPositions[2]) + deltaY) + "px)";
+            // dispatchNodes({
+            //   type: "SET_NODE_COORDINATES",
+            //   x: x + deltaX,
+            //   y: y + deltaY,
+            //   nodeId: id
+            // })
+          }
+        });
+        recalculateConnections();
+      } else setSelectedNodes([]);
+    }
   };
 
   React__default.useImperativeHandle(ref, function () {
@@ -7738,13 +7810,35 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
 
-  var previousNodes = usePrevious$1(nodes);
+  React__default.useMemo(function () {
+    setDragging(false);
+
+    if (previousNodes && nodes !== previousNodes) {
+      Object.values(nodes).every(function (_ref4) {
+        var id = _ref4.id;
+        return Object.values(previousNodes).some(function (_ref5) {
+          var oldId = _ref5.id;
+          return id === oldId;
+        });
+      }) || !setNodesRef(function (refs) {
+        return Object.values(nodes).map(function (n) {
+          return [n, React.createRef()];
+        }) || [];
+      }) && setSelectedNodes([]);
+      onChange && onChange(nodes);
+    }
+    console.log(nodeRefs);
+  }, [nodes, previousNodes, onChange]);
 
   React__default.useEffect(function () {
-    if (previousNodes && onChange && nodes !== previousNodes) {
-      onChange(nodes);
-    }
-  }, [nodes, previousNodes, onChange]);
+    // console.log(nodeRefs)
+  }, [nodeRefs, setNodesRef]);
+
+  var handleSelection = function handleSelection(indexes, data) {
+    isDragging || setSelectedNodes(indexes.map(function (i) {
+      return nodeRefs[i][0].id;
+    }));
+  };
 
   var previousComments = usePrevious$1(comments);
 
@@ -7790,9 +7884,23 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
                     {
                       value: recalculateStageRect
                     },
+                    editorRef.current && React__default.createElement(Selection, {
+                      target: editorRef.current,
+                      elements: nodeRefs.map(function (n) {
+                        return n[1].current;
+                      }),
+                      onSelectionChange: handleSelection,
+                      offset: {
+                        top: 0,
+                        left: 0
+                      },
+                      style: isDragging ? { display: 'none' } : null,
+                      ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *']
+                    }),
                     React__default.createElement(
                       Stage,
                       {
+                        ref: editorRef,
                         editorId: editorId,
                         scale: stageState.scale,
                         translate: stageState.translate,
@@ -7857,8 +7965,22 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
                       }),
                       Object.values(nodes).map(function (node) {
                         return React__default.createElement(Node, _extends({}, node, {
+                          isSelected: selectedNodes.includes(node.id),
+                          shouldUpdateConnections: isDragging && selectedNodes.includes(node.id),
+                          ref: nodeRefs.find(function (_ref6) {
+                            var _ref7 = slicedToArray(_ref6, 1),
+                                n = _ref7[0];
+
+                            return n.id === node.id;
+                          }) ? nodeRefs.find(function (_ref8) {
+                            var _ref9 = slicedToArray(_ref8, 1),
+                                n = _ref9[0];
+
+                            return n.id === node.id;
+                          })[1] : null,
                           stageRect: stage,
                           onDragEnd: triggerRecalculation,
+                          onDragHandle: dragSelectedNodes,
                           onDragStart: recalculateStageRect,
                           key: node.id
                         }));

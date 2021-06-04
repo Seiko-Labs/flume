@@ -4539,6 +4539,11 @@ dotenv@4.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
   integrity sha1-hk7xN5rO1Vzm+V3r7NzhefegzR0=
 
+dragselect@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/dragselect/-/dragselect-2.0.3.tgz#3ee0b640f04ce9735e8b0872d3f966d690861db6"
+  integrity sha512-+j7+gGbEAutzOyJhVCn4VxOEgNTFYRr28OtwKYQ555pteGu2tK58VSevv2E23exUgxby5kHSwlb7OzgdWCmpHg==
+
 duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
@@ -10430,6 +10435,16 @@ react-dom@^17.0.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.1"
+
+react-drag-to-select@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-drag-to-select/-/react-drag-to-select-1.0.2.tgz#6195a3aba6f276393f4d570bd42c3d45e4209e14"
+  integrity sha512-zRqRvPkWMb5Tf2pEZuYVAnJX6lKXnbKfZOg+cvWIOy2dLbAD+AIYZPY+by+eXI3VcPJ4jOvOywru5P6VAGuM0A==
+
+react-ds@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/react-ds/-/react-ds-1.13.0.tgz#5af92d2ebf4f2b8878039d4d716c15e4f736cf5e"
+  integrity sha512-LLqx0oITKDLkkvXhxJEDL1Ixh9HW05e6EB12T5DUn/TmiAwujIjgc5qDxuAwO5gCmbQc/hVx0sXJkLYFm5SFVg==
 
 react-error-overlay@^4.0.1:
   version "4.0.1"
