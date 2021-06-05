@@ -15,6 +15,7 @@ const Stage = React.forwardRef(({
   dispatchStageState,
   children,
   outerStageChildren,
+  setSpaceIsPressed: parentSetSpaceIsPressed,
   numNodes,
   stageRef,
   spaceToPan,
@@ -134,6 +135,7 @@ const Stage = React.forwardRef(({
   const handleDocumentKeyUp = e => {
     if (e.which === 32) {
       setSpaceIsPressed(false);
+      parentSetSpaceIsPressed(false)
       document.removeEventListener("keyup", handleDocumentKeyUp);
     }
   };
@@ -142,6 +144,7 @@ const Stage = React.forwardRef(({
     if (e.which === 32 && document.activeElement === wrapper.current) {
       e.preventDefault();
       e.stopPropagation();
+      parentSetSpaceIsPressed(true)
       setSpaceIsPressed(true);
       document.addEventListener("keyup", handleDocumentKeyUp);
     }

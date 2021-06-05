@@ -29,7 +29,7 @@ const Node = forwardRef(({
   onDragHandle,
   onDrag
 }, nodeWrapper) => {
-  const cache = React.useContext(CacheContext);
+  // const cache = React.useContext(CacheContext);
   const nodeTypes = React.useContext(NodeTypesContext);
   const nodesDispatch = React.useContext(NodeDispatchContext);
   const stageState = React.useContext(StageContext);
@@ -47,13 +47,13 @@ const Node = forwardRef(({
           id,
           portName,
           isOutput ? "output" : "input",
-          cache
+          // cache
         );
         const fromRect = getPortRect(
           output.nodeId,
           output.portName,
           isOutput ? "input" : "output",
-          cache
+          // cache
         );
         const portHalf = fromRect.width / 2;
         let combined;
@@ -63,12 +63,12 @@ const Node = forwardRef(({
           combined = output.nodeId + output.portName + id + portName;
         }
         let cnx;
-        const cachedConnection = cache.current.connections[combined];
+        const cachedConnection = null /*cache.current.connections[combined]*/;
         if (cachedConnection) {
           cnx = cachedConnection;
         } else {
           cnx = document.querySelector(`[data-connection-id="${combined}"]`);
-          cache.current.connections[combined] = cnx;
+          // cache.current.connections[combined] = cnx;
         }
         const from = {
           x:
@@ -132,9 +132,6 @@ const Node = forwardRef(({
         x - Number(oldPositions[1]),
         y - Number(oldPositions[2])
       )
-      // console.log(
-      //   x - Number(oldPositions[1]),
-      //   y - Number(oldPositions[2]))
     }
 
     nodeWrapper.current.style.transform = `translate(${x}px,${y}px)`;
@@ -175,12 +172,12 @@ const Node = forwardRef(({
       className={styles.wrapper}
       style={{
         width,
-        border: isSelected ? '2px solid skyblue' : 'none',
+        border: isSelected ? '2px solid skyblue' : '2px solid transparent',
         transform: `translate(${x}px, ${y}px)`
       }}
       onDragStart={startDrag}
       onDrag={handleDrag}
-      onDragEnd={stopDrag}
+      onDragEnd={(e, coords) => onDragEnd(e, id, coords)}
       innerRef={nodeWrapper}
       data-node-id={id}
       onContextMenu={handleContextMenu}

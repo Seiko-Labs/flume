@@ -1,10 +1,14 @@
-import React, {createRef, useCallback, useRef, useState} from "react";
-import {useId} from "@reach/auto-id";
-import Stage from "./components/Stage/Stage";
-import Node from "./components/Node/Node";
-import Comment from "./components/Comment/Comment";
-import Toaster from "./components/Toaster/Toaster";
-import Connections from "./components/Connections/Connections";
+import React, {
+  createRef,
+  useRef,
+  useState
+} from 'react'
+import {useId} from '@reach/auto-id'
+import Stage from './components/Stage/Stage'
+import Node from './components/Node/Node'
+import Comment from './components/Comment/Comment'
+import Toaster from './components/Toaster/Toaster'
+import Connections from './components/Connections/Connections'
 import {
   NodeTypesContext,
   PortTypesContext,
@@ -15,24 +19,25 @@ import {
   StageContext,
   CacheContext,
   EditorIdContext
-} from "./context";
-import {createConnections} from "./connectionCalculator";
+} from './context'
+import {clearConnections, createConnections} from './connectionCalculator'
 import nodesReducer, {
   connectNodesReducer,
   getInitialNodes
-} from "./nodesReducer";
-import commentsReducer from "./commentsReducer";
-import toastsReducer from "./toastsReducer";
-import stageReducer from "./stageReducer";
-import usePrevious from "./hooks/usePrevious";
-import clamp from "lodash/clamp";
-import Cache from "./Cache";
-import {STAGE_ID, DRAG_CONNECTION_ID} from "./constants";
-import styles from "./styles.css";
-import {useSelectionContainer} from "react-drag-to-select";
-import Selection from "react-ds/dist";
+} from './nodesReducer'
+import commentsReducer from './commentsReducer'
+import toastsReducer from './toastsReducer'
+import stageReducer from './stageReducer'
+import usePrevious from './hooks/usePrevious'
+import clamp from 'lodash/clamp'
+import Cache from './Cache'
+import {STAGE_ID, DRAG_CONNECTION_ID} from './constants'
+import styles from './styles.css'
+import Selection from 'react-ds/dist'
+import {HotKeys} from 'react-hotkeys'
+import useSelect from './hooks/useSelect'
 
-const defaultContext = {};
+const defaultContext = {}
 
 export let NodeEditor = (
   {
@@ -54,170 +59,232 @@ export let NodeEditor = (
     debug
   },
   ref
-  ) => {
-    const editorId = useId();
-    const cache = React.useRef(new Cache());
-    const stage = React.useRef();
-    const [sideEffectToasts, setSideEffectToasts] = React.useState()
-    const [toasts, dispatchToasts] = React.useReducer(toastsReducer, []);
-    const editorRef = useRef();
-    const [nodes, dispatchNodes] = React.useReducer(
-      connectNodesReducer(
-        nodesReducer,
-        {nodeTypes, portTypes, cache, circularBehavior, context},
-        setSideEffectToasts
-      ),
-      {},
-      () => getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context)
-    );
-    const previousNodes = usePrevious(nodes);
-    const [comments, dispatchComments] = React.useReducer(
-      commentsReducer,
-      initialComments || {}
-    );
-    const [nodeRefs, setNodesRef] = useState([])
-    const [selectedNodes, setSelectedNodes] = useState([]);
-    const [isDragging, setDragging] = useState(null)
+) => {
+  const editorId = useId()
+  const cache = React.useRef(new Cache())
+  const stage = React.useRef()
+  const [sideEffectToasts, setSideEffectToasts] = React.useState()
+  const [toasts, dispatchToasts] = React.useReducer(toastsReducer, [])
+  const editorRef = useRef()
+  const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
 
-    React.useEffect(() => {
-      dispatchNodes({type: "HYDRATE_DEFAULT_NODES"});
-    }, []);
-    const [
-      shouldRecalculateConnections,
-      setShouldRecalculateConnections
-    ] = React.useState(true);
-    const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
-      scale: typeof initialScale === "number" ? clamp(initialScale, 0.1, 7) : 1,
-      translate: {x: 0, y: 0}
-    });
+  const [nodesState, setNodesState] = useState([]);
+  const [currentStateIndex, setCurrentStateIndex] = useState(-1);
+  const [undoOrRedoAction, setUndoOrRedoAction] = useState(0);
+  const [undoOrRedoTimeStamp, setUndoOrRedoTimeStamp] = useState(new Date().getTime());
 
-    const recalculateConnections = React.useCallback(() => {
-      createConnections(nodes, stageState, editorId);
-    }, [nodes, editorId, stageState]);
-
-    const recalculateStageRect = () => {
-      setDragging(true)
-      stage.current = document
-        .getElementById(`${STAGE_ID}${editorId}`)
-        .getBoundingClientRect();
-    };
-
-    React.useLayoutEffect(() => {
-      if (shouldRecalculateConnections) {
-        recalculateConnections();
-        setShouldRecalculateConnections(false);
-      }
-    }, [shouldRecalculateConnections, recalculateConnections]);
-
-    const triggerRecalculation = () => {
-      setDragging(false)
-      setShouldRecalculateConnections(true);
-    };
-
-    const dragSelectedNodes = (excludedNodeId, deltaX, deltaY) => {
-      if (selectedNodes.length) {
-        if (selectedNodes.includes(excludedNodeId)) {
-          selectedNodes.forEach(id => {
-              if (id !== excludedNodeId) {
-                const nodeRef = nodeRefs.find(([{id: nId},]) => nId === id)[1]
-                const oldPositions =
-                  nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/)
-                if (oldPositions.length === 3)
-                  nodeRef.current.style.transform =
-                    `translate(${Number(oldPositions[1]) + deltaX}px,${Number(oldPositions[2]) + deltaY}px)`;
-                // dispatchNodes({
-                //   type: "SET_NODE_COORDINATES",
-                //   x: x + deltaX,
-                //   y: y + deltaY,
-                //   nodeId: id
-                // })
-              }
-            }
-          )
-          recalculateConnections();
-        } else
-          setSelectedNodes([])
-      }
-    }
-
-    React.useImperativeHandle(ref, () => ({
-      getNodes: () => {
-        return nodes;
+  const [{nodes, historyData: {newNodesState, newCurrentStateIndex, newUndoOrRedoAction, newUndoOrRedoTimeStamp}}, dispatchNodes] = React.useReducer(
+    connectNodesReducer(
+      nodesReducer,
+      {
+        nodeTypes,
+        portTypes,
+        cache,
+        circularBehavior,
+        context,
+        nodesState,
+        currentStateIndex,
+        undoOrRedoAction,
+        undoOrRedoTimeStamp,
       },
-      getComments: () => {
-        return comments;
-      }
-    }));
+      setSideEffectToasts
+    ),
+    {},
+    () => getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context)
+  )
+  const previousNodes = usePrevious(nodes)
+  const [comments, dispatchComments] = React.useReducer(
+    commentsReducer,
+    initialComments || {}
+  )
+  const [selectedNodes, nodeRefs, handleSelection, clearSelection] = useSelect(nodes, previousNodes)
 
-    React.useMemo(() => {
-      setDragging(false)
+  React.useEffect(() => {
+    dispatchNodes({type: 'HYDRATE_DEFAULT_NODES'})
+  }, [])
+  const [
+    shouldRecalculateConnections,
+    setShouldRecalculateConnections
+  ] = React.useState(true)
+  const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
+    scale: typeof initialScale === 'number' ? clamp(initialScale, 0.1, 7) : 1,
+    translate: {x: 0, y: 0}
+  })
 
-      if (previousNodes && nodes !== previousNodes) {
-        (Object.values(nodes).every(({id}) =>
-          Object.values(previousNodes).some(({id: oldId}) =>
-            id === oldId))) ||
-        (!setNodesRef(refs =>
-          Object.values(nodes).map(n => [n, createRef()]) || []
-        ) && setSelectedNodes([]))
-        onChange && onChange(nodes);
-      }
-      console.log(nodeRefs)
-    }, [nodes, previousNodes, onChange]);
+  const recalculateConnections = React.useCallback(() => {
+    createConnections(nodes, stageState, editorId)
+  }, [nodes, editorId, stageState, dispatchNodes])
 
-    React.useEffect(() => {
-      // console.log(nodeRefs)
-    }, [nodeRefs, setNodesRef]);
+  const recalculateStageRect = () => {
+    stage.current = document
+      .getElementById(`${STAGE_ID}${editorId}`)
+      .getBoundingClientRect()
+  }
 
-
-    const handleSelection = (indexes, data) => {
-      isDragging || setSelectedNodes(indexes.map(i => nodeRefs[i][0].id))
+  React.useLayoutEffect(() => {
+    if (shouldRecalculateConnections) {
+      recalculateConnections()
+      setShouldRecalculateConnections(false)
     }
+  }, [shouldRecalculateConnections, recalculateConnections])
+
+  const handleDragEnd = (e, id, coordinates) => {
+    if (selectedNodes.length) {
+      dispatchNodes({
+        type: 'SET_MULTIPLE_NODES_COORDINATES',
+        nodesInfo: selectedNodes.map(id => {
+          const nodeRef = nodeRefs.find(([{id: nId},]) => nId === id)[1]
+          const newPositions =
+            nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/)
+
+          return ({
+            nodeId: id,
+            x: newPositions[1],
+            y: newPositions[2]
+          })
+        })
+      })
+    } else {
+      dispatchNodes({
+        type: 'SET_NODE_COORDINATES',
+        ...coordinates,
+        nodeId: id
+      })
+    }
+    triggerRecalculation()
+  }
+
+  const triggerRecalculation = () => {
+    setShouldRecalculateConnections(true)
+  }
+
+  const dragSelectedNodes = (excludedNodeId, deltaX, deltaY) => {
+    if (selectedNodes.length) {
+      if (selectedNodes.includes(excludedNodeId)) {
+        selectedNodes.forEach(id => {
+            if (id !== excludedNodeId) {
+              const nodeRef = nodeRefs.find(([{id: nId},]) => nId === id)[1]
+              const oldPositions =
+                nodeRef.current.style.transform
+                  .match(
+                    /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/
+                  )
+              if (oldPositions.length === 3)
+                nodeRef.current.style.transform =
+                  `translate(${Number(oldPositions[1]) + deltaX}px,${Number(oldPositions[2]) + deltaY}px)`
+            }
+          }
+        )
+        recalculateConnections()
+      } else
+        clearSelection()
+    }
+  }
+
+  React.useImperativeHandle(ref, () => ({
+    getNodes: () => {
+      return nodes
+    },
+    getComments: () => {
+      return comments
+    }
+  }))
+
+  React.useMemo(() => {
+    previousNodes && nodes !== previousNodes && onChange && onChange(nodes)
+  }, [nodes, previousNodes, onChange])
 
 
-    const previousComments = usePrevious(comments);
+  const previousComments = usePrevious(comments)
 
-    React.useEffect(() => {
-      if (previousComments && onCommentsChange && comments !== previousComments) {
-        onCommentsChange(comments);
-      }
-    }, [comments, previousComments, onCommentsChange]);
+  React.useEffect(() => {
+    previousComments
+    && onCommentsChange
+    && comments !== previousComments
+    && onCommentsChange(comments)
+  }, [comments, previousComments, onCommentsChange])
 
-    React.useEffect(() => {
-      if (sideEffectToasts) {
-        dispatchToasts(sideEffectToasts)
-        setSideEffectToasts(null)
-      }
-    }, [sideEffectToasts])
+  React.useEffect(() => {
+    if (sideEffectToasts) {
+      dispatchToasts(sideEffectToasts)
+      setSideEffectToasts(null)
+    }
+  }, [sideEffectToasts])
 
-    return (
-      <PortTypesContext.Provider value={portTypes}>
-        <NodeTypesContext.Provider value={nodeTypes}>
-          <NodeDispatchContext.Provider value={dispatchNodes}>
-            <ConnectionRecalculateContext.Provider value={triggerRecalculation}>
-              <ContextContext.Provider value={context}>
-                <StageContext.Provider value={stageState}>
-                  <CacheContext.Provider value={cache}>
-                    <EditorIdContext.Provider value={editorId}>
-                      <RecalculateStageRectContext.Provider
-                        value={recalculateStageRect}
-                      >
-                        {
-                          editorRef.current &&
-                          <Selection
-                            target={editorRef.current}
-                            elements={nodeRefs.map(n => n[1].current)}
-                            onSelectionChange={handleSelection}
-                            offset={{
-                              top: 0,
-                              left: 0,
-                            }}
-                            style={isDragging ? {display: 'none'} : null}
-                            ignoreTargets={['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *']}
-                          />
-                        }
+  const keyMap = {
+    COPY_NODES: 'ctrl+c',
+    PASTE_NODES: 'ctrl+v',
+    CUT_NODES: 'ctrl+x',
+    UNDO_CHANGES: 'ctrl+z',
+    REDO_CHANGES: 'ctrl+y',
+  }
+
+  const copyNodes = () => console.log('Copy nodes')
+  const pasteNodes = () => console.log('Paste nodes')
+  const cutNodes = () => console.log('Cut nodes')
+  const undoChanges = () => {
+    dispatchNodes({
+      type: 'UNDO_CHANGES',
+    })
+
+    clearConnections()
+    triggerRecalculation()
+  }
+  const redoChanges = () => {
+    dispatchNodes({
+      type: 'REDO_CHANGES'
+    })
+
+    clearConnections()
+    triggerRecalculation()
+  }
+
+  const handlers = {
+    COPY_NODES: copyNodes,
+    PASTE_NODES: pasteNodes,
+    CUT_NODES: cutNodes,
+    UNDO_CHANGES: undoChanges,
+    REDO_CHANGES: redoChanges,
+  }
+
+  return (
+    <PortTypesContext.Provider value={portTypes}>
+      <NodeTypesContext.Provider value={nodeTypes}>
+        <NodeDispatchContext.Provider value={dispatchNodes}>
+          <ConnectionRecalculateContext.Provider value={triggerRecalculation}>
+            <ContextContext.Provider value={context}>
+              <StageContext.Provider value={stageState}>
+                <CacheContext.Provider value={cache}>
+                  <EditorIdContext.Provider value={editorId}>
+                    <RecalculateStageRectContext.Provider
+                      value={recalculateStageRect}
+                    >
+                      {
+                        editorRef.current &&
+                        <Selection
+                          target={editorRef.current}
+                          elements={nodeRefs.map(n => n[1].current)}
+                          onSelectionChange={(i) =>
+                            spaceIsPressed || handleSelection(i)}
+                          offset={{
+                            top: 0,
+                            left: 0,
+                          }}
+                          ignoreTargets={[
+                            'div[class^="Node_wrapper__"]',
+                            'div[class^="Node_wrapper__"] *',
+                            'div[class^="Comment_wrapper__"]',
+                            'div[class^="Comment_wrapper__"] *'
+                          ]}
+                          style={spaceIsPressed ? {display: 'none'} : {}}
+                        />
+                      }
+                      <HotKeys keyMap={keyMap} handlers={handlers}
+                               style={{height: '100%'}}>
                         <Stage
                           ref={editorRef}
                           editorId={editorId}
+                          setSpaceIsPressed={setSpaceIsPressed}
                           scale={stageState.scale}
                           translate={stageState.translate}
                           spaceToPan={spaceToPan}
@@ -276,12 +343,12 @@ export let NodeEditor = (
                               {...node}
                               isSelected={selectedNodes.includes(node.id)}
                               ref={
-                                nodeRefs.find(([n,]) => n.id === node.id) ?
-                                nodeRefs.find(([n,]) => n.id === node.id)[1]
-                                                                          : null
+                                nodeRefs.find(([n,]) => n.id === node.id)
+                                ? nodeRefs.find(([n,]) => n.id === node.id)[1]
+                                : null
                               }
                               stageRect={stage}
-                              onDragEnd={triggerRecalculation}
+                              onDragEnd={handleDragEnd}
                               onDragHandle={dragSelectedNodes}
                               onDragStart={recalculateStageRect}
                               key={node.id}
@@ -291,22 +358,23 @@ export let NodeEditor = (
                           <div
                             className={styles.dragWrapper}
                             id={`${DRAG_CONNECTION_ID}${editorId}`}
-                          ></div>
+                          />
                         </Stage>
-                      </RecalculateStageRectContext.Provider>
-                    </EditorIdContext.Provider>
-                  </CacheContext.Provider>
-                </StageContext.Provider>
-              </ContextContext.Provider>
-            </ConnectionRecalculateContext.Provider>
-          </NodeDispatchContext.Provider>
-        </NodeTypesContext.Provider>
-      </PortTypesContext.Provider>
-    );
-  }
-;
-NodeEditor = React.forwardRef(NodeEditor);
-export {FlumeConfig, Controls, Colors} from "./typeBuilders";
-export {RootEngine} from "./RootEngine";
+                      </HotKeys>
+                    </RecalculateStageRectContext.Provider>
+                  </EditorIdContext.Provider>
+                </CacheContext.Provider>
+              </StageContext.Provider>
+            </ContextContext.Provider>
+          </ConnectionRecalculateContext.Provider>
+        </NodeDispatchContext.Provider>
+      </NodeTypesContext.Provider>
+    </PortTypesContext.Provider>
+  )
+}
+
+NodeEditor = React.forwardRef(NodeEditor)
+export {FlumeConfig, Controls, Colors} from './typeBuilders'
+export {RootEngine} from './RootEngine'
 export const useRootEngine = (nodes, engine, context) =>
-  Object.keys(nodes).length ? engine.resolveRootNode(nodes, {context}) : {};
+  Object.keys(nodes).length ? engine.resolveRootNode(nodes, {context}) : {}

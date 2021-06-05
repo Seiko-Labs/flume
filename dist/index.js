@@ -8,7 +8,8 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
 var ReactDOM = _interopDefault(require('react-dom'));
-require('react-drag-to-select');
+var _ = _interopDefault(require('lodash'));
+var reactHotkeys = require('react-hotkeys');
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -4366,6 +4367,7 @@ var Stage = React__default.forwardRef(function (_ref, wrapper) {
       dispatchStageState = _ref.dispatchStageState,
       children = _ref.children,
       outerStageChildren = _ref.outerStageChildren,
+      parentSetSpaceIsPressed = _ref.setSpaceIsPressed,
       numNodes = _ref.numNodes,
       stageRef = _ref.stageRef,
       spaceToPan = _ref.spaceToPan,
@@ -4500,6 +4502,7 @@ var Stage = React__default.forwardRef(function (_ref, wrapper) {
   var handleDocumentKeyUp = function handleDocumentKeyUp(e) {
     if (e.which === 32) {
       setSpaceIsPressed(false);
+      parentSetSpaceIsPressed(false);
       document.removeEventListener("keyup", handleDocumentKeyUp);
     }
   };
@@ -4508,6 +4511,7 @@ var Stage = React__default.forwardRef(function (_ref, wrapper) {
     if (e.which === 32 && document.activeElement === wrapper.current) {
       e.preventDefault();
       e.stopPropagation();
+      parentSetSpaceIsPressed(true);
       setSpaceIsPressed(true);
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
@@ -4811,24 +4815,24 @@ function line() {
     if (buffer) return output = null, buffer + "" || null;
   }
 
-  line.x = function(_) {
-    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), line) : x$$1;
+  line.x = function(_$$1) {
+    return arguments.length ? (x$$1 = typeof _$$1 === "function" ? _$$1 : constant(+_$$1), line) : x$$1;
   };
 
-  line.y = function(_) {
-    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), line) : y$$1;
+  line.y = function(_$$1) {
+    return arguments.length ? (y$$1 = typeof _$$1 === "function" ? _$$1 : constant(+_$$1), line) : y$$1;
   };
 
-  line.defined = function(_) {
-    return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), line) : defined;
+  line.defined = function(_$$1) {
+    return arguments.length ? (defined = typeof _$$1 === "function" ? _$$1 : constant(!!_$$1), line) : defined;
   };
 
-  line.curve = function(_) {
-    return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
+  line.curve = function(_$$1) {
+    return arguments.length ? (curve = _$$1, context != null && (output = curve(context)), line) : curve;
   };
 
-  line.context = function(_) {
-    return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
+  line.context = function(_$$1) {
+    return arguments.length ? (_$$1 == null ? context = output = null : output = curve(context = _$$1), line) : context;
   };
 
   return line;
@@ -5022,8 +5026,8 @@ var deleteConnection = function deleteConnection(_ref3) {
   if (line$$1) line$$1.parentNode.remove();
 };
 
-var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
-  var lines = document.querySelectorAll('[data-output-node-id="' + nodeId + '"], [data-input-node-id="' + nodeId + '"]');
+var clearConnections = function clearConnections() {
+  var lines = document.querySelectorAll('[data-output-node-id], [data-input-node-id]');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -5045,6 +5049,34 @@ var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
     } finally {
       if (_didIteratorError) {
         throw _iteratorError;
+      }
+    }
+  }
+};
+
+var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
+  var lines = document.querySelectorAll('[data-output-node-id="' + nodeId + '"], [data-input-node-id="' + nodeId + '"]');
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = lines[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var _line2 = _step2.value;
+
+      _line2.parentNode.remove();
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
       }
     }
   }
@@ -6039,12 +6071,11 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
       type = _ref.type,
       inputData = _ref.inputData,
       onDragStart = _ref.onDragStart,
-      onDragEnd = _ref.onDragEnd,
-      shouldUpdateConnections = _ref.shouldUpdateConnections,
+      _onDragEnd = _ref.onDragEnd,
       onDragHandle = _ref.onDragHandle,
       onDrag = _ref.onDrag;
 
-  var cache = React__default.useContext(CacheContext);
+  // const cache = React.useContext(CacheContext);
   var nodeTypes = React__default.useContext(NodeTypesContext);
   var nodesDispatch = React__default.useContext(NodeDispatchContext);
   var stageState = React__default.useContext(StageContext);
@@ -6080,8 +6111,12 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
           outputs = _ref3[1];
 
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? "output" : "input", cache);
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output", cache);
+        var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
+        // cache
+        );
+        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
+        // cache
+        );
         var portHalf = fromRect.width / 2;
         var combined = void 0;
         if (isOutput) {
@@ -6090,12 +6125,9 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
           combined = output.nodeId + output.portName + id + portName;
         }
         var cnx = void 0;
-        var cachedConnection = cache.current.connections[combined];
-        if (cachedConnection) {
-          cnx = cachedConnection;
-        } else {
+        {
           cnx = document.querySelector("[data-connection-id=\"" + combined + "\"]");
-          cache.current.connections[combined] = cnx;
+          // cache.current.connections[combined] = cnx;
         }
         var from = {
           x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
@@ -6117,19 +6149,6 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
     }
   };
 
-  React.useEffect(function () {
-    console.log(shouldUpdateConnections);
-    shouldUpdateConnections && updateNodeConnections();
-  }, [shouldUpdateConnections]);
-
-  var stopDrag = function stopDrag(e, coordinates) {
-    nodesDispatch(_extends({
-      type: "SET_NODE_COORDINATES"
-    }, coordinates, {
-      nodeId: id
-    }));
-  };
-
   var handleDrag = function handleDrag(_ref4) {
     var x = _ref4.x,
         y = _ref4.y;
@@ -6138,9 +6157,6 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
 
     if (oldPositions.length === 3) {
       onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
-      // console.log(
-      //   x - Number(oldPositions[1]),
-      //   y - Number(oldPositions[2]))
     }
 
     nodeWrapper.current.style.transform = "translate(" + x + "px," + y + "px)";
@@ -6184,12 +6200,14 @@ var Node = React.forwardRef(function (_ref, nodeWrapper) {
       className: styles$2.wrapper,
       style: {
         width: width,
-        border: isSelected ? '2px solid skyblue' : 'none',
+        border: isSelected ? '2px solid skyblue' : '2px solid transparent',
         transform: "translate(" + x + "px, " + y + "px)"
       },
       onDragStart: startDrag,
       onDrag: handleDrag,
-      onDragEnd: stopDrag,
+      onDragEnd: function onDragEnd(e, coords) {
+        return _onDragEnd(e, id, coords);
+      },
       innerRef: nodeWrapper,
       "data-node-id": id,
       onContextMenu: handleContextMenu,
@@ -6544,7 +6562,7 @@ var ColorPicker = (function (_ref) {
   var wrapper = React__default.useRef();
 
   var testClickOutside = React__default.useCallback(function (e) {
-    if (!wrapper.current.contains(e.target)) {
+    if (wrapper.current && !wrapper.current.contains(e.target)) {
       onRequestClose();
       document.removeEventListener("click", testClickOutside);
       document.removeEventListener("contextmenu", testClickOutside);
@@ -6675,7 +6693,7 @@ var Comment = (function (_ref) {
     wrapper.current.style.transform = "translate(" + x + "px," + y + "px)";
   };
 
-  var handleDragEnd = function handleDragEnd(_, _ref3) {
+  var handleDragEnd = function handleDragEnd(_$$1, _ref3) {
     var x = _ref3.x,
         y = _ref3.y;
 
@@ -6694,7 +6712,7 @@ var Comment = (function (_ref) {
     wrapper.current.style.height = height + "px";
   };
 
-  var handleResizeEnd = function handleResizeEnd(_, coordinates) {
+  var handleResizeEnd = function handleResizeEnd(_$$1, coordinates) {
     var width = clamp_1(coordinates.x - x + 10, 80, 10000);
     var height = clamp_1(coordinates.y - y + 10, 30, 10000);
     dispatch({
@@ -7019,6 +7037,10 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   return isCircular;
 };
 
+var copyObj = function copyObj(o) {
+  return JSON.parse(JSON.stringify(o));
+};
+
 var addConnection = function addConnection(nodes, input, output, portTypes) {
   var _babelHelpers$extends3;
 
@@ -7125,7 +7147,12 @@ var reconcileNodes = function reconcileNodes(initialNodes, nodeTypes, portTypes,
   // Reconcile input data for each node
   var reconciledNodes = Object.values(nodes).reduce(function (nodesObj, node) {
     var nodeType = nodeTypes[node.type];
-    var defaultInputData = getDefaultData({ node: node, nodeType: nodeType, portTypes: portTypes, context: context });
+    var defaultInputData = getDefaultData({
+      node: node,
+      nodeType: nodeType,
+      portTypes: portTypes,
+      context: context
+    });
     var currentInputData = Object.entries(node.inputData).reduce(function (dataObj, _ref3) {
       var _ref4 = slicedToArray(_ref3, 2),
           key = _ref4[0],
@@ -7212,7 +7239,15 @@ var nodesReducer = function nodesReducer(nodes) {
       portTypes = _ref6.portTypes,
       cache = _ref6.cache,
       circularBehavior = _ref6.circularBehavior,
-      context = _ref6.context;
+      context = _ref6.context,
+      nodesState = _ref6.nodesState,
+      setNodesState = _ref6.setNodesState,
+      currentStateIndex = _ref6.currentStateIndex,
+      setCurrentStateIndex = _ref6.setCurrentStateIndex,
+      undoOrRedoAction = _ref6.undoOrRedoAction,
+      setUndoOrRedoAction = _ref6.setUndoOrRedoAction,
+      undoOrRedoTimeStamp = _ref6.undoOrRedoTimeStamp,
+      setUndoOrRedoTimeStamp = _ref6.setUndoOrRedoTimeStamp;
   var dispatchToasts = arguments[3];
 
   switch (action.type) {
@@ -7376,6 +7411,64 @@ var nodesReducer = function nodesReducer(nodes) {
         })));
       }
 
+    case "SET_MULTIPLE_NODES_COORDINATES":
+      {
+        var nodesInfo = action.nodesInfo;
+
+        return _extends({}, nodes, Object.assign.apply(Object, [{}].concat(toConsumableArray(nodesInfo.map(function (_ref9) {
+          var nodeId = _ref9.nodeId,
+              x = _ref9.x,
+              y = _ref9.y;
+          return defineProperty({}, nodeId, _extends({}, nodes[nodeId], {
+            x: x,
+            y: y
+          }));
+        })))));
+      }
+
+    case "UNDO_CHANGES":
+      {
+        if (currentStateIndex > 0) {
+          if (undoOrRedoAction < 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
+
+            console.log('Cancel undo');
+            return copyObj(nodes);
+          }
+          setUndoOrRedoAction(-1);
+          setUndoOrRedoTimeStamp(new Date().getTime());
+
+          console.log('UNDO_CHANGES');
+          var ind = currentStateIndex - 1;
+          setCurrentStateIndex(function (i) {
+            return i - 1;
+          });
+          return nodesState[ind].state;
+        }
+        return copyObj(nodes);
+      }
+
+    case "REDO_CHANGES":
+      {
+        if (currentStateIndex < nodesState.length - 1) {
+          if (undoOrRedoAction > 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
+            console.log('Cancel redo');
+            return copyObj(nodes);
+          }
+
+          setUndoOrRedoAction(1);
+          setUndoOrRedoTimeStamp(new Date().getTime());
+
+          console.log('REDO_CHANGES');
+
+          var _ind = currentStateIndex + 1;
+          setCurrentStateIndex(function (i) {
+            return i + 1;
+          });
+          return nodesState[_ind].state;
+        }
+        return copyObj(nodes);
+      }
+
     default:
       return nodes;
   }
@@ -7386,6 +7479,49 @@ var connectNodesReducer = function connectNodesReducer(reducer, environment, dis
     return reducer(state, action, environment, dispatchToasts);
   };
 };
+
+var nodesReducer$1 = (function () {
+  for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+    props[_key] = arguments[_key];
+  }
+
+  var st = nodesReducer.apply(undefined, props);
+  console.log(props);
+  var _props$ = props[2],
+      nodesState = _props$.nodesState,
+      setNodesState = _props$.setNodesState,
+      currentStateIndex = _props$.currentStateIndex,
+      setCurrentStateIndex = _props$.setCurrentStateIndex,
+      undoOrRedoAction = _props$.undoOrRedoAction,
+      setUndoOrRedoAction = _props$.setUndoOrRedoAction,
+      undoOrRedoTimeStamp = _props$.undoOrRedoTimeStamp,
+      setUndoOrRedoTimeStamp = _props$.setUndoOrRedoTimeStamp;
+
+  if (props[1].type !== 'REDO_CHANGES' && props[1].type !== 'UNDO_CHANGES' && props[1].type !== 'HYDRATE_DEFAULT_NODES' || !nodesState.length) {
+    var prevAction = nodesState[currentStateIndex] && nodesState[currentStateIndex].action;
+
+    setUndoOrRedoAction(0);
+
+    if (!_.isEqual(prevAction, props[1])) {
+
+      if (nodesState.length > 1 && currentStateIndex < nodesState.length - 1) setNodesState(function (ns) {
+        return ns.slice(0, currentStateIndex + 1);
+      });
+
+      setNodesState(function (ns) {
+        return [].concat(toConsumableArray(ns), [{ action: props[1], state: copyObj(st) }]);
+      });
+      setCurrentStateIndex(function (i) {
+        return i + 1;
+      });
+
+      console.log(currentStateIndex);
+      console.log(nodesState);
+    }
+  }
+
+  return st;
+});
 
 var setComment = function setComment(comments, id, merge) {
   return _extends({}, comments, defineProperty({}, id, _extends({}, comments[id], merge)));
@@ -7520,6 +7656,46 @@ Object.defineProperty(exports,"__esModule",{value:true});var _jsx=function(){var
 });
 
 var Selection = unwrapExports(dist);
+
+var useSelect = (function (nodes, previousNodes) {
+  var _useState = React.useState([]),
+      _useState2 = slicedToArray(_useState, 2),
+      nodeRefs = _useState2[0],
+      setNodesRef = _useState2[1];
+
+  var _useState3 = React.useState([]),
+      _useState4 = slicedToArray(_useState3, 2),
+      selectedNodes = _useState4[0],
+      setSelectedNodes = _useState4[1];
+
+  var clearSelection = function clearSelection() {
+    return setSelectedNodes([]);
+  };
+
+  var handleSelection = function handleSelection(indexes) {
+    setSelectedNodes(indexes.map(function (i) {
+      return nodeRefs[i][0].id;
+    }));
+  };
+
+  React.useMemo(function () {
+    if (previousNodes && nodes !== previousNodes) {
+      Object.values(nodes).every(function (_ref) {
+        var id = _ref.id;
+        return Object.values(previousNodes).some(function (_ref2) {
+          var oldId = _ref2.id;
+          return id === oldId;
+        });
+      }) || !setNodesRef(function () {
+        return Object.values(nodes).map(function (n) {
+          return [n, React.createRef()];
+        }) || [];
+      }) && clearSelection();
+    }
+  }, [nodes, previousNodes]);
+
+  return [selectedNodes, nodeRefs, handleSelection, clearSelection];
+});
 
 var LoopError = function (_Error) {
   inherits(LoopError, _Error);
@@ -7706,7 +7882,46 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 
   var editorRef = React.useRef();
 
-  var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer, { nodeTypes: nodeTypes, portTypes: portTypes, cache: cache, circularBehavior: circularBehavior, context: context }, setSideEffectToasts), {}, function () {
+  var _React$useState3 = React__default.useState(false),
+      _React$useState4 = slicedToArray(_React$useState3, 2),
+      spaceIsPressed = _React$useState4[0],
+      setSpaceIsPressed = _React$useState4[1];
+
+  var _useState = React.useState([]),
+      _useState2 = slicedToArray(_useState, 2),
+      nodesState = _useState2[0],
+      setNodesState = _useState2[1];
+
+  var _useState3 = React.useState(-1),
+      _useState4 = slicedToArray(_useState3, 2),
+      currentStateIndex = _useState4[0],
+      setCurrentStateIndex = _useState4[1];
+
+  var _useState5 = React.useState(0),
+      _useState6 = slicedToArray(_useState5, 2),
+      undoOrRedoAction = _useState6[0],
+      setUndoOrRedoAction = _useState6[1];
+
+  var _useState7 = React.useState(new Date().getTime()),
+      _useState8 = slicedToArray(_useState7, 2),
+      undoOrRedoTimeStamp = _useState8[0],
+      setUndoOrRedoTimeStamp = _useState8[1];
+
+  var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer$1, {
+    nodeTypes: nodeTypes,
+    portTypes: portTypes,
+    cache: cache,
+    circularBehavior: circularBehavior,
+    context: context,
+    nodesState: nodesState,
+    setNodesState: setNodesState,
+    currentStateIndex: currentStateIndex,
+    setCurrentStateIndex: setCurrentStateIndex,
+    undoOrRedoAction: undoOrRedoAction,
+    setUndoOrRedoAction: setUndoOrRedoAction,
+    undoOrRedoTimeStamp: undoOrRedoTimeStamp,
+    setUndoOrRedoTimeStamp: setUndoOrRedoTimeStamp
+  }, setSideEffectToasts), {}, function () {
     return getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context);
   }),
       _React$useReducer4 = slicedToArray(_React$useReducer3, 2),
@@ -7720,32 +7935,24 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       comments = _React$useReducer6[0],
       dispatchComments = _React$useReducer6[1];
 
-  var _useState = React.useState([]),
-      _useState2 = slicedToArray(_useState, 2),
-      nodeRefs = _useState2[0],
-      setNodesRef = _useState2[1];
-
-  var _useState3 = React.useState([]),
-      _useState4 = slicedToArray(_useState3, 2),
-      selectedNodes = _useState4[0],
-      setSelectedNodes = _useState4[1];
-
-  var _useState5 = React.useState(null),
-      _useState6 = slicedToArray(_useState5, 2),
-      isDragging = _useState6[0],
-      setDragging = _useState6[1];
+  var _useSelect = useSelect(nodes, previousNodes),
+      _useSelect2 = slicedToArray(_useSelect, 4),
+      selectedNodes = _useSelect2[0],
+      nodeRefs = _useSelect2[1],
+      handleSelection = _useSelect2[2],
+      clearSelection = _useSelect2[3];
 
   React__default.useEffect(function () {
-    dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
+    dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' });
   }, []);
 
-  var _React$useState3 = React__default.useState(true),
-      _React$useState4 = slicedToArray(_React$useState3, 2),
-      shouldRecalculateConnections = _React$useState4[0],
-      setShouldRecalculateConnections = _React$useState4[1];
+  var _React$useState5 = React__default.useState(true),
+      _React$useState6 = slicedToArray(_React$useState5, 2),
+      shouldRecalculateConnections = _React$useState6[0],
+      setShouldRecalculateConnections = _React$useState6[1];
 
   var _React$useReducer7 = React__default.useReducer(stageReducer, {
-    scale: typeof initialScale === "number" ? clamp_1(initialScale, 0.1, 7) : 1,
+    scale: typeof initialScale === 'number' ? clamp_1(initialScale, 0.1, 7) : 1,
     translate: { x: 0, y: 0 }
   }),
       _React$useReducer8 = slicedToArray(_React$useReducer7, 2),
@@ -7754,11 +7961,10 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 
   var recalculateConnections = React__default.useCallback(function () {
     createConnections(nodes, stageState, editorId);
-  }, [nodes, editorId, stageState]);
+  }, [nodes, editorId, stageState, dispatchNodes]);
 
   var recalculateStageRect = function recalculateStageRect() {
-    setDragging(true);
-    stage.current = document.getElementById("" + STAGE_ID + editorId).getBoundingClientRect();
+    stage.current = document.getElementById('' + STAGE_ID + editorId).getBoundingClientRect();
   };
 
   React__default.useLayoutEffect(function () {
@@ -7768,8 +7974,37 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     }
   }, [shouldRecalculateConnections, recalculateConnections]);
 
+  var handleDragEnd = function handleDragEnd(e, id, coordinates) {
+    if (selectedNodes.length) {
+      dispatchNodes({
+        type: 'SET_MULTIPLE_NODES_COORDINATES',
+        nodesInfo: selectedNodes.map(function (id) {
+          var nodeRef = nodeRefs.find(function (_ref2) {
+            var _ref3 = slicedToArray(_ref2, 1),
+                nId = _ref3[0].id;
+
+            return nId === id;
+          })[1];
+          var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
+
+          return {
+            nodeId: id,
+            x: newPositions[1],
+            y: newPositions[2]
+          };
+        })
+      });
+    } else {
+      dispatchNodes(_extends({
+        type: 'SET_NODE_COORDINATES'
+      }, coordinates, {
+        nodeId: id
+      }));
+    }
+    triggerRecalculation();
+  };
+
   var triggerRecalculation = function triggerRecalculation() {
-    setDragging(false);
     setShouldRecalculateConnections(true);
   };
 
@@ -7778,24 +8013,18 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       if (selectedNodes.includes(excludedNodeId)) {
         selectedNodes.forEach(function (id) {
           if (id !== excludedNodeId) {
-            var nodeRef = nodeRefs.find(function (_ref2) {
-              var _ref3 = slicedToArray(_ref2, 1),
-                  nId = _ref3[0].id;
+            var nodeRef = nodeRefs.find(function (_ref4) {
+              var _ref5 = slicedToArray(_ref4, 1),
+                  nId = _ref5[0].id;
 
               return nId === id;
             })[1];
-            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
-            if (oldPositions.length === 3) nodeRef.current.style.transform = "translate(" + (Number(oldPositions[1]) + deltaX) + "px," + (Number(oldPositions[2]) + deltaY) + "px)";
-            // dispatchNodes({
-            //   type: "SET_NODE_COORDINATES",
-            //   x: x + deltaX,
-            //   y: y + deltaY,
-            //   nodeId: id
-            // })
+            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
+            if (oldPositions.length === 3) nodeRef.current.style.transform = 'translate(' + (Number(oldPositions[1]) + deltaX) + 'px,' + (Number(oldPositions[2]) + deltaY) + 'px)';
           }
         });
         recalculateConnections();
-      } else setSelectedNodes([]);
+      } else clearSelection();
     }
   };
 
@@ -7811,41 +8040,13 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   });
 
   React__default.useMemo(function () {
-    setDragging(false);
-
-    if (previousNodes && nodes !== previousNodes) {
-      Object.values(nodes).every(function (_ref4) {
-        var id = _ref4.id;
-        return Object.values(previousNodes).some(function (_ref5) {
-          var oldId = _ref5.id;
-          return id === oldId;
-        });
-      }) || !setNodesRef(function (refs) {
-        return Object.values(nodes).map(function (n) {
-          return [n, React.createRef()];
-        }) || [];
-      }) && setSelectedNodes([]);
-      onChange && onChange(nodes);
-    }
-    console.log(nodeRefs);
+    previousNodes && nodes !== previousNodes && onChange && onChange(nodes);
   }, [nodes, previousNodes, onChange]);
-
-  React__default.useEffect(function () {
-    // console.log(nodeRefs)
-  }, [nodeRefs, setNodesRef]);
-
-  var handleSelection = function handleSelection(indexes, data) {
-    isDragging || setSelectedNodes(indexes.map(function (i) {
-      return nodeRefs[i][0].id;
-    }));
-  };
 
   var previousComments = usePrevious$1(comments);
 
   React__default.useEffect(function () {
-    if (previousComments && onCommentsChange && comments !== previousComments) {
-      onCommentsChange(comments);
-    }
+    previousComments && onCommentsChange && comments !== previousComments && onCommentsChange(comments);
   }, [comments, previousComments, onCommentsChange]);
 
   React__default.useEffect(function () {
@@ -7855,6 +8056,49 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     }
   }, [sideEffectToasts]);
 
+  var keyMap = {
+    COPY_NODES: 'ctrl+c',
+    PASTE_NODES: 'ctrl+v',
+    CUT_NODES: 'ctrl+x',
+    UNDO_CHANGES: 'ctrl+z',
+    REDO_CHANGES: 'ctrl+y'
+  };
+
+  var copyNodes = function copyNodes() {
+    return console.log('Copy nodes');
+  };
+  var pasteNodes = function pasteNodes() {
+    return console.log('Paste nodes');
+  };
+  var cutNodes = function cutNodes() {
+    return console.log('Cut nodes');
+  };
+  var undoChanges = function undoChanges() {
+    dispatchNodes({
+      type: 'UNDO_CHANGES'
+    });
+
+    clearConnections();
+    triggerRecalculation();
+  };
+  var redoChanges = function redoChanges() {
+    dispatchNodes({
+      type: 'REDO_CHANGES'
+    });
+
+    clearConnections();
+    triggerRecalculation();
+  };
+
+  var handlers = {
+    COPY_NODES: copyNodes,
+    PASTE_NODES: pasteNodes,
+    CUT_NODES: cutNodes,
+    UNDO_CHANGES: undoChanges,
+    REDO_CHANGES: redoChanges
+  };
+
+  console.log(nodes);
   return React__default.createElement(
     PortTypesContext.Provider,
     { value: portTypes },
@@ -7889,107 +8133,114 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
                       elements: nodeRefs.map(function (n) {
                         return n[1].current;
                       }),
-                      onSelectionChange: handleSelection,
+                      onSelectionChange: function onSelectionChange(i) {
+                        return spaceIsPressed || handleSelection(i);
+                      },
                       offset: {
                         top: 0,
                         left: 0
                       },
-                      style: isDragging ? { display: 'none' } : null,
-                      ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *']
+                      ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
+                      style: spaceIsPressed ? { display: 'none' } : {}
                     }),
                     React__default.createElement(
-                      Stage,
-                      {
-                        ref: editorRef,
-                        editorId: editorId,
-                        scale: stageState.scale,
-                        translate: stageState.translate,
-                        spaceToPan: spaceToPan,
-                        disablePan: disablePan,
-                        disableZoom: disableZoom,
-                        dispatchStageState: dispatchStageState,
-                        dispatchComments: dispatchComments,
-                        disableComments: disableComments || hideComments,
-                        stageRef: stage,
-                        numNodes: Object.keys(nodes).length,
-                        outerStageChildren: React__default.createElement(
-                          React__default.Fragment,
-                          null,
-                          debug && React__default.createElement(
-                            "div",
-                            { className: styles$d.debugWrapper },
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(nodes);
-                                }
-                              },
-                              "Log Nodes"
+                      reactHotkeys.HotKeys,
+                      { keyMap: keyMap, handlers: handlers,
+                        style: { height: '100%' } },
+                      React__default.createElement(
+                        Stage,
+                        {
+                          ref: editorRef,
+                          editorId: editorId,
+                          setSpaceIsPressed: setSpaceIsPressed,
+                          scale: stageState.scale,
+                          translate: stageState.translate,
+                          spaceToPan: spaceToPan,
+                          disablePan: disablePan,
+                          disableZoom: disableZoom,
+                          dispatchStageState: dispatchStageState,
+                          dispatchComments: dispatchComments,
+                          disableComments: disableComments || hideComments,
+                          stageRef: stage,
+                          numNodes: Object.keys(nodes).length,
+                          outerStageChildren: React__default.createElement(
+                            React__default.Fragment,
+                            null,
+                            debug && React__default.createElement(
+                              'div',
+                              { className: styles$d.debugWrapper },
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(nodes);
+                                  }
+                                },
+                                'Log Nodes'
+                              ),
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(JSON.stringify(nodes));
+                                  }
+                                },
+                                'Export Nodes'
+                              ),
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(comments);
+                                  }
+                                },
+                                'Log Comments'
+                              )
                             ),
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(JSON.stringify(nodes));
-                                }
-                              },
-                              "Export Nodes"
-                            ),
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(comments);
-                                }
-                              },
-                              "Log Comments"
-                            )
-                          ),
-                          React__default.createElement(Toaster, {
-                            toasts: toasts,
-                            dispatchToasts: dispatchToasts
-                          })
-                        )
-                      },
-                      !hideComments && Object.values(comments).map(function (comment) {
-                        return React__default.createElement(Comment, _extends({}, comment, {
-                          stageRect: stage,
-                          dispatch: dispatchComments,
-                          onDragStart: recalculateStageRect,
-                          key: comment.id
-                        }));
-                      }),
-                      Object.values(nodes).map(function (node) {
-                        return React__default.createElement(Node, _extends({}, node, {
-                          isSelected: selectedNodes.includes(node.id),
-                          shouldUpdateConnections: isDragging && selectedNodes.includes(node.id),
-                          ref: nodeRefs.find(function (_ref6) {
-                            var _ref7 = slicedToArray(_ref6, 1),
-                                n = _ref7[0];
+                            React__default.createElement(Toaster, {
+                              toasts: toasts,
+                              dispatchToasts: dispatchToasts
+                            })
+                          )
+                        },
+                        !hideComments && Object.values(comments).map(function (comment) {
+                          return React__default.createElement(Comment, _extends({}, comment, {
+                            stageRect: stage,
+                            dispatch: dispatchComments,
+                            onDragStart: recalculateStageRect,
+                            key: comment.id
+                          }));
+                        }),
+                        Object.values(nodes).map(function (node) {
+                          return React__default.createElement(Node, _extends({}, node, {
+                            isSelected: selectedNodes.includes(node.id),
+                            ref: nodeRefs.find(function (_ref6) {
+                              var _ref7 = slicedToArray(_ref6, 1),
+                                  n = _ref7[0];
 
-                            return n.id === node.id;
-                          }) ? nodeRefs.find(function (_ref8) {
-                            var _ref9 = slicedToArray(_ref8, 1),
-                                n = _ref9[0];
+                              return n.id === node.id;
+                            }) ? nodeRefs.find(function (_ref8) {
+                              var _ref9 = slicedToArray(_ref8, 1),
+                                  n = _ref9[0];
 
-                            return n.id === node.id;
-                          })[1] : null,
-                          stageRect: stage,
-                          onDragEnd: triggerRecalculation,
-                          onDragHandle: dragSelectedNodes,
-                          onDragStart: recalculateStageRect,
-                          key: node.id
-                        }));
-                      }),
-                      React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
-                      React__default.createElement("div", {
-                        className: styles$d.dragWrapper,
-                        id: "" + DRAG_CONNECTION_ID + editorId
-                      })
+                              return n.id === node.id;
+                            })[1] : null,
+                            stageRect: stage,
+                            onDragEnd: handleDragEnd,
+                            onDragHandle: dragSelectedNodes,
+                            onDragStart: recalculateStageRect,
+                            key: node.id
+                          }));
+                        }),
+                        React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
+                        React__default.createElement('div', {
+                          className: styles$d.dragWrapper,
+                          id: '' + DRAG_CONNECTION_ID + editorId
+                        })
+                      )
                     )
                   )
                 )
@@ -8001,6 +8252,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     )
   );
 };
+
 exports.NodeEditor = React__default.forwardRef(exports.NodeEditor);
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length ? engine.resolveRootNode(nodes, { context: context }) : {};

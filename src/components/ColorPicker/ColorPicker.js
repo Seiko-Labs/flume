@@ -7,7 +7,7 @@ export default ({ x, y, onColorPicked, onRequestClose }) => {
 
   const testClickOutside = React.useCallback(
     e => {
-      if (!wrapper.current.contains(e.target)) {
+      if (wrapper.current && !wrapper.current.contains(e.target)) {
         onRequestClose();
         document.removeEventListener("click", testClickOutside);
         document.removeEventListener("contextmenu", testClickOutside);

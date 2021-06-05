@@ -15,6 +15,7 @@
     "node-editor": "link:..",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.6.2",
+    "styled-components": "^5.3.0",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
     "react-router": "^5.1.2",
