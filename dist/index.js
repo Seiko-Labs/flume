@@ -8,6 +8,7 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
 var ReactDOM = _interopDefault(require('react-dom'));
+var reactHotkeys = require('react-hotkeys');
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -555,6 +556,10 @@ function isObject(value) {
 var isObject_1 = isObject;
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -4354,13 +4359,14 @@ var STAGE_ID = '__node_editor_stage__';
 var DRAG_CONNECTION_ID = '__node_editor_drag_connection__';
 var CONNECTIONS_ID = '__node_editor_connections__';
 
-var Stage = function Stage(_ref) {
+var Stage = React__default.forwardRef(function (_ref, wrapper) {
   var scale = _ref.scale,
       translate = _ref.translate,
       editorId = _ref.editorId,
       dispatchStageState = _ref.dispatchStageState,
       children = _ref.children,
       outerStageChildren = _ref.outerStageChildren,
+      parentSetSpaceIsPressed = _ref.setSpaceIsPressed,
       numNodes = _ref.numNodes,
       stageRef = _ref.stageRef,
       spaceToPan = _ref.spaceToPan,
@@ -4371,7 +4377,6 @@ var Stage = function Stage(_ref) {
 
   var nodeTypes = React__default.useContext(NodeTypesContext);
   var dispatchNodes = React__default.useContext(NodeDispatchContext);
-  var wrapper = React__default.useRef();
   var translateWrapper = React__default.useRef();
 
   var _React$useState = React__default.useState(false),
@@ -4496,6 +4501,7 @@ var Stage = function Stage(_ref) {
   var handleDocumentKeyUp = function handleDocumentKeyUp(e) {
     if (e.which === 32) {
       setSpaceIsPressed(false);
+      parentSetSpaceIsPressed(false);
       document.removeEventListener("keyup", handleDocumentKeyUp);
     }
   };
@@ -4504,6 +4510,7 @@ var Stage = function Stage(_ref) {
     if (e.which === 32 && document.activeElement === wrapper.current) {
       e.preventDefault();
       e.stopPropagation();
+      parentSetSpaceIsPressed(true);
       setSpaceIsPressed(true);
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
@@ -4592,7 +4599,7 @@ var Stage = function Stage(_ref) {
     ),
     outerStageChildren
   );
-};
+});
 
 var css$2 = ".Node_wrapper__3SmT7{\n  background: rgba(91, 96, 99, 0.9);\n  border-radius: 5px;\n  box-shadow: 0px 4px 8px rgba(0,0,0,.4);\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  z-index: 1;\n  cursor: default;\n}\n.Node_label__3MmhF{\n  font-size: 13px;\n  text-transform: uppercase;\n  padding: 5px;\n  background: #464b4e;\n  border-radius: 5px 5px 0px 0px;\n  margin: 0px;\n  margin-bottom: 3px;\n  border-bottom: 1px solid rgba(0,0,0,.15);\n}\n";
 var styles$2 = { "wrapper": "Node_wrapper__3SmT7", "label": "Node_label__3MmhF" };
@@ -5018,8 +5025,8 @@ var deleteConnection = function deleteConnection(_ref3) {
   if (line$$1) line$$1.parentNode.remove();
 };
 
-var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
-  var lines = document.querySelectorAll('[data-output-node-id="' + nodeId + '"], [data-input-node-id="' + nodeId + '"]');
+var clearConnections = function clearConnections() {
+  var lines = document.querySelectorAll('[data-output-node-id], [data-input-node-id]');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -5041,6 +5048,34 @@ var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
     } finally {
       if (_didIteratorError) {
         throw _iteratorError;
+      }
+    }
+  }
+};
+
+var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
+  var lines = document.querySelectorAll('[data-output-node-id="' + nodeId + '"], [data-input-node-id="' + nodeId + '"]');
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = lines[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var _line2 = _step2.value;
+
+      _line2.parentNode.remove();
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
       }
     }
   }
@@ -6022,11 +6057,12 @@ var Port = function Port(_ref7) {
   );
 };
 
-var Node = function Node(_ref) {
+var Node = React.forwardRef(function (_ref, nodeWrapper) {
   var id = _ref.id,
       width = _ref.width,
       height = _ref.height,
       x = _ref.x,
+      isSelected = _ref.isSelected,
       y = _ref.y,
       _ref$delay = _ref.delay,
       stageRect = _ref.stageRect,
@@ -6034,10 +6070,11 @@ var Node = function Node(_ref) {
       type = _ref.type,
       inputData = _ref.inputData,
       onDragStart = _ref.onDragStart,
-      onDragEnd = _ref.onDragEnd,
+      _onDragEnd = _ref.onDragEnd,
+      onDragHandle = _ref.onDragHandle,
       onDrag = _ref.onDrag;
 
-  var cache = React__default.useContext(CacheContext);
+  // const cache = React.useContext(CacheContext);
   var nodeTypes = React__default.useContext(NodeTypesContext);
   var nodesDispatch = React__default.useContext(NodeDispatchContext);
   var stageState = React__default.useContext(StageContext);
@@ -6048,9 +6085,6 @@ var Node = function Node(_ref) {
       inputs = _nodeTypes$type$input === undefined ? [] : _nodeTypes$type$input,
       _nodeTypes$type$outpu = _nodeTypes$type.outputs,
       outputs = _nodeTypes$type$outpu === undefined ? [] : _nodeTypes$type$outpu;
-
-
-  var nodeWrapper = React__default.useRef();
 
   var _React$useState = React__default.useState(false),
       _React$useState2 = slicedToArray(_React$useState, 2),
@@ -6076,8 +6110,12 @@ var Node = function Node(_ref) {
           outputs = _ref3[1];
 
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? "output" : "input", cache);
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output", cache);
+        var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
+        // cache
+        );
+        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
+        // cache
+        );
         var portHalf = fromRect.width / 2;
         var combined = void 0;
         if (isOutput) {
@@ -6086,12 +6124,9 @@ var Node = function Node(_ref) {
           combined = output.nodeId + output.portName + id + portName;
         }
         var cnx = void 0;
-        var cachedConnection = cache.current.connections[combined];
-        if (cachedConnection) {
-          cnx = cachedConnection;
-        } else {
+        {
           cnx = document.querySelector("[data-connection-id=\"" + combined + "\"]");
-          cache.current.connections[combined] = cnx;
+          // cache.current.connections[combined] = cnx;
         }
         var from = {
           x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
@@ -6113,17 +6148,15 @@ var Node = function Node(_ref) {
     }
   };
 
-  var stopDrag = function stopDrag(e, coordinates) {
-    nodesDispatch(_extends({
-      type: "SET_NODE_COORDINATES"
-    }, coordinates, {
-      nodeId: id
-    }));
-  };
-
   var handleDrag = function handleDrag(_ref4) {
     var x = _ref4.x,
         y = _ref4.y;
+
+    var oldPositions = nodeWrapper.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+
+    if (oldPositions.length === 3) {
+      onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+    }
 
     nodeWrapper.current.style.transform = "translate(" + x + "px," + y + "px)";
     updateNodeConnections();
@@ -6166,11 +6199,14 @@ var Node = function Node(_ref) {
       className: styles$2.wrapper,
       style: {
         width: width,
+        border: isSelected ? '2px solid skyblue' : '2px solid transparent',
         transform: "translate(" + x + "px, " + y + "px)"
       },
       onDragStart: startDrag,
       onDrag: handleDrag,
-      onDragEnd: stopDrag,
+      onDragEnd: function onDragEnd(e, coords) {
+        return _onDragEnd(e, id, coords);
+      },
       innerRef: nodeWrapper,
       "data-node-id": id,
       onContextMenu: handleContextMenu,
@@ -6209,7 +6245,7 @@ var Node = function Node(_ref) {
       })
     ) : null
   );
-};
+});
 
 var css$9 = ".Comment_wrapper__1Pnbd {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  padding: 5px;\n  background: rgba(147, 154, 158, 0.7);\n  border-radius: 5px;\n  border-bottom-right-radius: 2px;\n  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);\n  min-width: 80px;\n  font-size: 14px;\n  display: flex;\n  text-shadow: 0px 1px rgba(255,255,255,.1);\n  border: 1px solid rgba(168, 176, 181, 0.7);\n  user-select: none;\n}\n  .Comment_wrapper__1Pnbd[data-color=\"red\"]{\n    background: rgba(213, 84, 103, 0.65);\n    border-color: rgba(227, 85, 119, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"purple\"]{\n    background: rgba(153, 83, 196, 0.65);\n    border-color: rgba(156, 85, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"blue\"]{\n    background: rgba(76, 142, 203, 0.65);\n    border-color: rgba(85, 159, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"green\"]{\n    background: rgba(70, 200, 130, 0.65);\n    border-color: rgba(85, 227, 150, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"yellow\"]{\n    background: rgba(200, 167, 63, 0.65);\n    border-color: rgba(227, 213, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"orange\"]{\n    background: rgba(215, 123, 64, 0.65);\n    border-color: rgba(227, 149, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"pink\"]{\n    background: rgba(255, 102, 208, 0.65);\n    border-color: rgba(242, 131, 228, 0.65);\n  }\n.Comment_text__Ie2nX{\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  white-space: pre-wrap;\n  cursor: default;\n}\n.Comment_resizeThumb__20KWn {\n  width: 10px;\n  height: 10px;\n  border-radius: 4px 0px 4px 0px;\n  position: absolute;\n  right: 0px;\n  bottom: 0px;\n  overflow: hidden;\n  cursor: nwse-resize;\n}\n.Comment_resizeThumb__20KWn::before,\n  .Comment_resizeThumb__20KWn::after {\n    content: \"\";\n    position: absolute;\n    right: 0px;\n    top: 0px;\n    width: 250%;\n    height: 0px;\n    border-top: 1px solid rgba(0, 0, 0, 0.7);\n    border-bottom: 2px solid rgba(255, 255, 255, 0.7);\n    transform-origin: center right;\n    transform: rotate(-45deg) scale(0.5);\n  }\n.Comment_resizeThumb__20KWn::after {\n    transform: rotate(-45deg) translateY(3px) scale(0.5);\n  }\n.Comment_textarea__2Rze3 {\n  resize: none;\n  width: calc(100% + 2px);\n  height: calc(100% + 2px);\n  border-radius: 3px;\n  background: rgba(255,255,255,.1);\n  border: none;\n  outline: none;\n  margin: -2px;\n  margin-top: -1px;\n  padding-top: 0px;\n  font-size: 14px;\n}\n.Comment_textarea__2Rze3::placeholder{\n    color: rgba(0,0,0,.5);\n  }\n";
 var styles$9 = { "wrapper": "Comment_wrapper__1Pnbd", "text": "Comment_text__Ie2nX", "resizeThumb": "Comment_resizeThumb__20KWn", "textarea": "Comment_textarea__2Rze3" };
@@ -6525,7 +6561,7 @@ var ColorPicker = (function (_ref) {
   var wrapper = React__default.useRef();
 
   var testClickOutside = React__default.useCallback(function (e) {
-    if (!wrapper.current.contains(e.target)) {
+    if (wrapper.current && !wrapper.current.contains(e.target)) {
       onRequestClose();
       document.removeEventListener("click", testClickOutside);
       document.removeEventListener("contextmenu", testClickOutside);
@@ -7000,10 +7036,14 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   return isCircular;
 };
 
+var copyObj = function copyObj(o) {
+  return JSON.parse(JSON.stringify(o));
+};
+
 var addConnection = function addConnection(nodes, input, output, portTypes) {
   var _babelHelpers$extends3;
 
-  var newNodes = _extends({}, nodes, (_babelHelpers$extends3 = {}, defineProperty(_babelHelpers$extends3, input.nodeId, _extends({}, nodes[input.nodeId], {
+  return _extends({}, nodes, (_babelHelpers$extends3 = {}, defineProperty(_babelHelpers$extends3, input.nodeId, _extends({}, nodes[input.nodeId], {
     connections: _extends({}, nodes[input.nodeId].connections, {
       inputs: _extends({}, nodes[input.nodeId].connections.inputs, defineProperty({}, input.portName, [].concat(toConsumableArray(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
         nodeId: output.nodeId,
@@ -7018,7 +7058,6 @@ var addConnection = function addConnection(nodes, input, output, portTypes) {
       }])))
     })
   })), _babelHelpers$extends3));
-  return newNodes;
 };
 
 var removeConnection = function removeConnection(nodes, input, output) {
@@ -7106,7 +7145,12 @@ var reconcileNodes = function reconcileNodes(initialNodes, nodeTypes, portTypes,
   // Reconcile input data for each node
   var reconciledNodes = Object.values(nodes).reduce(function (nodesObj, node) {
     var nodeType = nodeTypes[node.type];
-    var defaultInputData = getDefaultData({ node: node, nodeType: nodeType, portTypes: portTypes, context: context });
+    var defaultInputData = getDefaultData({
+      node: node,
+      nodeType: nodeType,
+      portTypes: portTypes,
+      context: context
+    });
     var currentInputData = Object.entries(node.inputData).reduce(function (dataObj, _ref3) {
       var _ref4 = slicedToArray(_ref3, 2),
           key = _ref4[0],
@@ -7186,14 +7230,15 @@ var getDefaultData = function getDefaultData(_ref5) {
   }, {});
 };
 
-var nodesReducer = function nodesReducer(nodes) {
+var nodesReducer = function nodesReducer(_ref6) {
+  var nodes = _ref6.nodes;
   var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var _ref6 = arguments[2];
-  var nodeTypes = _ref6.nodeTypes,
-      portTypes = _ref6.portTypes,
-      cache = _ref6.cache,
-      circularBehavior = _ref6.circularBehavior,
-      context = _ref6.context;
+  var _ref7 = arguments[2];
+  var nodeTypes = _ref7.nodeTypes,
+      portTypes = _ref7.portTypes,
+      cache = _ref7.cache,
+      circularBehavior = _ref7.circularBehavior,
+      context = _ref7.context;
   var dispatchToasts = arguments[3];
 
   switch (action.type) {
@@ -7255,10 +7300,10 @@ var nodesReducer = function nodesReducer(nodes) {
         if (!connections || !connections.length) return nodes;
 
         return connections.reduce(function (nodes, cnx) {
-          var _ref7 = transputType === 'input' ? [transput, cnx] : [cnx, transput],
-              _ref8 = slicedToArray(_ref7, 2),
-              input = _ref8[0],
-              output = _ref8[1];
+          var _ref8 = transputType === 'input' ? [transput, cnx] : [cnx, transput],
+              _ref9 = slicedToArray(_ref8, 2),
+              input = _ref9[0],
+              output = _ref9[1];
 
           var id = output.nodeId + output.portName + input.nodeId + input.portName;
           delete cache.current.connections[id];
@@ -7357,6 +7402,21 @@ var nodesReducer = function nodesReducer(nodes) {
         })));
       }
 
+    case "SET_MULTIPLE_NODES_COORDINATES":
+      {
+        var nodesInfo = action.nodesInfo;
+
+        return _extends({}, nodes, Object.assign.apply(Object, [{}].concat(toConsumableArray(nodesInfo.map(function (_ref10) {
+          var nodeId = _ref10.nodeId,
+              x = _ref10.x,
+              y = _ref10.y;
+          return defineProperty({}, nodeId, _extends({}, nodes[nodeId], {
+            x: x,
+            y: y
+          }));
+        })))));
+      }
+
     default:
       return nodes;
   }
@@ -7367,6 +7427,65 @@ var connectNodesReducer = function connectNodesReducer(reducer, environment, dis
     return reducer(state, action, environment, dispatchToasts);
   };
 };
+
+var nodesReducer$1 = (function () {
+  for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+    props[_key] = arguments[_key];
+  }
+
+  var _props$0$historyData = props[0].historyData,
+      nodesState = _props$0$historyData.nodesState,
+      currentStateIndex = _props$0$historyData.currentStateIndex;
+
+
+  switch (props[1].type) {
+    case "UNDO_CHANGES":
+      {
+
+        console.log(currentStateIndex - 1);
+        console.log(nodesState);
+
+        return currentStateIndex > 0 ? {
+          nodes: nodesState[currentStateIndex - 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex - 1,
+            nodesState: nodesState
+          }
+        } : copyObj(props[0]);
+      }
+    case "REDO_CHANGES":
+      {
+
+        console.log(currentStateIndex + 1 < nodesState.length ? currentStateIndex + 1 : currentStateIndex);
+        console.log(nodesState);
+
+        return currentStateIndex + 1 < nodesState.length ? {
+          nodes: nodesState[currentStateIndex + 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex + 1,
+            nodesState: nodesState
+          }
+        } : copyObj(props[0]);
+      }
+    default:
+      {
+        var _nodesState = props[0].historyData.nodesState;
+        var nodes = nodesReducer.apply(undefined, props);
+        var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;
+
+        return {
+          nodes: nodes,
+          historyData: {
+            nodesState: [].concat(toConsumableArray(_nodesState.slice(0, isSlice ? currentStateIndex + 1 : _nodesState.length)), [{
+              action: props[1],
+              state: nodes
+            }]),
+            currentStateIndex: currentStateIndex + 1
+          }
+        };
+      }
+  }
+});
 
 var setComment = function setComment(comments, id, merge) {
   return _extends({}, comments, defineProperty({}, id, _extends({}, comments[id], merge)));
@@ -7495,6 +7614,52 @@ var Cache = function Cache() {
 var css$d = ".styles_dragWrapper__1P7RD{\n  z-index: 9999;\n  position: absolute;\n  left: 0px;\n  top: 0px;\n}\n.styles_debugWrapper__2OSbY{\n  display: flex;\n  position: absolute;\n  left: 10px;\n  bottom: 10px;\n  gap: 15px;\n}\n";
 var styles$d = { "dragWrapper": "styles_dragWrapper__1P7RD", "debugWrapper": "styles_debugWrapper__2OSbY" };
 styleInject(css$d);
+
+var dist = createCommonjsModule(function (module, exports) {
+Object.defineProperty(exports,"__esModule",{value:true});var _jsx=function(){var REACT_ELEMENT_TYPE=typeof Symbol==="function"&&Symbol.for&&Symbol.for("react.element")||60103;return function createRawReactElement(type,props,key,children){var defaultProps=type&&type.defaultProps;var childrenLength=arguments.length-3;if(!props&&childrenLength!==0){props={};}if(props&&defaultProps){for(var propName in defaultProps){if(props[propName]===void 0){props[propName]=defaultProps[propName];}}}else if(!props){props=defaultProps||{};}if(childrenLength===1){props.children=children;}else if(childrenLength>1){var childArray=Array(childrenLength);for(var i=0;i<childrenLength;i++){childArray[i]=arguments[i+3];}props.children=childArray;}return {$$typeof:REACT_ELEMENT_TYPE,type:type,key:key===undefined?null:""+key,ref:null,props:props,_owner:null}}}();var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}}();var _react2=_interopRequireDefault(React__default);var _propTypes2=_interopRequireDefault(PropTypes);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}function _toConsumableArray(arr){if(Array.isArray(arr)){for(var i=0,arr2=Array(arr.length);i<arr.length;i++){arr2[i]=arr[i];}return arr2}else{return Array.from(arr)}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass;}function getOffset(props){var offset={top:0,left:0};if(props.offset){offset=Object.assign({},props.offset);}else if(props.target){var boundingBox=props.target.getBoundingClientRect();offset.top=boundingBox.top+window.scrollY;offset.left=boundingBox.left+window.scrollX;}return offset}var Selection=function(_React$PureComponent){_inherits(Selection,_React$PureComponent);function Selection(props){_classCallCheck(this,Selection);var _this=_possibleConstructorReturn(this,(Selection.__proto__||Object.getPrototypeOf(Selection)).call(this,props));_this.bind=function(){_this.props.target.addEventListener("mousedown",_this.onMouseDown);_this.props.target.addEventListener("touchstart",_this.onTouchStart);};_this.reset=function(){if(_this.props.target){_this.props.target.removeEventListener("mousedown",_this.onMouseDown);}};_this.init=function(e,x,y){if(_this.props.ignoreTargets){var Target=e.target;if(!Target.matches){var defaultMatches=function defaultMatches(s){return [].indexOf.call(window.document.querySelectorAll(s),_this)!==-1};Target.matches=Target.matchesSelector||Target.mozMatchesSelector||Target.msMatchesSelector||Target.oMatchesSelector||Target.webkitMatchesSelector||defaultMatches;}if(Target.matches&&Target.matches(_this.props.ignoreTargets.join(","))){return false}}var nextState={};nextState.mouseDown=true;nextState.startPoint={x:(x-_this.state.offset.left)/_this.state.zoom,y:(y-_this.state.offset.top)/_this.state.zoom};_this.setState(nextState);return true};_this.onMouseDown=function(e){if(_this.props.disabled||e.button===2||e.nativeEvent&&e.nativeEvent.which===2){return}if(_this.init(e,e.pageX,e.pageY)){window.document.addEventListener("mousemove",_this.onMouseMove);window.document.addEventListener("mouseup",_this.onMouseUp);}};_this.onTouchStart=function(e){if(_this.props.disabled||!e.touches||!e.touches[0]||e.touches.length>1){return}if(_this.init(e,e.touches[0].pageX,e.touches[0].pageY)){window.document.addEventListener("touchmove",_this.onTouchMove);window.document.addEventListener("touchend",_this.onMouseUp);}};_this.onMouseUp=function(){window.document.removeEventListener("touchmove",_this.onTouchMove);window.document.removeEventListener("mousemove",_this.onMouseMove);window.document.removeEventListener("mouseup",_this.onMouseUp);window.document.removeEventListener("touchend",_this.onMouseUp);_this.setState({mouseDown:false,startPoint:null,endPoint:null,selectionBox:null});if(_this.props.onSelectionChange){_this.props.onSelectionChange(_this.selectedChildren);}if(_this.props.onHighlightChange){_this.highlightedChildren=[];_this.props.onHighlightChange(_this.highlightedChildren);}_this.selectedChildren=[];};_this.onMouseMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint={x:(e.pageX-_this.state.offset.left)/_this.state.zoom,y:(e.pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint)});}};_this.onTouchMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint2={x:(e.touches[0].pageX-_this.state.offset.left)/_this.state.zoom,y:(e.touches[0].pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint2,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint2)});}};_this.lineIntersects=function(lineA,lineB){return lineA[1]>=lineB[0]&&lineB[1]>=lineA[0]};_this.boxIntersects=function(boxA,boxB){var boxAProjection={x:[boxA.left,boxA.left+boxA.width],y:[boxA.top,boxA.top+boxA.height]};var boxBProjection={x:[boxB.left,boxB.left+boxB.width],y:[boxB.top,boxB.top+boxB.height]};return _this.lineIntersects(boxAProjection.x,boxBProjection.x)&&_this.lineIntersects(boxAProjection.y,boxBProjection.y)};_this.updateCollidingChildren=function(selectionBox){_this.selectedChildren=[];if(_this.props.elements){_this.props.elements.forEach(function(ref,$index){if(ref){var refBox=ref.getBoundingClientRect();var tmpBox={top:(refBox.top-_this.state.offset.top+window.scrollY)/_this.state.zoom,left:(refBox.left-_this.state.offset.left+window.scrollX)/_this.state.zoom,width:ref.clientWidth,height:ref.clientHeight};if(_this.boxIntersects(selectionBox,tmpBox)){_this.selectedChildren.push($index);}}});}if(_this.props.onHighlightChange&&JSON.stringify(_this.highlightedChildren)!==JSON.stringify(_this.selectedChildren)){var _onHighlightChange=_this.props.onHighlightChange;_this.highlightedChildren=[].concat(_toConsumableArray(_this.selectedChildren));if(window.requestAnimationFrame){window.requestAnimationFrame(function(){_onHighlightChange(_this.highlightedChildren);});}else{_onHighlightChange(_this.highlightedChildren);}}};_this.calculateSelectionBox=function(startPoint,endPoint){if(!_this.state.mouseDown||!startPoint||!endPoint){return null}var left=Math.min(startPoint.x,endPoint.x)-1;var top=Math.min(startPoint.y,endPoint.y)-1;var width=Math.abs(startPoint.x-endPoint.x)+1;var height=Math.abs(startPoint.y-endPoint.y)+1;return {left:left,top:top,width:width,height:height}};_this.state={mouseDown:false,startPoint:null,endPoint:null,selectionBox:null,offset:getOffset(props),zoom:props.zoom||1};_this.selectedChildren=[];_this.highlightedChildren=[];return _this}_createClass(Selection,[{key:"componentDidMount",value:function componentDidMount(){this.reset();this.bind();}},{key:"componentWillReceiveProps",value:function componentWillReceiveProps(nextProps){this.setState({offset:getOffset(nextProps)});}},{key:"componentDidUpdate",value:function componentDidUpdate(){this.reset();this.bind();if(this.state.mouseDown&&this.state.selectionBox){this.updateCollidingChildren(this.state.selectionBox);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.reset();window.document.removeEventListener("mousemove",this.onMouseMove);window.document.removeEventListener("mouseup",this.onMouseUp);}},{key:"render",value:function render(){var style=Object.assign({position:"absolute",background:"rgba(159, 217, 255, 0.3)",border:"solid 1px rgba(123, 123, 123, 0.61)",zIndex:9,cursor:"crosshair"},this.props.style);if(this.state.selectionBox){style=Object.assign({},style,this.state.selectionBox);}if(!this.state.mouseDown||!this.state.endPoint||!this.state.startPoint){return null}return _jsx("div",{className:"react-ds-border",style:style})}}]);return Selection}(_react2.default.PureComponent);exports.default=Selection;
+});
+
+var Selection = unwrapExports(dist);
+
+var useSelect = (function (nodes, previousNodes) {
+  var _useState = React.useState([]),
+      _useState2 = slicedToArray(_useState, 2),
+      nodeRefs = _useState2[0],
+      setNodesRef = _useState2[1];
+
+  var _useState3 = React.useState([]),
+      _useState4 = slicedToArray(_useState3, 2),
+      selectedNodes = _useState4[0],
+      setSelectedNodes = _useState4[1];
+
+  var clearSelection = function clearSelection() {
+    return setSelectedNodes([]);
+  };
+
+  var handleSelection = function handleSelection(indexes) {
+    setSelectedNodes(indexes.map(function (i) {
+      return nodeRefs[i][0].id;
+    }));
+  };
+
+  React.useMemo(function () {
+    if (previousNodes && nodes !== previousNodes) {
+      Object.values(nodes).every(function (_ref) {
+        var id = _ref.id;
+        return Object.values(previousNodes).some(function (_ref2) {
+          var oldId = _ref2.id;
+          return id === oldId;
+        });
+      }) || !setNodesRef(function () {
+        return Object.values(nodes).map(function (n) {
+          return [n, React.createRef()];
+        }) || [];
+      }) && clearSelection();
+    }
+  }, [nodes, previousNodes]);
+
+  return [selectedNodes, nodeRefs, handleSelection, clearSelection];
+});
 
 var LoopError = function (_Error) {
   inherits(LoopError, _Error);
@@ -7653,7 +7818,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       onCommentsChange = _ref.onCommentsChange,
       initialScale = _ref.initialScale,
       _ref$spaceToPan = _ref.spaceToPan,
-      spaceToPan = _ref$spaceToPan === undefined ? false : _ref$spaceToPan,
+      spaceToPan = _ref$spaceToPan === undefined ? true : _ref$spaceToPan,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === undefined ? false : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
@@ -7679,29 +7844,59 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       toasts = _React$useReducer2[0],
       dispatchToasts = _React$useReducer2[1];
 
-  var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer, { nodeTypes: nodeTypes, portTypes: portTypes, cache: cache, circularBehavior: circularBehavior, context: context }, setSideEffectToasts), {}, function () {
-    return getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context);
+  var editorRef = React.useRef();
+
+  var _React$useState3 = React__default.useState(false),
+      _React$useState4 = slicedToArray(_React$useState3, 2),
+      spaceIsPressed = _React$useState4[0],
+      setSpaceIsPressed = _React$useState4[1];
+
+  var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer$1, {
+    nodeTypes: nodeTypes,
+    portTypes: portTypes,
+    cache: cache,
+    circularBehavior: circularBehavior,
+    context: context
+  }, setSideEffectToasts), {}, function () {
+    return {
+      nodes: getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context),
+      historyData: {
+        nodesState: [],
+        currentStateIndex: -1
+        // newUndoOrRedoAction: 0,
+        // newUndoOrRedoTimeStamp: new Date().getTime()
+      }
+    };
   }),
       _React$useReducer4 = slicedToArray(_React$useReducer3, 2),
-      nodes = _React$useReducer4[0],
+      nodes = _React$useReducer4[0].nodes,
       dispatchNodes = _React$useReducer4[1];
+
+  var previousNodes = usePrevious$1(nodes);
 
   var _React$useReducer5 = React__default.useReducer(commentsReducer, initialComments || {}),
       _React$useReducer6 = slicedToArray(_React$useReducer5, 2),
       comments = _React$useReducer6[0],
       dispatchComments = _React$useReducer6[1];
 
+  var _useSelect = useSelect(nodes, previousNodes),
+      _useSelect2 = slicedToArray(_useSelect, 4),
+      selectedNodes = _useSelect2[0],
+      nodeRefs = _useSelect2[1],
+      handleSelection = _useSelect2[2],
+      clearSelection = _useSelect2[3];
+
   React__default.useEffect(function () {
-    dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
+    dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' });
   }, []);
 
-  var _React$useState3 = React__default.useState(true),
-      _React$useState4 = slicedToArray(_React$useState3, 2),
-      shouldRecalculateConnections = _React$useState4[0],
-      setShouldRecalculateConnections = _React$useState4[1];
+  var _React$useState5 = React__default.useState(true),
+      _React$useState6 = slicedToArray(_React$useState5, 2),
+      shouldRecalculateConnections = _React$useState6[0],
+      setShouldRecalculateConnections = _React$useState6[1];
 
   var _React$useReducer7 = React__default.useReducer(stageReducer, {
-    scale: typeof initialScale === "number" ? clamp_1(initialScale, 0.1, 7) : 1,
+    scale: typeof initialScale === 'number' ? clamp_1(initialScale, 0.1, 7) : 1,
     translate: { x: 0, y: 0 }
   }),
       _React$useReducer8 = slicedToArray(_React$useReducer7, 2),
@@ -7710,10 +7905,10 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 
   var recalculateConnections = React__default.useCallback(function () {
     createConnections(nodes, stageState, editorId);
-  }, [nodes, editorId, stageState]);
+  }, [nodes, editorId, stageState, dispatchNodes]);
 
   var recalculateStageRect = function recalculateStageRect() {
-    stage.current = document.getElementById("" + STAGE_ID + editorId).getBoundingClientRect();
+    stage.current = document.getElementById('' + STAGE_ID + editorId).getBoundingClientRect();
   };
 
   React__default.useLayoutEffect(function () {
@@ -7723,8 +7918,58 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     }
   }, [shouldRecalculateConnections, recalculateConnections]);
 
+  var handleDragEnd = function handleDragEnd(e, id, coordinates) {
+    if (selectedNodes.length) {
+      dispatchNodes({
+        type: 'SET_MULTIPLE_NODES_COORDINATES',
+        nodesInfo: selectedNodes.map(function (id) {
+          var nodeRef = nodeRefs.find(function (_ref2) {
+            var _ref3 = slicedToArray(_ref2, 1),
+                nId = _ref3[0].id;
+
+            return nId === id;
+          })[1];
+          var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
+
+          return {
+            nodeId: id,
+            x: newPositions[1],
+            y: newPositions[2]
+          };
+        })
+      });
+    } else {
+      dispatchNodes(_extends({
+        type: 'SET_NODE_COORDINATES'
+      }, coordinates, {
+        nodeId: id
+      }));
+    }
+    triggerRecalculation();
+  };
+
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
+  };
+
+  var dragSelectedNodes = function dragSelectedNodes(excludedNodeId, deltaX, deltaY) {
+    if (selectedNodes.length) {
+      if (selectedNodes.includes(excludedNodeId)) {
+        selectedNodes.forEach(function (id) {
+          if (id !== excludedNodeId) {
+            var nodeRef = nodeRefs.find(function (_ref4) {
+              var _ref5 = slicedToArray(_ref4, 1),
+                  nId = _ref5[0].id;
+
+              return nId === id;
+            })[1];
+            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
+            if (oldPositions.length === 3) nodeRef.current.style.transform = 'translate(' + (Number(oldPositions[1]) + deltaX) + 'px,' + (Number(oldPositions[2]) + deltaY) + 'px)';
+          }
+        });
+        recalculateConnections();
+      } else clearSelection();
+    }
   };
 
   React__default.useImperativeHandle(ref, function () {
@@ -7738,20 +7983,14 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
 
-  var previousNodes = usePrevious$1(nodes);
-
-  React__default.useEffect(function () {
-    if (previousNodes && onChange && nodes !== previousNodes) {
-      onChange(nodes);
-    }
+  React__default.useMemo(function () {
+    previousNodes && nodes !== previousNodes && onChange && onChange(nodes);
   }, [nodes, previousNodes, onChange]);
 
   var previousComments = usePrevious$1(comments);
 
   React__default.useEffect(function () {
-    if (previousComments && onCommentsChange && comments !== previousComments) {
-      onCommentsChange(comments);
-    }
+    previousComments && onCommentsChange && comments !== previousComments && onCommentsChange(comments);
   }, [comments, previousComments, onCommentsChange]);
 
   React__default.useEffect(function () {
@@ -7760,6 +7999,48 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
+
+  var keyMap = {
+    COPY_NODES: 'ctrl+c',
+    PASTE_NODES: 'ctrl+v',
+    CUT_NODES: 'ctrl+x',
+    UNDO_CHANGES: 'ctrl+z',
+    REDO_CHANGES: 'ctrl+y'
+  };
+
+  var copyNodes = function copyNodes() {
+    return console.log('Copy nodes');
+  };
+  var pasteNodes = function pasteNodes() {
+    return console.log('Paste nodes');
+  };
+  var cutNodes = function cutNodes() {
+    return console.log('Cut nodes');
+  };
+  var undoChanges = function undoChanges() {
+    dispatchNodes({
+      type: 'UNDO_CHANGES'
+    });
+
+    clearConnections();
+    triggerRecalculation();
+  };
+  var redoChanges = function redoChanges() {
+    dispatchNodes({
+      type: 'REDO_CHANGES'
+    });
+
+    clearConnections();
+    triggerRecalculation();
+  };
+
+  var handlers = {
+    COPY_NODES: copyNodes,
+    PASTE_NODES: pasteNodes,
+    CUT_NODES: cutNodes,
+    UNDO_CHANGES: undoChanges,
+    REDO_CHANGES: redoChanges
+  };
 
   return React__default.createElement(
     PortTypesContext.Provider,
@@ -7790,84 +8071,119 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
                     {
                       value: recalculateStageRect
                     },
-                    React__default.createElement(
-                      Stage,
-                      {
-                        editorId: editorId,
-                        scale: stageState.scale,
-                        translate: stageState.translate,
-                        spaceToPan: spaceToPan,
-                        disablePan: disablePan,
-                        disableZoom: disableZoom,
-                        dispatchStageState: dispatchStageState,
-                        dispatchComments: dispatchComments,
-                        disableComments: disableComments || hideComments,
-                        stageRef: stage,
-                        numNodes: Object.keys(nodes).length,
-                        outerStageChildren: React__default.createElement(
-                          React__default.Fragment,
-                          null,
-                          debug && React__default.createElement(
-                            "div",
-                            { className: styles$d.debugWrapper },
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(nodes);
-                                }
-                              },
-                              "Log Nodes"
-                            ),
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(JSON.stringify(nodes));
-                                }
-                              },
-                              "Export Nodes"
-                            ),
-                            React__default.createElement(
-                              "button",
-                              {
-                                className: styles$d.debugButton,
-                                onClick: function onClick() {
-                                  return console.log(comments);
-                                }
-                              },
-                              "Log Comments"
-                            )
-                          ),
-                          React__default.createElement(Toaster, {
-                            toasts: toasts,
-                            dispatchToasts: dispatchToasts
-                          })
-                        )
+                    editorRef.current && React__default.createElement(Selection, {
+                      target: editorRef.current,
+                      elements: nodeRefs.map(function (n) {
+                        return n[1].current;
+                      }),
+                      onSelectionChange: function onSelectionChange(i) {
+                        return spaceIsPressed || handleSelection(i);
                       },
-                      !hideComments && Object.values(comments).map(function (comment) {
-                        return React__default.createElement(Comment, _extends({}, comment, {
-                          stageRect: stage,
-                          dispatch: dispatchComments,
-                          onDragStart: recalculateStageRect,
-                          key: comment.id
-                        }));
-                      }),
-                      Object.values(nodes).map(function (node) {
-                        return React__default.createElement(Node, _extends({}, node, {
-                          stageRect: stage,
-                          onDragEnd: triggerRecalculation,
-                          onDragStart: recalculateStageRect,
-                          key: node.id
-                        }));
-                      }),
-                      React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
-                      React__default.createElement("div", {
-                        className: styles$d.dragWrapper,
-                        id: "" + DRAG_CONNECTION_ID + editorId
-                      })
+                      offset: {
+                        top: 0,
+                        left: 0
+                      },
+                      ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
+                      style: spaceIsPressed ? { display: 'none' } : {}
+                    }),
+                    React__default.createElement(
+                      reactHotkeys.HotKeys,
+                      { keyMap: keyMap, handlers: handlers,
+                        style: { height: '100%' } },
+                      React__default.createElement(
+                        Stage,
+                        {
+                          ref: editorRef,
+                          editorId: editorId,
+                          setSpaceIsPressed: setSpaceIsPressed,
+                          scale: stageState.scale,
+                          translate: stageState.translate,
+                          spaceToPan: spaceToPan,
+                          disablePan: disablePan,
+                          disableZoom: disableZoom,
+                          dispatchStageState: dispatchStageState,
+                          dispatchComments: dispatchComments,
+                          disableComments: disableComments || hideComments,
+                          stageRef: stage,
+                          numNodes: Object.keys(nodes).length,
+                          outerStageChildren: React__default.createElement(
+                            React__default.Fragment,
+                            null,
+                            debug && React__default.createElement(
+                              'div',
+                              { className: styles$d.debugWrapper },
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(nodes);
+                                  }
+                                },
+                                'Log Nodes'
+                              ),
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(JSON.stringify(nodes));
+                                  }
+                                },
+                                'Export Nodes'
+                              ),
+                              React__default.createElement(
+                                'button',
+                                {
+                                  className: styles$d.debugButton,
+                                  onClick: function onClick() {
+                                    return console.log(comments);
+                                  }
+                                },
+                                'Log Comments'
+                              )
+                            ),
+                            React__default.createElement(Toaster, {
+                              toasts: toasts,
+                              dispatchToasts: dispatchToasts
+                            })
+                          )
+                        },
+                        !hideComments && Object.values(comments).map(function (comment) {
+                          return React__default.createElement(Comment, _extends({}, comment, {
+                            stageRect: stage,
+                            dispatch: dispatchComments,
+                            onDragStart: recalculateStageRect,
+                            key: comment.id
+                          }));
+                        }),
+                        Object.values(nodes).map(function (node) {
+                          return React__default.createElement(Node, _extends({}, node, {
+                            isSelected: selectedNodes.includes(node.id),
+                            ref: nodeRefs.find(function (_ref6) {
+                              var _ref7 = slicedToArray(_ref6, 1),
+                                  n = _ref7[0];
+
+                              return n.id === node.id;
+                            }) ? nodeRefs.find(function (_ref8) {
+                              var _ref9 = slicedToArray(_ref8, 1),
+                                  n = _ref9[0];
+
+                              return n.id === node.id;
+                            })[1] : null,
+                            stageRect: stage,
+                            onDragEnd: handleDragEnd,
+                            onDragHandle: dragSelectedNodes,
+                            onDragStart: recalculateStageRect,
+                            key: node.id
+                          }));
+                        }),
+                        React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
+                        React__default.createElement('div', {
+                          className: styles$d.dragWrapper,
+                          id: '' + DRAG_CONNECTION_ID + editorId
+                        })
+                      )
                     )
                   )
                 )
@@ -7879,6 +8195,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     )
   );
 };
+
 exports.NodeEditor = React__default.forwardRef(exports.NodeEditor);
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length ? engine.resolveRootNode(nodes, { context: context }) : {};

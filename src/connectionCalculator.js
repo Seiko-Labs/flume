@@ -69,6 +69,15 @@ export const deleteConnection = ({ id }) => {
   if (line) line.parentNode.remove();
 };
 
+export const clearConnections = () => {
+  const lines = document.querySelectorAll(
+    `[data-output-node-id], [data-input-node-id]`
+  );
+  for (const line of lines) {
+    line.parentNode.remove();
+  }
+}
+
 export const deleteConnectionsByNodeId = nodeId => {
   const lines = document.querySelectorAll(
     `[data-output-node-id="${nodeId}"], [data-input-node-id="${nodeId}"]`
