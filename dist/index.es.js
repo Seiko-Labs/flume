@@ -7029,7 +7029,9 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   return isCircular;
 };
 
-// const copyObj = (o) => JSON.parse(JSON.stringify(o))
+var copyObj = function copyObj(o) {
+  return JSON.parse(JSON.stringify(o));
+};
 
 var addConnection = function addConnection(nodes, input, output, portTypes) {
   var _babelHelpers$extends3;
@@ -7432,41 +7434,34 @@ var nodesReducer$1 = (function () {
   switch (props[1].type) {
     case "UNDO_CHANGES":
       {
-        if (currentStateIndex > 0) {
-          return {
-            nodes: nodesState[currentStateIndex - 1].state,
-            historyData: {
-              currentStateIndex: currentStateIndex - 1,
-              nodesState: nodesState
-            }
-          };
-        }
-        return props[0];
+
+        console.log(currentStateIndex - 1);
+        console.log(nodesState);
+
+        return currentStateIndex > 0 ? {
+          nodes: nodesState[currentStateIndex - 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex - 1,
+            nodesState: nodesState
+          }
+        } : copyObj(props[0]);
       }
     case "REDO_CHANGES":
       {
-        if (currentStateIndex < nodesState.length - 1) {
-          return {
-            nodes: nodesState[currentStateIndex + 1].state,
-            historyData: {
-              currentStateIndex: currentStateIndex + 1,
-              nodesState: nodesState
-            }
-          };
-        }
-        return props[0];
+
+        console.log(currentStateIndex + 1 < nodesState.length ? currentStateIndex + 1 : currentStateIndex);
+        console.log(nodesState);
+
+        return currentStateIndex + 1 < nodesState.length ? {
+          nodes: nodesState[currentStateIndex + 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex + 1,
+            nodesState: nodesState
+          }
+        } : copyObj(props[0]);
       }
     default:
       {
-
-        // if (nodesState.length > 1 && currentStateIndex < nodesState.length -
-        // 1)
-        //   setNodesState(ns => ns.slice(0, currentStateIndex + 1))
-        //
-        //     setNodesState(ns => [...ns, {action: props[1], state:
-        // copyObj(st)}]) setCurrentStateIndex(i => i + 1)
-
-
         var _nodesState = props[0].historyData.nodesState;
         var nodes = nodesReducer.apply(undefined, props);
         var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;

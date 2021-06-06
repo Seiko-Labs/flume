@@ -5,7 +5,7 @@ import {
 import {checkForCircularNodes} from "./utilities";
 import nanoid from "nanoid/non-secure/index";
 
-// const copyObj = (o) => JSON.parse(JSON.stringify(o))
+const copyObj = (o) => JSON.parse(JSON.stringify(o))
 
 const addConnection = (nodes, input, output, portTypes) => ({
   ...nodes,
@@ -419,39 +419,41 @@ export default (...props) => {
 
   switch (props[1].type) {
     case "UNDO_CHANGES": {
-      if (currentStateIndex > 0) {
-        return {
-          nodes: nodesState[currentStateIndex - 1].state,
-          historyData: {
-            currentStateIndex: currentStateIndex - 1,
-            nodesState
+
+      console.log(currentStateIndex - 1)
+      console.log(nodesState)
+
+      return (
+        currentStateIndex > 0
+        ? {
+            nodes: nodesState[currentStateIndex - 1].state,
+            historyData: {
+              currentStateIndex: currentStateIndex - 1,
+              nodesState
+            }
           }
-        }
-      }
-      return props[0]
+        : copyObj(props[0])
+      )
     }
     case "REDO_CHANGES": {
-      if (currentStateIndex < nodesState.length - 1) {
-        return {
-          nodes: nodesState[currentStateIndex + 1].state,
-          historyData: {
-            currentStateIndex: currentStateIndex + 1,
-            nodesState
+
+      console.log(currentStateIndex + 1 < nodesState.length
+                  ? currentStateIndex + 1 : currentStateIndex)
+      console.log(nodesState)
+
+      return (
+        currentStateIndex + 1 < nodesState.length
+        ? {
+            nodes: nodesState[currentStateIndex + 1].state,
+            historyData: {
+              currentStateIndex: currentStateIndex + 1,
+              nodesState
+            }
           }
-        }
-      }
-      return props[0]
+        : copyObj(props[0])
+      )
     }
     default: {
-
-      // if (nodesState.length > 1 && currentStateIndex < nodesState.length -
-      // 1)
-      //   setNodesState(ns => ns.slice(0, currentStateIndex + 1))
-      //
-      //     setNodesState(ns => [...ns, {action: props[1], state:
-      // copyObj(st)}]) setCurrentStateIndex(i => i + 1)
-
-
       const nodesState = props[0].historyData.nodesState
       const nodes = nodesReducer(...props)
       const isSlice = nodesState.length > 1
@@ -462,12 +464,12 @@ export default (...props) => {
         historyData: {
           nodesState:
             [
-                ...nodesState.slice(0, isSlice ? currentStateIndex + 1 : nodesState.length),
-                {
-                  action: props[1],
-                  state: nodes
-                }
-              ],
+              ...nodesState.slice(0, isSlice ? currentStateIndex + 1 : nodesState.length),
+              {
+                action: props[1],
+                state: nodes
+              }
+            ],
           currentStateIndex: currentStateIndex + 1
         }
       }
