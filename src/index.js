@@ -68,12 +68,8 @@ export let NodeEditor = (
   const editorRef = useRef()
   const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
 
-  const [nodesState, setNodesState] = useState([]);
-  const [currentStateIndex, setCurrentStateIndex] = useState(-1);
-  const [undoOrRedoAction, setUndoOrRedoAction] = useState(0);
-  const [undoOrRedoTimeStamp, setUndoOrRedoTimeStamp] = useState(new Date().getTime());
-
-  const [{nodes, historyData: {newNodesState, newCurrentStateIndex, newUndoOrRedoAction, newUndoOrRedoTimeStamp}}, dispatchNodes] = React.useReducer(
+  const [{nodes}, dispatchNodes
+  ] = React.useReducer(
     connectNodesReducer(
       nodesReducer,
       {
@@ -82,15 +78,25 @@ export let NodeEditor = (
         cache,
         circularBehavior,
         context,
-        nodesState,
-        currentStateIndex,
-        undoOrRedoAction,
-        undoOrRedoTimeStamp,
       },
       setSideEffectToasts
     ),
     {},
-    () => getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context)
+    () => ({
+      nodes: getInitialNodes(
+        initialNodes,
+        defaultNodes,
+        nodeTypes,
+        portTypes,
+        context
+      ),
+      historyData: {
+        nodesState: [],
+        currentStateIndex: -1,
+        // newUndoOrRedoAction: 0,
+        // newUndoOrRedoTimeStamp: new Date().getTime()
+      }
+    })
   )
   const previousNodes = usePrevious(nodes)
   const [comments, dispatchComments] = React.useReducer(

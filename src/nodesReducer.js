@@ -4,49 +4,45 @@ import {
 } from "./connectionCalculator";
 import {checkForCircularNodes} from "./utilities";
 import nanoid from "nanoid/non-secure/index";
-import _ from "lodash"
 
-const copyObj = (o) => JSON.parse(JSON.stringify(o))
+// const copyObj = (o) => JSON.parse(JSON.stringify(o))
 
-const addConnection = (nodes, input, output, portTypes) => {
-  const newNodes = {
-    ...nodes,
-    [input.nodeId]: {
-      ...nodes[input.nodeId],
-      connections: {
-        ...nodes[input.nodeId].connections,
-        inputs: {
-          ...nodes[input.nodeId].connections.inputs,
-          [input.portName]: [
-            ...(nodes[input.nodeId].connections.inputs[input.portName] || []),
-            {
-              nodeId: output.nodeId,
-              portName: output.portName
-            }
-          ]
-        }
-      }
-    },
-    [output.nodeId]: {
-      ...nodes[output.nodeId],
-      connections: {
-        ...nodes[output.nodeId].connections,
-        outputs: {
-          ...nodes[output.nodeId].connections.outputs,
-          [output.portName]: [
-            ...(nodes[output.nodeId].connections.outputs[output.portName] ||
-              []),
-            {
-              nodeId: input.nodeId,
-              portName: input.portName
-            }
-          ]
-        }
+const addConnection = (nodes, input, output, portTypes) => ({
+  ...nodes,
+  [input.nodeId]: {
+    ...nodes[input.nodeId],
+    connections: {
+      ...nodes[input.nodeId].connections,
+      inputs: {
+        ...nodes[input.nodeId].connections.inputs,
+        [input.portName]: [
+          ...(nodes[input.nodeId].connections.inputs[input.portName] || []),
+          {
+            nodeId: output.nodeId,
+            portName: output.portName
+          }
+        ]
       }
     }
-  };
-  return newNodes;
-};
+  },
+  [output.nodeId]: {
+    ...nodes[output.nodeId],
+    connections: {
+      ...nodes[output.nodeId].connections,
+      outputs: {
+        ...nodes[output.nodeId].connections.outputs,
+        [output.portName]: [
+          ...(nodes[output.nodeId].connections.outputs[output.portName] ||
+            []),
+          {
+            nodeId: input.nodeId,
+            portName: input.portName
+          }
+        ]
+      }
+    }
+  }
+});
 
 const removeConnection = (nodes, input, output) => {
   const inputNode = nodes[input.nodeId];
@@ -233,7 +229,7 @@ const getDefaultData = ({node, nodeType, portTypes, context}) => {
 };
 
 const nodesReducer = (
-  nodes,
+  {nodes},
   action = {},
   {
     nodeTypes,
@@ -241,14 +237,6 @@ const nodesReducer = (
     cache,
     circularBehavior,
     context,
-    nodesState,
-    setNodesState,
-    currentStateIndex,
-    setCurrentStateIndex,
-    undoOrRedoAction,
-    setUndoOrRedoAction,
-    undoOrRedoTimeStamp,
-    setUndoOrRedoTimeStamp
   },
   dispatchToasts
 ) => {
@@ -412,43 +400,6 @@ const nodesReducer = (
       };
     }
 
-    case "UNDO_CHANGES": {
-      if (currentStateIndex > 0) {
-        if (undoOrRedoAction < 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
-
-          console.log('Cancel undo')
-          return copyObj(nodes)
-        }
-        setUndoOrRedoAction(-1)
-        setUndoOrRedoTimeStamp(new Date().getTime())
-
-        console.log('UNDO_CHANGES')
-        const ind = currentStateIndex - 1
-        setCurrentStateIndex(i => i - 1)
-        return nodesState[ind].state
-      }
-      return copyObj(nodes)
-    }
-
-    case "REDO_CHANGES": {
-      if (currentStateIndex < nodesState.length - 1) {
-        if (undoOrRedoAction > 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
-          console.log('Cancel redo')
-          return copyObj(nodes)
-        }
-
-        setUndoOrRedoAction(1)
-        setUndoOrRedoTimeStamp(new Date().getTime())
-
-        console.log('REDO_CHANGES')
-
-        const ind = currentStateIndex + 1
-        setCurrentStateIndex(i => i + 1)
-        return nodesState[ind].state
-      }
-      return copyObj(nodes);
-    }
-
     default:
       return nodes;
   }
@@ -459,44 +410,68 @@ export const connectNodesReducer = (reducer, environment, dispatchToasts) => (
   action
 ) => reducer(state, action, environment, dispatchToasts);
 
+
 export default (...props) => {
-  let undoOrRedoAction
-  const st = nodesReducer(...props);
-  console.log(props)
   const {
     nodesState,
-    setNodesState,
     currentStateIndex,
-    setCurrentStateIndex,
-    undoOrRedoAction,
-    setUndoOrRedoAction,
-    undoOrRedoTimeStamp,
-    setUndoOrRedoTimeStamp
-  } = props[2]
-  if (
-    (
-      props[1].type !== 'REDO_CHANGES'
-      && props[1].type !== 'UNDO_CHANGES'
-      && (props[1].type !== 'HYDRATE_DEFAULT_NODES')
-    ) || !nodesState.length
-  ) {
-    const prevAction = nodesState[currentStateIndex]
-                       && nodesState[currentStateIndex].action
+  } = props[0].historyData
 
-    setUndoOrRedoAction(0)
+  switch (props[1].type) {
+    case "UNDO_CHANGES": {
+      if (currentStateIndex > 0) {
+        return {
+          nodes: nodesState[currentStateIndex - 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex - 1,
+            nodesState
+          }
+        }
+      }
+      return props[0]
+    }
+    case "REDO_CHANGES": {
+      if (currentStateIndex < nodesState.length - 1) {
+        return {
+          nodes: nodesState[currentStateIndex + 1].state,
+          historyData: {
+            currentStateIndex: currentStateIndex + 1,
+            nodesState
+          }
+        }
+      }
+      return props[0]
+    }
+    default: {
 
-    if (!_.isEqual(prevAction, props[1])) {
+      // if (nodesState.length > 1 && currentStateIndex < nodesState.length -
+      // 1)
+      //   setNodesState(ns => ns.slice(0, currentStateIndex + 1))
+      //
+      //     setNodesState(ns => [...ns, {action: props[1], state:
+      // copyObj(st)}]) setCurrentStateIndex(i => i + 1)
 
-      if (nodesState.length > 1 && currentStateIndex < nodesState.length - 1)
-        setNodesState(ns => ns.slice(0, currentStateIndex + 1))
 
-      setNodesState(ns => [...ns, {action: props[1], state: copyObj(st)}])
-      setCurrentStateIndex(i => i + 1)
+      const nodesState = props[0].historyData.nodesState
+      const nodes = nodesReducer(...props)
+      const isSlice = nodesState.length > 1
+                      && currentStateIndex < nodesState.length - 1
 
-      console.log(currentStateIndex)
-      console.log(nodesState)
+      return {
+        nodes,
+        historyData: {
+          nodesState:
+            [
+                ...nodesState.slice(0, isSlice ? currentStateIndex + 1 : nodesState.length),
+                {
+                  action: props[1],
+                  state: nodes
+                }
+              ],
+          currentStateIndex: currentStateIndex + 1
+        }
+      }
     }
   }
 
-  return st
 }

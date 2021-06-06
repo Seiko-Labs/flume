@@ -8,7 +8,6 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
 var ReactDOM = _interopDefault(require('react-dom'));
-var _ = _interopDefault(require('lodash'));
 var reactHotkeys = require('react-hotkeys');
 
 /**
@@ -4815,24 +4814,24 @@ function line() {
     if (buffer) return output = null, buffer + "" || null;
   }
 
-  line.x = function(_$$1) {
-    return arguments.length ? (x$$1 = typeof _$$1 === "function" ? _$$1 : constant(+_$$1), line) : x$$1;
+  line.x = function(_) {
+    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), line) : x$$1;
   };
 
-  line.y = function(_$$1) {
-    return arguments.length ? (y$$1 = typeof _$$1 === "function" ? _$$1 : constant(+_$$1), line) : y$$1;
+  line.y = function(_) {
+    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), line) : y$$1;
   };
 
-  line.defined = function(_$$1) {
-    return arguments.length ? (defined = typeof _$$1 === "function" ? _$$1 : constant(!!_$$1), line) : defined;
+  line.defined = function(_) {
+    return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), line) : defined;
   };
 
-  line.curve = function(_$$1) {
-    return arguments.length ? (curve = _$$1, context != null && (output = curve(context)), line) : curve;
+  line.curve = function(_) {
+    return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
   };
 
-  line.context = function(_$$1) {
-    return arguments.length ? (_$$1 == null ? context = output = null : output = curve(context = _$$1), line) : context;
+  line.context = function(_) {
+    return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
   };
 
   return line;
@@ -6693,7 +6692,7 @@ var Comment = (function (_ref) {
     wrapper.current.style.transform = "translate(" + x + "px," + y + "px)";
   };
 
-  var handleDragEnd = function handleDragEnd(_$$1, _ref3) {
+  var handleDragEnd = function handleDragEnd(_, _ref3) {
     var x = _ref3.x,
         y = _ref3.y;
 
@@ -6712,7 +6711,7 @@ var Comment = (function (_ref) {
     wrapper.current.style.height = height + "px";
   };
 
-  var handleResizeEnd = function handleResizeEnd(_$$1, coordinates) {
+  var handleResizeEnd = function handleResizeEnd(_, coordinates) {
     var width = clamp_1(coordinates.x - x + 10, 80, 10000);
     var height = clamp_1(coordinates.y - y + 10, 30, 10000);
     dispatch({
@@ -7037,14 +7036,12 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   return isCircular;
 };
 
-var copyObj = function copyObj(o) {
-  return JSON.parse(JSON.stringify(o));
-};
+// const copyObj = (o) => JSON.parse(JSON.stringify(o))
 
 var addConnection = function addConnection(nodes, input, output, portTypes) {
   var _babelHelpers$extends3;
 
-  var newNodes = _extends({}, nodes, (_babelHelpers$extends3 = {}, defineProperty(_babelHelpers$extends3, input.nodeId, _extends({}, nodes[input.nodeId], {
+  return _extends({}, nodes, (_babelHelpers$extends3 = {}, defineProperty(_babelHelpers$extends3, input.nodeId, _extends({}, nodes[input.nodeId], {
     connections: _extends({}, nodes[input.nodeId].connections, {
       inputs: _extends({}, nodes[input.nodeId].connections.inputs, defineProperty({}, input.portName, [].concat(toConsumableArray(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
         nodeId: output.nodeId,
@@ -7059,7 +7056,6 @@ var addConnection = function addConnection(nodes, input, output, portTypes) {
       }])))
     })
   })), _babelHelpers$extends3));
-  return newNodes;
 };
 
 var removeConnection = function removeConnection(nodes, input, output) {
@@ -7232,22 +7228,15 @@ var getDefaultData = function getDefaultData(_ref5) {
   }, {});
 };
 
-var nodesReducer = function nodesReducer(nodes) {
+var nodesReducer = function nodesReducer(_ref6) {
+  var nodes = _ref6.nodes;
   var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var _ref6 = arguments[2];
-  var nodeTypes = _ref6.nodeTypes,
-      portTypes = _ref6.portTypes,
-      cache = _ref6.cache,
-      circularBehavior = _ref6.circularBehavior,
-      context = _ref6.context,
-      nodesState = _ref6.nodesState,
-      setNodesState = _ref6.setNodesState,
-      currentStateIndex = _ref6.currentStateIndex,
-      setCurrentStateIndex = _ref6.setCurrentStateIndex,
-      undoOrRedoAction = _ref6.undoOrRedoAction,
-      setUndoOrRedoAction = _ref6.setUndoOrRedoAction,
-      undoOrRedoTimeStamp = _ref6.undoOrRedoTimeStamp,
-      setUndoOrRedoTimeStamp = _ref6.setUndoOrRedoTimeStamp;
+  var _ref7 = arguments[2];
+  var nodeTypes = _ref7.nodeTypes,
+      portTypes = _ref7.portTypes,
+      cache = _ref7.cache,
+      circularBehavior = _ref7.circularBehavior,
+      context = _ref7.context;
   var dispatchToasts = arguments[3];
 
   switch (action.type) {
@@ -7309,10 +7298,10 @@ var nodesReducer = function nodesReducer(nodes) {
         if (!connections || !connections.length) return nodes;
 
         return connections.reduce(function (nodes, cnx) {
-          var _ref7 = transputType === 'input' ? [transput, cnx] : [cnx, transput],
-              _ref8 = slicedToArray(_ref7, 2),
-              input = _ref8[0],
-              output = _ref8[1];
+          var _ref8 = transputType === 'input' ? [transput, cnx] : [cnx, transput],
+              _ref9 = slicedToArray(_ref8, 2),
+              input = _ref9[0],
+              output = _ref9[1];
 
           var id = output.nodeId + output.portName + input.nodeId + input.portName;
           delete cache.current.connections[id];
@@ -7415,58 +7404,15 @@ var nodesReducer = function nodesReducer(nodes) {
       {
         var nodesInfo = action.nodesInfo;
 
-        return _extends({}, nodes, Object.assign.apply(Object, [{}].concat(toConsumableArray(nodesInfo.map(function (_ref9) {
-          var nodeId = _ref9.nodeId,
-              x = _ref9.x,
-              y = _ref9.y;
+        return _extends({}, nodes, Object.assign.apply(Object, [{}].concat(toConsumableArray(nodesInfo.map(function (_ref10) {
+          var nodeId = _ref10.nodeId,
+              x = _ref10.x,
+              y = _ref10.y;
           return defineProperty({}, nodeId, _extends({}, nodes[nodeId], {
             x: x,
             y: y
           }));
         })))));
-      }
-
-    case "UNDO_CHANGES":
-      {
-        if (currentStateIndex > 0) {
-          if (undoOrRedoAction < 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
-
-            console.log('Cancel undo');
-            return copyObj(nodes);
-          }
-          setUndoOrRedoAction(-1);
-          setUndoOrRedoTimeStamp(new Date().getTime());
-
-          console.log('UNDO_CHANGES');
-          var ind = currentStateIndex - 1;
-          setCurrentStateIndex(function (i) {
-            return i - 1;
-          });
-          return nodesState[ind].state;
-        }
-        return copyObj(nodes);
-      }
-
-    case "REDO_CHANGES":
-      {
-        if (currentStateIndex < nodesState.length - 1) {
-          if (undoOrRedoAction > 0 && new Date().getTime() - undoOrRedoTimeStamp < 100) {
-            console.log('Cancel redo');
-            return copyObj(nodes);
-          }
-
-          setUndoOrRedoAction(1);
-          setUndoOrRedoTimeStamp(new Date().getTime());
-
-          console.log('REDO_CHANGES');
-
-          var _ind = currentStateIndex + 1;
-          setCurrentStateIndex(function (i) {
-            return i + 1;
-          });
-          return nodesState[_ind].state;
-        }
-        return copyObj(nodes);
       }
 
     default:
@@ -7485,42 +7431,65 @@ var nodesReducer$1 = (function () {
     props[_key] = arguments[_key];
   }
 
-  var st = nodesReducer.apply(undefined, props);
-  console.log(props);
-  var _props$ = props[2],
-      nodesState = _props$.nodesState,
-      setNodesState = _props$.setNodesState,
-      currentStateIndex = _props$.currentStateIndex,
-      setCurrentStateIndex = _props$.setCurrentStateIndex,
-      undoOrRedoAction = _props$.undoOrRedoAction,
-      setUndoOrRedoAction = _props$.setUndoOrRedoAction,
-      undoOrRedoTimeStamp = _props$.undoOrRedoTimeStamp,
-      setUndoOrRedoTimeStamp = _props$.setUndoOrRedoTimeStamp;
+  var _props$0$historyData = props[0].historyData,
+      nodesState = _props$0$historyData.nodesState,
+      currentStateIndex = _props$0$historyData.currentStateIndex;
 
-  if (props[1].type !== 'REDO_CHANGES' && props[1].type !== 'UNDO_CHANGES' && props[1].type !== 'HYDRATE_DEFAULT_NODES' || !nodesState.length) {
-    var prevAction = nodesState[currentStateIndex] && nodesState[currentStateIndex].action;
 
-    setUndoOrRedoAction(0);
+  switch (props[1].type) {
+    case "UNDO_CHANGES":
+      {
+        if (currentStateIndex > 0) {
+          return {
+            nodes: nodesState[currentStateIndex - 1].state,
+            historyData: {
+              currentStateIndex: currentStateIndex - 1,
+              nodesState: nodesState
+            }
+          };
+        }
+        return props[0];
+      }
+    case "REDO_CHANGES":
+      {
+        if (currentStateIndex < nodesState.length - 1) {
+          return {
+            nodes: nodesState[currentStateIndex + 1].state,
+            historyData: {
+              currentStateIndex: currentStateIndex + 1,
+              nodesState: nodesState
+            }
+          };
+        }
+        return props[0];
+      }
+    default:
+      {
 
-    if (!_.isEqual(prevAction, props[1])) {
+        // if (nodesState.length > 1 && currentStateIndex < nodesState.length -
+        // 1)
+        //   setNodesState(ns => ns.slice(0, currentStateIndex + 1))
+        //
+        //     setNodesState(ns => [...ns, {action: props[1], state:
+        // copyObj(st)}]) setCurrentStateIndex(i => i + 1)
 
-      if (nodesState.length > 1 && currentStateIndex < nodesState.length - 1) setNodesState(function (ns) {
-        return ns.slice(0, currentStateIndex + 1);
-      });
 
-      setNodesState(function (ns) {
-        return [].concat(toConsumableArray(ns), [{ action: props[1], state: copyObj(st) }]);
-      });
-      setCurrentStateIndex(function (i) {
-        return i + 1;
-      });
+        var _nodesState = props[0].historyData.nodesState;
+        var nodes = nodesReducer.apply(undefined, props);
+        var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;
 
-      console.log(currentStateIndex);
-      console.log(nodesState);
-    }
+        return {
+          nodes: nodes,
+          historyData: {
+            nodesState: [].concat(toConsumableArray(_nodesState.slice(0, isSlice ? currentStateIndex + 1 : _nodesState.length)), [{
+              action: props[1],
+              state: nodes
+            }]),
+            currentStateIndex: currentStateIndex + 1
+          }
+        };
+      }
   }
-
-  return st;
 });
 
 var setComment = function setComment(comments, id, merge) {
@@ -7887,45 +7856,25 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       spaceIsPressed = _React$useState4[0],
       setSpaceIsPressed = _React$useState4[1];
 
-  var _useState = React.useState([]),
-      _useState2 = slicedToArray(_useState, 2),
-      nodesState = _useState2[0],
-      setNodesState = _useState2[1];
-
-  var _useState3 = React.useState(-1),
-      _useState4 = slicedToArray(_useState3, 2),
-      currentStateIndex = _useState4[0],
-      setCurrentStateIndex = _useState4[1];
-
-  var _useState5 = React.useState(0),
-      _useState6 = slicedToArray(_useState5, 2),
-      undoOrRedoAction = _useState6[0],
-      setUndoOrRedoAction = _useState6[1];
-
-  var _useState7 = React.useState(new Date().getTime()),
-      _useState8 = slicedToArray(_useState7, 2),
-      undoOrRedoTimeStamp = _useState8[0],
-      setUndoOrRedoTimeStamp = _useState8[1];
-
   var _React$useReducer3 = React__default.useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
     portTypes: portTypes,
     cache: cache,
     circularBehavior: circularBehavior,
-    context: context,
-    nodesState: nodesState,
-    setNodesState: setNodesState,
-    currentStateIndex: currentStateIndex,
-    setCurrentStateIndex: setCurrentStateIndex,
-    undoOrRedoAction: undoOrRedoAction,
-    setUndoOrRedoAction: setUndoOrRedoAction,
-    undoOrRedoTimeStamp: undoOrRedoTimeStamp,
-    setUndoOrRedoTimeStamp: setUndoOrRedoTimeStamp
+    context: context
   }, setSideEffectToasts), {}, function () {
-    return getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context);
+    return {
+      nodes: getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context),
+      historyData: {
+        nodesState: [],
+        currentStateIndex: -1
+        // newUndoOrRedoAction: 0,
+        // newUndoOrRedoTimeStamp: new Date().getTime()
+      }
+    };
   }),
       _React$useReducer4 = slicedToArray(_React$useReducer3, 2),
-      nodes = _React$useReducer4[0],
+      nodes = _React$useReducer4[0].nodes,
       dispatchNodes = _React$useReducer4[1];
 
   var previousNodes = usePrevious$1(nodes);
@@ -8098,7 +8047,6 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     REDO_CHANGES: redoChanges
   };
 
-  console.log(nodes);
   return React__default.createElement(
     PortTypesContext.Provider,
     { value: portTypes },
