@@ -1,7 +1,6 @@
 import React, {
-  createRef, useEffect,
-  useRef,
-  useState
+  useEffect,
+  useRef
 } from 'react'
 import {useId} from '@reach/auto-id'
 import Stage from './components/Stage/Stage'
@@ -34,7 +33,6 @@ import Cache from './Cache'
 import {STAGE_ID, DRAG_CONNECTION_ID} from './constants'
 import styles from './styles.css'
 import Selection from 'react-ds/dist'
-import {HotKeys} from 'react-hotkeys'
 import useSelect from './hooks/useSelect'
 
 const defaultContext = {}
@@ -49,7 +47,7 @@ export let NodeEditor = (
     context = defaultContext,
     // onChange,
     // onCommentsChange,
-    connector: {action: connectorAction, setNodes, setComments},
+    connector,
     initialScale,
     // spaceToPan = true,
     hideComments = false,
@@ -98,6 +96,9 @@ export let NodeEditor = (
       currentStateIndex: 0,
     })
   )
+  const {action: connectorAction, setNodes, setComments} =
+  connector
+  || {action: null, setNodes: null, setComments: null}
   const nodes = nodesState[currentStateIndex].state
   const previousNodes = usePrevious(nodes)
   const [comments, dispatchComments] = React.useReducer(
@@ -117,13 +118,32 @@ export let NodeEditor = (
         case "REDO":
           redoChanges()
           break
+        case "COPY":
+          dispatchNodes({
+            type: 'COPY_NODES',
+            selectedNodeIds: selectedNodes
+          })
+          break
+        case "CUT":
+          dispatchNodes({
+            type: 'CUT_NODES',
+            selectedNodeIds: selectedNodes
+          })
+
+          clearConnections()
+          triggerRecalculation()
+          break
+        case "PASTE":
+          dispatchNodes({type: 'PASTE_NODES'})
+
+          clearConnections()
+          triggerRecalculation()
+          break
         default:
           break
       }
     }
   }, [connectorAction]);
-
-  useEffect(() => {console.log(nodes)}, [nodes])
 
   React.useEffect(() => {
     dispatchNodes({type: 'HYDRATE_DEFAULT_NODES'})

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "normalize.css";
 import styled from 'styled-components'
 
@@ -207,11 +207,22 @@ export default () => {
   //     console.log = Log
   //   }
   // })
+
+  // useEffect(() => {
+  //   console.log(nodes)
+  // })
+
   return (
     <div className="wrapper" style={{width: '100vw', height: '100vh'}}>
       <ControlsBlock>
-        <button onClick={() => dispatch("UNDO")}>Undo</button>
-        <button onClick={() => dispatch("REDO")}>Redo</button>
+        <button onClick={() => {
+          console.log('I hit')
+          dispatch("UNDO")
+        }}>Undo</button>
+        <button onClick={() => dispatch("REDO", {})}>Redo</button>
+        <button onClick={() => dispatch("COPY")}>Copy</button>
+        <button onClick={() => dispatch("CUT")}>Cut</button>
+        <button onClick={() => dispatch("PASTE")}>Paste</button>
       </ControlsBlock>
       <NodeEditor
         portTypes={config.portTypes}

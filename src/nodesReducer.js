@@ -4,6 +4,8 @@ import {
 } from "./connectionCalculator";
 import {checkForCircularNodes} from "./utilities";
 import nanoid from "nanoid/non-secure/index";
+import _ from 'lodash'
+import md5 from 'md5'
 
 const copyObj = (o) => JSON.parse(JSON.stringify(o))
 
@@ -176,6 +178,20 @@ const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
   return reconciledNodes;
 };
 
+const copyNodes = (nodes, selectedNodeIds) => {
+  const nodesToDelete = _.difference(
+    _.keys(nodes),
+    selectedNodeIds
+  )
+  const nodesToCopy = nodesToDelete.reduce((stayNodes, id) =>
+    removeNode(stayNodes, id), nodes)
+
+  localStorage.setItem('clipboard', JSON.stringify({
+    application: "PythonRPA",
+    nodes: nodesToCopy
+  }))
+}
+
 export const getInitialNodes = (
   initialNodes = {},
   defaultNodes = [],
@@ -335,21 +351,87 @@ const nodesReducer = (
       };
     }
 
+    case 'COPY_NODES': {
+      const selectedNodeIds = _.difference(
+        action.selectedNodeIds,
+        _.keys(_.pickBy(nodes, ({root}) => root))
+      )
+      if (!selectedNodeIds.length) return nodes
+
+      copyNodes(nodes, selectedNodeIds)
+
+      return nodes
+    }
+
+    case 'CUT_NODES': {
+
+      const selectedNodeIds = _.difference(
+        action.selectedNodeIds,
+        _.keys(_.pickBy(nodes, ({root}) => root))
+      )
+
+      if (!selectedNodeIds.length) return nodes
+
+      copyNodes(nodes, selectedNodeIds)
+
+      const leftNodes = selectedNodeIds.reduce((stayNodes, id) =>
+        removeNode(stayNodes, id), nodes)
+
+      return leftNodes
+    }
+
+    case 'PASTE_NODES': {
+      const JSONString = localStorage.getItem('clipboard')
+      const {application, nodes: newNodes} = JSON.parse(JSONString)
+
+      if (application === "PythonRPA" && newNodes) {
+        const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
+          const newId = nanoid(10);
+          return jsonString.replaceAll(`"${id}"`, `"${newId}"`)
+        }, JSON.stringify(newNodes))
+        const newJSON = JSON.parse(newJSONString)
+
+        _.forOwn(newJSON,(_, key) => {
+          newJSON[key] = {
+            ...newJSON[key],
+            x: newJSON[key].x + 20,
+            y: newJSON[key].y + 20
+          }
+        })
+        localStorage.setItem('clipboard', JSON.stringify({
+          application: "PythonRPA",
+          nodes: newJSON
+        }))
+
+        return {
+          ...nodes,
+          ...newJSON
+        }
+      }
+
+      return nodes
+    }
+
+
     case "REMOVE_NODE": {
       const {nodeId} = action;
+
       return removeNode(nodes, nodeId);
     }
 
     case "HYDRATE_DEFAULT_NODES": {
-      const newNodes = {...nodes};
+      const newNodes = {...nodes}
+
       for (const key in newNodes) {
         if (newNodes[key].defaultNode) {
           const newNodeId = nanoid(10);
           const {id, defaultNode, ...node} = newNodes[key];
+
           newNodes[newNodeId] = {...node, id: newNodeId};
           delete newNodes[key];
         }
       }
+
       return newNodes;
     }
 
@@ -371,7 +453,7 @@ const nodesReducer = (
           ...nodes[nodeId],
           inputData: newData
         }
-      };
+      }
     }
 
     case "SET_NODE_COORDINATES": {
@@ -427,16 +509,15 @@ export default (...props) => {
       )
     }
     case "REDO_CHANGES": {
-
-      console.log(currentStateIndex + 1 < nodesState.length
-                  ? currentStateIndex + 1 : currentStateIndex)
-      console.log(nodesState)
-
       return (
         currentStateIndex + 1 < nodesState.length
         ? {currentStateIndex: currentStateIndex + 1, nodesState}
         : copyObj(props[0])
       )
+    }
+    case "COPY_NODES": {
+      nodesReducer(...props)
+      return copyObj(props[0])
     }
     default: {
       const nodesState = props[0].nodesState
