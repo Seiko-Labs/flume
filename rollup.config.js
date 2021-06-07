@@ -22,7 +22,7 @@ export default {
       sourcemap: true
     }
   ],
-  external: [ 'react', 'react-dom' ],
+  external: [ 'react', 'react-dom', 'react-hotkeys', 'lodash'],
   plugins: [
     external(),
     postcss({

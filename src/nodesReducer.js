@@ -2,48 +2,49 @@ import {
   deleteConnection,
   deleteConnectionsByNodeId
 } from "./connectionCalculator";
-import { checkForCircularNodes } from "./utilities";
+import {checkForCircularNodes} from "./utilities";
 import nanoid from "nanoid/non-secure/index";
+import _ from 'lodash'
+import md5 from 'md5'
 
-const addConnection = (nodes, input, output, portTypes) => {
-  const newNodes = {
-    ...nodes,
-    [input.nodeId]: {
-      ...nodes[input.nodeId],
-      connections: {
-        ...nodes[input.nodeId].connections,
-        inputs: {
-          ...nodes[input.nodeId].connections.inputs,
-          [input.portName]: [
-            ...(nodes[input.nodeId].connections.inputs[input.portName] || []),
-            {
-              nodeId: output.nodeId,
-              portName: output.portName
-            }
-          ]
-        }
-      }
-    },
-    [output.nodeId]: {
-      ...nodes[output.nodeId],
-      connections: {
-        ...nodes[output.nodeId].connections,
-        outputs: {
-          ...nodes[output.nodeId].connections.outputs,
-          [output.portName]: [
-            ...(nodes[output.nodeId].connections.outputs[output.portName] ||
-              []),
-            {
-              nodeId: input.nodeId,
-              portName: input.portName
-            }
-          ]
-        }
+const copyObj = (o) => JSON.parse(JSON.stringify(o))
+
+const addConnection = (nodes, input, output, portTypes) => ({
+  ...nodes,
+  [input.nodeId]: {
+    ...nodes[input.nodeId],
+    connections: {
+      ...nodes[input.nodeId].connections,
+      inputs: {
+        ...nodes[input.nodeId].connections.inputs,
+        [input.portName]: [
+          ...(nodes[input.nodeId].connections.inputs[input.portName] || []),
+          {
+            nodeId: output.nodeId,
+            portName: output.portName
+          }
+        ]
       }
     }
-  };
-  return newNodes;
-};
+  },
+  [output.nodeId]: {
+    ...nodes[output.nodeId],
+    connections: {
+      ...nodes[output.nodeId].connections,
+      outputs: {
+        ...nodes[output.nodeId].connections.outputs,
+        [output.portName]: [
+          ...(nodes[output.nodeId].connections.outputs[output.portName] ||
+            []),
+          {
+            nodeId: input.nodeId,
+            portName: input.portName
+          }
+        ]
+      }
+    }
+  }
+});
 
 const removeConnection = (nodes, input, output) => {
   const inputNode = nodes[input.nodeId];
@@ -62,7 +63,7 @@ const removeConnection = (nodes, input, output) => {
   const outputNode = nodes[output.nodeId];
   const filteredOutputNodes = outputNode.connections.outputs[
     output.portName
-  ].filter(cnx => {
+    ].filter(cnx => {
     return cnx.nodeId === input.nodeId ? cnx.portName !== input.portName : true;
   });
   const newOutputNode = {
@@ -98,7 +99,7 @@ const removeConnections = (connections, nodeId) => ({
 });
 
 const removeNode = (startNodes, nodeId) => {
-  let { [nodeId]: deletedNode, ...nodes } = startNodes;
+  let {[nodeId]: deletedNode, ...nodes} = startNodes;
   nodes = Object.values(nodes).reduce((obj, node) => {
     obj[node.id] = {
       ...node,
@@ -112,7 +113,7 @@ const removeNode = (startNodes, nodeId) => {
 };
 
 const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
-  let nodes = { ...initialNodes };
+  let nodes = {...initialNodes};
 
   // Delete extraneous nodes
   let nodesToDelete = Object.values(nodes)
@@ -126,14 +127,19 @@ const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
         type: "REMOVE_NODE",
         nodeId
       },
-      { nodeTypes, portTypes, context }
+      {nodeTypes, portTypes, context}
     );
   });
 
   // Reconcile input data for each node
   let reconciledNodes = Object.values(nodes).reduce((nodesObj, node) => {
     const nodeType = nodeTypes[node.type];
-    const defaultInputData = getDefaultData({ node, nodeType, portTypes, context });
+    const defaultInputData = getDefaultData({
+      node,
+      nodeType,
+      portTypes,
+      context
+    });
     const currentInputData = Object.entries(node.inputData).reduce(
       (dataObj, [key, data]) => {
         if (defaultInputData[key] !== undefined) {
@@ -156,7 +162,7 @@ const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
 
   // Reconcile node attributes for each node
   reconciledNodes = Object.values(reconciledNodes).reduce((nodesObj, node) => {
-    let newNode = { ...node };
+    let newNode = {...node};
     const nodeType = nodeTypes[node.type];
     if (nodeType.root !== node.root) {
       if (nodeType.root && !node.root) {
@@ -171,6 +177,20 @@ const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
 
   return reconciledNodes;
 };
+
+const copyNodes = (nodes, selectedNodeIds) => {
+  const nodesToDelete = _.difference(
+    _.keys(nodes),
+    selectedNodeIds
+  )
+  const nodesToCopy = nodesToDelete.reduce((stayNodes, id) =>
+    removeNode(stayNodes, id), nodes)
+
+  localStorage.setItem('clipboard', JSON.stringify({
+    application: "PythonRPA",
+    nodes: nodesToCopy
+  }))
+}
 
 export const getInitialNodes = (
   initialNodes = {},
@@ -198,7 +218,7 @@ export const getInitialNodes = (
             y: dNode.y || 0,
             nodeType: dNode.type
           },
-          { nodeTypes, portTypes, context }
+          {nodeTypes, portTypes, context}
         );
       }
       return nodes;
@@ -206,10 +226,10 @@ export const getInitialNodes = (
   };
 };
 
-const getDefaultData = ({ node, nodeType, portTypes, context }) => {
+const getDefaultData = ({node, nodeType, portTypes, context}) => {
   const inputs = Array.isArray(nodeType.inputs)
-    ? nodeType.inputs
-    : nodeType.inputs(node.inputData, node.connections, context);
+                 ? nodeType.inputs
+                 : nodeType.inputs(node.inputData, node.connections, context);
   return inputs.reduce((obj, input) => {
     const inputType = portTypes[input.type];
     obj[input.name || inputType.name] = (
@@ -225,17 +245,24 @@ const getDefaultData = ({ node, nodeType, portTypes, context }) => {
 };
 
 const nodesReducer = (
-  nodes,
+  {nodesState, currentStateIndex},
   action = {},
-  { nodeTypes, portTypes, cache, circularBehavior, context },
+  {
+    nodeTypes,
+    portTypes,
+    cache,
+    circularBehavior,
+    context,
+  },
   dispatchToasts
 ) => {
+  const nodes = (nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state) || {}
   switch (action.type) {
     case "ADD_CONNECTION": {
-      const { input, output } = action;
+      const {input, output} = action;
       const inputIsNotConnected = !nodes[input.nodeId].connections.inputs[
         input.portName
-      ];
+        ];
       if (inputIsNotConnected) {
         const allowCircular = circularBehavior === "warn" || circularBehavior === "allow"
         const newNodes = addConnection(nodes, input, output, portTypes);
@@ -250,7 +277,7 @@ const nodesReducer = (
           });
           return nodes;
         } else {
-          if(isCircular && circularBehavior === "warn"){
+          if (isCircular && circularBehavior === "warn") {
             dispatchToasts({
               type: "ADD_TOAST",
               title: "Circular Connection Detected",
@@ -265,16 +292,16 @@ const nodesReducer = (
     }
 
     case "REMOVE_CONNECTION": {
-      const { input, output } = action;
+      const {input, output} = action;
       const id =
         output.nodeId + output.portName + input.nodeId + input.portName;
       delete cache.current.connections[id];
-      deleteConnection({ id });
+      deleteConnection({id});
       return removeConnection(nodes, input, output);
     }
 
     case "DESTROY_TRANSPUT": {
-      const { transput, transputType } = action;
+      const {transput, transputType} = action;
       const portId = transput.nodeId + transput.portName + transputType;
       delete cache.current.ports[portId];
 
@@ -286,13 +313,13 @@ const nodesReducer = (
         const [input, output] = transputType === 'input' ? [transput, cnx] : [cnx, transput];
         const id = output.nodeId + output.portName + input.nodeId + input.portName;
         delete cache.current.connections[id];
-        deleteConnection({ id });
+        deleteConnection({id});
         return removeConnection(nodes, input, output);
       }, nodes);
     }
 
     case "ADD_NODE": {
-      const { x, y, nodeType, id, defaultNode } = action;
+      const {x, y, nodeType, id, defaultNode} = action;
       const newNodeId = id || nanoid(10);
       const newNode = {
         id: newNodeId,
@@ -324,26 +351,92 @@ const nodesReducer = (
       };
     }
 
+    case 'COPY_NODES': {
+      const selectedNodeIds = _.difference(
+        action.selectedNodeIds,
+        _.keys(_.pickBy(nodes, ({root}) => root))
+      )
+      if (!selectedNodeIds.length) return nodes
+
+      copyNodes(nodes, selectedNodeIds)
+
+      return nodes
+    }
+
+    case 'CUT_NODES': {
+
+      const selectedNodeIds = _.difference(
+        action.selectedNodeIds,
+        _.keys(_.pickBy(nodes, ({root}) => root))
+      )
+
+      if (!selectedNodeIds.length) return nodes
+
+      copyNodes(nodes, selectedNodeIds)
+
+      const leftNodes = selectedNodeIds.reduce((stayNodes, id) =>
+        removeNode(stayNodes, id), nodes)
+
+      return leftNodes
+    }
+
+    case 'PASTE_NODES': {
+      const JSONString = localStorage.getItem('clipboard')
+      const {application, nodes: newNodes} = JSON.parse(JSONString)
+
+      if (application === "PythonRPA" && newNodes) {
+        const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
+          const newId = nanoid(10);
+          return jsonString.replaceAll(`"${id}"`, `"${newId}"`)
+        }, JSON.stringify(newNodes))
+        const newJSON = JSON.parse(newJSONString)
+
+        _.forOwn(newJSON,(_, key) => {
+          newJSON[key] = {
+            ...newJSON[key],
+            x: newJSON[key].x + 20,
+            y: newJSON[key].y + 20
+          }
+        })
+        localStorage.setItem('clipboard', JSON.stringify({
+          application: "PythonRPA",
+          nodes: newJSON
+        }))
+
+        return {
+          ...nodes,
+          ...newJSON
+        }
+      }
+
+      return nodes
+    }
+
+
     case "REMOVE_NODE": {
-      const { nodeId } = action;
+      const {nodeId} = action;
+
       return removeNode(nodes, nodeId);
     }
 
     case "HYDRATE_DEFAULT_NODES": {
-      const newNodes = { ...nodes };
+      const newNodes = {...nodes}
+
       for (const key in newNodes) {
         if (newNodes[key].defaultNode) {
           const newNodeId = nanoid(10);
-          const { id, defaultNode, ...node } = newNodes[key];
-          newNodes[newNodeId] = {...node, id: newNodeId };
+          const {id, defaultNode, ...node} = newNodes[key];
+
+          newNodes[newNodeId] = {...node, id: newNodeId};
           delete newNodes[key];
         }
       }
+
       return newNodes;
     }
 
     case "SET_PORT_DATA": {
-      const { nodeId, portName, controlName, data, setValue } = action;
+      const {nodeId, portName, controlName, data, setValue} = action;
       let newData = {
         ...nodes[nodeId].inputData,
         [portName]: {
@@ -360,11 +453,11 @@ const nodesReducer = (
           ...nodes[nodeId],
           inputData: newData
         }
-      };
+      }
     }
 
     case "SET_NODE_COORDINATES": {
-      const { x, y, nodeId } = action;
+      const {x, y, nodeId} = action;
       return {
         ...nodes,
         [nodeId]: {
@@ -372,6 +465,21 @@ const nodesReducer = (
           x,
           y
         }
+      };
+    }
+
+    case "SET_MULTIPLE_NODES_COORDINATES": {
+      const {nodesInfo} = action;
+      return {
+        ...nodes,
+        ...Object.assign({}, ...nodesInfo.map(({nodeId, x, y}) => ({
+            [nodeId]: {
+              ...nodes[nodeId],
+              x,
+              y
+            }
+          }))
+        ),
       };
     }
 
@@ -385,4 +493,61 @@ export const connectNodesReducer = (reducer, environment, dispatchToasts) => (
   action
 ) => reducer(state, action, environment, dispatchToasts);
 
-export default nodesReducer;
+
+export default (...props) => {
+  const {
+    nodesState,
+    currentStateIndex,
+  } = props[0]
+
+  switch (props[1].type) {
+    case "UNDO_CHANGES": {
+      return (
+        currentStateIndex > 0
+        ? {currentStateIndex: currentStateIndex - 1, nodesState}
+        : copyObj(props[0])
+      )
+    }
+    case "REDO_CHANGES": {
+      return (
+        currentStateIndex + 1 < nodesState.length
+        ? {currentStateIndex: currentStateIndex + 1, nodesState}
+        : copyObj(props[0])
+      )
+    }
+    case "COPY_NODES": {
+      nodesReducer(...props)
+      return copyObj(props[0])
+    }
+    default: {
+      const nodesState = props[0].nodesState
+      const nodes = nodesReducer(...props)
+      const isSlice = nodesState.length > 1
+                      && currentStateIndex < nodesState.length - 1
+
+      return (
+        props[1].type === "HYDRATE_DEFAULT_NODES"
+        ? {
+            nodesState: [{action: props[1], state: nodes}],
+            currentStateIndex: 0
+          }
+        : {
+            nodesState:
+              [
+                ...nodesState.slice(
+                  0,
+                  isSlice
+                  ? currentStateIndex + 1
+                  : nodesState.length
+                ),
+                {
+                  action: props[1],
+                  state: nodes
+                }
+              ],
+            currentStateIndex: currentStateIndex + 1
+          }
+      )
+    }
+  }
+}
