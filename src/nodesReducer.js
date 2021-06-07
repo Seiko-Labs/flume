@@ -229,7 +229,7 @@ const getDefaultData = ({node, nodeType, portTypes, context}) => {
 };
 
 const nodesReducer = (
-  {nodes},
+  {nodesState, currentStateIndex},
   action = {},
   {
     nodeTypes,
@@ -240,6 +240,7 @@ const nodesReducer = (
   },
   dispatchToasts
 ) => {
+  const nodes = (nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state) || {}
   switch (action.type) {
     case "ADD_CONNECTION": {
       const {input, output} = action;
@@ -415,23 +416,13 @@ export default (...props) => {
   const {
     nodesState,
     currentStateIndex,
-  } = props[0].historyData
+  } = props[0]
 
   switch (props[1].type) {
     case "UNDO_CHANGES": {
-
-      console.log(currentStateIndex - 1)
-      console.log(nodesState)
-
       return (
         currentStateIndex > 0
-        ? {
-            nodes: nodesState[currentStateIndex - 1].state,
-            historyData: {
-              currentStateIndex: currentStateIndex - 1,
-              nodesState
-            }
-          }
+        ? {currentStateIndex: currentStateIndex - 1, nodesState}
         : copyObj(props[0])
       )
     }
@@ -443,37 +434,39 @@ export default (...props) => {
 
       return (
         currentStateIndex + 1 < nodesState.length
-        ? {
-            nodes: nodesState[currentStateIndex + 1].state,
-            historyData: {
-              currentStateIndex: currentStateIndex + 1,
-              nodesState
-            }
-          }
+        ? {currentStateIndex: currentStateIndex + 1, nodesState}
         : copyObj(props[0])
       )
     }
     default: {
-      const nodesState = props[0].historyData.nodesState
+      const nodesState = props[0].nodesState
       const nodes = nodesReducer(...props)
       const isSlice = nodesState.length > 1
                       && currentStateIndex < nodesState.length - 1
 
-      return {
-        nodes,
-        historyData: {
-          nodesState:
-            [
-              ...nodesState.slice(0, isSlice ? currentStateIndex + 1 : nodesState.length),
-              {
-                action: props[1],
-                state: nodes
-              }
-            ],
-          currentStateIndex: currentStateIndex + 1
-        }
-      }
+      return (
+        props[1].type === "HYDRATE_DEFAULT_NODES"
+        ? {
+            nodesState: [{action: props[1], state: nodes}],
+            currentStateIndex: 0
+          }
+        : {
+            nodesState:
+              [
+                ...nodesState.slice(
+                  0,
+                  isSlice
+                  ? currentStateIndex + 1
+                  : nodesState.length
+                ),
+                {
+                  action: props[1],
+                  state: nodes
+                }
+              ],
+            currentStateIndex: currentStateIndex + 1
+          }
+      )
     }
   }
-
 }

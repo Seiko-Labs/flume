@@ -1,5 +1,5 @@
 import React, {
-  createRef,
+  createRef, useEffect,
   useRef,
   useState
 } from 'react'
@@ -42,19 +42,20 @@ const defaultContext = {}
 export let NodeEditor = (
   {
     comments: initialComments,
-    nodes: initialNodes,
+    nodes: initialNodes = {},
     nodeTypes = {},
     portTypes = {},
     defaultNodes = [],
     context = defaultContext,
-    onChange,
-    onCommentsChange,
+    // onChange,
+    // onCommentsChange,
+    connector: {action: connectorAction, setNodes, setComments},
     initialScale,
-    spaceToPan = true,
+    // spaceToPan = true,
     hideComments = false,
     disableComments = false,
-    disableZoom = false,
-    disablePan = false,
+    // disableZoom = false,
+    // disablePan = false,
     circularBehavior,
     debug
   },
@@ -67,8 +68,7 @@ export let NodeEditor = (
   const [toasts, dispatchToasts] = React.useReducer(toastsReducer, [])
   const editorRef = useRef()
   const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
-
-  const [{nodes}, dispatchNodes
+  const [{nodesState, currentStateIndex}, dispatchNodes
   ] = React.useReducer(
     connectNodesReducer(
       nodesReducer,
@@ -83,27 +83,47 @@ export let NodeEditor = (
     ),
     {},
     () => ({
-      nodes: getInitialNodes(
-        initialNodes,
-        defaultNodes,
-        nodeTypes,
-        portTypes,
-        context
-      ),
-      historyData: {
-        nodesState: [],
-        currentStateIndex: -1,
-        // newUndoOrRedoAction: 0,
-        // newUndoOrRedoTimeStamp: new Date().getTime()
-      }
+      nodesState: [
+        {
+          state: getInitialNodes(
+            initialNodes,
+            defaultNodes,
+            nodeTypes,
+            portTypes,
+            context
+          ),
+          action: {type: "INITIAL"}
+        }
+      ],
+      currentStateIndex: 0,
     })
   )
+  const nodes = nodesState[currentStateIndex].state
   const previousNodes = usePrevious(nodes)
   const [comments, dispatchComments] = React.useReducer(
     commentsReducer,
     initialComments || {}
   )
   const [selectedNodes, nodeRefs, handleSelection, clearSelection] = useSelect(nodes, previousNodes)
+
+  useEffect(() => {
+    if (connectorAction) {
+      const {type, data} = connectorAction()
+
+      switch (type) {
+        case "UNDO":
+          undoChanges()
+          break
+        case "REDO":
+          redoChanges()
+          break
+        default:
+          break
+      }
+    }
+  }, [connectorAction]);
+
+  useEffect(() => {console.log(nodes)}, [nodes])
 
   React.useEffect(() => {
     dispatchNodes({type: 'HYDRATE_DEFAULT_NODES'})
@@ -197,18 +217,21 @@ export let NodeEditor = (
   }))
 
   React.useMemo(() => {
-    previousNodes && nodes !== previousNodes && onChange && onChange(nodes)
-  }, [nodes, previousNodes, onChange])
+    previousNodes
+    && nodes !== previousNodes
+    && setNodes
+    && setNodes(nodes)
+  }, [nodes, previousNodes, setNodes])
 
 
   const previousComments = usePrevious(comments)
 
   React.useEffect(() => {
     previousComments
-    && onCommentsChange
     && comments !== previousComments
-    && onCommentsChange(comments)
-  }, [comments, previousComments, onCommentsChange])
+    && setComments
+    && setComments(comments)
+  }, [comments, previousComments, setComments])
 
   React.useEffect(() => {
     if (sideEffectToasts) {
@@ -217,13 +240,13 @@ export let NodeEditor = (
     }
   }, [sideEffectToasts])
 
-  const keyMap = {
-    COPY_NODES: 'ctrl+c',
-    PASTE_NODES: 'ctrl+v',
-    CUT_NODES: 'ctrl+x',
-    UNDO_CHANGES: 'ctrl+z',
-    REDO_CHANGES: 'ctrl+y',
-  }
+  // const keyMap = {
+  //   COPY_NODES: 'ctrl+c',
+  //   PASTE_NODES: 'ctrl+v',
+  //   CUT_NODES: 'ctrl+x',
+  //   UNDO_CHANGES: 'ctrl+z',
+  //   REDO_CHANGES: 'ctrl+y',
+  // }
 
   const copyNodes = () => console.log('Copy nodes')
   const pasteNodes = () => console.log('Paste nodes')
@@ -245,13 +268,13 @@ export let NodeEditor = (
     triggerRecalculation()
   }
 
-  const handlers = {
-    COPY_NODES: copyNodes,
-    PASTE_NODES: pasteNodes,
-    CUT_NODES: cutNodes,
-    UNDO_CHANGES: undoChanges,
-    REDO_CHANGES: redoChanges,
-  }
+  // const handlers = {
+  //   COPY_NODES: copyNodes,
+  //   PASTE_NODES: pasteNodes,
+  //   CUT_NODES: cutNodes,
+  //   UNDO_CHANGES: undoChanges,
+  //   REDO_CHANGES: redoChanges,
+  // }
 
   return (
     <PortTypesContext.Provider value={portTypes}>
@@ -285,88 +308,88 @@ export let NodeEditor = (
                           style={spaceIsPressed ? {display: 'none'} : {}}
                         />
                       }
-                      <HotKeys keyMap={keyMap} handlers={handlers}
-                               style={{height: '100%'}}>
-                        <Stage
-                          ref={editorRef}
-                          editorId={editorId}
-                          setSpaceIsPressed={setSpaceIsPressed}
-                          scale={stageState.scale}
-                          translate={stageState.translate}
-                          spaceToPan={spaceToPan}
-                          disablePan={disablePan}
-                          disableZoom={disableZoom}
-                          dispatchStageState={dispatchStageState}
-                          dispatchComments={dispatchComments}
-                          disableComments={disableComments || hideComments}
-                          stageRef={stage}
-                          numNodes={Object.keys(nodes).length}
-                          outerStageChildren={
-                            <React.Fragment>
-                              {debug && (
-                                <div className={styles.debugWrapper}>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() => console.log(nodes)}
-                                  >
-                                    Log Nodes
-                                  </button>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() =>
-                                      console.log(JSON.stringify(nodes))
-                                    }
-                                  >
-                                    Export Nodes
-                                  </button>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() => console.log(comments)}
-                                  >
-                                    Log Comments
-                                  </button>
-                                </div>
-                              )}
-                              <Toaster
-                                toasts={toasts}
-                                dispatchToasts={dispatchToasts}
-                              />
-                            </React.Fragment>
-                          }
-                        >
-                          {!hideComments &&
-                           Object.values(comments).map(comment => (
-                             <Comment
-                               {...comment}
-                               stageRect={stage}
-                               dispatch={dispatchComments}
-                               onDragStart={recalculateStageRect}
-                               key={comment.id}
-                             />
-                           ))}
-                          {Object.values(nodes).map((node) => (
-                            <Node
-                              {...node}
-                              isSelected={selectedNodes.includes(node.id)}
-                              ref={
-                                nodeRefs.find(([n,]) => n.id === node.id)
-                                ? nodeRefs.find(([n,]) => n.id === node.id)[1]
-                                : null
-                              }
-                              stageRect={stage}
-                              onDragEnd={handleDragEnd}
-                              onDragHandle={dragSelectedNodes}
-                              onDragStart={recalculateStageRect}
-                              key={node.id}
+                      {/*<HotKeys keyMap={keyMap} handlers={handlers}*/}
+                      {/*         style={{height: '100%'}}>*/}
+                      <Stage
+                        ref={editorRef}
+                        editorId={editorId}
+                        setSpaceIsPressed={setSpaceIsPressed}
+                        scale={stageState.scale}
+                        translate={stageState.translate}
+                        spaceToPan={true}
+                        disablePan={false}
+                        disableZoom={false}
+                        dispatchStageState={dispatchStageState}
+                        dispatchComments={dispatchComments}
+                        disableComments={disableComments || hideComments}
+                        stageRef={stage}
+                        numNodes={Object.keys(nodes).length}
+                        outerStageChildren={
+                          <React.Fragment>
+                            {debug && (
+                              <div className={styles.debugWrapper}>
+                                <button
+                                  className={styles.debugButton}
+                                  onClick={() => console.log(nodes)}
+                                >
+                                  Log Nodes
+                                </button>
+                                <button
+                                  className={styles.debugButton}
+                                  onClick={() =>
+                                    console.log(JSON.stringify(nodes))
+                                  }
+                                >
+                                  Export Nodes
+                                </button>
+                                <button
+                                  className={styles.debugButton}
+                                  onClick={() => console.log(comments)}
+                                >
+                                  Log Comments
+                                </button>
+                              </div>
+                            )}
+                            <Toaster
+                              toasts={toasts}
+                              dispatchToasts={dispatchToasts}
                             />
-                          ))}
-                          <Connections nodes={nodes} editorId={editorId}/>
-                          <div
-                            className={styles.dragWrapper}
-                            id={`${DRAG_CONNECTION_ID}${editorId}`}
+                          </React.Fragment>
+                        }
+                      >
+                        {!hideComments &&
+                         Object.values(comments).map(comment => (
+                           <Comment
+                             {...comment}
+                             stageRect={stage}
+                             dispatch={dispatchComments}
+                             onDragStart={recalculateStageRect}
+                             key={comment.id}
+                           />
+                         ))}
+                        {Object.values(nodes).map((node) => (
+                          <Node
+                            {...node}
+                            isSelected={selectedNodes.includes(node.id)}
+                            ref={
+                              nodeRefs.find(([n,]) => n.id === node.id)
+                              ? nodeRefs.find(([n,]) => n.id === node.id)[1]
+                              : null
+                            }
+                            stageRect={stage}
+                            onDragEnd={handleDragEnd}
+                            onDragHandle={dragSelectedNodes}
+                            onDragStart={recalculateStageRect}
+                            key={node.id}
                           />
-                        </Stage>
-                      </HotKeys>
+                        ))}
+                        <Connections nodes={nodes} editorId={editorId}/>
+                        <div
+                          className={styles.dragWrapper}
+                          id={`${DRAG_CONNECTION_ID}${editorId}`}
+                        />
+                      </Stage>
+                      {/*</HotKeys>*/}
                     </RecalculateStageRectContext.Provider>
                   </EditorIdContext.Provider>
                 </CacheContext.Provider>
@@ -382,5 +405,6 @@ export let NodeEditor = (
 NodeEditor = React.forwardRef(NodeEditor)
 export {FlumeConfig, Controls, Colors} from './typeBuilders'
 export {RootEngine} from './RootEngine'
+export useNodeEditorController from './hooks/useNodeEditorController'
 export const useRootEngine = (nodes, engine, context) =>
   Object.keys(nodes).length ? engine.resolveRootNode(nodes, {context}) : {}

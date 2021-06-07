@@ -8,7 +8,7 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
 var ReactDOM = _interopDefault(require('react-dom'));
-var reactHotkeys = require('react-hotkeys');
+require('react-hotkeys');
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -7231,7 +7231,8 @@ var getDefaultData = function getDefaultData(_ref5) {
 };
 
 var nodesReducer = function nodesReducer(_ref6) {
-  var nodes = _ref6.nodes;
+  var nodesState = _ref6.nodesState,
+      currentStateIndex = _ref6.currentStateIndex;
   var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var _ref7 = arguments[2];
   var nodeTypes = _ref7.nodeTypes,
@@ -7241,6 +7242,7 @@ var nodesReducer = function nodesReducer(_ref6) {
       context = _ref7.context;
   var dispatchToasts = arguments[3];
 
+  var nodes = nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state || {};
   switch (action.type) {
     case "ADD_CONNECTION":
       {
@@ -7433,25 +7435,15 @@ var nodesReducer$1 = (function () {
     props[_key] = arguments[_key];
   }
 
-  var _props$0$historyData = props[0].historyData,
-      nodesState = _props$0$historyData.nodesState,
-      currentStateIndex = _props$0$historyData.currentStateIndex;
+  var _props$ = props[0],
+      nodesState = _props$.nodesState,
+      currentStateIndex = _props$.currentStateIndex;
 
 
   switch (props[1].type) {
     case "UNDO_CHANGES":
       {
-
-        console.log(currentStateIndex - 1);
-        console.log(nodesState);
-
-        return currentStateIndex > 0 ? {
-          nodes: nodesState[currentStateIndex - 1].state,
-          historyData: {
-            currentStateIndex: currentStateIndex - 1,
-            nodesState: nodesState
-          }
-        } : copyObj(props[0]);
+        return currentStateIndex > 0 ? { currentStateIndex: currentStateIndex - 1, nodesState: nodesState } : copyObj(props[0]);
       }
     case "REDO_CHANGES":
       {
@@ -7459,29 +7451,23 @@ var nodesReducer$1 = (function () {
         console.log(currentStateIndex + 1 < nodesState.length ? currentStateIndex + 1 : currentStateIndex);
         console.log(nodesState);
 
-        return currentStateIndex + 1 < nodesState.length ? {
-          nodes: nodesState[currentStateIndex + 1].state,
-          historyData: {
-            currentStateIndex: currentStateIndex + 1,
-            nodesState: nodesState
-          }
-        } : copyObj(props[0]);
+        return currentStateIndex + 1 < nodesState.length ? { currentStateIndex: currentStateIndex + 1, nodesState: nodesState } : copyObj(props[0]);
       }
     default:
       {
-        var _nodesState = props[0].historyData.nodesState;
+        var _nodesState = props[0].nodesState;
         var nodes = nodesReducer.apply(undefined, props);
         var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;
 
-        return {
-          nodes: nodes,
-          historyData: {
-            nodesState: [].concat(toConsumableArray(_nodesState.slice(0, isSlice ? currentStateIndex + 1 : _nodesState.length)), [{
-              action: props[1],
-              state: nodes
-            }]),
-            currentStateIndex: currentStateIndex + 1
-          }
+        return props[1].type === "HYDRATE_DEFAULT_NODES" ? {
+          nodesState: [{ action: props[1], state: nodes }],
+          currentStateIndex: 0
+        } : {
+          nodesState: [].concat(toConsumableArray(_nodesState.slice(0, isSlice ? currentStateIndex + 1 : _nodesState.length)), [{
+            action: props[1],
+            state: nodes
+          }]),
+          currentStateIndex: currentStateIndex + 1
         };
       }
   }
@@ -7801,11 +7787,44 @@ var RootEngine = function () {
   return RootEngine;
 }();
 
+var useNodeEditorController = (function () {
+  var _useState = React.useState(null),
+      _useState2 = slicedToArray(_useState, 2),
+      action = _useState2[0],
+      setAction = _useState2[1];
+
+  var _useState3 = React.useState({}),
+      _useState4 = slicedToArray(_useState3, 2),
+      nodes = _useState4[0],
+      setNodes = _useState4[1];
+
+  var _useState5 = React.useState({}),
+      _useState6 = slicedToArray(_useState5, 2),
+      comments = _useState6[0],
+      setComments = _useState6[1];
+
+  var dispatch = function dispatch(type) {
+    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return setAction(function () {
+      return function () {
+        return { type: type, data: data };
+      };
+    });
+  };
+
+  React.useEffect(function () {
+    action && setAction(null);
+  }, [action]);
+
+  return [nodes, comments, dispatch, { action: action, setNodes: setNodes, setComments: setComments }];
+});
+
 var defaultContext = {};
 
 exports.NodeEditor = function NodeEditor(_ref, ref) {
   var initialComments = _ref.comments,
-      initialNodes = _ref.nodes,
+      _ref$nodes = _ref.nodes,
+      initialNodes = _ref$nodes === undefined ? {} : _ref$nodes,
       _ref$nodeTypes = _ref.nodeTypes,
       nodeTypes = _ref$nodeTypes === undefined ? {} : _ref$nodeTypes,
       _ref$portTypes = _ref.portTypes,
@@ -7814,19 +7833,15 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       defaultNodes = _ref$defaultNodes === undefined ? [] : _ref$defaultNodes,
       _ref$context = _ref.context,
       context = _ref$context === undefined ? defaultContext : _ref$context,
-      onChange = _ref.onChange,
-      onCommentsChange = _ref.onCommentsChange,
+      _ref$connector = _ref.connector,
+      connectorAction = _ref$connector.action,
+      setNodes = _ref$connector.setNodes,
+      setComments = _ref$connector.setComments,
       initialScale = _ref.initialScale,
-      _ref$spaceToPan = _ref.spaceToPan,
-      spaceToPan = _ref$spaceToPan === undefined ? true : _ref$spaceToPan,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === undefined ? false : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
       disableComments = _ref$disableComments === undefined ? false : _ref$disableComments,
-      _ref$disableZoom = _ref.disableZoom,
-      disableZoom = _ref$disableZoom === undefined ? false : _ref$disableZoom,
-      _ref$disablePan = _ref.disablePan,
-      disablePan = _ref$disablePan === undefined ? false : _ref$disablePan,
       circularBehavior = _ref.circularBehavior,
       debug = _ref.debug;
 
@@ -7859,19 +7874,20 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     context: context
   }, setSideEffectToasts), {}, function () {
     return {
-      nodes: getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context),
-      historyData: {
-        nodesState: [],
-        currentStateIndex: -1
-        // newUndoOrRedoAction: 0,
-        // newUndoOrRedoTimeStamp: new Date().getTime()
-      }
+      nodesState: [{
+        state: getInitialNodes(initialNodes, defaultNodes, nodeTypes, portTypes, context),
+        action: { type: "INITIAL" }
+      }],
+      currentStateIndex: 0
     };
   }),
       _React$useReducer4 = slicedToArray(_React$useReducer3, 2),
-      nodes = _React$useReducer4[0].nodes,
+      _React$useReducer4$ = _React$useReducer4[0],
+      nodesState = _React$useReducer4$.nodesState,
+      currentStateIndex = _React$useReducer4$.currentStateIndex,
       dispatchNodes = _React$useReducer4[1];
 
+  var nodes = nodesState[currentStateIndex].state;
   var previousNodes = usePrevious$1(nodes);
 
   var _React$useReducer5 = React__default.useReducer(commentsReducer, initialComments || {}),
@@ -7885,6 +7901,29 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       nodeRefs = _useSelect2[1],
       handleSelection = _useSelect2[2],
       clearSelection = _useSelect2[3];
+
+  React.useEffect(function () {
+    if (connectorAction) {
+      var _connectorAction = connectorAction(),
+          type = _connectorAction.type,
+          data = _connectorAction.data;
+
+      switch (type) {
+        case "UNDO":
+          undoChanges();
+          break;
+        case "REDO":
+          redoChanges();
+          break;
+        default:
+          break;
+      }
+    }
+  }, [connectorAction]);
+
+  React.useEffect(function () {
+    console.log(nodes);
+  }, [nodes]);
 
   React__default.useEffect(function () {
     dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' });
@@ -7984,14 +8023,14 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   });
 
   React__default.useMemo(function () {
-    previousNodes && nodes !== previousNodes && onChange && onChange(nodes);
-  }, [nodes, previousNodes, onChange]);
+    previousNodes && nodes !== previousNodes && setNodes && setNodes(nodes);
+  }, [nodes, previousNodes, setNodes]);
 
   var previousComments = usePrevious$1(comments);
 
   React__default.useEffect(function () {
-    previousComments && onCommentsChange && comments !== previousComments && onCommentsChange(comments);
-  }, [comments, previousComments, onCommentsChange]);
+    previousComments && comments !== previousComments && setComments && setComments(comments);
+  }, [comments, previousComments, setComments]);
 
   React__default.useEffect(function () {
     if (sideEffectToasts) {
@@ -7999,24 +8038,6 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-
-  var keyMap = {
-    COPY_NODES: 'ctrl+c',
-    PASTE_NODES: 'ctrl+v',
-    CUT_NODES: 'ctrl+x',
-    UNDO_CHANGES: 'ctrl+z',
-    REDO_CHANGES: 'ctrl+y'
-  };
-
-  var copyNodes = function copyNodes() {
-    return console.log('Copy nodes');
-  };
-  var pasteNodes = function pasteNodes() {
-    return console.log('Paste nodes');
-  };
-  var cutNodes = function cutNodes() {
-    return console.log('Cut nodes');
-  };
   var undoChanges = function undoChanges() {
     dispatchNodes({
       type: 'UNDO_CHANGES'
@@ -8034,13 +8055,13 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     triggerRecalculation();
   };
 
-  var handlers = {
-    COPY_NODES: copyNodes,
-    PASTE_NODES: pasteNodes,
-    CUT_NODES: cutNodes,
-    UNDO_CHANGES: undoChanges,
-    REDO_CHANGES: redoChanges
-  };
+  // const handlers = {
+  //   COPY_NODES: copyNodes,
+  //   PASTE_NODES: pasteNodes,
+  //   CUT_NODES: cutNodes,
+  //   UNDO_CHANGES: undoChanges,
+  //   REDO_CHANGES: redoChanges,
+  // }
 
   return React__default.createElement(
     PortTypesContext.Provider,
@@ -8087,103 +8108,98 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
                       style: spaceIsPressed ? { display: 'none' } : {}
                     }),
                     React__default.createElement(
-                      reactHotkeys.HotKeys,
-                      { keyMap: keyMap, handlers: handlers,
-                        style: { height: '100%' } },
-                      React__default.createElement(
-                        Stage,
-                        {
-                          ref: editorRef,
-                          editorId: editorId,
-                          setSpaceIsPressed: setSpaceIsPressed,
-                          scale: stageState.scale,
-                          translate: stageState.translate,
-                          spaceToPan: spaceToPan,
-                          disablePan: disablePan,
-                          disableZoom: disableZoom,
-                          dispatchStageState: dispatchStageState,
-                          dispatchComments: dispatchComments,
-                          disableComments: disableComments || hideComments,
-                          stageRef: stage,
-                          numNodes: Object.keys(nodes).length,
-                          outerStageChildren: React__default.createElement(
-                            React__default.Fragment,
-                            null,
-                            debug && React__default.createElement(
-                              'div',
-                              { className: styles$d.debugWrapper },
-                              React__default.createElement(
-                                'button',
-                                {
-                                  className: styles$d.debugButton,
-                                  onClick: function onClick() {
-                                    return console.log(nodes);
-                                  }
-                                },
-                                'Log Nodes'
-                              ),
-                              React__default.createElement(
-                                'button',
-                                {
-                                  className: styles$d.debugButton,
-                                  onClick: function onClick() {
-                                    return console.log(JSON.stringify(nodes));
-                                  }
-                                },
-                                'Export Nodes'
-                              ),
-                              React__default.createElement(
-                                'button',
-                                {
-                                  className: styles$d.debugButton,
-                                  onClick: function onClick() {
-                                    return console.log(comments);
-                                  }
-                                },
-                                'Log Comments'
-                              )
+                      Stage,
+                      {
+                        ref: editorRef,
+                        editorId: editorId,
+                        setSpaceIsPressed: setSpaceIsPressed,
+                        scale: stageState.scale,
+                        translate: stageState.translate,
+                        spaceToPan: true,
+                        disablePan: false,
+                        disableZoom: false,
+                        dispatchStageState: dispatchStageState,
+                        dispatchComments: dispatchComments,
+                        disableComments: disableComments || hideComments,
+                        stageRef: stage,
+                        numNodes: Object.keys(nodes).length,
+                        outerStageChildren: React__default.createElement(
+                          React__default.Fragment,
+                          null,
+                          debug && React__default.createElement(
+                            'div',
+                            { className: styles$d.debugWrapper },
+                            React__default.createElement(
+                              'button',
+                              {
+                                className: styles$d.debugButton,
+                                onClick: function onClick() {
+                                  return console.log(nodes);
+                                }
+                              },
+                              'Log Nodes'
                             ),
-                            React__default.createElement(Toaster, {
-                              toasts: toasts,
-                              dispatchToasts: dispatchToasts
-                            })
-                          )
-                        },
-                        !hideComments && Object.values(comments).map(function (comment) {
-                          return React__default.createElement(Comment, _extends({}, comment, {
-                            stageRect: stage,
-                            dispatch: dispatchComments,
-                            onDragStart: recalculateStageRect,
-                            key: comment.id
-                          }));
-                        }),
-                        Object.values(nodes).map(function (node) {
-                          return React__default.createElement(Node, _extends({}, node, {
-                            isSelected: selectedNodes.includes(node.id),
-                            ref: nodeRefs.find(function (_ref6) {
-                              var _ref7 = slicedToArray(_ref6, 1),
-                                  n = _ref7[0];
+                            React__default.createElement(
+                              'button',
+                              {
+                                className: styles$d.debugButton,
+                                onClick: function onClick() {
+                                  return console.log(JSON.stringify(nodes));
+                                }
+                              },
+                              'Export Nodes'
+                            ),
+                            React__default.createElement(
+                              'button',
+                              {
+                                className: styles$d.debugButton,
+                                onClick: function onClick() {
+                                  return console.log(comments);
+                                }
+                              },
+                              'Log Comments'
+                            )
+                          ),
+                          React__default.createElement(Toaster, {
+                            toasts: toasts,
+                            dispatchToasts: dispatchToasts
+                          })
+                        )
+                      },
+                      !hideComments && Object.values(comments).map(function (comment) {
+                        return React__default.createElement(Comment, _extends({}, comment, {
+                          stageRect: stage,
+                          dispatch: dispatchComments,
+                          onDragStart: recalculateStageRect,
+                          key: comment.id
+                        }));
+                      }),
+                      Object.values(nodes).map(function (node) {
+                        return React__default.createElement(Node, _extends({}, node, {
+                          isSelected: selectedNodes.includes(node.id),
+                          ref: nodeRefs.find(function (_ref6) {
+                            var _ref7 = slicedToArray(_ref6, 1),
+                                n = _ref7[0];
 
-                              return n.id === node.id;
-                            }) ? nodeRefs.find(function (_ref8) {
-                              var _ref9 = slicedToArray(_ref8, 1),
-                                  n = _ref9[0];
+                            return n.id === node.id;
+                          }) ? nodeRefs.find(function (_ref8) {
+                            var _ref9 = slicedToArray(_ref8, 1),
+                                n = _ref9[0];
 
-                              return n.id === node.id;
-                            })[1] : null,
-                            stageRect: stage,
-                            onDragEnd: handleDragEnd,
-                            onDragHandle: dragSelectedNodes,
-                            onDragStart: recalculateStageRect,
-                            key: node.id
-                          }));
-                        }),
-                        React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
-                        React__default.createElement('div', {
-                          className: styles$d.dragWrapper,
-                          id: '' + DRAG_CONNECTION_ID + editorId
-                        })
-                      )
+                            return n.id === node.id;
+                          })[1] : null,
+                          stageRect: stage,
+                          onDragEnd: handleDragEnd,
+                          onDragHandle: dragSelectedNodes,
+                          onDragStart: recalculateStageRect,
+                          key: node.id
+                        }));
+                      }),
+                      React__default.createElement(Connections, { nodes: nodes, editorId: editorId }),
+                      React__default.createElement('div', {
+                        className: styles$d.dragWrapper,
+                        id: '' + DRAG_CONNECTION_ID + editorId
+                      })
                     )
                   )
                 )
@@ -8197,10 +8213,12 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 };
 
 exports.NodeEditor = React__default.forwardRef(exports.NodeEditor);
+
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length ? engine.resolveRootNode(nodes, { context: context }) : {};
 };
 
+exports.useNodeEditorController = useNodeEditorController;
 exports.useRootEngine = useRootEngine;
 exports.FlumeConfig = FlumeConfig;
 exports.Controls = Controls;

@@ -16,46 +16,46 @@ ReactDOM.render(
   <Router>
     <Route exact path="/" render={() => <App />} />
     <Switch>
-      <Route
-        exact
-        path="/records"
-        render={() => (
-          <React.Fragment>
-            <FormStyles />
-            <Records />
-          </React.Fragment>
-        )}
-      />
-      <Route
-        exact
-        path="/forms"
-        render={() => (
-          <React.Fragment>
-            <FormStyles />
-            <Forms />
-          </React.Fragment>
-        )}
-      />
-      <Route
-        exact
-        path="/form/:formId"
-        render={() => (
-          <React.Fragment>
-            <FormStyles />
-            <Form />
-          </React.Fragment>
-        )}
-      />
-      <Route
-        exact
-        path="/form"
-        render={() => (
-          <React.Fragment>
-            <FormStyles />
-            <Form />
-          </React.Fragment>
-        )}
-      />
+      {/*<Route*/}
+      {/*  exact*/}
+      {/*  path="/records"*/}
+      {/*  render={() => (*/}
+      {/*    <React.Fragment>*/}
+      {/*      <FormStyles />*/}
+      {/*      <Records />*/}
+      {/*    </React.Fragment>*/}
+      {/*  )}*/}
+      {/*/>*/}
+      {/*<Route*/}
+      {/*  exact*/}
+      {/*  path="/forms"*/}
+      {/*  render={() => (*/}
+      {/*    <React.Fragment>*/}
+      {/*      <FormStyles />*/}
+      {/*      <Forms />*/}
+      {/*    </React.Fragment>*/}
+      {/*  )}*/}
+      {/*/>*/}
+      {/*<Route*/}
+      {/*  exact*/}
+      {/*  path="/form/:formId"*/}
+      {/*  render={() => (*/}
+      {/*    <React.Fragment>*/}
+      {/*      <FormStyles />*/}
+      {/*      <Form />*/}
+      {/*    </React.Fragment>*/}
+      {/*  )}*/}
+      {/*/>*/}
+      {/*<Route*/}
+      {/*  exact*/}
+      {/*  path="/form"*/}
+      {/*  render={() => (*/}
+      {/*    <React.Fragment>*/}
+      {/*      <FormStyles />*/}
+      {/*      <Form />*/}
+      {/*    </React.Fragment>*/}
+      {/*  )}*/}
+      {/*/>*/}
       <Route
         exact
         path="/test"

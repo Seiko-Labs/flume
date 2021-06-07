@@ -2,7 +2,7 @@ import React from "react";
 import "normalize.css";
 import styled from 'styled-components'
 
-import {Colors, Controls, FlumeConfig, NodeEditor} from "node-editor";
+import {Colors, Controls, FlumeConfig, NodeEditor, useNodeEditorController} from "node-editor";
 
 const Log = console.log;
 
@@ -194,24 +194,30 @@ config
 
 export default () => {
   const [output, setOutput] = React.useState();
+  const [nodes, comments, dispatch, connector] = useNodeEditorController()
 
-  React.useEffect(() => {
-    console.log = log => {
-      Log(log);
-      if (typeof log === 'object') {
-        //setOutput(log)
-      }
-    }
-    return () => {
-      console.log = Log
-    }
-  })
+  // React.useEffect(() => {
+  //   console.log = log => {
+  //     Log(log);
+  //     if (typeof log === 'object') {
+  //       //setOutput(log)
+  //     }
+  //   }
+  //   return () => {
+  //     console.log = Log
+  //   }
+  // })
   return (
     <div className="wrapper" style={{width: '100vw', height: '100vh'}}>
+      <ControlsBlock>
+        <button onClick={() => dispatch("UNDO")}>Undo</button>
+        <button onClick={() => dispatch("REDO")}>Redo</button>
+      </ControlsBlock>
       <NodeEditor
         portTypes={config.portTypes}
         nodeTypes={config.nodeTypes}
         // nodes={{}}
+        connector={connector}
         defaultNodes={[
           {
             type: 'start',
@@ -224,7 +230,19 @@ export default () => {
       <div id="OUTPUT" style={{display: 'none'}}>{output}</div>
     </div>
   );
-};
+}
+
+const ControlsBlock = styled.div`
+  position: fixed;
+  display: inline-block;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  
+  & > * {
+    margin-right: 10px;
+  }
+`
 
 const ActionPortLabel = styled.label`
   font-size: 13px;
