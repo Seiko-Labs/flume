@@ -5,7 +5,6 @@ import {
 import {checkForCircularNodes} from "./utilities";
 import nanoid from "nanoid/non-secure/index";
 import _ from 'lodash'
-import md5 from 'md5'
 
 const copyObj = (o) => JSON.parse(JSON.stringify(o))
 
@@ -98,7 +97,7 @@ const removeConnections = (connections, nodeId) => ({
   outputs: getFilteredTransputs(connections.outputs, nodeId)
 });
 
-const removeNode = (startNodes, nodeId) => {
+const removeNode = (startNodes, nodeId, clearView = true) => {
   let {[nodeId]: deletedNode, ...nodes} = startNodes;
   nodes = Object.values(nodes).reduce((obj, node) => {
     obj[node.id] = {
@@ -108,7 +107,7 @@ const removeNode = (startNodes, nodeId) => {
 
     return obj;
   }, {});
-  deleteConnectionsByNodeId(nodeId);
+  clearView && deleteConnectionsByNodeId(nodeId);
   return nodes;
 };
 
@@ -178,13 +177,13 @@ const reconcileNodes = (initialNodes, nodeTypes, portTypes, context) => {
   return reconciledNodes;
 };
 
-const copyNodes = (nodes, selectedNodeIds) => {
+const copyNodes = (nodes, selectedNodeIds, clearView = true) => {
   const nodesToDelete = _.difference(
     _.keys(nodes),
     selectedNodeIds
   )
   const nodesToCopy = nodesToDelete.reduce((stayNodes, id) =>
-    removeNode(stayNodes, id), nodes)
+    removeNode(stayNodes, id, clearView), nodes)
 
   localStorage.setItem('clipboard', JSON.stringify({
     application: "PythonRPA",
@@ -358,13 +357,12 @@ const nodesReducer = (
       )
       if (!selectedNodeIds.length) return nodes
 
-      copyNodes(nodes, selectedNodeIds)
+      copyNodes(nodes, selectedNodeIds, false)
 
       return nodes
     }
 
     case 'CUT_NODES': {
-
       const selectedNodeIds = _.difference(
         action.selectedNodeIds,
         _.keys(_.pickBy(nodes, ({root}) => root))
@@ -374,10 +372,8 @@ const nodesReducer = (
 
       copyNodes(nodes, selectedNodeIds)
 
-      const leftNodes = selectedNodeIds.reduce((stayNodes, id) =>
+      return selectedNodeIds.reduce((stayNodes, id) =>
         removeNode(stayNodes, id), nodes)
-
-      return leftNodes
     }
 
     case 'PASTE_NODES': {
