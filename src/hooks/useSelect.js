@@ -1,4 +1,4 @@
-import {createRef, useMemo, useState} from "react";
+import { createRef, useMemo, useState } from 'react';
 
 export default (nodes, previousNodes) => {
   const [nodeRefs, setNodesRef] = useState([])
@@ -6,18 +6,22 @@ export default (nodes, previousNodes) => {
 
   const clearSelection = () => setSelectedNodes([])
 
-  const handleSelection = (indexes) => {
-    setSelectedNodes(indexes.map(i => nodeRefs[i][0].id))
+  const handleSelection = (indexes, multiple = false) => {
+    setSelectedNodes(
+      sn => multiple
+        ? sn.concat(indexes.map(i => nodeRefs[i][0].id))
+        : indexes.map(i => nodeRefs[i][0].id)
+    )
   }
 
   useMemo(() => {
-    if (previousNodes && nodes !== previousNodes) {
-      (Object.values(nodes).every(({id}) =>
-        Object.values(previousNodes).some(({id: oldId}) =>
+    if ( previousNodes && nodes !== previousNodes ) {
+      (Object.values(nodes).every(({ id }) =>
+        Object.values(previousNodes).some(({ id: oldId }) =>
           id === oldId))) ||
       (
         !setNodesRef(() =>
-          Object.values(nodes).map(n => [n, createRef()]) || []
+          Object.values(nodes).map(n => [n, createRef()]) || [],
         ) && clearSelection()
       )
     }
