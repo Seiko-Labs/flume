@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useMemo} from "react";
 import styles from "./IoPorts.css";
-import { Portal } from "react-portal";
+import {Portal} from "react-portal";
 import {
   NodeDispatchContext,
   ConnectionRecalculateContext,
@@ -10,12 +10,12 @@ import {
 } from "../../context";
 import Control from "../Control/Control";
 import Connection from "../Connection/Connection";
-import { PortTypesContext } from "../../context";
+import {PortTypesContext} from "../../context";
 import usePrevious from "../../hooks/usePrevious";
-import { calculateCurve, getPortRect } from "../../connectionCalculator";
-import { STAGE_ID, DRAG_CONNECTION_ID } from '../../constants'
+import {calculateCurve, getPortRect} from "../../connectionCalculator";
+import {STAGE_ID, DRAG_CONNECTION_ID} from '../../constants'
 
-function useTransputs (transputsFn, transputType, nodeId, inputData, connections) {
+function useTransputs(transputsFn, transputType, nodeId, inputData, connections) {
   const nodesDispatch = React.useContext(NodeDispatchContext);
   const executionContext = React.useContext(ContextContext);
 
@@ -28,12 +28,12 @@ function useTransputs (transputsFn, transputType, nodeId, inputData, connections
   React.useEffect(() => {
     if (!prevTransputs || Array.isArray(transputsFn)) return;
     for (const transput of prevTransputs) {
-      const current = transputs.find(({ name }) => transput.name === name);
+      const current = transputs.find(({name}) => transput.name === name);
       if (!current) {
         nodesDispatch({
           type: 'DESTROY_TRANSPUT',
           transputType,
-          transput: { nodeId, portName: '' + transput.name }
+          transput: {nodeId, portName: '' + transput.name}
         });
       }
     }
@@ -47,19 +47,29 @@ const IoPorts = ({
   inputs = [],
   outputs = [],
   connections,
+  expanded,
   inputData,
-  updateNodeConnections
+  updateNodeConnections,
+  countOptionals
 }) => {
   const inputTypes = React.useContext(PortTypesContext);
   const triggerRecalculation = React.useContext(ConnectionRecalculateContext);
   const resolvedInputs = useTransputs(inputs, 'input', nodeId, inputData, connections);
   const resolvedOutputs = useTransputs(outputs, 'output', nodeId, inputData, connections);
 
+  useMemo(
+    () => {
+      countOptionals && resolvedInputs &&
+      countOptionals(resolvedInputs.filter(({optional}) => optional).length)
+    },
+    [resolvedInputs, countOptionals]
+  );
+
   return (
     <div className={styles.wrapper}>
-      {resolvedInputs.length ? (
+      {resolvedInputs.some(({optional}) => !optional) && (
         <div className={styles.inputs}>
-          {resolvedInputs.map(input => (
+          {resolvedInputs.filter(({optional}) => !optional).map(input => (
             <Input
               {...input}
               data={inputData[input.name] || {}}
@@ -73,7 +83,7 @@ const IoPorts = ({
             />
           ))}
         </div>
-      ) : null}
+      )}
       {!!resolvedOutputs.length && (
         <div className={styles.outputs}>
           {resolvedOutputs.map(output => (
@@ -85,6 +95,24 @@ const IoPorts = ({
               inputData={inputData}
               portOnRight
               key={output.name}
+            />
+          ))}
+        </div>
+      )}
+      {resolvedInputs.some(({optional}) => optional) && (
+        <div
+          className={`${styles.inputs} ${!expanded ? styles.collapsed : ''}`}>
+          {resolvedInputs.filter(({optional}) => optional).map(input => (
+            <Input
+              {...input}
+              data={inputData[input.name] || {}}
+              isConnected={!!connections.inputs[input.name]}
+              triggerRecalculation={triggerRecalculation}
+              updateNodeConnections={updateNodeConnections}
+              inputTypes={inputTypes}
+              nodeId={nodeId}
+              inputData={inputData}
+              key={input.name}
             />
           ))}
         </div>
@@ -110,8 +138,8 @@ const Input = ({
   inputData,
   hidePort
 }) => {
-  const { label: defaultLabel, color, controls: defaultControls = [] } =
-    inputTypes[type] || {};
+  const {label: defaultLabel, color, controls: defaultControls = []} =
+  inputTypes[type] || {};
   const prevConnected = usePrevious(isConnected);
 
   const controls = localControls || defaultControls;
@@ -135,28 +163,28 @@ const Input = ({
         <label className={styles.portLabel}>{label || defaultLabel}</label>
       )}
       {!noControls && !isConnected
-        ? (
-          <div className={styles.controls}>
-            {
-              controls.map(control => (
-                  <Control
-                    {...control}
-                    nodeId={nodeId}
-                    portName={name}
-                    triggerRecalculation={triggerRecalculation}
-                    updateNodeConnections={updateNodeConnections}
-                    inputLabel={label}
-                    data={data[control.name]}
-                    allData={data}
-                    key={control.name}
-                    inputData={inputData}
-                    isMonoControl={controls.length === 1}
-                  />
-                ))
-            }
-          </div>
-        )
-        : null}
+       ? (
+         <div className={styles.controls}>
+           {
+             controls.map(control => (
+               <Control
+                 {...control}
+                 nodeId={nodeId}
+                 portName={name}
+                 triggerRecalculation={triggerRecalculation}
+                 updateNodeConnections={updateNodeConnections}
+                 inputLabel={label}
+                 data={data[control.name]}
+                 allData={data}
+                 key={control.name}
+                 inputData={inputData}
+                 isMonoControl={controls.length === 1}
+               />
+             ))
+           }
+         </div>
+       )
+       : null}
       {!hidePort ? (
         <Port
           type={type}
@@ -180,7 +208,7 @@ const Output = ({
   // isConnected,
   triggerRecalculation
 }) => {
-  const { label: defaultLabel, color } = inputTypes[type] || {};
+  const {label: defaultLabel, color} = inputTypes[type] || {};
 
   // const prevConnected = usePrevious(isConnected);
   //
@@ -283,8 +311,8 @@ const Port = ({
       } = lineInToPort.current.dataset;
       nodesDispatch({
         type: "REMOVE_CONNECTION",
-        input: { nodeId: inputNodeId, portName: inputPortName },
-        output: { nodeId: outputNodeId, portName: outputPortName }
+        input: {nodeId: inputNodeId, portName: inputPortName},
+        output: {nodeId: outputNodeId, portName: outputPortName}
       });
       if (droppedOnPort) {
         const {
@@ -297,12 +325,12 @@ const Port = ({
         if (isNotSameNode && connectToTransputType !== "output") {
           const inputWillAcceptConnection = inputTypes[
             connectToPortType
-          ].acceptTypes.includes(type);
+            ].acceptTypes.includes(type);
           if (inputWillAcceptConnection) {
             nodesDispatch({
               type: "ADD_CONNECTION",
-              input: { nodeId: connectToNodeId, portName: connectToPortName },
-              output: { nodeId: outputNodeId, portName: outputPortName }
+              input: {nodeId: connectToNodeId, portName: connectToPortName},
+              output: {nodeId: outputNodeId, portName: outputPortName}
             });
           }
         }
@@ -319,12 +347,12 @@ const Port = ({
         if (isNotSameNode && inputTransputType !== "output") {
           const inputWillAcceptConnection = inputTypes[
             inputNodeType
-          ].acceptTypes.includes(type);
+            ].acceptTypes.includes(type);
           if (inputWillAcceptConnection) {
             nodesDispatch({
               type: "ADD_CONNECTION",
-              output: { nodeId, portName: name },
-              input: { nodeId: inputNodeId, portName: inputPortName }
+              output: {nodeId, portName: name},
+              input: {nodeId: inputNodeId, portName: inputPortName}
             });
             triggerRecalculation();
           }
@@ -358,13 +386,8 @@ const Port = ({
     //       if (outputWillAcceptConnection) {
     //         nodesDispatch({
     //           type: "ADD_CONNECTION",
-    //           output: { nodeId: connectToNodeId, portName: connectToPortName },
-    //           input: { nodeId: outputNodeId, portName: outputPortName }
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
+    //           output: { nodeId: connectToNodeId, portName: connectToPortName
+    // }, input: { nodeId: outputNodeId, portName: outputPortName } }); } } } }
     setIsDragging(false);
     document.removeEventListener("mouseup", handleDragEnd);
     document.removeEventListener("mousemove", handleDrag);
@@ -428,7 +451,7 @@ const Port = ({
   return (
     <React.Fragment>
       <div
-        style={{ zIndex: 999 }}
+        style={{zIndex: 999}}
         onMouseDown={handleDragStart}
         className={styles.port}
         data-port-color={color}

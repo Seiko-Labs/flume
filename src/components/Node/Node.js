@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 import styles from "./Node.css";
 import {
   NodeTypesContext,
@@ -19,6 +19,7 @@ const Node = forwardRef(({
   x,
   isSelected,
   y,
+  expanded = false,
   delay = 6,
   stageRect,
   connections,
@@ -37,6 +38,7 @@ const Node = forwardRef(({
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [menuCoordinates, setMenuCoordinates] = React.useState({x: 0, y: 0});
+  const [optionalAmount, setOptionalAmount] = useState(0)
 
   const byScale = value => (1 / stageState.scale) * value;
 
@@ -184,14 +186,28 @@ const Node = forwardRef(({
       stageState={stageState}
       stageRect={stageRect}
     >
-      <h2 className={styles.label}>{label}</h2>
+      <h2 className={styles.label}>
+        <span>{label}</span>
+        {
+          optionalAmount
+          ? <button
+            className={styles.expandToggle}
+            onClick={() => nodesDispatch({type: "TOGGLE_NODE_VIEW", id})}
+          >{
+            expanded ? '▲' : '▼'
+          }</button>
+          : null
+        }
+      </h2>
       <IoPorts
         nodeId={id}
         inputs={inputs}
         outputs={outputs}
+        expanded={expanded}
         connections={connections}
         updateNodeConnections={updateNodeConnections}
         inputData={inputData}
+        countOptionals={setOptionalAmount}
       />
       {menuOpen ? (
         <Portal>

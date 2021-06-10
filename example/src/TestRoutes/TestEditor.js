@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import "normalize.css";
 import styled from 'styled-components'
 
@@ -76,6 +76,7 @@ config
       ports.string({
         name: 'selectorPath',
         label: 'Selector Path',
+        optional: true
       }),
       ports.select({
         name: 'actionType',
@@ -209,7 +210,7 @@ export default () => {
   // })
 
   // useEffect(() => {
-  //   console.log(nodes)
+  //   console.log(Object.keys(nodes))
   // })
 
   return (
@@ -223,6 +224,14 @@ export default () => {
         <button onClick={() => dispatch("COPY")}>Copy</button>
         <button onClick={() => dispatch("CUT")}>Cut</button>
         <button onClick={() => dispatch("PASTE")}>Paste</button>
+        <button onClick={() => dispatch("TOGGLE_NODES_VIEW", {
+          nodeIds: Object.keys(nodes),
+          doExpand: true
+        })}>Expand all nodes</button>
+        <button onClick={() => dispatch("TOGGLE_NODES_VIEW", {
+          nodeIds: Object.keys(nodes),
+          doExpand: false
+        })}>Collapse all nodes</button>
       </ControlsBlock>
       <NodeEditor
         portTypes={config.portTypes}

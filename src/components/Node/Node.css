@@ -12,6 +12,8 @@
   cursor: default;
 }
 .label{
+  display: flex;
+  justify-content: space-between;
   font-size: 13px;
   text-transform: uppercase;
   padding: 5px;
@@ -20,4 +22,12 @@
   margin: 0px;
   margin-bottom: 3px;
   border-bottom: 1px solid rgba(0,0,0,.15);
+
+  .expandToggle {
+    background: none;
+    padding:3px;
+    margin: 0;
+    outline: none;
+    border: none;
+  }
 }

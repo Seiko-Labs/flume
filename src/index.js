@@ -139,8 +139,15 @@ export let NodeEditor = (
           clearConnections()
           triggerRecalculation()
           break
+        case "TOGGLE_NODES_VIEW":
+          const {nodeIds, doExpand} = data
+          nodeIds.forEach(id => {
+            dispatchNodes({type: 'TOGGLE_NODE_VIEW', id, doExpand})
+          })
+          break
         default:
           break
+
       }
     }
   }, [connectorAction]);
@@ -328,8 +335,6 @@ export let NodeEditor = (
                           style={spaceIsPressed ? {display: 'none'} : {}}
                         />
                       }
-                      {/*<HotKeys keyMap={keyMap} handlers={handlers}*/}
-                      {/*         style={{height: '100%'}}>*/}
                       <Stage
                         ref={editorRef}
                         editorId={editorId}
