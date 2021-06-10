@@ -515,6 +515,21 @@ export default (...props) => {
       nodesReducer(...props)
       return copyObj(props[0])
     }
+    case "TOGGLE_NODE_VIEW": {
+      const {id: nodeId} = props[1];
+      const nodes = props[0].nodesState[props[0].currentStateIndex].state
+      const newState = copyObj(props[0])
+
+      newState.nodesState[newState.currentStateIndex].state = {
+        ...nodes,
+        [nodeId]: {
+          ...nodes[nodeId],
+          expanded: !nodes[nodeId].expanded
+        }
+      }
+
+      return newState
+    }
     default: {
       const nodesState = props[0].nodesState
       const nodes = nodesReducer(...props)

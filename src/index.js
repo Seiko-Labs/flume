@@ -328,8 +328,6 @@ export let NodeEditor = (
                           style={spaceIsPressed ? {display: 'none'} : {}}
                         />
                       }
-                      {/*<HotKeys keyMap={keyMap} handlers={handlers}*/}
-                      {/*         style={{height: '100%'}}>*/}
                       <Stage
                         ref={editorRef}
                         editorId={editorId}

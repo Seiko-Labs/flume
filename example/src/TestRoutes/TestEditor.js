@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import "normalize.css";
 import styled from 'styled-components'
 
@@ -76,6 +76,7 @@ config
       ports.string({
         name: 'selectorPath',
         label: 'Selector Path',
+        optional: true
       }),
       ports.select({
         name: 'actionType',

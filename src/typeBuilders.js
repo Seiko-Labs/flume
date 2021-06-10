@@ -101,6 +101,7 @@ export const getPortBuilders = ports =>
         label: config.label || port.label,
         noControls: define(config.noControls, false),
         color: config.color || port.color,
+        optional: config.optional || port.optional || false,
         hidePort: define(config.hidePort, port.hidePort),
         controls: define(config.controls, port.controls)
       };
@@ -279,7 +280,7 @@ export class FlumeConfig {
           console.warn(
             `We've detected that one or more of your nodes is using dynamic inputs/outputs. This is a potentially dangerous operation as we are unable to detect if this portType is being used in one of those nodes. You can quiet this message by passing { skipDynamicNodesCheck: true } in as the second argument.`
           );
-        }  
+        }
       }
       const affectedNodes = Object.values(this.nodeTypes).filter(
         node =>
