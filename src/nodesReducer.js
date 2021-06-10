@@ -516,7 +516,7 @@ export default (...props) => {
       return copyObj(props[0])
     }
     case "TOGGLE_NODE_VIEW": {
-      const {id: nodeId} = props[1];
+      const {id: nodeId, doExpand} = props[1];
       const nodes = props[0].nodesState[props[0].currentStateIndex].state
       const newState = copyObj(props[0])
 
@@ -524,7 +524,7 @@ export default (...props) => {
         ...nodes,
         [nodeId]: {
           ...nodes[nodeId],
-          expanded: !nodes[nodeId].expanded
+          expanded: doExpand != null ? doExpand : !nodes[nodeId].expanded
         }
       }
 

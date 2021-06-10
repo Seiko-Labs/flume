@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import styles from "./IoPorts.css";
 import {Portal} from "react-portal";
 import {
@@ -49,12 +49,21 @@ const IoPorts = ({
   connections,
   expanded,
   inputData,
-  updateNodeConnections
+  updateNodeConnections,
+  countOptionals
 }) => {
   const inputTypes = React.useContext(PortTypesContext);
   const triggerRecalculation = React.useContext(ConnectionRecalculateContext);
   const resolvedInputs = useTransputs(inputs, 'input', nodeId, inputData, connections);
   const resolvedOutputs = useTransputs(outputs, 'output', nodeId, inputData, connections);
+
+  useMemo(
+    () => {
+      countOptionals && resolvedInputs &&
+      countOptionals(resolvedInputs.filter(({optional}) => optional).length)
+    },
+    [resolvedInputs, countOptionals]
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -91,7 +100,8 @@ const IoPorts = ({
         </div>
       )}
       {resolvedInputs.some(({optional}) => optional) && (
-        <div className={`${styles.inputs} ${!expanded ? styles.collapsed : ''}`}>
+        <div
+          className={`${styles.inputs} ${!expanded ? styles.collapsed : ''}`}>
           {resolvedInputs.filter(({optional}) => optional).map(input => (
             <Input
               {...input}
