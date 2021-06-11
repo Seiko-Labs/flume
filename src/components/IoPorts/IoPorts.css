@@ -16,11 +16,11 @@
 
 	width: calc(100% + 15px);
 
-	overflow-y:hidden;
-	transition:max-height .5s cubic-bezier(1,0,1,0);
+	overflow-y: hidden;
+	transition: max-height .5s cubic-bezier(1, 0, 1, 0);
 
-	height:auto;
-	max-height:9999px;
+	height: auto;
+	max-height: 9999px;
 
 	.transput {
 		&:last-child {
@@ -36,7 +36,7 @@
 
 	&.collapsed {
 		max-height: 0;
-		transition: max-height .5s cubic-bezier(0,1,0,1);
+		transition: max-height .5s cubic-bezier(0, 1, 0, 1);
 	}
 }
 
@@ -107,7 +107,7 @@
 .port {
 	width: 12px;
 	height: 12px;
-	background: linear-gradient(to bottom, #acb1b4, #919699);
+	background: linear-gradient(to bottom, #ACB1B4, #919699);
 	border-radius: 100%;
 	margin-right: 5px;
 	margin-left: -11px;
@@ -120,30 +120,30 @@
 	}
 
 	&[data-port-color="red"] {
-		background: linear-gradient(to bottom, #fa4a6f, #c22e4d);
+		background: linear-gradient(to bottom, #FA4A6F, #C22E4D);
 	}
 
 	&[data-port-color="purple"] {
-		background: linear-gradient(to bottom, #9e55fb, #6024b6);
+		background: linear-gradient(to bottom, #9E55FB, #6024B6);
 	}
 
 	&[data-port-color="blue"] {
-		background: linear-gradient(to bottom, #4284f7, #2867d4);
+		background: linear-gradient(to bottom, #4284F7, #2867D4);
 	}
 
 	&[data-port-color="green"] {
-		background: linear-gradient(to bottom, #31dd9f, #11ad7a);
+		background: linear-gradient(to bottom, #31DD9F, #11AD7A);
 	}
 
 	&[data-port-color="yellow"] {
-		background: linear-gradient(to bottom, #d6bf47, #9d8923);
+		background: linear-gradient(to bottom, #D6BF47, #9D8923);
 	}
 
 	&[data-port-color="orange"] {
-		background: linear-gradient(to bottom, #fa7841, #c94b23);
+		background: linear-gradient(to bottom, #FA7841, #C94B23);
 	}
 
 	&[data-port-color="pink"] {
-		background: linear-gradient(to bottom, #fe8aeb, #e046c3);
+		background: linear-gradient(to bottom, #FE8AEB, #E046C3);
 	}
 }

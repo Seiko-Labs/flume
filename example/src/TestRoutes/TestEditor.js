@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import 'normalize.css';
 import styled from 'styled-components'
 
@@ -255,7 +255,7 @@ export default () => {
           doExpand: false,
         })}>Collapse all nodes
         </button>
-        <label style={{color: 'white'}}>
+        <label style={{ color: 'white' }}>
           <input
             type="checkbox"
             onChange={(e) => {

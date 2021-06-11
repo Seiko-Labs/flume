@@ -174,7 +174,8 @@ const Node = forwardRef(({
       className={styles.wrapper}
       style={{
         width,
-        border: isSelected ? '2px solid skyblue' : '2px solid transparent',
+        border: isSelected ? '2px solid skyblue' : 'none',
+        margin: isSelected ? '0' : '2px',
         transform: `translate(${x}px, ${y}px)`
       }}
       onDragStart={startDrag}
