@@ -38,21 +38,15 @@ const defaultContext = {}
 export let NodeEditor = (
   {
     comments: initialComments,
-    nodes: initialNodes = {},
+    // nodes: initialNodes = {},
     nodeTypes = {},
     portTypes = {},
-    defaultNodes = [],
+    // defaultNodes = [],
     context = defaultContext,
     // onChange,
     // onCommentsChange,
     connector,
-    initialStageParams = {
-      scale: 1,
-      translate: {
-        x: 0,
-        y: 0
-      }
-    },
+    initialStageParams,
     // spaceToPan = true,
     hideComments = false,
     disableComments = false,
@@ -70,6 +64,9 @@ export let NodeEditor = (
   const [toasts, dispatchToasts] = React.useReducer(toastsReducer, [])
   const editorRef = useRef()
   const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
+
+  const initialNodes = connector.initialNodes || {}
+
   const [
     { nodesState, currentStateIndex }, dispatchNodes,
   ] = React.useReducer(
@@ -90,7 +87,7 @@ export let NodeEditor = (
         {
           state: getInitialNodes(
             initialNodes,
-            defaultNodes,
+            connector.defaultNodes || [],
             nodeTypes,
             portTypes,
             context,
@@ -107,7 +104,6 @@ export let NodeEditor = (
     setComments,
     temp: { state: tempState, dispatch: dispatchTemp },
   } = connector
-  // || { action: null, setNodes: null, setComments: null }
   const nodes = nodesState[currentStateIndex].state
   const previousNodes = usePrevious(nodes)
   const [comments, dispatchComments] = React.useReducer(
@@ -171,7 +167,8 @@ export let NodeEditor = (
     setShouldRecalculateConnections,
   ] = React.useState(true)
 
-  console.log("I do run!")
+  initialStageParams ||= tempState.stage
+
   const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
     scale: typeof initialStageParams?.scale === 'number'
       ? clamp(initialStageParams?.scale, 0.1, 7)
@@ -184,7 +181,6 @@ export let NodeEditor = (
     },
   })
 
-  console.log("Me too!")
 
   useMemo(() => {
     if ( !_.isEqual(stageState, tempState.stage) ) {

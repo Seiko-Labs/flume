@@ -58,7 +58,7 @@ ReactDOM.render(
       {/*/>*/}
       <Route
         exact
-        path="/"
+        path="/test"
         render={() => (
           <TestEditor />
         )}

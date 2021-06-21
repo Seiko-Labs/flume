@@ -219,7 +219,26 @@ config
 
 export default () => {
   const [output, setOutput] = React.useState();
-  const [nodes, comments, dispatch, connector, temp] = useNodeEditorController()
+  const [nodes, comments, dispatch, connector, temp] = useNodeEditorController({
+    defaultNodes: [
+      {
+        type: 'start',
+        x: -410,
+        y: -150,
+      },
+    ],
+    initialTempState: {
+      multiselect: false,
+      selectedNodes: [],
+      stage: {
+        scale: 2,
+        translate: {
+          x: -100,
+          y: -100
+        }
+      }
+    }
+  })
 
   // React.useEffect(() => {
   //   console.log = log => {
@@ -236,7 +255,6 @@ export default () => {
   // useEffect(() => {
   //   console.log(Object.keys(nodes))
   // })
-
   return (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
       <ControlsBlock>
@@ -271,15 +289,7 @@ export default () => {
       <NodeEditor
         portTypes={config.portTypes}
         nodeTypes={config.nodeTypes}
-        // nodes={{}}
         connector={connector}
-        defaultNodes={[
-          {
-            type: 'start',
-            x: -410,
-            y: -150,
-          },
-        ]}
         // debug
       />
       <div id="OUTPUT" style={{ display: 'none' }}>{output}</div>
