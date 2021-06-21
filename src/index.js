@@ -1,23 +1,21 @@
-import React, {
-  useEffect,
-  useRef,
-} from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useId } from '@reach/auto-id'
 import Stage from './components/Stage/Stage'
 import Node from './components/Node/Node'
 import Comment from './components/Comment/Comment'
 import Toaster from './components/Toaster/Toaster'
 import Connections from './components/Connections/Connections'
+import _ from 'lodash'
 import {
+  CacheContext,
+  ConnectionRecalculateContext,
+  ContextContext,
+  EditorIdContext,
+  NodeDispatchContext,
   NodeTypesContext,
   PortTypesContext,
-  NodeDispatchContext,
-  ConnectionRecalculateContext,
   RecalculateStageRectContext,
-  ContextContext,
   StageContext,
-  CacheContext,
-  EditorIdContext,
 } from './context'
 import { clearConnections, createConnections } from './connectionCalculator'
 import nodesReducer, {
@@ -30,7 +28,7 @@ import stageReducer from './stageReducer'
 import usePrevious from './hooks/usePrevious'
 import clamp from 'lodash/clamp'
 import Cache from './Cache'
-import { STAGE_ID, DRAG_CONNECTION_ID } from './constants'
+import { DRAG_CONNECTION_ID, STAGE_ID } from './constants'
 import styles from './styles.css'
 import Selection from 'react-ds/dist'
 import useSelect from './hooks/useSelect'
@@ -48,7 +46,13 @@ export let NodeEditor = (
     // onChange,
     // onCommentsChange,
     connector,
-    initialScale,
+    initialStageParams = {
+      scale: 1,
+      translate: {
+        x: 0,
+        y: 0
+      }
+    },
     // spaceToPan = true,
     hideComments = false,
     disableComments = false,
@@ -156,23 +160,42 @@ export let NodeEditor = (
 
       }
     }
-  }, [connectorAction]);
+  }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
 
   React.useEffect(() => {
     dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' })
   }, [])
+
   const [
     shouldRecalculateConnections,
     setShouldRecalculateConnections,
   ] = React.useState(true)
+
+  console.log("I do run!")
   const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
-    scale: typeof initialScale === 'number' ? clamp(initialScale, 0.1, 7) : 1,
-    translate: { x: 0, y: 0 },
+    scale: typeof initialStageParams?.scale === 'number'
+      ? clamp(initialStageParams?.scale, 0.1, 7)
+      : 1,
+    translate: {
+      x: typeof initialStageParams?.translate?.x === 'number'
+        ? initialStageParams.translate.x : 0,
+      y: typeof initialStageParams?.translate?.y === 'number'
+        ? initialStageParams.translate.y : 0,
+    },
   })
+
+  console.log("Me too!")
+
+  useMemo(() => {
+    if ( !_.isEqual(stageState, tempState.stage) ) {
+      const { translate: { x, y }, scale } = stageState
+      dispatchTemp({ type: 'SET_STAGE', scale, x, y })
+    }
+  }, [stageState, tempState.stage, dispatchTemp])
 
   const recalculateConnections = React.useCallback(() => {
     createConnections(nodes, stageState, editorId)
-  }, [nodes, editorId, stageState, dispatchNodes])
+  }, [nodes, editorId, stageState])
 
   const recalculateStageRect = () => {
     stage.current = document
@@ -329,7 +352,8 @@ export let NodeEditor = (
                           target={editorRef.current}
                           elements={nodeRefs.map(n => n[1].current)}
                           onSelectionChange={(i) =>
-                            spaceIsPressed || handleSelection(i, tempState.multiselect)}
+                            spaceIsPressed ||
+                            handleSelection(i, tempState.multiselect)}
                           offset={{
                             top: 0,
                             left: 0,

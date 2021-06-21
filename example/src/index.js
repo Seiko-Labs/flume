@@ -58,11 +58,12 @@ ReactDOM.render(
       {/*/>*/}
       <Route
         exact
-        path="/test"
+        path="/"
         render={() => (
           <TestEditor />
         )}
       />
+      <Route exact path="/other" render={() => ('Hello')}/>
     </Switch>
   </Router>,
   document.getElementById("root")

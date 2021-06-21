@@ -7,6 +7,20 @@ const tempStateReducer = (state, action) => {
         ...state,
         multiselect: action.doEnable,
       }
+    case 'SET_STAGE': {
+      const {x, y, scale} = action
+
+      return {
+        ...state,
+        stage: {
+          scale,
+          translate: {
+            x,
+            y
+          }
+        }
+      }
+    }
     default:
       return state
   }
@@ -14,6 +28,13 @@ const tempStateReducer = (state, action) => {
 
 const initialTempState = {
   multiselect: false,
+  stage: {
+    scale: 1,
+    translate: {
+      x: 0,
+      y: 0
+    }
+  }
 }
 
 const initTemp = () => initialTempState
