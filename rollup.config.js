@@ -1,8 +1,8 @@
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
 import external from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
-import resolve from 'rollup-plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import url from 'rollup-plugin-url'
 import svgr from '@svgr/rollup'
 
@@ -22,7 +22,6 @@ export default {
       sourcemap: true
     }
   ],
-  external: [ 'react', 'react-dom', 'react-hotkeys', 'lodash'],
   plugins: [
     external(),
     postcss({
@@ -32,8 +31,8 @@ export default {
     url(),
     svgr(),
     babel({
+      babelHelpers: 'runtime',
       exclude: 'node_modules/**',
-      plugins: [ 'external-helpers' ]
     }),
     resolve(),
     commonjs()

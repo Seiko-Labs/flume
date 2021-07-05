@@ -1,23 +1,113 @@
 .wrapper{
-  background: rgba(91, 96, 99, 0.9);
+  background: rgba(98, 98, 115, .9);
   border-radius: 5px;
-  box-shadow: 0px 4px 8px rgba(0,0,0,.4);
+  box-shadow: 0 4px 8px rgba(0,0,0,.4);
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   user-select: none;
   display: flex;
   flex-direction: column;
   z-index: 1;
   cursor: default;
+  box-sizing: content-box;
 }
-.label{
+.header{
+  background: #494956;
+  border-radius: 5px 5px 0 0;
+  margin: 0 0 3px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  overflow: hidden;
+  max-height: 75px;
+
+  &:hover {
+    overflow: visible;
+  }
+
+  &:hover .expander {
+    max-height: 150px;
+  }
+
+  & > div > img {
+	  height: 15px;
+	  width: 15px;
+	  display: inline-block;
+	  float: left;
+	  margin: 5px 0 5px 5px;
+  }
+}
+
+.expander {
+  transform: translateZ(1px);
+  padding: 5px;
+	margin: 0 0 3px;
+	width: 100%;
+  overflow: hidden;
+  border: none;
+  border-radius: 5px;
+	line-height: .7;
+
+	& .expandToggle {
+		line-height: .7;
+	}
+
+	& > img {
+		height: 15px;
+		width: 15px;
+		display: inline-block;
+		float: left;
+		margin: 5px 5px 0 5px !important;
+	}
+}
+
+.label {
+  display: inline-block;
   font-size: 13px;
   text-transform: uppercase;
+  font-weight: bold;
   padding: 5px;
-  background: #464b4e;
-  border-radius: 5px 5px 0px 0px;
-  margin: 0px;
-  margin-bottom: 3px;
-  border-bottom: 1px solid rgba(0,0,0,.15);
+  margin: 0;
+  border: none;
+  background: transparent;
+  word-wrap: break-word;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+
+.comment {
+  display: inline;
+  font-size: 11px;
+  word-wrap: break-word;
+}
+
+.input {
+  padding: 6px 4px 5px 4px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  width: 100%;
+  word-wrap: break-word;
+  border-radius: 5px;
+  overflow: hidden;
+  outline: none;
+  display: inline-block;
+  text-transform: inherit;
+  line-height: 1;
+  font-weight: normal;
+  font-size: 11px;
+  transform: translateZ(1px);
+}
+
+.expandToggle {
+  background: none;
+  padding:3px;
+  margin: 0;
+  outline: none;
+  border: none;
+}
+
+.actionsContainer {
+  display: inline-block;
+  float: right;
 }

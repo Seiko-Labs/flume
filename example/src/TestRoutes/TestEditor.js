@@ -1,10 +1,14 @@
-import React, {useEffect} from "react";
-import "normalize.css";
+import React, { useEffect } from 'react';
+import 'normalize.css';
 import styled from 'styled-components'
 
-import {Colors, Controls, FlumeConfig, NodeEditor, useNodeEditorController} from "node-editor";
-
-const Log = console.log;
+import {
+  Colors,
+  Controls,
+  FlumeConfig,
+  NodeEditor,
+  useNodeEditorController,
+} from 'node-editor';
 
 const config = new FlumeConfig()
 
@@ -13,37 +17,45 @@ config
     type: 'string',
     name: 'string',
     hidePort: true,
-    controls: [Controls.text({
-      name: 'string',
-      label: 'String'
-    })]
+    controls: [
+      Controls.text({
+        name: 'string',
+        label: 'String',
+      }),
+    ],
   })
   .addPortType({
     type: 'boolean',
     name: 'boolean',
     hidePort: true,
-    controls: [Controls.checkbox({
-      name: 'checkbox',
-      label: 'Checkbox'
-    })]
+    controls: [
+      Controls.checkbox({
+        name: 'checkbox',
+        label: 'Checkbox',
+      }),
+    ],
   })
   .addPortType({
     type: 'action',
     name: 'action',
     color: Colors.blue,
-    controls: [Controls.custom({
-      render: () => <ActionPortLabel>Next step</ActionPortLabel>
-    })]
+    controls: [
+      Controls.custom({
+        render: () => <ActionPortLabel>Next step</ActionPortLabel>,
+      }),
+    ],
   })
   .addPortType({
     type: 'select',
     name: 'select',
     hidePort: true,
-    controls: [Controls.select({
-      name: 'select',
-      label: 'select',
-      options: [{value: 'test', label: 'test'}]
-    })]
+    controls: [
+      Controls.select({
+        name: 'select',
+        label: 'select',
+        options: [{ value: 'test', label: 'test' }],
+      }),
+    ],
   })
   .addNodeType({
     type: 'launch',
@@ -60,51 +72,58 @@ config
       }),
       ports.action({
         label: 'Next step',
-      })
+      }),
     ],
     outputs: ports => [
       ports.action({
-        label: 'Previous step'
-      })
-    ]
+        label: 'Previous step',
+      }),
+    ],
   })
   .addNodeType({
     type: 'selectorAction',
     name: 'selectorAction',
     label: 'Selector action',
+    icon: 'https://dummyimage.com/30x30/de21de/fff.png&text=Ic',
+    tileBackground: '#bb0707',
+    titleColor: '#fefefe',
     inputs: ports => data => [
       ports.string({
         name: 'selectorPath',
         label: 'Selector Path',
+        optional: true,
       }),
       ports.select({
         name: 'actionType',
         label: 'Type of Action',
-        controls: [Controls.select({
-          options: [
-            {value: 'click', label: 'Click'},
-            {value: 'doubleClick', label: 'Double click'},
-            {value: 'rightClick', label: 'Right click'},
-            {value: 'input', label: 'Input'},
-            {value: 'customKeys', label: 'Custom keys'},
-          ]
-        })],
+        controls: [
+          Controls.select({
+            options: [
+              { value: 'click', label: 'Click' },
+              { value: 'doubleClick', label: 'Double click' },
+              { value: 'rightClick', label: 'Right click' },
+              { value: 'input', label: 'Input' },
+              { value: 'customKeys', label: 'Custom keys' },
+            ],
+          }),
+        ],
       }),
       data && data.actionType && data.actionType.select
       && (data.actionType.select === 'input'
           || data.actionType.select === 'customKeys') && ports.string({
         name: 'input',
-        label: `Input ${data.actionType.select === 'input' ? 'string' : 'keys'}`
+        label: `Input ${data.actionType.select === 'input' ? 'string'
+          : 'keys'}`,
       }),
       ports.action({
         label: 'Next step',
-      })
+      }),
     ].filter(p => p),
     outputs: ports => [
       ports.action({
-        label: 'Previous step'
-      })
-    ]
+        label: 'Previous step',
+      }),
+    ],
   })
   .addNodeType({
     type: 'extract',
@@ -118,37 +137,40 @@ config
       ports.select({
         name: 'extractionType',
         label: 'Extracting data type',
-        controls: [Controls.select({
-          options: [
-            {value: 'text', label: 'Text'},
-            {value: 'detect', label: 'Detect text'},
-            {value: 'image', label: 'Image'},
-            {value: 'stream', label: 'Stream'},
-            {value: 'meta', label: 'Metadata'},
-            {value: 'binary', label: 'Binary'},
-            {value: 'raw', label: 'Raw'},
-          ]
-        })],
+        controls: [
+          Controls.select({
+            options: [
+              { value: 'text', label: 'Text' },
+              { value: 'detect', label: 'Detect text' },
+              { value: 'image', label: 'Image' },
+              { value: 'stream', label: 'Stream' },
+              { value: 'meta', label: 'Metadata' },
+              { value: 'binary', label: 'Binary' },
+              { value: 'raw', label: 'Raw' },
+            ],
+          }),
+        ],
       }),
       data && data.extractionType && data.extractionType.select
       && (data.extractionType.select === 'text'
           || data.extractionType.select === 'detect') && ports.string({
         name: 'input',
-        label: `Text pattern (Regex pattern)`
+        label: `Text pattern (Regex pattern)`,
       }),
-      data && data.extractionType && data.extractionType.select && ports.string({
+      data && data.extractionType && data.extractionType.select &&
+      ports.string({
         name: 'variable',
         label: 'Save variable name',
       }),
       ports.action({
         label: 'Next step',
-      })
+      }),
     ].filter(p => p),
     outputs: ports => [
       ports.action({
-        label: 'Previous step'
-      })
-    ]
+        label: 'Previous step',
+      }),
+    ],
   })
   .addNodeType({
     type: 'condition',
@@ -162,23 +184,27 @@ config
       ports.action({
         name: 'trueCaseAction',
         label: 'True case step',
-        controls: [Controls.custom({
-          render: () => <ActionPortLabel>True case step</ActionPortLabel>
-        })]
+        controls: [
+          Controls.custom({
+            render: () => <ActionPortLabel>True case step</ActionPortLabel>,
+          }),
+        ],
       }),
       ports.action({
         name: 'falseCaseAction',
         label: 'False case step',
-        controls: [Controls.custom({
-          render: () => <ActionPortLabel>False case step</ActionPortLabel>
-        })]
-      })
+        controls: [
+          Controls.custom({
+            render: () => <ActionPortLabel>False case step</ActionPortLabel>,
+          }),
+        ],
+      }),
     ].filter(p => p),
     outputs: ports => [
       ports.action({
-        label: 'Previous step'
-      })
-    ]
+        label: 'Previous step',
+      }),
+    ],
   })
   .addRootNodeType({
     type: 'start',
@@ -188,13 +214,32 @@ config
     inputs: ports => [
       ports.action({
         label: 'Next step',
-      })
-    ]
+      }),
+    ],
   })
 
 export default () => {
   const [output, setOutput] = React.useState();
-  const [nodes, comments, dispatch, connector] = useNodeEditorController()
+  const [nodes, comments, dispatch, connector, temp] = useNodeEditorController({
+    defaultNodes: [
+      {
+        type: 'start',
+        x: -410,
+        y: -150,
+      },
+    ],
+    initialTempState: {
+      multiselect: false,
+      selectedNodes: [],
+      stage: {
+        scale: 1.1,
+        translate: {
+          x: -100,
+          y: -100
+        }
+      }
+    }
+  })
 
   // React.useEffect(() => {
   //   console.log = log => {
@@ -208,37 +253,47 @@ export default () => {
   //   }
   // })
 
-  // useEffect(() => {
-  //   console.log(nodes)
-  // })
-
+  useEffect(() => {
+    console.log(Object.values(nodes))
+  })
   return (
-    <div className="wrapper" style={{width: '100vw', height: '100vh'}}>
+    <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
       <ControlsBlock>
-        <button onClick={() => {
-          console.log('I hit')
-          dispatch("UNDO")
-        }}>Undo</button>
-        <button onClick={() => dispatch("REDO", {})}>Redo</button>
-        <button onClick={() => dispatch("COPY")}>Copy</button>
-        <button onClick={() => dispatch("CUT")}>Cut</button>
-        <button onClick={() => dispatch("PASTE")}>Paste</button>
+        <button onClick={() => dispatch('UNDO')}>Undo</button>
+        <button onClick={() => dispatch('REDO')}>Redo</button>
+        <button onClick={() => dispatch('COPY')}>Copy</button>
+        <button onClick={() => dispatch('CUT')}>Cut</button>
+        <button onClick={() => dispatch('PASTE')}>Paste</button>
+        <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
+          nodeIds: Object.keys(nodes),
+          doExpand: true,
+        })}>Expand all nodes
+        </button>
+        <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
+          nodeIds: Object.keys(nodes),
+          doExpand: false,
+        })}>Collapse all nodes
+        </button>
+        <label style={{ color: 'white' }}>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              temp.dispatch({
+                type: 'TOGGLE_MULTISELECT',
+                doEnable: e.target.checked,
+              })
+            }}/>
+          Toggle multiselect
+        </label>
+
       </ControlsBlock>
       <NodeEditor
         portTypes={config.portTypes}
         nodeTypes={config.nodeTypes}
-        // nodes={{}}
         connector={connector}
-        defaultNodes={[
-          {
-            type: 'start',
-            x: -410,
-            y: -150
-          }
-        ]}
         // debug
       />
-      <div id="OUTPUT" style={{display: 'none'}}>{output}</div>
+      <div id="OUTPUT" style={{ display: 'none' }}>{output}</div>
     </div>
   );
 }
@@ -249,7 +304,7 @@ const ControlsBlock = styled.div`
   top: 10px;
   left: 10px;
   z-index: 9999;
-  
+
   & > * {
     margin-right: 10px;
   }
@@ -258,6 +313,6 @@ const ControlsBlock = styled.div`
 const ActionPortLabel = styled.label`
   font-size: 13px;
   margin-bottom: 4px;
-  margin-top:-8px;
+  margin-top: -8px;
 `
 
