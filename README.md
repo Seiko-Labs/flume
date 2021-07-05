@@ -12,6 +12,29 @@ Forked and updated by Seiko Labs
 
 ## Current fork changelist and features
 
+* Node builder now accepts and contains additional `icon` (URL string), `comment` (string), `titleColor` (HEX), `tileBackground` (HEX) and `expanded` (boolean) parameters, that define card layout and view.
+
+* Added `NodeEditor` state init params to hook function params. It now accepts:
+
+```javascript
+{
+  initialNodesState = null,   // State of nodes containing steps state and actions
+  initialTempState = {        // Initial temp state
+    multiselect: false,       // Multiselect
+    selectedNodes: [],        // Selected nodes
+    stage: {                  // Stage state
+      scale: 1,               // Zoom factor
+      translate: {            // Stage disposition (x, y coords)
+        x: 0,
+        y: 0
+      }
+    }
+  },
+  initialNodes = null,       // Nodes to be placed by default (Optional)
+  defaultNodes = null        // Default nodes (Optional)
+}
+```
+
 * Reversed input and output IO pins. Was done so to let `rootNode` construct LTR
 
 * Added `useNodeEditorController` controller hook for deeper `NodeEditor`
@@ -112,6 +135,23 @@ import {
 import config from './config'
 import styled from 'styled-components'
 
+const nodeEditorStateData = {
+  initialNodesState: null,
+  initialTempState: {
+    multiselect: false,
+    selectedNodes: [],
+    stage: {
+      scale: 1,
+      translate: {
+        x: 0,
+        y: 0
+      }
+    }
+  },
+  initialNodes: null,
+  defaultNodes: null
+}
+
 const App = () => {
   // This is a controller hook that is used to 
   // dispatch actions to the NodeEditor watch contents ans so on...
@@ -125,7 +165,7 @@ const App = () => {
     dispatch, // This method dispatches actions to NodeEditor
     connector, // Links editor to the controller
     temp // This reducer contains additionals to interact with NodeEditor
-  ] = useNodeEditorController()
+  ] = useNodeEditorController(nodeEditorStateData)
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>

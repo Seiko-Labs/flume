@@ -10,8 +10,6 @@ import {
   useNodeEditorController,
 } from 'node-editor';
 
-const Log = console.log;
-
 const config = new FlumeConfig()
 
 config
@@ -231,7 +229,7 @@ export default () => {
       multiselect: false,
       selectedNodes: [],
       stage: {
-        scale: 2,
+        scale: 1.1,
         translate: {
           x: -100,
           y: -100

@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useState } from 'react';
-import { getInitialNodes } from '../nodesReducer';
 
 const tempStateReducer = (state, action) => {
   switch (action.type) {
