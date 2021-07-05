@@ -158,7 +158,7 @@ export let NodeEditor = (
     setShouldRecalculateConnections,
   ] = React.useState(true)
 
-  initialStageParams ||= tempState.stage
+  initialStageParams = initialStageParams || tempState.stage
 
   const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
     scale: typeof initialStageParams?.scale === 'number'

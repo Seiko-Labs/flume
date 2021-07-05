@@ -16,5 +16,5 @@ jobs:
         node-version: '16'
     - run: yarn install
     - run: yarn build
-    - run: cd example && yarn install && yarn start & npx wait-on http://localhost:3000
+    - run: cd example && yarn install && yarn start & npx wait-on http://localhost:3000/test
     - run: yarn test
