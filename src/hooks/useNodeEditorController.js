@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
+import { getInitialNodes } from '../nodesReducer';
 
 const tempStateReducer = (state, action) => {
   switch (action.type) {
@@ -7,24 +8,47 @@ const tempStateReducer = (state, action) => {
         ...state,
         multiselect: action.doEnable,
       }
+    case 'SET_STAGE': {
+      const {x, y, scale} = action
+
+      return {
+        ...state,
+        stage: {
+          scale,
+          translate: {
+            x,
+            y
+          }
+        }
+      }
+    }
     default:
       return state
   }
 }
 
-const initialTempState = {
-  multiselect: false,
-}
-
-const initTemp = () => initialTempState
-
-export default () => {
+export default ({
+  initialNodesState = null,
+  initialTempState = {
+    multiselect: false,
+    selectedNodes: [],
+    stage: {
+      scale: 1,
+      translate: {
+        x: 0,
+        y: 0
+      }
+    }
+  },
+  initialNodes = null,
+  defaultNodes = null
+}) => {
   const [action, setAction] = useState(null)
-  const [nodes, setNodes] = useState({})
+  const [nodes, setNodes] = useState(initialNodesState || {})
   const [comments, setComments] = useState({})
 
   const [tempState, dispatchTemp] = useReducer(
-    tempStateReducer, initialTempState, initTemp)
+    tempStateReducer, {initialTempState}, () => initialTempState)
 
   const dispatch = (type, data = {}) =>
     setAction(() => () => ({ type, data }))
@@ -38,6 +62,8 @@ export default () => {
       action,
       setNodes,
       setComments,
+      initialNodes,
+      defaultNodes,
       temp: { state: tempState, dispatch: dispatchTemp },
     },
     { state: tempState, dispatch: dispatchTemp },
