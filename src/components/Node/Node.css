@@ -27,17 +27,37 @@
   &:hover .expander {
     max-height: 150px;
   }
+
+  & > div > img {
+	  height: 15px;
+	  width: 15px;
+	  display: inline-block;
+	  float: left;
+	  margin: 5px 0 5px 5px;
+  }
 }
 
 .expander {
   transform: translateZ(1px);
-  background: linear-gradient(to bottom, transparent, transparent 70px, #494956 70px);
   padding: 5px;
-  margin: 0;
-  width: 100%;
+	margin: 0 0 3px;
+	width: 100%;
   overflow: hidden;
   border: none;
   border-radius: 5px;
+	line-height: .7;
+
+	& .expandToggle {
+		line-height: .7;
+	}
+
+	& > img {
+		height: 15px;
+		width: 15px;
+		display: inline-block;
+		float: left;
+		margin: 5px 5px 0 5px !important;
+	}
 }
 
 .label {
@@ -62,7 +82,7 @@
 }
 
 .input {
-  padding: 4px;
+  padding: 6px 4px 5px 4px;
   margin: 0;
   border: none;
   background: transparent;
@@ -73,10 +93,10 @@
   outline: none;
   display: inline-block;
   text-transform: inherit;
+  line-height: 1;
   font-weight: normal;
   font-size: 11px;
   transform: translateZ(1px);
-  background: linear-gradient(to bottom, transparent, transparent 70px, #494956 70px);
 }
 
 .expandToggle {

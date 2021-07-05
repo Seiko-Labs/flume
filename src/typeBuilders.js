@@ -164,11 +164,11 @@ export class FlumeConfig {
     };
 
     if ( typeof config.titleColor === 'string' &&
-         config.titleColor.test(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g) )
+         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor) )
       node.titleColor = config.titleColor
 
     if ( typeof config.tileBackground === 'string' &&
-         config.tileBackground.test(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g) )
+         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground) )
       node.tileBackground = config.tileBackground
 
     if ( typeof config.icon === 'string' ) node.icon = config.icon
