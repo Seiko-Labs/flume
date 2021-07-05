@@ -20,8 +20,6 @@ const Node = forwardRef(({
   height,
   x,
   isSelected,
-  titleColor = '#000',
-  tileBackground = '#494956',
   comment,
   y,
   expanded = false,
@@ -39,7 +37,15 @@ const Node = forwardRef(({
   const nodeTypes = useContext(NodeTypesContext);
   const nodesDispatch = useContext(NodeDispatchContext);
   const stageState = useContext(StageContext);
-  const { label, deletable, inputs = [], outputs = [] } = nodeTypes[type];
+  const {
+    label,
+    deletable,
+    inputs = [],
+    outputs = [],
+    icon,
+    titleColor = '#000',
+    tileBackground = '#494956',
+  } = nodeTypes[type];
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuCoordinates, setMenuCoordinates] = useState({ x: 0, y: 0 });
@@ -228,36 +234,46 @@ const Node = forwardRef(({
       <div className={styles.header} style={{
         overflow: isInputComment ? 'visible' : '',
         maxHeight: isInputComment ? '150' : '',
+        backgroundColor: tileBackground,
+        color: titleColor,
       }}>
-        { !isInputComment && <div {...(comment && {className: styles.expander})}>
-          <div className={styles.actionsContainer}>{
-            optionalAmount
-              ? <button
-                className={styles.expandToggle}
-                onClick={() => nodesDispatch({ type: 'TOGGLE_NODE_VIEW', id })}
+        { !isInputComment &&
+          <div {...(comment && {
+            className: styles.expander,
+            style: {
+              background: `linear-gradient(to bottom, transparent, transparent 70px, ${tileBackground} 70px)`,
+            },
+          })}>
+            {icon && <img alt="" src={icon}/>}
+            <div className={styles.actionsContainer}>{
+              optionalAmount
+                ? <button
+                  className={styles.expandToggle}
+                  style={{ color: titleColor }}
+                  onClick={() => nodesDispatch({ type: 'TOGGLE_NODE_VIEW', id })}
+                >{
+                  expanded ? '▲' : '▼'
+                }</button>
+                : null
+            }</div>
+            {comment
+              ? <span
+                className={styles.comment}
+                onMouseDown={() => setDrag(0)}
+                onMouseMove={() => setDrag(d => d + 1)}
+                onMouseUp={handleMouseUp}>{
+                comment
+              }</span>
+              : <span
+                className={styles.label}
+                onMouseDown={() => setDrag(0)}
+                onMouseMove={() => setDrag(d => d + 1)}
+                onMouseUp={handleMouseUp}
               >{
-                expanded ? '▲' : '▼'
-              }</button>
-              : null
-          }</div>
-          {comment
-            ? <span
-              className={styles.comment}
-              onMouseDown={() => setDrag(0)}
-              onMouseMove={() => setDrag(d => d + 1)}
-              onMouseUp={handleMouseUp}>{
-              comment
-            }</span>
-            : <span
-              className={styles.label}
-              onMouseDown={() => setDrag(0)}
-              onMouseMove={() => setDrag(d => d + 1)}
-              onMouseUp={handleMouseUp}
-            >{
-              label
-            }</span>
-          }
-        </div>}
+                label
+              }</span>
+            }
+          </div>}
         {
           isInputComment && <ClickOutHandler onClickOut={handleFieldBlur}>
             <div style={{
@@ -278,8 +294,10 @@ const Node = forwardRef(({
                   ref={commentRef}
                   autoFocus
                   onInput={() => updateNodeConnections()}
-                  className={[styles.input].join(
-                    ' ')}
+                  className={styles.input}
+                  style={{
+                    background: `linear-gradient(to bottom, transparent, transparent 70px, ${tileBackground} 70px)`,
+                  }}
                   onBlur={handleFieldBlur}>{
                   comment
                 }</span>

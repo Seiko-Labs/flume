@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'normalize.css';
 import styled from 'styled-components'
 
@@ -84,6 +84,9 @@ config
     type: 'selectorAction',
     name: 'selectorAction',
     label: 'Selector action',
+    icon: 'https://dummyimage.com/30x30/de21de/fff.png&text=Ic',
+    tileBackground: '#bb0707',
+    titleColor: '#fefefe',
     inputs: ports => data => [
       ports.string({
         name: 'selectorPath',
@@ -250,9 +253,9 @@ export default () => {
   //   }
   // })
 
-  // useEffect(() => {
-  //   console.log(Object.keys(nodes))
-  // })
+  useEffect(() => {
+    console.log(Object.values(nodes))
+  })
   return (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
       <ControlsBlock>
