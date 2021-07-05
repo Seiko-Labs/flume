@@ -70,12 +70,12 @@ const TextInput = ({
       ) : (
         <textarea
           onChange={e => onChange(e.target.value)}
+          value={data}
+          onDragStart={e => e.stopPropagation()}
           onMouseDown={handlePossibleResize}
           type="text"
           placeholder={placeholder}
           className={styles.input}
-          value={data}
-          onDragStart={e => e.stopPropagation()}
         />
       )}
     </div>

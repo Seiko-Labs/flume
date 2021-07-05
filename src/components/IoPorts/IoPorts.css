@@ -4,6 +4,7 @@
 	margin-top: auto;
 	width: 100%;
 	padding: 5px;
+	z-index:-1;
 }
 
 .inputs {

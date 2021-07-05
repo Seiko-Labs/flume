@@ -18,13 +18,10 @@ import {
   StageContext,
 } from './context'
 import { clearConnections, createConnections } from './connectionCalculator'
-import nodesReducer, {
-  connectNodesReducer,
-  getInitialNodes,
-} from './nodesReducer'
-import commentsReducer from './commentsReducer'
-import toastsReducer from './toastsReducer'
-import stageReducer from './stageReducer'
+import nodesReducer, { connectNodesReducer } from './reducers/nodes/'
+import commentsReducer from './reducers/commentsReducer'
+import toastsReducer from './reducers/toastsReducer'
+import stageReducer from './reducers/stageReducer'
 import usePrevious from './hooks/usePrevious'
 import clamp from 'lodash/clamp'
 import Cache from './Cache'
@@ -32,26 +29,20 @@ import { DRAG_CONNECTION_ID, STAGE_ID } from './constants'
 import styles from './styles.css'
 import Selection from 'react-ds/dist'
 import useSelect from './hooks/useSelect'
+import getInitialNodes from './reducers/nodes/getInitialNodes';
 
 const defaultContext = {}
 
 export let NodeEditor = (
   {
     comments: initialComments,
-    // nodes: initialNodes = {},
     nodeTypes = {},
     portTypes = {},
-    // defaultNodes = [],
     context = defaultContext,
-    // onChange,
-    // onCommentsChange,
     connector,
     initialStageParams,
-    // spaceToPan = true,
     hideComments = false,
     disableComments = false,
-    // disableZoom = false,
-    // disablePan = false,
     circularBehavior,
     debug,
   },
@@ -294,17 +285,6 @@ export let NodeEditor = (
     }
   }, [sideEffectToasts])
 
-  // const keyMap = {
-  //   COPY_NODES: 'ctrl+c',
-  //   PASTE_NODES: 'ctrl+v',
-  //   CUT_NODES: 'ctrl+x',
-  //   UNDO_CHANGES: 'ctrl+z',
-  //   REDO_CHANGES: 'ctrl+y',
-  // }
-
-  const copyNodes = () => console.log('Copy nodes')
-  const pasteNodes = () => console.log('Paste nodes')
-  const cutNodes = () => console.log('Cut nodes')
   const undoChanges = () => {
     dispatchNodes({
       type: 'UNDO_CHANGES',
@@ -321,14 +301,6 @@ export let NodeEditor = (
     clearConnections()
     triggerRecalculation()
   }
-
-  // const handlers = {
-  //   COPY_NODES: copyNodes,
-  //   PASTE_NODES: pasteNodes,
-  //   CUT_NODES: cutNodes,
-  //   UNDO_CHANGES: undoChanges,
-  //   REDO_CHANGES: redoChanges,
-  // }
 
   return (
     <PortTypesContext.Provider value={portTypes}>
