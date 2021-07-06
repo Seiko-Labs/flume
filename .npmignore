@@ -1,5 +1,10 @@
 /src
 /example
 /cypress
+/.idea
+/.github
 /docs
 logo.ai
+flume.iml
+cypress.json
+
