@@ -19,8 +19,7 @@
     "test:watch": "react-scripts test --env=jsdom",
     "build": "rollup -c",
     "start": "rollup -c -w",
-    "release": "npx np",
-    "prepare": "yarn build"
+    "release": "npx np"
   },
   "np": {
     "testScript": "test"
