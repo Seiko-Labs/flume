@@ -27522,8 +27522,11 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
   React$1.useMemo(function () {
-    previousNodes && nodes !== previousNodes && setNodesState && setNodesState(nodesState);
-  }, [nodesState, nodes, previousNodes, setNodesState]);
+    previousNodes && nodes !== previousNodes && setNodesState && setNodesState({
+      nodesState: nodesState,
+      currentStateIndex: currentStateIndex
+    });
+  }, [nodesState, currentStateIndex, nodes, previousNodes, setNodesState]);
   var previousComments = usePrevious(comments);
   React$1.useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);

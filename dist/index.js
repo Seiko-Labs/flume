@@ -27532,8 +27532,11 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
   React__default['default'].useMemo(function () {
-    previousNodes && nodes !== previousNodes && setNodesState && setNodesState(nodesState);
-  }, [nodesState, nodes, previousNodes, setNodesState]);
+    previousNodes && nodes !== previousNodes && setNodesState && setNodesState({
+      nodesState: nodesState,
+      currentStateIndex: currentStateIndex
+    });
+  }, [nodesState, currentStateIndex, nodes, previousNodes, setNodesState]);
   var previousComments = usePrevious(comments);
   React__default['default'].useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);

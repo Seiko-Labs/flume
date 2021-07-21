@@ -265,8 +265,8 @@ export let NodeEditor = (
     previousNodes
     && nodes !== previousNodes
     && setNodesState
-    && setNodesState(nodesState)
-  }, [nodesState, nodes, previousNodes, setNodesState])
+    && setNodesState({ nodesState, currentStateIndex })
+  }, [nodesState, currentStateIndex, nodes, previousNodes, setNodesState])
 
 
   const previousComments = usePrevious(comments)
