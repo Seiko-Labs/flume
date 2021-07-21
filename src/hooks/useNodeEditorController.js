@@ -62,6 +62,7 @@ export default ({
       setNodes,
       setComments,
       initialNodes,
+      initialNodesState,
       defaultNodes,
       temp: { state: tempState, dispatch: dispatchTemp },
     },

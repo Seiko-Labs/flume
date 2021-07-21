@@ -74,7 +74,7 @@ export let NodeEditor = (
     ),
     {},
     () => ({
-      nodesState: [
+      nodesState: connector.initialNodesState || [
         {
           state: getInitialNodes(
             initialNodes,
