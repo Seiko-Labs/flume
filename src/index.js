@@ -74,7 +74,7 @@ export let NodeEditor = (
     ),
     {},
     () => ({
-      nodesState: [
+      nodesState: connector.initialNodesState || [
         {
           state: getInitialNodes(
             initialNodes,
@@ -91,7 +91,7 @@ export let NodeEditor = (
   )
   const {
     action: connectorAction,
-    setNodes,
+    setNodesState,
     setComments,
     temp: { state: tempState, dispatch: dispatchTemp },
   } = connector
@@ -264,9 +264,9 @@ export let NodeEditor = (
   React.useMemo(() => {
     previousNodes
     && nodes !== previousNodes
-    && setNodes
-    && setNodes(nodes)
-  }, [nodes, previousNodes, setNodes])
+    && setNodesState
+    && setNodesState(nodesState)
+  }, [nodesState, nodes, previousNodes, setNodesState])
 
 
   const previousComments = usePrevious(comments)

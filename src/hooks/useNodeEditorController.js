@@ -43,7 +43,7 @@ export default ({
   defaultNodes = null
 }) => {
   const [action, setAction] = useState(null)
-  const [nodes, setNodes] = useState(initialNodesState || {})
+  const [nodeState, setNodeState] = useState(initialNodesState || {})
   const [comments, setComments] = useState({})
 
   const [tempState, dispatchTemp] = useReducer(
@@ -57,11 +57,12 @@ export default ({
   }, [action]);
 
   return [
-    nodes, comments, dispatch, {
+    nodeState, comments, dispatch, {
       action,
-      setNodes,
+      setNodeState,
       setComments,
       initialNodes,
+      initialNodesState,
       defaultNodes,
       temp: { state: tempState, dispatch: dispatchTemp },
     },
