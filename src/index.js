@@ -73,8 +73,8 @@ export let NodeEditor = (
       setSideEffectToasts,
     ),
     {},
-    () => ({
-      nodesState: connector.initialNodesState || [
+    () => (connector.initialNodesState || {
+      nodesState: [
         {
           state: getInitialNodes(
             initialNodes,

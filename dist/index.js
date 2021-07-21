@@ -27324,8 +27324,8 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     circularBehavior: circularBehavior,
     context: context
   }, setSideEffectToasts), {}, function () {
-    return {
-      nodesState: connector.initialNodesState || [{
+    return connector.initialNodesState || {
+      nodesState: [{
         state: getInitialNodes(initialNodes, connector.defaultNodes || [], nodeTypes, portTypes, context),
         action: {
           type: 'INITIAL'
