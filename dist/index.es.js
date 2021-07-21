@@ -27213,8 +27213,8 @@ var useNodeEditorController = (function (_ref) {
 
   var _useState3 = useState(initialNodesState || {}),
       _useState4 = _slicedToArray(_useState3, 2),
-      nodes = _useState4[0],
-      setNodes = _useState4[1];
+      nodesState = _useState4[0],
+      setNodesState = _useState4[1];
 
   var _useState5 = useState({}),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -27245,11 +27245,12 @@ var useNodeEditorController = (function (_ref) {
   useEffect(function () {
     action && setAction(null);
   }, [action]);
-  return [nodes, comments, dispatch, {
+  return [nodesState, comments, dispatch, {
     action: action,
-    setNodes: setNodes,
+    setNodesState: setNodesState,
     setComments: setComments,
     initialNodes: initialNodes,
+    initialNodesState: initialNodesState,
     defaultNodes: defaultNodes,
     temp: {
       state: tempState,
@@ -27314,7 +27315,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     context: context
   }, setSideEffectToasts), {}, function () {
     return {
-      nodesState: [{
+      nodesState: connector.initialNodesState || [{
         state: getInitialNodes(initialNodes, connector.defaultNodes || [], nodeTypes, portTypes, context),
         action: {
           type: 'INITIAL'
@@ -27330,7 +27331,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       dispatchNodes = _React$useReducer4[1];
 
   var connectorAction = connector.action,
-      setNodes = connector.setNodes,
+      setNodesState = connector.setNodesState,
       setComments = connector.setComments,
       _connector$temp = connector.temp,
       tempState = _connector$temp.state,
@@ -27521,8 +27522,8 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
   React$1.useMemo(function () {
-    previousNodes && nodes !== previousNodes && setNodes && setNodes(nodes);
-  }, [nodes, previousNodes, setNodes]);
+    previousNodes && nodes !== previousNodes && setNodesState && setNodesState(nodesState);
+  }, [nodesState, nodes, previousNodes, setNodesState]);
   var previousComments = usePrevious(comments);
   React$1.useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);
