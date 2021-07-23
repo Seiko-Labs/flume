@@ -148,6 +148,7 @@ const Node = forwardRef(({
     }
 
     nodeWrapper.current.style.transform = `translate(${x}px,${y}px)`;
+
     updateNodeConnections();
 
   }

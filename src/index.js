@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { createRef, useEffect, useMemo, useRef } from 'react'
 import { useId } from '@reach/auto-id'
 import Stage from './components/Stage/Stage'
 import Node from './components/Node/Node'
@@ -39,7 +39,16 @@ export let NodeEditor = (
     nodeTypes = {},
     portTypes = {},
     context = defaultContext,
-    connector,
+    connector: {
+      initialNodes = {},
+      action: connectorAction,
+      setNodesState,
+      setComments,
+      defaultNodes,
+      temp: { state: tempState, dispatch: dispatchTemp },
+      initialNodesState,
+      ...connector
+    },
     initialStageParams,
     hideComments = false,
     disableComments = false,
@@ -56,8 +65,6 @@ export let NodeEditor = (
   const editorRef = useRef()
   const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
 
-  const initialNodes = connector.initialNodes || {}
-
   const [
     { nodesState, currentStateIndex }, dispatchNodes,
   ] = React.useReducer(
@@ -73,12 +80,12 @@ export let NodeEditor = (
       setSideEffectToasts,
     ),
     {},
-    () => (connector.initialNodesState || {
+    () => (initialNodesState || {
       nodesState: [
         {
           state: getInitialNodes(
             initialNodes,
-            connector.defaultNodes || [],
+            defaultNodes || [],
             nodeTypes,
             portTypes,
             context,
@@ -89,20 +96,14 @@ export let NodeEditor = (
       currentStateIndex: 0,
     }),
   )
-  const {
-    action: connectorAction,
-    setNodesState,
-    setComments,
-    temp: { state: tempState, dispatch: dispatchTemp },
-  } = connector
-  const nodes = nodesState[currentStateIndex].state
-  const previousNodes = usePrevious(nodes)
   const [comments, dispatchComments] = React.useReducer(
     commentsReducer,
     initialComments || {},
   )
   const [selectedNodes, nodeRefs, handleSelection, clearSelection] = useSelect(
-    nodes, previousNodes)
+    nodesState[currentStateIndex].state || initialNodesState,
+    nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState,
+  )
 
   useEffect(() => {
     if ( connectorAction ) {
@@ -181,8 +182,8 @@ export let NodeEditor = (
   }, [stageState, tempState.stage, dispatchTemp])
 
   const recalculateConnections = React.useCallback(() => {
-    createConnections(nodes, stageState, editorId)
-  }, [nodes, editorId, stageState])
+    createConnections(nodesState[currentStateIndex].state, stageState, editorId)
+  }, [currentStateIndex, nodesState, editorId, stageState])
 
   const recalculateStageRect = () => {
     stage.current = document
@@ -254,7 +255,7 @@ export let NodeEditor = (
 
   React.useImperativeHandle(ref, () => ({
     getNodes: () => {
-      return nodes
+      return nodesState[currentStateIndex].state
     },
     getComments: () => {
       return comments
@@ -262,11 +263,12 @@ export let NodeEditor = (
   }))
 
   React.useMemo(() => {
-    previousNodes
-    && nodes !== previousNodes
+    nodesState[Math.max(currentStateIndex - 1, 0)].state
+    && nodesState[currentStateIndex].state !==
+    nodesState[Math.max(currentStateIndex - 1, 0)].state
     && setNodesState
     && setNodesState({ nodesState, currentStateIndex })
-  }, [nodesState, currentStateIndex, nodes, previousNodes, setNodesState])
+  }, [nodesState, currentStateIndex, setNodesState])
 
 
   const previousComments = usePrevious(comments)
@@ -348,21 +350,24 @@ export let NodeEditor = (
                         dispatchComments={dispatchComments}
                         disableComments={disableComments || hideComments}
                         stageRef={stage}
-                        numNodes={Object.keys(nodes).length}
+                        numNodes={Object.keys(
+                          nodesState[currentStateIndex].state).length}
                         outerStageChildren={
                           <React.Fragment>
                             {debug && (
                               <div className={styles.debugWrapper}>
                                 <button
                                   className={styles.debugButton}
-                                  onClick={() => console.log(nodes)}
+                                  onClick={() => console.log(
+                                    nodesState[currentStateIndex].state)}
                                 >
                                   Log Nodes
                                 </button>
                                 <button
                                   className={styles.debugButton}
                                   onClick={() =>
-                                    console.log(JSON.stringify(nodes))
+                                    console.log(JSON.stringify(
+                                      nodesState[currentStateIndex].state))
                                   }
                                 >
                                   Export Nodes
@@ -392,23 +397,26 @@ export let NodeEditor = (
                               key={comment.id}
                             />
                           ))}
-                        {Object.values(nodes).map((node) => (
-                          <Node
-                            {...node}
-                            isSelected={selectedNodes.includes(node.id)}
-                            ref={
-                              nodeRefs.find(([n]) => n.id === node.id)
-                                ? nodeRefs.find(([n]) => n.id === node.id)[1]
-                                : null
-                            }
-                            stageRect={stage}
-                            onDragEnd={handleDragEnd}
-                            onDragHandle={dragSelectedNodes}
-                            onDragStart={recalculateStageRect}
-                            key={node.id}
-                          />
-                        ))}
-                        <Connections nodes={nodes} editorId={editorId}/>
+                        {Object.values(nodesState[currentStateIndex].state)
+                               .map((node) => (
+                                 <Node
+                                   {...node}
+                                   isSelected={selectedNodes.includes(node.id)}
+                                   ref={
+                                     nodeRefs.find(([n]) => n.id === node.id)
+                                       ? nodeRefs.find(
+                                       ([n]) => n.id === node.id)[1]
+                                       : createRef()
+                                   }
+                                   stageRect={stage}
+                                   onDragEnd={handleDragEnd}
+                                   onDragHandle={dragSelectedNodes}
+                                   onDragStart={recalculateStageRect}
+                                   key={node.id}
+                                 />
+                               ))}
+                        <Connections nodes={nodesState[currentStateIndex].state}
+                                     editorId={editorId}/>
                         <div
                           className={styles.dragWrapper}
                           id={`${DRAG_CONNECTION_ID}${editorId}`}

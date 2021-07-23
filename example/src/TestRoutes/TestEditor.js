@@ -85,8 +85,8 @@ config
     name: 'selectorAction',
     label: 'Selector action',
     icon: 'https://dummyimage.com/30x30/de21de/fff.png&text=Ic',
-    tileBackground: '#bb0707',
-    titleColor: '#fefefe',
+    tileBackground: '#BB0707',
+    titleColor: '#FEFEFE',
     inputs: ports => data => [
       ports.string({
         name: 'selectorPath',
@@ -218,9 +218,66 @@ config
     ],
   })
 
+const is = {
+  'nodesState': [
+    {
+      'action': { 'type': 'HYDRATE_DEFAULT_NODES' },
+      'state': {
+        '-oIeb93f6D': {
+          'x': -410,
+          'y': -150,
+          'type': 'start',
+          'width': 90,
+          'connections': { 'inputs': {}, 'outputs': {} },
+          'inputData': { 'action': {} },
+          'root': true,
+          'id': '-oIeb93f6D',
+        },
+      },
+    }, {
+      'action': {
+        'type': 'ADD_NODE',
+        'x': 105.9090909090909,
+        'y': -104.0909090909091,
+        'nodeType': 'condition',
+      },
+      'state': {
+        '-oIeb93f6D': {
+          'x': -410,
+          'y': -150,
+          'type': 'start',
+          'width': 90,
+          'connections': { 'inputs': {}, 'outputs': {} },
+          'inputData': { 'action': {} },
+          'root': true,
+          'id': '-oIeb93f6D',
+        },
+        'x1YIeHXfUx': {
+          'id': 'x1YIeHXfUx',
+          'x': 105.9090909090909,
+          'y': -104.0909090909091,
+          'type': 'condition',
+          'width': 200,
+          'connections': { 'inputs': {}, 'outputs': {} },
+          'inputData': {
+            'condition': { 'string': '' },
+            'trueCaseAction': {},
+            'falseCaseAction': {},
+          },
+        },
+      },
+    },
+  ], 'currentStateIndex': 1,
+}
+
 export default () => {
   const [output, setOutput] = React.useState();
-  const [nodes, comments, dispatch, connector, temp] = useNodeEditorController({
+  const [
+    {
+      nodesState,
+      currentStateIndex,
+    }, comments, dispatch, connector, temp,
+  ] = useNodeEditorController({
     defaultNodes: [
       {
         type: 'start',
@@ -228,6 +285,7 @@ export default () => {
         y: -150,
       },
     ],
+    initialNodesState: is,
     initialTempState: {
       multiselect: false,
       selectedNodes: [],
@@ -235,10 +293,10 @@ export default () => {
         scale: 1.1,
         translate: {
           x: -100,
-          y: -100
-        }
-      }
-    }
+          y: -100,
+        },
+      },
+    },
   })
 
   // React.useEffect(() => {
@@ -254,7 +312,7 @@ export default () => {
   // })
 
   useEffect(() => {
-    console.log(Object.values(nodes))
+    console.log(JSON.stringify({ nodesState, currentStateIndex }))
   })
   return (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
@@ -265,12 +323,12 @@ export default () => {
         <button onClick={() => dispatch('CUT')}>Cut</button>
         <button onClick={() => dispatch('PASTE')}>Paste</button>
         <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
-          nodeIds: Object.keys(nodes),
+          nodeIds: Object.keys(nodesState[currentStateIndex].state),
           doExpand: true,
         })}>Expand all nodes
         </button>
         <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
-          nodeIds: Object.keys(nodes),
+          nodeIds: Object.keys(nodesState[currentStateIndex].state),
           doExpand: false,
         })}>Collapse all nodes
         </button>

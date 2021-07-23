@@ -96,6 +96,40 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
 }
 
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties$1(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 /**
@@ -1102,41 +1136,7 @@ var CacheContext = /*#__PURE__*/React$1.createContext();
 var RecalculateStageRectContext = /*#__PURE__*/React$1.createContext();
 var EditorIdContext = /*#__PURE__*/React$1.createContext();
 
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _objectWithoutProperties$1(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
+var _excluded$3 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
 var Draggable = (function (_ref) {
   var children = _ref.children,
       stageState = _ref.stageState,
@@ -1151,7 +1151,7 @@ var Draggable = (function (_ref) {
       _ref$delay = _ref.delay,
       delay = _ref$delay === void 0 ? 6 : _ref$delay,
       innerRef = _ref.innerRef,
-      rest = _objectWithoutProperties$1(_ref, _excluded$2);
+      rest = _objectWithoutProperties$1(_ref, _excluded$3);
 
   var startCoordinates = React$1.useRef(null);
   var offset = React$1.useRef();
@@ -26177,7 +26177,7 @@ var getDefaultData = (function (_ref) {
   }, {});
 });
 
-var _excluded$1 = ["id", "defaultNode"];
+var _excluded$2 = ["id", "defaultNode"];
 
 function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -26405,7 +26405,7 @@ var nodesReducer = function nodesReducer(_ref) {
             var _newNodes2$key = _newNodes2[key];
                 _newNodes2$key.id;
                 _newNodes2$key.defaultNode;
-                var node = _objectWithoutProperties$1(_newNodes2$key, _excluded$1);
+                var node = _objectWithoutProperties$1(_newNodes2$key, _excluded$2);
 
             _newNodes2[_newNodeId] = _objectSpread$8(_objectSpread$8({}, node), {}, {
               id: _newNodeId
@@ -26548,7 +26548,7 @@ var nodesReducer$1 = (function () {
   }
 });
 
-var _excluded = ["isNew"];
+var _excluded$1 = ["isNew"];
 
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 
@@ -26585,7 +26585,7 @@ var commentsReducer = (function () {
     case "REMOVE_COMMENT_NEW":
       var _comments$action$id = comments[action.id];
           _comments$action$id.isNew;
-          var comment = _objectWithoutProperties$1(_comments$action$id, _excluded);
+          var comment = _objectWithoutProperties$1(_comments$action$id, _excluded$1);
 
       return _objectSpread$7(_objectSpread$7({}, comments), {}, _defineProperty({}, action.id, comment));
 
@@ -27262,6 +27262,8 @@ var useNodeEditorController = (function (_ref) {
   }];
 });
 
+var _excluded = ["initialNodes", "action", "setNodesState", "setComments", "defaultNodes", "temp", "initialNodesState"];
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -27276,14 +27278,26 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       portTypes = _ref$portTypes === void 0 ? {} : _ref$portTypes,
       _ref$context = _ref.context,
       context = _ref$context === void 0 ? defaultContext : _ref$context,
-      connector = _ref.connector,
-      initialStageParams = _ref.initialStageParams,
+      _ref$connector = _ref.connector,
+      _ref$connector$initia = _ref$connector.initialNodes,
+      initialNodes = _ref$connector$initia === void 0 ? {} : _ref$connector$initia,
+      connectorAction = _ref$connector.action,
+      setNodesState = _ref$connector.setNodesState,
+      setComments = _ref$connector.setComments,
+      defaultNodes = _ref$connector.defaultNodes,
+      _ref$connector$temp = _ref$connector.temp,
+      tempState = _ref$connector$temp.state,
+      dispatchTemp = _ref$connector$temp.dispatch,
+      initialNodesState = _ref$connector.initialNodesState;
+      _objectWithoutProperties$1(_ref$connector, _excluded);
+      var initialStageParams = _ref.initialStageParams,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === void 0 ? false : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
       disableComments = _ref$disableComments === void 0 ? false : _ref$disableComments,
       circularBehavior = _ref.circularBehavior,
       debug = _ref.debug;
+
   var editorId = useId();
   var cache = React$1.useRef(new Cache());
   var stage = React$1.useRef();
@@ -27305,8 +27319,6 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       spaceIsPressed = _React$useState4[0],
       setSpaceIsPressed = _React$useState4[1];
 
-  var initialNodes = connector.initialNodes || {};
-
   var _React$useReducer3 = React$1.useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
     portTypes: portTypes,
@@ -27314,9 +27326,9 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     circularBehavior: circularBehavior,
     context: context
   }, setSideEffectToasts), {}, function () {
-    return connector.initialNodesState || {
+    return initialNodesState || {
       nodesState: [{
-        state: getInitialNodes(initialNodes, connector.defaultNodes || [], nodeTypes, portTypes, context),
+        state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
         action: {
           type: 'INITIAL'
         }
@@ -27330,21 +27342,12 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       currentStateIndex = _React$useReducer4$.currentStateIndex,
       dispatchNodes = _React$useReducer4[1];
 
-  var connectorAction = connector.action,
-      setNodesState = connector.setNodesState,
-      setComments = connector.setComments,
-      _connector$temp = connector.temp,
-      tempState = _connector$temp.state,
-      dispatchTemp = _connector$temp.dispatch;
-  var nodes = nodesState[currentStateIndex].state;
-  var previousNodes = usePrevious(nodes);
-
   var _React$useReducer5 = React$1.useReducer(commentsReducer, initialComments || {}),
       _React$useReducer6 = _slicedToArray(_React$useReducer5, 2),
       comments = _React$useReducer6[0],
       dispatchComments = _React$useReducer6[1];
 
-  var _useSelect = useSelect(nodes, previousNodes),
+  var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState, nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState),
       _useSelect2 = _slicedToArray(_useSelect, 4),
       selectedNodes = _useSelect2[0],
       nodeRefs = _useSelect2[1],
@@ -27443,8 +27446,8 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     }
   }, [stageState, tempState.stage, dispatchTemp]);
   var recalculateConnections = React$1.useCallback(function () {
-    createConnections(nodes, stageState, editorId);
-  }, [nodes, editorId, stageState]);
+    createConnections(nodesState[currentStateIndex].state, stageState, editorId);
+  }, [currentStateIndex, nodesState, editorId, stageState]);
 
   var recalculateStageRect = function recalculateStageRect() {
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
@@ -27514,7 +27517,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
   React$1.useImperativeHandle(ref, function () {
     return {
       getNodes: function getNodes() {
-        return nodes;
+        return nodesState[currentStateIndex].state;
       },
       getComments: function getComments() {
         return comments;
@@ -27522,11 +27525,11 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     };
   });
   React$1.useMemo(function () {
-    previousNodes && nodes !== previousNodes && setNodesState && setNodesState({
+    nodesState[Math.max(currentStateIndex - 1, 0)].state && nodesState[currentStateIndex].state !== nodesState[Math.max(currentStateIndex - 1, 0)].state && setNodesState && setNodesState({
       nodesState: nodesState,
       currentStateIndex: currentStateIndex
     });
-  }, [nodesState, currentStateIndex, nodes, previousNodes, setNodesState]);
+  }, [nodesState, currentStateIndex, setNodesState]);
   var previousComments = usePrevious(comments);
   React$1.useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);
@@ -27601,18 +27604,18 @@ var NodeEditor = function NodeEditor(_ref, ref) {
     dispatchComments: dispatchComments,
     disableComments: disableComments || hideComments,
     stageRef: stage,
-    numNodes: Object.keys(nodes).length,
+    numNodes: Object.keys(nodesState[currentStateIndex].state).length,
     outerStageChildren: /*#__PURE__*/React$1.createElement(React$1.Fragment, null, debug && /*#__PURE__*/React$1.createElement("div", {
       className: styles.debugWrapper
     }, /*#__PURE__*/React$1.createElement("button", {
       className: styles.debugButton,
       onClick: function onClick() {
-        return console.log(nodes);
+        return console.log(nodesState[currentStateIndex].state);
       }
     }, "Log Nodes"), /*#__PURE__*/React$1.createElement("button", {
       className: styles.debugButton,
       onClick: function onClick() {
-        return console.log(JSON.stringify(nodes));
+        return console.log(JSON.stringify(nodesState[currentStateIndex].state));
       }
     }, "Export Nodes"), /*#__PURE__*/React$1.createElement("button", {
       className: styles.debugButton,
@@ -27630,7 +27633,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       onDragStart: recalculateStageRect,
       key: comment.id
     }));
-  }), Object.values(nodes).map(function (node) {
+  }), Object.values(nodesState[currentStateIndex].state).map(function (node) {
     return /*#__PURE__*/React$1.createElement(Node, _extends$1({}, node, {
       isSelected: selectedNodes.includes(node.id),
       ref: nodeRefs.find(function (_ref6) {
@@ -27643,7 +27646,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
             n = _ref9[0];
 
         return n.id === node.id;
-      })[1] : null,
+      })[1] : /*#__PURE__*/createRef(),
       stageRect: stage,
       onDragEnd: handleDragEnd,
       onDragHandle: dragSelectedNodes,
@@ -27651,7 +27654,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       key: node.id
     }));
   }), /*#__PURE__*/React$1.createElement(Connections, {
-    nodes: nodes,
+    nodes: nodesState[currentStateIndex].state,
     editorId: editorId
   }), /*#__PURE__*/React$1.createElement("div", {
     className: styles.dragWrapper,
