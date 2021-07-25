@@ -27407,8 +27407,8 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       }
     }
   }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
-  React$1.useEffect(function () {
-    dispatchNodes({
+  useEffect(function () {
+    !currentStateIndex && dispatchNodes({
       type: 'HYDRATE_DEFAULT_NODES'
     });
   }, []);

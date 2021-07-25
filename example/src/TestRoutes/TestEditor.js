@@ -312,7 +312,7 @@ export default () => {
   // })
 
   useEffect(() => {
-    console.log(JSON.stringify({ nodesState, currentStateIndex }))
+    console.log(currentStateIndex)
   })
   return (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>

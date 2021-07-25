@@ -150,7 +150,8 @@ export let NodeEditor = (
     }
   }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    !currentStateIndex &&
     dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' })
   }, [])
 

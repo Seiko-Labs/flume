@@ -27417,8 +27417,8 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       }
     }
   }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
-  React__default['default'].useEffect(function () {
-    dispatchNodes({
+  React$1.useEffect(function () {
+    !currentStateIndex && dispatchNodes({
       type: 'HYDRATE_DEFAULT_NODES'
     });
   }, []);
