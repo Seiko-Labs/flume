@@ -4,13 +4,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React$1 = require('react');
 var ReactDOM$1 = require('react-dom');
-var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React$1);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM$1);
-var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
 function _extends$1() {
   _extends$1 = Object.assign || function (target) {
@@ -348,9 +346,1091 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$d = ".Stage_wrapper__1X5K_ {\r\n  width: 100%;\r\n  height: 100%;\r\n  min-height: 100px;\r\n  background-color: #1B1B21;\r\n  background-image: linear-gradient(\r\n      0deg,\r\n      transparent 24%,\r\n      rgba(255, 255, 255, 0.04) 25%,\r\n      rgba(255, 255, 255, 0.04) 26%,\r\n      transparent 27%,\r\n      transparent 74%,\r\n      rgba(255, 255, 255, 0.04) 75%,\r\n      rgba(255, 255, 255, 0.04) 76%,\r\n      transparent 77%,\r\n      transparent\r\n    ),\r\n    linear-gradient(\r\n      90deg,\r\n      transparent 24%,\r\n      rgba(255, 255, 255, 0.04) 25%,\r\n      rgba(255, 255, 255, 0.04) 26%,\r\n      transparent 27%,\r\n      transparent 74%,\r\n      rgba(255, 255, 255, 0.04) 75%,\r\n      rgba(255, 255, 255, 0.04) 76%,\r\n      transparent 77%,\r\n      transparent\r\n    );\r\n  color: #000;\r\n  background-size: 30px 30px;\r\n  position: relative;\r\n  overflow: hidden;\r\n  -webkit-overflow-scrolling: touch;\r\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\r\n  text-align: left;\r\n  line-height: 1;\r\n  outline: none !important;\r\n}\r\n.Stage_wrapper__1X5K_ * {\r\n  box-sizing: border-box;\r\n}\r\n.Stage_wrapper__1X5K_ input,\r\ntextarea,\r\nselect {\r\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\r\n}\r\n.Stage_transformWrapper__3CfIp {\r\n  transform-origin: center center;\r\n  position: absolute;\r\n  left: 50%;\r\n  top: 50%;\r\n  width: 0px;\r\n  height: 0px;\r\n}\r\n.Stage_scaleWrapper__2Y7Ck {\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n  width: 0px;\r\n  height: 0px;\r\n}\r\n";
+var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #1B1B21;\n  background-image: linear-gradient(\n      0deg,\n      transparent 24%,\n      rgba(255, 255, 255, 0.04) 25%,\n      rgba(255, 255, 255, 0.04) 26%,\n      transparent 27%,\n      transparent 74%,\n      rgba(255, 255, 255, 0.04) 75%,\n      rgba(255, 255, 255, 0.04) 76%,\n      transparent 77%,\n      transparent\n    ),\n    linear-gradient(\n      90deg,\n      transparent 24%,\n      rgba(255, 255, 255, 0.04) 25%,\n      rgba(255, 255, 255, 0.04) 26%,\n      transparent 27%,\n      transparent 74%,\n      rgba(255, 255, 255, 0.04) 75%,\n      rgba(255, 255, 255, 0.04) 76%,\n      transparent 77%,\n      transparent\n    );\n  color: #000;\n  background-size: 30px 30px;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 0px;\n  height: 0px;\n}\n";
 var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$d);
+
+var propTypes = {exports: {}};
+
+var reactIs = {exports: {}};
+
+var reactIs_production_min = {};
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?
+Symbol.for("react.suspense_list"):60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.block"):60121,w=b?Symbol.for("react.fundamental"):60117,x$1=b?Symbol.for("react.responder"):60118,y$1=b?Symbol.for("react.scope"):60119;
+function z(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case t:case r:case h:return a;default:return u}}case d:return u}}}function A(a){return z(a)===m}reactIs_production_min.AsyncMode=l;reactIs_production_min.ConcurrentMode=m;reactIs_production_min.ContextConsumer=k;reactIs_production_min.ContextProvider=h;reactIs_production_min.Element=c;reactIs_production_min.ForwardRef=n;reactIs_production_min.Fragment=e;reactIs_production_min.Lazy=t;reactIs_production_min.Memo=r;reactIs_production_min.Portal=d;
+reactIs_production_min.Profiler=g;reactIs_production_min.StrictMode=f;reactIs_production_min.Suspense=p;reactIs_production_min.isAsyncMode=function(a){return A(a)||z(a)===l};reactIs_production_min.isConcurrentMode=A;reactIs_production_min.isContextConsumer=function(a){return z(a)===k};reactIs_production_min.isContextProvider=function(a){return z(a)===h};reactIs_production_min.isElement=function(a){return "object"===typeof a&&null!==a&&a.$$typeof===c};reactIs_production_min.isForwardRef=function(a){return z(a)===n};reactIs_production_min.isFragment=function(a){return z(a)===e};reactIs_production_min.isLazy=function(a){return z(a)===t};
+reactIs_production_min.isMemo=function(a){return z(a)===r};reactIs_production_min.isPortal=function(a){return z(a)===d};reactIs_production_min.isProfiler=function(a){return z(a)===g};reactIs_production_min.isStrictMode=function(a){return z(a)===f};reactIs_production_min.isSuspense=function(a){return z(a)===p};
+reactIs_production_min.isValidElementType=function(a){return "string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===w||a.$$typeof===x$1||a.$$typeof===y$1||a.$$typeof===v)};reactIs_production_min.typeOf=z;
+
+var reactIs_development = {};
+
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (process.env.NODE_ENV !== "production") {
+  (function() {
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+reactIs_development.AsyncMode = AsyncMode;
+reactIs_development.ConcurrentMode = ConcurrentMode;
+reactIs_development.ContextConsumer = ContextConsumer;
+reactIs_development.ContextProvider = ContextProvider;
+reactIs_development.Element = Element;
+reactIs_development.ForwardRef = ForwardRef;
+reactIs_development.Fragment = Fragment;
+reactIs_development.Lazy = Lazy;
+reactIs_development.Memo = Memo;
+reactIs_development.Portal = Portal;
+reactIs_development.Profiler = Profiler;
+reactIs_development.StrictMode = StrictMode;
+reactIs_development.Suspense = Suspense;
+reactIs_development.isAsyncMode = isAsyncMode;
+reactIs_development.isConcurrentMode = isConcurrentMode;
+reactIs_development.isContextConsumer = isContextConsumer;
+reactIs_development.isContextProvider = isContextProvider;
+reactIs_development.isElement = isElement;
+reactIs_development.isForwardRef = isForwardRef;
+reactIs_development.isFragment = isFragment;
+reactIs_development.isLazy = isLazy;
+reactIs_development.isMemo = isMemo;
+reactIs_development.isPortal = isPortal;
+reactIs_development.isProfiler = isProfiler;
+reactIs_development.isStrictMode = isStrictMode;
+reactIs_development.isSuspense = isSuspense;
+reactIs_development.isValidElementType = isValidElementType;
+reactIs_development.typeOf = typeOf;
+  })();
+}
+
+if (process.env.NODE_ENV === 'production') {
+  reactIs.exports = reactIs_production_min;
+} else {
+  reactIs.exports = reactIs_development;
+}
+
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty$9 = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty$9.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var ReactPropTypesSecret$3 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+var ReactPropTypesSecret_1 = ReactPropTypesSecret$3;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var printWarning$1 = function() {};
+
+if (process.env.NODE_ENV !== 'production') {
+  var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
+  var loggedTypeFailures = {};
+  var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
+
+  printWarning$1 = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
+  if (process.env.NODE_ENV !== 'production') {
+    for (var typeSpecName in typeSpecs) {
+      if (has$1(typeSpecs, typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            var err = Error(
+              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+            );
+            err.name = 'Invariant Violation';
+            throw err;
+          }
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$2);
+        } catch (ex) {
+          error = ex;
+        }
+        if (error && !(error instanceof Error)) {
+          printWarning$1(
+            (componentName || 'React class') + ': type specification of ' +
+            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+            'You may have forgotten to pass an argument to the type checker ' +
+            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+            'shape all require an argument).'
+          );
+        }
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
+
+          var stack = getStack ? getStack() : '';
+
+          printWarning$1(
+            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Resets warning cache when testing.
+ *
+ * @private
+ */
+checkPropTypes$1.resetWarningCache = function() {
+  if (process.env.NODE_ENV !== 'production') {
+    loggedTypeFailures = {};
+  }
+};
+
+var checkPropTypes_1 = checkPropTypes$1;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var ReactIs$1 = reactIs.exports;
+var assign = objectAssign;
+
+var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+var checkPropTypes = checkPropTypes_1;
+
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
+var printWarning = function() {};
+
+if (process.env.NODE_ENV !== 'production') {
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
+
+var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+  var ANONYMOUS = '<<anonymous>>';
+
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker,
+  };
+
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+  /*eslint-disable no-self-compare*/
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  }
+  // Make `instanceof Error` still work for returned errors.
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if (process.env.NODE_ENV !== 'production') {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret$1) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          var err = new Error(
+            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+            'Use `PropTypes.checkPropTypes()` to call them. ' +
+            'Read more at http://fb.me/use-check-prop-types'
+          );
+          err.name = 'Invariant Violation';
+          throw err;
+        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+          if (
+            !manualPropTypeCallCache[cacheKey] &&
+            // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3
+          ) {
+            printWarning(
+              'You are manually calling a React.PropTypes validation ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'and will throw in the standalone `prop-types` package. ' +
+              'You may be seeing this warning due to a third-party PropTypes ' +
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
+            );
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+      var propValue = props[propName];
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret$1);
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!ReactIs$1.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      if (process.env.NODE_ENV !== 'production') {
+        if (arguments.length > 1) {
+          printWarning(
+            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+          );
+        } else {
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
+      return emptyFunctionThatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+        if (type === 'symbol') {
+          return String(value);
+        }
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+      for (var key in propValue) {
+        if (has(propValue, key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      return emptyFunctionThatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+      if (typeof checker !== 'function') {
+        printWarning(
+          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
+        );
+        return emptyFunctionThatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          continue;
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = assign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+          );
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+      case 'boolean':
+        return !propValue;
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    }
+
+    // falsy value can't be a Symbol
+    if (!propValue) {
+      return false;
+    }
+
+    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    }
+
+    // Fallback for non-spec compliant Symbols which are polyfilled.
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Equivalent of `typeof` but with special handling for array and regexp.
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+    return propType;
+  }
+
+  // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+    var propType = getPropType(propValue);
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+    return propType;
+  }
+
+  // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+      default:
+        return type;
+    }
+  }
+
+  // Returns class name of the object, if any.
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var ReactPropTypesSecret = ReactPropTypesSecret_1;
+
+function emptyFunction() {}
+function emptyFunctionWithReset() {}
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+var factoryWithThrowingShims = function() {
+  function shim(props, propName, componentName, location, propFullName, secret) {
+    if (secret === ReactPropTypesSecret) {
+      // It is still safe when called from React.
+      return;
+    }
+    var err = new Error(
+      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+      'Use PropTypes.checkPropTypes() to call them. ' +
+      'Read more at http://fb.me/use-check-prop-types'
+    );
+    err.name = 'Invariant Violation';
+    throw err;
+  }  shim.isRequired = shim;
+  function getShim() {
+    return shim;
+  }  // Important!
+  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+  var ReactPropTypes = {
+    array: shim,
+    bool: shim,
+    func: shim,
+    number: shim,
+    object: shim,
+    string: shim,
+    symbol: shim,
+
+    any: shim,
+    arrayOf: getShim,
+    element: shim,
+    elementType: shim,
+    instanceOf: getShim,
+    node: shim,
+    objectOf: getShim,
+    oneOf: getShim,
+    oneOfType: getShim,
+    shape: getShim,
+    exact: getShim,
+
+    checkPropTypes: emptyFunctionWithReset,
+    resetWarningCache: emptyFunction
+  };
+
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var ReactIs = reactIs.exports;
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  propTypes.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  propTypes.exports = factoryWithThrowingShims();
+}
+
+var PropTypes = propTypes.exports;
 
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
@@ -397,8 +1477,8 @@ var Portal$3 = function (_React$Component) {
 }(React__default['default'].Component);
 
 Portal$3.propTypes = {
-  children: PropTypes__default['default'].node.isRequired,
-  node: PropTypes__default['default'].any
+  children: PropTypes.node.isRequired,
+  node: PropTypes.any
 };
 
 var _createClass$3 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -466,8 +1546,8 @@ var Portal$2 = function (_React$Component) {
 
 
 Portal$2.propTypes = {
-  children: PropTypes__default['default'].node.isRequired,
-  node: PropTypes__default['default'].any
+  children: PropTypes.node.isRequired,
+  node: PropTypes.any
 };
 
 var Portal = void 0;
@@ -480,7 +1560,7 @@ if (ReactDOM__default['default'].createPortal) {
 
 var Portal$1 = Portal;
 
-var css_248z$c = ".ContextMenu_menuWrapper__1BheJ {\r\n\tposition: fixed;\r\n\tz-index: 9999;\r\n\tbackground: rgba(29, 32, 34, 0.95);\r\n\tborder-radius: 5px;\r\n\tbox-shadow: 0 6px 7px rgba(0, 0, 0, .3);\r\n\tborder: 1px solid rgba(0, 0, 0, .4);\r\n\tfont-size: 14px;\r\n\tmax-width: 300px;\r\n\tmin-width: 150px;\r\n\tfont-family: \"Segoe UI\", Helvetica, sans-serif;\r\n\tline-height: 1.15;\r\n\toutline: none;\r\n}\r\n\r\n@supports (backdrop-filter: blur(6px)) {\r\n\t.ContextMenu_menuWrapper__1BheJ {\r\n\t\tbackdrop-filter: blur(6px);\r\n\t\tbackground: rgba(29, 32, 34, 0.8);\r\n\t}\r\n}\r\n\r\n.ContextMenu_menuHeader__1Cw58 {\r\n\tpadding: 5px;\r\n\tborder-bottom: 1px solid rgba(255, 255, 255, .1);\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n}\r\n\r\n.ContextMenu_menuLabel__158Pv {\r\n\tmargin: 0;\r\n\tcolor: #FFF;\r\n\tfont-size: 16px;\r\n\tfont-weight: 600;\r\n}\r\n\r\n.ContextMenu_optionsWrapper__2YK_z {\r\n\tmax-height: 300px;\r\n\toverflow-y: auto;\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n}\r\n\r\n.ContextMenu_menuFilter__1goBp {\r\n\tborder: none;\r\n\tbackground: none;\r\n\theight: 24px;\r\n\tflex: 1 1 auto;\r\n\twidth: 100%;\r\n\toutline: none;\r\n\tcolor: #FFF;\r\n}\r\n\r\n.ContextMenu_menuFilter__1goBp::placeholder {\r\n\t\tfont-style: italic;\r\n\t}\r\n\r\n.ContextMenu_option__33MDL {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tflex-shrink: 0;\r\n\tpadding: 5px;\r\n\tborder-bottom: 1px solid rgba(255, 255, 255, .1);\r\n\tcolor: #FFFFFF;\r\n}\r\n\r\n.ContextMenu_option__33MDL:last-child {\r\n\t\tborder-bottom: none;\r\n\t}\r\n\r\n.ContextMenu_option__33MDL:hover {\r\n\t\tbackground: rgba(255, 255, 255, .05);\r\n\t}\r\n\r\n.ContextMenu_option__33MDL label {\r\n\t\tmargin-bottom: 5px;\r\n\t\tuser-select: none;\r\n\t}\r\n\r\n.ContextMenu_option__33MDL label:last-child {\r\n\t\t\tmargin-bottom: 0;\r\n\t\t}\r\n\r\n.ContextMenu_option__33MDL p {\r\n\t\tmargin: 0;\r\n\t\tfont-style: italic;\r\n\t\tfont-size: 12px;\r\n\t\tcolor: rgb(182, 186, 194);\r\n\t\tuser-select: none;\r\n\t}\r\n\r\n.ContextMenu_option__33MDL[data-selected=true] {\r\n\t\tbackground: rgba(255, 255, 255, .05);\r\n\t}\r\n\r\n.ContextMenu_emptyText__2rcXy {\r\n\tcolor: #FFF;\r\n\tpadding: 5px;\r\n}\r\n";
+var css_248z$c = ".ContextMenu_menuWrapper__1BheJ {\n\tposition: fixed;\n\tz-index: 9999;\n\tbackground: rgba(29, 32, 34, 0.95);\n\tborder-radius: 5px;\n\tbox-shadow: 0 6px 7px rgba(0, 0, 0, .3);\n\tborder: 1px solid rgba(0, 0, 0, .4);\n\tfont-size: 14px;\n\tmax-width: 300px;\n\tmin-width: 150px;\n\tfont-family: \"Segoe UI\", Helvetica, sans-serif;\n\tline-height: 1.15;\n\toutline: none;\n}\n\n@supports (backdrop-filter: blur(6px)) {\n\t.ContextMenu_menuWrapper__1BheJ {\n\t\tbackdrop-filter: blur(6px);\n\t\tbackground: rgba(29, 32, 34, 0.8);\n\t}\n}\n\n.ContextMenu_menuHeader__1Cw58 {\n\tpadding: 5px;\n\tborder-bottom: 1px solid rgba(255, 255, 255, .1);\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.ContextMenu_menuLabel__158Pv {\n\tmargin: 0;\n\tcolor: #FFF;\n\tfont-size: 16px;\n\tfont-weight: 600;\n}\n\n.ContextMenu_optionsWrapper__2YK_z {\n\tmax-height: 300px;\n\toverflow-y: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.ContextMenu_menuFilter__1goBp {\n\tborder: none;\n\tbackground: none;\n\theight: 24px;\n\tflex: 1 1 auto;\n\twidth: 100%;\n\toutline: none;\n\tcolor: #FFF;\n}\n\n.ContextMenu_menuFilter__1goBp::placeholder {\n\t\tfont-style: italic;\n\t}\n\n.ContextMenu_option__33MDL {\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-shrink: 0;\n\tpadding: 5px;\n\tborder-bottom: 1px solid rgba(255, 255, 255, .1);\n\tcolor: #FFFFFF;\n}\n\n.ContextMenu_option__33MDL:last-child {\n\t\tborder-bottom: none;\n\t}\n\n.ContextMenu_option__33MDL:hover {\n\t\tbackground: rgba(255, 255, 255, .05);\n\t}\n\n.ContextMenu_option__33MDL label {\n\t\tmargin-bottom: 5px;\n\t\tuser-select: none;\n\t}\n\n.ContextMenu_option__33MDL label:last-child {\n\t\t\tmargin-bottom: 0;\n\t\t}\n\n.ContextMenu_option__33MDL p {\n\t\tmargin: 0;\n\t\tfont-style: italic;\n\t\tfont-size: 12px;\n\t\tcolor: rgb(182, 186, 194);\n\t\tuser-select: none;\n\t}\n\n.ContextMenu_option__33MDL[data-selected=true] {\n\t\tbackground: rgba(255, 255, 255, .05);\n\t}\n\n.ContextMenu_emptyText__2rcXy {\n\tcolor: #FFF;\n\tpadding: 5px;\n}\n";
 var styles$d = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
 styleInject(css_248z$c);
 
@@ -4856,11 +5936,11 @@ function _toConsumableArray$1(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$3(arr) || _nonIterableSpread();
 }
 
-var css_248z$b = ".Node_wrapper__3SmT7{\r\n  background: rgba(98, 98, 115, .9);\r\n  border-radius: 5px;\r\n  box-shadow: 0 4px 8px rgba(0,0,0,.4);\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  user-select: none;\r\n  display: flex;\r\n  flex-direction: column;\r\n  z-index: 1;\r\n  cursor: default;\r\n  box-sizing: content-box;\r\n}\r\n.Node_header__3epFg{\r\n  background: #494956;\r\n  border-radius: 5px 5px 0 0;\r\n  margin: 0 0 3px;\r\n  border-bottom: 1px solid rgba(255,255,255,.15);\r\n  overflow: hidden;\r\n  max-height: 75px;\r\n}\r\n.Node_header__3epFg:hover {\r\n    overflow: visible;\r\n  }\r\n.Node_header__3epFg:hover .Node_expander__1n2IJ {\r\n    max-height: 150px;\r\n  }\r\n.Node_header__3epFg > div > img {\r\n\t  height: 15px;\r\n\t  width: 15px;\r\n\t  display: inline-block;\r\n\t  float: left;\r\n\t  margin: 5px 0 5px 5px;\r\n  }\r\n\r\n.Node_expander__1n2IJ {\r\n  transform: translateZ(1px);\r\n  padding: 5px;\r\n\tmargin: 0 0 3px;\r\n\twidth: 100%;\r\n  overflow: hidden;\r\n  border: none;\r\n  border-radius: 5px;\r\n\tline-height: .7;\r\n}\r\n\r\n.Node_expander__1n2IJ .Node_expandToggle__23dRP {\r\n\t\tline-height: .7;\r\n\t}\r\n\r\n.Node_expander__1n2IJ > img {\r\n\t\theight: 15px;\r\n\t\twidth: 15px;\r\n\t\tdisplay: inline-block;\r\n\t\tfloat: left;\r\n\t\tmargin: 5px 5px 0 5px !important;\r\n\t}\r\n\r\n.Node_label__3MmhF {\r\n  display: inline-block;\r\n  font-size: 13px;\r\n  text-transform: uppercase;\r\n  font-weight: bold;\r\n  padding: 5px;\r\n  margin: 0;\r\n  border: none;\r\n  background: transparent;\r\n  word-wrap: break-word;\r\n  border-radius: 5px;\r\n  overflow: hidden;\r\n}\r\n\r\n\r\n.Node_comment__3vlXC {\r\n  display: inline;\r\n  font-size: 11px;\r\n  word-wrap: break-word;\r\n}\r\n\r\n.Node_input__2ebEN {\r\n  padding: 6px 4px 5px 4px;\r\n  margin: 0;\r\n  border: none;\r\n  background: transparent;\r\n  width: 100%;\r\n  word-wrap: break-word;\r\n  border-radius: 5px;\r\n  overflow: hidden;\r\n  outline: none;\r\n  display: inline-block;\r\n  text-transform: inherit;\r\n  line-height: 1;\r\n  font-weight: normal;\r\n  font-size: 11px;\r\n  transform: translateZ(1px);\r\n}\r\n\r\n.Node_expandToggle__23dRP {\r\n  background: none;\r\n  padding:3px;\r\n  margin: 0;\r\n  outline: none;\r\n  border: none;\r\n}\r\n\r\n.Node_actionsContainer__2Pn0B {\r\n  display: inline-block;\r\n  float: right;\r\n}\r\n";
+var css_248z$b = ".Node_wrapper__3SmT7{\n  background: rgba(98, 98, 115, .9);\n  border-radius: 5px;\n  box-shadow: 0 4px 8px rgba(0,0,0,.4);\n  position: absolute;\n  left: 0;\n  top: 0;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  z-index: 1;\n  cursor: default;\n  box-sizing: content-box;\n}\n.Node_header__3epFg{\n  background: #494956;\n  border-radius: 5px 5px 0 0;\n  margin: 0 0 3px;\n  border-bottom: 1px solid rgba(255,255,255,.15);\n  overflow: hidden;\n  max-height: 75px;\n}\n.Node_header__3epFg:hover {\n    overflow: visible;\n  }\n.Node_header__3epFg:hover .Node_expander__1n2IJ {\n    max-height: 150px;\n  }\n.Node_header__3epFg > div > img {\n\t  height: 15px;\n\t  width: 15px;\n\t  display: inline-block;\n\t  float: left;\n\t  margin: 5px 0 5px 5px;\n  }\n\n.Node_expander__1n2IJ {\n  transform: translateZ(1px);\n  padding: 5px;\n\tmargin: 0 0 3px;\n\twidth: 100%;\n  overflow: hidden;\n  border: none;\n  border-radius: 5px;\n\tline-height: .7;\n}\n\n.Node_expander__1n2IJ .Node_expandToggle__23dRP {\n\t\tline-height: .7;\n\t}\n\n.Node_expander__1n2IJ > img {\n\t\theight: 15px;\n\t\twidth: 15px;\n\t\tdisplay: inline-block;\n\t\tfloat: left;\n\t\tmargin: 5px 5px 0 5px !important;\n\t}\n\n.Node_label__3MmhF {\n  display: inline-block;\n  font-size: 13px;\n  text-transform: uppercase;\n  font-weight: bold;\n  padding: 5px;\n  margin: 0;\n  border: none;\n  background: transparent;\n  word-wrap: break-word;\n  border-radius: 5px;\n  overflow: hidden;\n}\n\n\n.Node_comment__3vlXC {\n  display: inline;\n  font-size: 11px;\n  word-wrap: break-word;\n}\n\n.Node_input__2ebEN {\n  padding: 6px 4px 5px 4px;\n  margin: 0;\n  border: none;\n  background: transparent;\n  width: 100%;\n  word-wrap: break-word;\n  border-radius: 5px;\n  overflow: hidden;\n  outline: none;\n  display: inline-block;\n  text-transform: inherit;\n  line-height: 1;\n  font-weight: normal;\n  font-size: 11px;\n  transform: translateZ(1px);\n}\n\n.Node_expandToggle__23dRP {\n  background: none;\n  padding:3px;\n  margin: 0;\n  outline: none;\n  border: none;\n}\n\n.Node_actionsContainer__2Pn0B {\n  display: inline-block;\n  float: right;\n}\n";
 var styles$c = {"wrapper":"Node_wrapper__3SmT7","header":"Node_header__3epFg","expander":"Node_expander__1n2IJ","expandToggle":"Node_expandToggle__23dRP","label":"Node_label__3MmhF","comment":"Node_comment__3vlXC","input":"Node_input__2ebEN","actionsContainer":"Node_actionsContainer__2Pn0B"};
 styleInject(css_248z$b);
 
-var css_248z$a = ".Connection_svg__-fKLY{\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n  pointer-events: none;\r\n  z-index: 0;\r\n  overflow: visible !important;\r\n}\r\n";
+var css_248z$a = ".Connection_svg__-fKLY{\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  pointer-events: none;\n  z-index: 0;\n  overflow: visible !important;\n}\n";
 var styles$b = {"svg":"Connection_svg__-fKLY"};
 styleInject(css_248z$a);
 
@@ -5325,15 +6405,15 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$9 = ".IoPorts_wrapper__3d2hh {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tmargin-top: auto;\r\n\twidth: 100%;\r\n\tpadding: 5px;\r\n\tz-index:-1;\r\n}\r\n\r\n.IoPorts_inputs__2etkb {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tpadding-right: 15px;\r\n\tmargin-right: -15px;\r\n\tjustify-content: flex-end;\r\n\talign-items: flex-end;\r\n\r\n\twidth: calc(100% + 15px);\r\n\r\n\toverflow-y: hidden;\r\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\r\n\r\n\theight: auto;\r\n\tmax-height: 9999px;\r\n}\r\n\r\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\r\n\t\t\t\tmargin-bottom: 5px;\r\n\t\t\t}\r\n\r\n.IoPorts_inputs__2etkb:first-child {\r\n\t\tmargin-top: 5px;\r\n\t}\r\n\r\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\r\n\t\tmax-height: 0;\r\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\r\n\t}\r\n\r\n.IoPorts_outputs__3JGh- {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-end;\r\n\tmargin-bottom: 10px;\r\n}\r\n\r\n.IoPorts_outputs__3JGh-:last-child {\r\n\t\tmargin-bottom: 0px;\r\n\t}\r\n\r\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\r\n\t\t\t\tmargin-top: 5px;\r\n\t\t\t}\r\n\r\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\r\n\t\t\t\tmargin-bottom: 5px;\r\n\t\t\t}\r\n\r\n.IoPorts_transput__1wbHA {\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tmargin-top: 6px;\r\n\tmargin-bottom: 6px;\r\n\twidth: 100%;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.IoPorts_transput__1wbHA:first-child {\r\n\t\tmargin-top: 0px;\r\n\t}\r\n\r\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\r\n\t\tmargin-top: 6px;\r\n\t\tmargin-bottom: 6px;\r\n\t}\r\n\r\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\r\n\t\t\tmargin-top: 0px;\r\n\t\t}\r\n\r\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\r\n\t\tmargin-top: 2px;\r\n\t\tmargin-bottom: 2px;\r\n\t}\r\n\r\n.IoPorts_controls__1dKFt {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\twidth: 100%;\r\n}\r\n\r\n.IoPorts_portLabel__qOE7y {\r\n\tfont-size: 13px;\r\n\tfont-weight: 400;\r\n\twidth: 100%;\r\n}\r\n\r\n.IoPorts_port__1_a6J {\r\n\twidth: 12px;\r\n\theight: 12px;\r\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\r\n\tborder-radius: 100%;\r\n\tmargin-right: 5px;\r\n\tmargin-left: -11px;\r\n\tflex: 0 0 auto;\r\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\r\n}\r\n\r\n.IoPorts_port__1_a6J:last-child {\r\n\t\tmargin-right: -11px;\r\n\t\tmargin-left: 5px;\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\r\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\r\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\r\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\r\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\r\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\r\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\r\n\t}\r\n\r\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\r\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\r\n\t}\r\n";
+var css_248z$9 = ".IoPorts_wrapper__3d2hh {\n\tdisplay: flex;\n\tflex-direction: column;\n\tmargin-top: auto;\n\twidth: 100%;\n\tpadding: 5px;\n\tz-index:-1;\n}\n\n.IoPorts_inputs__2etkb {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding-right: 15px;\n\tmargin-right: -15px;\n\tjustify-content: flex-end;\n\talign-items: flex-end;\n\n\twidth: calc(100% + 15px);\n\n\toverflow-y: hidden;\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\n\n\theight: auto;\n\tmax-height: 9999px;\n}\n\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_inputs__2etkb:first-child {\n\t\tmargin-top: 5px;\n\t}\n\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\n\t\tmax-height: 0;\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\n\t}\n\n.IoPorts_outputs__3JGh- {\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: flex-end;\n\tmargin-bottom: 10px;\n}\n\n.IoPorts_outputs__3JGh-:last-child {\n\t\tmargin-bottom: 0px;\n\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-top: 5px;\n\t\t\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_transput__1wbHA {\n\tdisplay: flex;\n\talign-items: center;\n\tmargin-top: 6px;\n\tmargin-bottom: 6px;\n\twidth: 100%;\n\tjustify-content: flex-start;\n}\n\n.IoPorts_transput__1wbHA:first-child {\n\t\tmargin-top: 0px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\n\t\tmargin-top: 6px;\n\t\tmargin-bottom: 6px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\n\t\t\tmargin-top: 0px;\n\t\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\n\t\tmargin-top: 2px;\n\t\tmargin-bottom: 2px;\n\t}\n\n.IoPorts_controls__1dKFt {\n\tdisplay: flex;\n\tflex-direction: column;\n\twidth: 100%;\n}\n\n.IoPorts_portLabel__qOE7y {\n\tfont-size: 13px;\n\tfont-weight: 400;\n\twidth: 100%;\n}\n\n.IoPorts_port__1_a6J {\n\twidth: 12px;\n\theight: 12px;\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\n\tborder-radius: 100%;\n\tmargin-right: 5px;\n\tmargin-left: -11px;\n\tflex: 0 0 auto;\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\n}\n\n.IoPorts_port__1_a6J:last-child {\n\t\tmargin-right: -11px;\n\t\tmargin-left: 5px;\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\n\t}\n";
 var styles$a = {"wrapper":"IoPorts_wrapper__3d2hh","inputs":"IoPorts_inputs__2etkb","transput":"IoPorts_transput__1wbHA","portLabel":"IoPorts_portLabel__qOE7y","port":"IoPorts_port__1_a6J","collapsed":"IoPorts_collapsed__1LdSU","outputs":"IoPorts_outputs__3JGh-","controls":"IoPorts_controls__1dKFt"};
 styleInject(css_248z$9);
 
-var css_248z$8 = ".Control_wrapper__VZIiC {\r\n  width: 100%;\r\n  padding-right: 3px;\r\n  padding-top: 3px;\r\n  padding-bottom: 5px;\r\n}\r\n.Control_label__1OX-Q {\r\n  font-size: 14px;\r\n}\r\n.Control_controlLabel__3ga2- {\r\n  font-size: 13px;\r\n  display: inline-block;\r\n  margin-left: 2px;\r\n}\r\n";
+var css_248z$8 = ".Control_wrapper__VZIiC {\n  width: 100%;\n  padding-right: 3px;\n  padding-top: 3px;\n  padding-bottom: 5px;\n}\n.Control_label__1OX-Q {\n  font-size: 14px;\n}\n.Control_controlLabel__3ga2- {\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 2px;\n}\n";
 var styles$9 = {"wrapper":"Control_wrapper__VZIiC","label":"Control_label__1OX-Q","controlLabel":"Control_controlLabel__3ga2-"};
 styleInject(css_248z$8);
 
-var css_248z$7 = ".Checkbox_wrapper__aSqyY{\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n.Checkbox_checkbox__Qv5gn{\r\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\r\n  border: 1px solid #3c3e40;\r\n  border-radius: 4px;\r\n  margin-right: 8px;\r\n}\r\n.Checkbox_label__2RxP-{\r\n  padding-top: 2px;\r\n  font-size: 13px;\r\n}\r\n";
+var css_248z$7 = ".Checkbox_wrapper__aSqyY{\n  display: flex;\n  align-items: center;\n}\n.Checkbox_checkbox__Qv5gn{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  margin-right: 8px;\n}\n.Checkbox_label__2RxP-{\n  padding-top: 2px;\n  font-size: 13px;\n}\n";
 var styles$8 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","label":"Checkbox_label__2RxP-"};
 styleInject(css_248z$7);
 
@@ -5359,7 +6439,7 @@ var Checkbox = function Checkbox(_ref) {
   }, label));
 };
 
-var css_248z$6 = ".TextInput_wrapper__tefOZ{\r\n  background: none;\r\n  border: none;\r\n}\r\n.TextInput_input__1QHwS{\r\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\r\n  width: 100%;\r\n  border: 1px solid #3c3e40;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  padding: 5px;\r\n  resize: vertical;\r\n  outline: none;\r\n}\r\n.TextInput_input__1QHwS::placeholder{\r\n    color: rgb(47, 49, 50);\r\n  }\r\n.TextInput_input__1QHwS:focus{\r\n    background: linear-gradient(to bottom, #676b6e, #75797c);\r\n  }\r\n";
+var css_248z$6 = ".TextInput_wrapper__tefOZ{\n  background: none;\n  border: none;\n}\n.TextInput_input__1QHwS{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  font-size: 13px;\n  padding: 5px;\n  resize: vertical;\n  outline: none;\n}\n.TextInput_input__1QHwS::placeholder{\n    color: rgb(47, 49, 50);\n  }\n.TextInput_input__1QHwS:focus{\n    background: linear-gradient(to bottom, #676b6e, #75797c);\n  }\n";
 var styles$7 = {"wrapper":"TextInput_wrapper__tefOZ","input":"TextInput_input__1QHwS"};
 styleInject(css_248z$6);
 
@@ -5446,7 +6526,7 @@ var TextInput = function TextInput(_ref) {
   }));
 };
 
-var css_248z$5 = ".Select_wrapper__eAPoQ{\r\n  font-size: 14px;\r\n  padding: 3px 6px;\r\n  border-radius: 4px;\r\n  background: linear-gradient(to top, #5b5f62, #6f7477);\r\n  width: 100%;\r\n  border: 1px solid #3c3e40;\r\n  padding-right: 15px;\r\n  position: relative;\r\n}\r\n  .Select_wrapper__eAPoQ::after{\r\n    content: \"\";\r\n    position: absolute;\r\n    background: none;\r\n    right: 5px;\r\n    top: 8px;\r\n    width: 0;\r\n    height: 0;\r\n    border-style: solid;\r\n    border-width: 6px 5px 0 5px;\r\n    border-color: #191b1c transparent transparent transparent;\r\n  }\r\n  .Select_wrapper__eAPoQ:hover{\r\n    background: linear-gradient(to top, #63676a, #777b7e);\r\n  }\r\n.Select_chipWrapper__3hK2u{\r\n  font-size: 14px;\r\n  padding: 3px 6px;\r\n  border-radius: 4px;\r\n  background: linear-gradient(to top, #5b5f62, #6f7477);\r\n  border: 1px solid #3c3e40;\r\n  margin: 2px;\r\n  position: relative;\r\n}\r\n.Select_chipWrapper__3hK2u:hover .Select_deleteButton__1FnLK{\r\n  opacity: 1;\r\n}\r\n.Select_chipsWrapper__4Alw8{\r\n  display: flex;\r\n  flex-direction: column;\r\n  margin-bottom: 6px;\r\n}\r\n.Select_deleteButton__1FnLK{\r\n  position: absolute;\r\n  right: 0px;\r\n  top: 0px;\r\n  height: 100%;\r\n  width: 22px;\r\n  padding: 0px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  background: linear-gradient(to top, #5b5f62, #6f7477);\r\n  border-radius: 3px;\r\n  border: none;\r\n  font-weight: bold;\r\n  opacity: 0;\r\n}\r\n.Select_deleteButton__1FnLK:focus{\r\n  opacity: 1;\r\n}\r\n.Select_deleteButton__1FnLK:hover{\r\n  background: linear-gradient(to top, #64696c, #797f82);\r\n}\r\n.Select_selectedWrapper__SUs4D{\r\n  display: flex;\r\n  flex-direction: column;\r\n  border-radius: 4px;\r\n  background: linear-gradient(to top, #5b5f62, #6f7477);\r\n  width: 100%;\r\n  border: 1px solid #3c3e40;\r\n  font-size: 14px;\r\n  padding: 3px 6px;\r\n  padding-right: 15px;\r\n  position: relative;\r\n}\r\n.Select_selectedWrapper__SUs4D::after{\r\n    content: \"\";\r\n    position: absolute;\r\n    background: none;\r\n    right: 5px;\r\n    top: calc(50% - 4px);\r\n    width: 0;\r\n    height: 0;\r\n    border-style: solid;\r\n    border-width: 6px 5px 0 5px;\r\n    border-color: #191b1c transparent transparent transparent;\r\n  }\r\n.Select_selectedWrapper__SUs4D label{\r\n    margin: 0px;\r\n  }\r\n.Select_selectedWrapper__SUs4D p{\r\n    margin: 0px;\r\n    margin-top: 5px;\r\n    font-size: 12px;\r\n    font-style: italic;\r\n    color: rgb(50, 50, 50);\r\n  }\r\n";
+var css_248z$5 = ".Select_wrapper__eAPoQ{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  padding-right: 15px;\n  position: relative;\n}\n  .Select_wrapper__eAPoQ::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: 8px;\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n  .Select_wrapper__eAPoQ:hover{\n    background: linear-gradient(to top, #63676a, #777b7e);\n  }\n.Select_chipWrapper__3hK2u{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  margin: 2px;\n  position: relative;\n}\n.Select_chipWrapper__3hK2u:hover .Select_deleteButton__1FnLK{\n  opacity: 1;\n}\n.Select_chipsWrapper__4Alw8{\n  display: flex;\n  flex-direction: column;\n  margin-bottom: 6px;\n}\n.Select_deleteButton__1FnLK{\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  height: 100%;\n  width: 22px;\n  padding: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border-radius: 3px;\n  border: none;\n  font-weight: bold;\n  opacity: 0;\n}\n.Select_deleteButton__1FnLK:focus{\n  opacity: 1;\n}\n.Select_deleteButton__1FnLK:hover{\n  background: linear-gradient(to top, #64696c, #797f82);\n}\n.Select_selectedWrapper__SUs4D{\n  display: flex;\n  flex-direction: column;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  font-size: 14px;\n  padding: 3px 6px;\n  padding-right: 15px;\n  position: relative;\n}\n.Select_selectedWrapper__SUs4D::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: calc(50% - 4px);\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n.Select_selectedWrapper__SUs4D label{\n    margin: 0px;\n  }\n.Select_selectedWrapper__SUs4D p{\n    margin: 0px;\n    margin-top: 5px;\n    font-size: 12px;\n    font-style: italic;\n    color: rgb(50, 50, 50);\n  }\n";
 var styles$6 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK","chipsWrapper":"Select_chipsWrapper__4Alw8","selectedWrapper":"Select_selectedWrapper__SUs4D"};
 styleInject(css_248z$5);
 
@@ -6919,7 +7999,7 @@ var _domCss2 = _interopRequireDefault(_domCss);
 
 var _react = React__default['default'];
 
-var _propTypes = PropTypes__default['default'];
+var _propTypes = propTypes.exports;
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -7743,10 +8823,11 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
       _nodeTypes$type$outpu = _nodeTypes$type.outputs,
       outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
       icon = _nodeTypes$type.icon,
-      _nodeTypes$type$title = _nodeTypes$type.titleColor,
-      titleColor = _nodeTypes$type$title === void 0 ? '#000' : _nodeTypes$type$title,
-      _nodeTypes$type$tileB = _nodeTypes$type.tileBackground,
-      tileBackground = _nodeTypes$type$tileB === void 0 ? '#494956' : _nodeTypes$type$tileB;
+      _nodeTypes$type$meta = _nodeTypes$type.meta,
+      _nodeTypes$type$meta$ = _nodeTypes$type$meta.titleColor,
+      titleColor = _nodeTypes$type$meta$ === void 0 ? '#000' : _nodeTypes$type$meta$,
+      _nodeTypes$type$meta$2 = _nodeTypes$type$meta.tileBackground,
+      tileBackground = _nodeTypes$type$meta$2 === void 0 ? '#494956' : _nodeTypes$type$meta$2;
 
   var _useState = React$1.useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -8032,11 +9113,11 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
   })) : null);
 });
 
-var css_248z$4 = ".Comment_wrapper__1Pnbd {\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n  padding: 5px;\r\n  background: rgba(147, 154, 158, 0.7);\r\n  border-radius: 5px;\r\n  border-bottom-right-radius: 2px;\r\n  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);\r\n  min-width: 80px;\r\n  font-size: 14px;\r\n  display: flex;\r\n  text-shadow: 0px 1px rgba(255,255,255,.1);\r\n  border: 1px solid rgba(168, 176, 181, 0.7);\r\n  user-select: none;\r\n}\r\n  .Comment_wrapper__1Pnbd[data-color=\"red\"]{\r\n    background: rgba(213, 84, 103, 0.65);\r\n    border-color: rgba(227, 85, 119, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"purple\"]{\r\n    background: rgba(153, 83, 196, 0.65);\r\n    border-color: rgba(156, 85, 227, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"blue\"]{\r\n    background: rgba(76, 142, 203, 0.65);\r\n    border-color: rgba(85, 159, 227, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"green\"]{\r\n    background: rgba(70, 200, 130, 0.65);\r\n    border-color: rgba(85, 227, 150, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"yellow\"]{\r\n    background: rgba(200, 167, 63, 0.65);\r\n    border-color: rgba(227, 213, 85, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"orange\"]{\r\n    background: rgba(215, 123, 64, 0.65);\r\n    border-color: rgba(227, 149, 85, 0.65);\r\n  }\r\n  .Comment_wrapper__1Pnbd[data-color=\"pink\"]{\r\n    background: rgba(255, 102, 208, 0.65);\r\n    border-color: rgba(242, 131, 228, 0.65);\r\n  }\r\n.Comment_text__Ie2nX{\r\n  width: 100%;\r\n  height: 100%;\r\n  overflow: auto;\r\n  white-space: pre-wrap;\r\n  cursor: default;\r\n}\r\n.Comment_resizeThumb__20KWn {\r\n  width: 10px;\r\n  height: 10px;\r\n  border-radius: 4px 0px 4px 0px;\r\n  position: absolute;\r\n  right: 0px;\r\n  bottom: 0px;\r\n  overflow: hidden;\r\n  cursor: nwse-resize;\r\n}\r\n.Comment_resizeThumb__20KWn::before,\r\n  .Comment_resizeThumb__20KWn::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    right: 0px;\r\n    top: 0px;\r\n    width: 250%;\r\n    height: 0px;\r\n    border-top: 1px solid rgba(0, 0, 0, 0.7);\r\n    border-bottom: 2px solid rgba(255, 255, 255, 0.7);\r\n    transform-origin: center right;\r\n    transform: rotate(-45deg) scale(0.5);\r\n  }\r\n.Comment_resizeThumb__20KWn::after {\r\n    transform: rotate(-45deg) translateY(3px) scale(0.5);\r\n  }\r\n.Comment_textarea__2Rze3 {\r\n  resize: none;\r\n  width: calc(100% + 2px);\r\n  height: calc(100% + 2px);\r\n  border-radius: 3px;\r\n  background: rgba(255,255,255,.1);\r\n  border: none;\r\n  outline: none;\r\n  margin: -2px;\r\n  margin-top: -1px;\r\n  padding-top: 0px;\r\n  font-size: 14px;\r\n}\r\n.Comment_textarea__2Rze3::placeholder{\r\n    color: rgba(0,0,0,.5);\r\n  }\r\n";
+var css_248z$4 = ".Comment_wrapper__1Pnbd {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  padding: 5px;\n  background: rgba(147, 154, 158, 0.7);\n  border-radius: 5px;\n  border-bottom-right-radius: 2px;\n  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);\n  min-width: 80px;\n  font-size: 14px;\n  display: flex;\n  text-shadow: 0px 1px rgba(255,255,255,.1);\n  border: 1px solid rgba(168, 176, 181, 0.7);\n  user-select: none;\n}\n  .Comment_wrapper__1Pnbd[data-color=\"red\"]{\n    background: rgba(213, 84, 103, 0.65);\n    border-color: rgba(227, 85, 119, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"purple\"]{\n    background: rgba(153, 83, 196, 0.65);\n    border-color: rgba(156, 85, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"blue\"]{\n    background: rgba(76, 142, 203, 0.65);\n    border-color: rgba(85, 159, 227, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"green\"]{\n    background: rgba(70, 200, 130, 0.65);\n    border-color: rgba(85, 227, 150, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"yellow\"]{\n    background: rgba(200, 167, 63, 0.65);\n    border-color: rgba(227, 213, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"orange\"]{\n    background: rgba(215, 123, 64, 0.65);\n    border-color: rgba(227, 149, 85, 0.65);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"pink\"]{\n    background: rgba(255, 102, 208, 0.65);\n    border-color: rgba(242, 131, 228, 0.65);\n  }\n.Comment_text__Ie2nX{\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  white-space: pre-wrap;\n  cursor: default;\n}\n.Comment_resizeThumb__20KWn {\n  width: 10px;\n  height: 10px;\n  border-radius: 4px 0px 4px 0px;\n  position: absolute;\n  right: 0px;\n  bottom: 0px;\n  overflow: hidden;\n  cursor: nwse-resize;\n}\n.Comment_resizeThumb__20KWn::before,\n  .Comment_resizeThumb__20KWn::after {\n    content: \"\";\n    position: absolute;\n    right: 0px;\n    top: 0px;\n    width: 250%;\n    height: 0px;\n    border-top: 1px solid rgba(0, 0, 0, 0.7);\n    border-bottom: 2px solid rgba(255, 255, 255, 0.7);\n    transform-origin: center right;\n    transform: rotate(-45deg) scale(0.5);\n  }\n.Comment_resizeThumb__20KWn::after {\n    transform: rotate(-45deg) translateY(3px) scale(0.5);\n  }\n.Comment_textarea__2Rze3 {\n  resize: none;\n  width: calc(100% + 2px);\n  height: calc(100% + 2px);\n  border-radius: 3px;\n  background: rgba(255,255,255,.1);\n  border: none;\n  outline: none;\n  margin: -2px;\n  margin-top: -1px;\n  padding-top: 0px;\n  font-size: 14px;\n}\n.Comment_textarea__2Rze3::placeholder{\n    color: rgba(0,0,0,.5);\n  }\n";
 var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
 styleInject(css_248z$4);
 
-var css_248z$3 = ".ColorPicker_wrapper__1M1j2{\r\n  position: fixed;\r\n  z-index: 9999;\r\n  background: rgba(29, 32, 34, 0.95);\r\n  border-radius: 5px;\r\n  box-shadow: 0px 6px 7px rgba(0,0,0,.3);\r\n  border: 1px solid rgba(0,0,0,.4);\r\n  color: #fff;\r\n  display: flex;\r\n  width: 102px;\r\n  flex-wrap: wrap;\r\n  padding: 2px;\r\n}\r\n@supports (backdrop-filter: blur(6px)){\r\n  .ColorPicker_wrapper__1M1j2{\r\n    backdrop-filter: blur(6px);\r\n    background: rgba(29, 32, 34, 0.8);\r\n  }\r\n}\r\n.ColorPicker_colorButtonWrapper__1ijdj{\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 2px;\r\n}\r\n.ColorPicker_colorButton__1Qcuq{\r\n  border-radius: 3px;\r\n  border: none;\r\n  width: 20px;\r\n  height: 20px;\r\n  background: rgba(204, 204, 204, 1);\r\n}\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"red\"]{\r\n    background: rgba(210, 101, 111, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"purple\"]{\r\n    background: rgba(159, 101, 210, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"blue\"]{\r\n    background: rgba(101, 151, 210, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"green\"]{\r\n    background: rgba(101, 210, 168, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"orange\"]{\r\n    background: rgba(210, 137, 101, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"yellow\"]{\r\n    background: rgba(210, 196, 101, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq[data-color=\"pink\"]{\r\n    background: rgba(241, 124, 226, 1)\r\n  }\r\n.ColorPicker_colorButton__1Qcuq:hover{\r\n    opacity: .8;\r\n  }\r\n";
+var css_248z$3 = ".ColorPicker_wrapper__1M1j2{\n  position: fixed;\n  z-index: 9999;\n  background: rgba(29, 32, 34, 0.95);\n  border-radius: 5px;\n  box-shadow: 0px 6px 7px rgba(0,0,0,.3);\n  border: 1px solid rgba(0,0,0,.4);\n  color: #fff;\n  display: flex;\n  width: 102px;\n  flex-wrap: wrap;\n  padding: 2px;\n}\n@supports (backdrop-filter: blur(6px)){\n  .ColorPicker_wrapper__1M1j2{\n    backdrop-filter: blur(6px);\n    background: rgba(29, 32, 34, 0.8);\n  }\n}\n.ColorPicker_colorButtonWrapper__1ijdj{\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 2px;\n}\n.ColorPicker_colorButton__1Qcuq{\n  border-radius: 3px;\n  border: none;\n  width: 20px;\n  height: 20px;\n  background: rgba(204, 204, 204, 1);\n}\n.ColorPicker_colorButton__1Qcuq[data-color=\"red\"]{\n    background: rgba(210, 101, 111, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"purple\"]{\n    background: rgba(159, 101, 210, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"blue\"]{\n    background: rgba(101, 151, 210, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"green\"]{\n    background: rgba(101, 210, 168, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"orange\"]{\n    background: rgba(210, 137, 101, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"yellow\"]{\n    background: rgba(210, 196, 101, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"pink\"]{\n    background: rgba(241, 124, 226, 1)\n  }\n.ColorPicker_colorButton__1Qcuq:hover{\n    opacity: .8;\n  }\n";
 var styles$3 = {"wrapper":"ColorPicker_wrapper__1M1j2","colorButtonWrapper":"ColorPicker_colorButtonWrapper__1ijdj","colorButton":"ColorPicker_colorButton__1Qcuq"};
 styleInject(css_248z$3);
 
@@ -8239,9 +9320,26 @@ var FlumeConfig = /*#__PURE__*/function () {
         description: define(config.description, ''),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
-      };
-      if (typeof config.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor)) node.titleColor = config.titleColor;
-      if (typeof config.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground)) node.tileBackground = config.tileBackground;
+      }; // if ( typeof config.titleColor === 'string' &&
+      //      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor)
+      // ) node.titleColor = config.titleColor   if ( typeof
+      // config.tileBackground === 'string' &&
+      // RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground)
+      // ) node.tileBackground = config.tileBackground
+      // Validating meta data of flume action that is used to render action
+      // header  and category info
+
+      node.meta = {};
+
+      if (config.meta && _typeof(config.meta) === 'object') {
+        var meta = config.meta;
+        node.meta.category = meta.category && typeof config.category === 'string' ? meta.category : 'Other'; // Optionally supplying action header color
+
+        node.meta.titleColor = meta.titleColor && typeof meta.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(meta.titleColor) ? meta.titleColor : '#000'; // Optionally supplying action header color
+
+        node.meta.tileBackground = meta.tileBackground && typeof meta.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(meta.tileBackground) ? meta.tileBackground : '#494956';
+      }
+
       if (typeof config.icon === 'string') node.icon = config.icon;
       if (typeof config.comment === 'string') node.comment = config.comment;
       if (config.expanded) node.expanded = !!config.expanded;
@@ -8681,7 +9779,7 @@ var Comment = (function (_ref) {
   })) : null);
 });
 
-var css_248z$2 = ".Toaster_toaster__1eC3T{\r\n  position: absolute;\r\n  left: 0px;\r\n  bottom: 0px;\r\n  width: 100%;\r\n  height: 1px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  padding-bottom: 15px;\r\n  box-shadow: 0px 5px 10px -2px rgba(0,0,0,.3);\r\n  pointer-events: none;\r\n}\r\n.Toaster_toast__3YHVS{\r\n  position: absolute;\r\n  left: calc(50% - 200px);\r\n  top: 0px;\r\n  pointer-events: all;\r\n  width: 400px;\r\n  padding: 10px;\r\n  padding-top: 7px;\r\n  padding-right: 16px;\r\n  border-radius: 6px;\r\n  background: rgba(231, 231, 231, 1);\r\n  border: 1px solid;\r\n  margin-bottom: 5px;\r\n  transition: transform 300ms;\r\n  flex: 0 0 auto;\r\n  animation: Toaster_fade-in__2526Y 150ms;\r\n  user-select: none;\r\n  font-size: 14px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  will-change: transform;\r\n}\r\n.Toaster_toast__3YHVS[data-type=\"danger\"]{\r\n    background: rgb(255, 116, 137);\r\n    border-color: rgb(254, 99, 136);\r\n    color: rgb(66, 6, 20);\r\n  }\r\n.Toaster_toast__3YHVS[data-type=\"info\"]{\r\n    background: rgb(76, 193, 250);\r\n    border-color: rgb(103, 182, 255);\r\n    color: rgb(5, 36, 64);\r\n  }\r\n.Toaster_toast__3YHVS[data-type=\"success\"]{\r\n    background: rgb(81, 230, 150);\r\n    border-color: rgb(85, 227, 150);\r\n    color: rgb(7, 57, 30);\r\n  }\r\n.Toaster_toast__3YHVS[data-type=\"warning\"]{\r\n    background: rgb(245, 208, 93);\r\n    border-color: rgb(247, 235, 125);\r\n    color: rgb(83, 75, 8);\r\n  }\r\n.Toaster_toast__3YHVS[data-exiting=true]{\r\n    animation: Toaster_fade-out__2lM6E 150ms;\r\n    animation-fill-mode: forwards;\r\n  }\r\n.Toaster_toast__3YHVS p{\r\n  margin: 0px;\r\n}\r\n.Toaster_title__4InNr{\r\n  font-size: 16px;\r\n  font-weight: bold;\r\n  margin-bottom: 5px;\r\n}\r\n.Toaster_timer__3dGzF{\r\n  position: absolute;\r\n  bottom: -1px;\r\n  left: -1px;\r\n  width: calc(100% + 2px);\r\n  height: 3px;\r\n  background: rgba(0,0,0,.4);\r\n  transform-origin: left center;\r\n  animation: Toaster_timer__3dGzF 1000ms linear;\r\n  animation-fill-mode: forwards;\r\n  z-index: 9;\r\n}\r\n.Toaster_exitButton__1S_Ks{\r\n  position: absolute;\r\n  right: 0px;\r\n  top: 0px;\r\n  width: 20px;\r\n  height: 20px;\r\n  padding: 0px;\r\n  background: none;\r\n  border: none;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 14px;\r\n  color: inherit;\r\n  opacity: .6;\r\n}\r\n.Toaster_exitButton__1S_Ks:hover{\r\n  opacity: .9;\r\n}\r\n\r\n@keyframes Toaster_fade-in__2526Y {\r\n  from{\r\n    opacity: 0;\r\n  }\r\n  to{\r\n    opacity: 1;\r\n  }\r\n}\r\n\r\n@keyframes Toaster_fade-out__2lM6E {\r\n  from{\r\n    opacity: 1;\r\n  }\r\n  to{\r\n    opacity: 0;\r\n  }\r\n}\r\n\r\n@keyframes Toaster_timer__3dGzF {\r\n  from{\r\n    transform: scaleX(1);\r\n  }\r\n  to{\r\n    transform: scaleX(0);\r\n  }\r\n}\r\n";
+var css_248z$2 = ".Toaster_toaster__1eC3T{\n  position: absolute;\n  left: 0px;\n  bottom: 0px;\n  width: 100%;\n  height: 1px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding-bottom: 15px;\n  box-shadow: 0px 5px 10px -2px rgba(0,0,0,.3);\n  pointer-events: none;\n}\n.Toaster_toast__3YHVS{\n  position: absolute;\n  left: calc(50% - 200px);\n  top: 0px;\n  pointer-events: all;\n  width: 400px;\n  padding: 10px;\n  padding-top: 7px;\n  padding-right: 16px;\n  border-radius: 6px;\n  background: rgba(231, 231, 231, 1);\n  border: 1px solid;\n  margin-bottom: 5px;\n  transition: transform 300ms;\n  flex: 0 0 auto;\n  animation: Toaster_fade-in__2526Y 150ms;\n  user-select: none;\n  font-size: 14px;\n  display: flex;\n  flex-direction: column;\n  will-change: transform;\n}\n.Toaster_toast__3YHVS[data-type=\"danger\"]{\n    background: rgb(255, 116, 137);\n    border-color: rgb(254, 99, 136);\n    color: rgb(66, 6, 20);\n  }\n.Toaster_toast__3YHVS[data-type=\"info\"]{\n    background: rgb(76, 193, 250);\n    border-color: rgb(103, 182, 255);\n    color: rgb(5, 36, 64);\n  }\n.Toaster_toast__3YHVS[data-type=\"success\"]{\n    background: rgb(81, 230, 150);\n    border-color: rgb(85, 227, 150);\n    color: rgb(7, 57, 30);\n  }\n.Toaster_toast__3YHVS[data-type=\"warning\"]{\n    background: rgb(245, 208, 93);\n    border-color: rgb(247, 235, 125);\n    color: rgb(83, 75, 8);\n  }\n.Toaster_toast__3YHVS[data-exiting=true]{\n    animation: Toaster_fade-out__2lM6E 150ms;\n    animation-fill-mode: forwards;\n  }\n.Toaster_toast__3YHVS p{\n  margin: 0px;\n}\n.Toaster_title__4InNr{\n  font-size: 16px;\n  font-weight: bold;\n  margin-bottom: 5px;\n}\n.Toaster_timer__3dGzF{\n  position: absolute;\n  bottom: -1px;\n  left: -1px;\n  width: calc(100% + 2px);\n  height: 3px;\n  background: rgba(0,0,0,.4);\n  transform-origin: left center;\n  animation: Toaster_timer__3dGzF 1000ms linear;\n  animation-fill-mode: forwards;\n  z-index: 9;\n}\n.Toaster_exitButton__1S_Ks{\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  width: 20px;\n  height: 20px;\n  padding: 0px;\n  background: none;\n  border: none;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  font-size: 14px;\n  color: inherit;\n  opacity: .6;\n}\n.Toaster_exitButton__1S_Ks:hover{\n  opacity: .9;\n}\n\n@keyframes Toaster_fade-in__2526Y {\n  from{\n    opacity: 0;\n  }\n  to{\n    opacity: 1;\n  }\n}\n\n@keyframes Toaster_fade-out__2lM6E {\n  from{\n    opacity: 1;\n  }\n  to{\n    opacity: 0;\n  }\n}\n\n@keyframes Toaster_timer__3dGzF {\n  from{\n    transform: scaleX(1);\n  }\n  to{\n    transform: scaleX(0);\n  }\n}\n";
 var styles$2 = {"toaster":"Toaster_toaster__1eC3T","toast":"Toaster_toast__3YHVS","fade-in":"Toaster_fade-in__2526Y","fade-out":"Toaster_fade-out__2lM6E","title":"Toaster_title__4InNr","timer":"Toaster_timer__3dGzF","exitButton":"Toaster_exitButton__1S_Ks"};
 styleInject(css_248z$2);
 
@@ -8800,7 +9898,7 @@ var Toast = function Toast(_ref2) {
   }, "\u2715"));
 };
 
-var css_248z$1 = ".Connections_svgWrapper__3mXcU{\r\n  position: absolute;\r\n  left: 0px;\r\n  height: 0px;\r\n}\r\n";
+var css_248z$1 = ".Connections_svgWrapper__3mXcU{\n  position: absolute;\n  left: 0px;\n  height: 0px;\n}\n";
 var styles$1 = {"svgWrapper":"Connections_svgWrapper__3mXcU"};
 styleInject(css_248z$1);
 
@@ -26727,13 +27825,13 @@ var Cache = function Cache() {
   this.connections = {};
 };
 
-var css_248z = ".styles_dragWrapper__1P7RD{\r\n  z-index: 9999;\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n}\r\n.styles_debugWrapper__2OSbY{\r\n  display: flex;\r\n  position: absolute;\r\n  left: 10px;\r\n  bottom: 10px;\r\n  gap: 15px;\r\n}\r\n";
+var css_248z = ".styles_dragWrapper__1P7RD{\n  z-index: 9999;\n  position: absolute;\n  left: 0px;\n  top: 0px;\n}\n.styles_debugWrapper__2OSbY{\n  display: flex;\n  position: absolute;\n  left: 10px;\n  bottom: 10px;\n  gap: 15px;\n}\n";
 var styles = {"dragWrapper":"styles_dragWrapper__1P7RD","debugWrapper":"styles_debugWrapper__2OSbY"};
 styleInject(css_248z);
 
 var dist = {};
 
-Object.defineProperty(dist,"__esModule",{value:true});var _jsx=function(){var REACT_ELEMENT_TYPE=typeof Symbol==="function"&&Symbol.for&&Symbol.for("react.element")||60103;return function createRawReactElement(type,props,key,children){var defaultProps=type&&type.defaultProps;var childrenLength=arguments.length-3;if(!props&&childrenLength!==0){props={};}if(props&&defaultProps){for(var propName in defaultProps){if(props[propName]===void 0){props[propName]=defaultProps[propName];}}}else if(!props){props=defaultProps||{};}if(childrenLength===1){props.children=children;}else if(childrenLength>1){var childArray=Array(childrenLength);for(var i=0;i<childrenLength;i++){childArray[i]=arguments[i+3];}props.children=childArray;}return {$$typeof:REACT_ELEMENT_TYPE,type:type,key:key===undefined?null:""+key,ref:null,props:props,_owner:null}}}();var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}}();var _react=React__default['default'];var _react2=_interopRequireDefault(_react);var _propTypes=PropTypes__default['default'];_interopRequireDefault(_propTypes);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}function _toConsumableArray(arr){if(Array.isArray(arr)){for(var i=0,arr2=Array(arr.length);i<arr.length;i++){arr2[i]=arr[i];}return arr2}else {return Array.from(arr)}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn$1(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits$1(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass;}function getOffset(props){var offset={top:0,left:0};if(props.offset){offset=Object.assign({},props.offset);}else if(props.target){var boundingBox=props.target.getBoundingClientRect();offset.top=boundingBox.top+window.scrollY;offset.left=boundingBox.left+window.scrollX;}return offset}var Selection=function(_React$PureComponent){_inherits$1(Selection,_React$PureComponent);function Selection(props){_classCallCheck(this,Selection);var _this=_possibleConstructorReturn$1(this,(Selection.__proto__||Object.getPrototypeOf(Selection)).call(this,props));_this.bind=function(){_this.props.target.addEventListener("mousedown",_this.onMouseDown);_this.props.target.addEventListener("touchstart",_this.onTouchStart);};_this.reset=function(){if(_this.props.target){_this.props.target.removeEventListener("mousedown",_this.onMouseDown);}};_this.init=function(e,x,y){if(_this.props.ignoreTargets){var Target=e.target;if(!Target.matches){var defaultMatches=function defaultMatches(s){return [].indexOf.call(window.document.querySelectorAll(s),_this)!==-1};Target.matches=Target.matchesSelector||Target.mozMatchesSelector||Target.msMatchesSelector||Target.oMatchesSelector||Target.webkitMatchesSelector||defaultMatches;}if(Target.matches&&Target.matches(_this.props.ignoreTargets.join(","))){return false}}var nextState={};nextState.mouseDown=true;nextState.startPoint={x:(x-_this.state.offset.left)/_this.state.zoom,y:(y-_this.state.offset.top)/_this.state.zoom};_this.setState(nextState);return true};_this.onMouseDown=function(e){if(_this.props.disabled||e.button===2||e.nativeEvent&&e.nativeEvent.which===2){return}if(_this.init(e,e.pageX,e.pageY)){window.document.addEventListener("mousemove",_this.onMouseMove);window.document.addEventListener("mouseup",_this.onMouseUp);}};_this.onTouchStart=function(e){if(_this.props.disabled||!e.touches||!e.touches[0]||e.touches.length>1){return}if(_this.init(e,e.touches[0].pageX,e.touches[0].pageY)){window.document.addEventListener("touchmove",_this.onTouchMove);window.document.addEventListener("touchend",_this.onMouseUp);}};_this.onMouseUp=function(){window.document.removeEventListener("touchmove",_this.onTouchMove);window.document.removeEventListener("mousemove",_this.onMouseMove);window.document.removeEventListener("mouseup",_this.onMouseUp);window.document.removeEventListener("touchend",_this.onMouseUp);_this.setState({mouseDown:false,startPoint:null,endPoint:null,selectionBox:null});if(_this.props.onSelectionChange){_this.props.onSelectionChange(_this.selectedChildren);}if(_this.props.onHighlightChange){_this.highlightedChildren=[];_this.props.onHighlightChange(_this.highlightedChildren);}_this.selectedChildren=[];};_this.onMouseMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint={x:(e.pageX-_this.state.offset.left)/_this.state.zoom,y:(e.pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint)});}};_this.onTouchMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint2={x:(e.touches[0].pageX-_this.state.offset.left)/_this.state.zoom,y:(e.touches[0].pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint2,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint2)});}};_this.lineIntersects=function(lineA,lineB){return lineA[1]>=lineB[0]&&lineB[1]>=lineA[0]};_this.boxIntersects=function(boxA,boxB){var boxAProjection={x:[boxA.left,boxA.left+boxA.width],y:[boxA.top,boxA.top+boxA.height]};var boxBProjection={x:[boxB.left,boxB.left+boxB.width],y:[boxB.top,boxB.top+boxB.height]};return _this.lineIntersects(boxAProjection.x,boxBProjection.x)&&_this.lineIntersects(boxAProjection.y,boxBProjection.y)};_this.updateCollidingChildren=function(selectionBox){_this.selectedChildren=[];if(_this.props.elements){_this.props.elements.forEach(function(ref,$index){if(ref){var refBox=ref.getBoundingClientRect();var tmpBox={top:(refBox.top-_this.state.offset.top+window.scrollY)/_this.state.zoom,left:(refBox.left-_this.state.offset.left+window.scrollX)/_this.state.zoom,width:ref.clientWidth,height:ref.clientHeight};if(_this.boxIntersects(selectionBox,tmpBox)){_this.selectedChildren.push($index);}}});}if(_this.props.onHighlightChange&&JSON.stringify(_this.highlightedChildren)!==JSON.stringify(_this.selectedChildren)){var _onHighlightChange=_this.props.onHighlightChange;_this.highlightedChildren=[].concat(_toConsumableArray(_this.selectedChildren));if(window.requestAnimationFrame){window.requestAnimationFrame(function(){_onHighlightChange(_this.highlightedChildren);});}else {_onHighlightChange(_this.highlightedChildren);}}};_this.calculateSelectionBox=function(startPoint,endPoint){if(!_this.state.mouseDown||!startPoint||!endPoint){return null}var left=Math.min(startPoint.x,endPoint.x)-1;var top=Math.min(startPoint.y,endPoint.y)-1;var width=Math.abs(startPoint.x-endPoint.x)+1;var height=Math.abs(startPoint.y-endPoint.y)+1;return {left:left,top:top,width:width,height:height}};_this.state={mouseDown:false,startPoint:null,endPoint:null,selectionBox:null,offset:getOffset(props),zoom:props.zoom||1};_this.selectedChildren=[];_this.highlightedChildren=[];return _this}_createClass(Selection,[{key:"componentDidMount",value:function componentDidMount(){this.reset();this.bind();}},{key:"componentWillReceiveProps",value:function componentWillReceiveProps(nextProps){this.setState({offset:getOffset(nextProps)});}},{key:"componentDidUpdate",value:function componentDidUpdate(){this.reset();this.bind();if(this.state.mouseDown&&this.state.selectionBox){this.updateCollidingChildren(this.state.selectionBox);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.reset();window.document.removeEventListener("mousemove",this.onMouseMove);window.document.removeEventListener("mouseup",this.onMouseUp);}},{key:"render",value:function render(){var style=Object.assign({position:"absolute",background:"rgba(159, 217, 255, 0.3)",border:"solid 1px rgba(123, 123, 123, 0.61)",zIndex:9,cursor:"crosshair"},this.props.style);if(this.state.selectionBox){style=Object.assign({},style,this.state.selectionBox);}if(!this.state.mouseDown||!this.state.endPoint||!this.state.startPoint){return null}return _jsx("div",{className:"react-ds-border",style:style})}}]);return Selection}(_react2.default.PureComponent);var _default = dist.default=Selection;
+Object.defineProperty(dist,"__esModule",{value:true});var _jsx=function(){var REACT_ELEMENT_TYPE=typeof Symbol==="function"&&Symbol.for&&Symbol.for("react.element")||60103;return function createRawReactElement(type,props,key,children){var defaultProps=type&&type.defaultProps;var childrenLength=arguments.length-3;if(!props&&childrenLength!==0){props={};}if(props&&defaultProps){for(var propName in defaultProps){if(props[propName]===void 0){props[propName]=defaultProps[propName];}}}else if(!props){props=defaultProps||{};}if(childrenLength===1){props.children=children;}else if(childrenLength>1){var childArray=Array(childrenLength);for(var i=0;i<childrenLength;i++){childArray[i]=arguments[i+3];}props.children=childArray;}return {$$typeof:REACT_ELEMENT_TYPE,type:type,key:key===undefined?null:""+key,ref:null,props:props,_owner:null}}}();var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}}();var _react=React__default['default'];var _react2=_interopRequireDefault(_react);var _propTypes=propTypes.exports;_interopRequireDefault(_propTypes);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}function _toConsumableArray(arr){if(Array.isArray(arr)){for(var i=0,arr2=Array(arr.length);i<arr.length;i++){arr2[i]=arr[i];}return arr2}else {return Array.from(arr)}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn$1(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits$1(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass;}function getOffset(props){var offset={top:0,left:0};if(props.offset){offset=Object.assign({},props.offset);}else if(props.target){var boundingBox=props.target.getBoundingClientRect();offset.top=boundingBox.top+window.scrollY;offset.left=boundingBox.left+window.scrollX;}return offset}var Selection=function(_React$PureComponent){_inherits$1(Selection,_React$PureComponent);function Selection(props){_classCallCheck(this,Selection);var _this=_possibleConstructorReturn$1(this,(Selection.__proto__||Object.getPrototypeOf(Selection)).call(this,props));_this.bind=function(){_this.props.target.addEventListener("mousedown",_this.onMouseDown);_this.props.target.addEventListener("touchstart",_this.onTouchStart);};_this.reset=function(){if(_this.props.target){_this.props.target.removeEventListener("mousedown",_this.onMouseDown);}};_this.init=function(e,x,y){if(_this.props.ignoreTargets){var Target=e.target;if(!Target.matches){var defaultMatches=function defaultMatches(s){return [].indexOf.call(window.document.querySelectorAll(s),_this)!==-1};Target.matches=Target.matchesSelector||Target.mozMatchesSelector||Target.msMatchesSelector||Target.oMatchesSelector||Target.webkitMatchesSelector||defaultMatches;}if(Target.matches&&Target.matches(_this.props.ignoreTargets.join(","))){return false}}var nextState={};nextState.mouseDown=true;nextState.startPoint={x:(x-_this.state.offset.left)/_this.state.zoom,y:(y-_this.state.offset.top)/_this.state.zoom};_this.setState(nextState);return true};_this.onMouseDown=function(e){if(_this.props.disabled||e.button===2||e.nativeEvent&&e.nativeEvent.which===2){return}if(_this.init(e,e.pageX,e.pageY)){window.document.addEventListener("mousemove",_this.onMouseMove);window.document.addEventListener("mouseup",_this.onMouseUp);}};_this.onTouchStart=function(e){if(_this.props.disabled||!e.touches||!e.touches[0]||e.touches.length>1){return}if(_this.init(e,e.touches[0].pageX,e.touches[0].pageY)){window.document.addEventListener("touchmove",_this.onTouchMove);window.document.addEventListener("touchend",_this.onMouseUp);}};_this.onMouseUp=function(){window.document.removeEventListener("touchmove",_this.onTouchMove);window.document.removeEventListener("mousemove",_this.onMouseMove);window.document.removeEventListener("mouseup",_this.onMouseUp);window.document.removeEventListener("touchend",_this.onMouseUp);_this.setState({mouseDown:false,startPoint:null,endPoint:null,selectionBox:null});if(_this.props.onSelectionChange){_this.props.onSelectionChange(_this.selectedChildren);}if(_this.props.onHighlightChange){_this.highlightedChildren=[];_this.props.onHighlightChange(_this.highlightedChildren);}_this.selectedChildren=[];};_this.onMouseMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint={x:(e.pageX-_this.state.offset.left)/_this.state.zoom,y:(e.pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint)});}};_this.onTouchMove=function(e){e.preventDefault();if(_this.state.mouseDown){var _endPoint2={x:(e.touches[0].pageX-_this.state.offset.left)/_this.state.zoom,y:(e.touches[0].pageY-_this.state.offset.top)/_this.state.zoom};_this.setState({endPoint:_endPoint2,selectionBox:_this.calculateSelectionBox(_this.state.startPoint,_endPoint2)});}};_this.lineIntersects=function(lineA,lineB){return lineA[1]>=lineB[0]&&lineB[1]>=lineA[0]};_this.boxIntersects=function(boxA,boxB){var boxAProjection={x:[boxA.left,boxA.left+boxA.width],y:[boxA.top,boxA.top+boxA.height]};var boxBProjection={x:[boxB.left,boxB.left+boxB.width],y:[boxB.top,boxB.top+boxB.height]};return _this.lineIntersects(boxAProjection.x,boxBProjection.x)&&_this.lineIntersects(boxAProjection.y,boxBProjection.y)};_this.updateCollidingChildren=function(selectionBox){_this.selectedChildren=[];if(_this.props.elements){_this.props.elements.forEach(function(ref,$index){if(ref){var refBox=ref.getBoundingClientRect();var tmpBox={top:(refBox.top-_this.state.offset.top+window.scrollY)/_this.state.zoom,left:(refBox.left-_this.state.offset.left+window.scrollX)/_this.state.zoom,width:ref.clientWidth,height:ref.clientHeight};if(_this.boxIntersects(selectionBox,tmpBox)){_this.selectedChildren.push($index);}}});}if(_this.props.onHighlightChange&&JSON.stringify(_this.highlightedChildren)!==JSON.stringify(_this.selectedChildren)){var _onHighlightChange=_this.props.onHighlightChange;_this.highlightedChildren=[].concat(_toConsumableArray(_this.selectedChildren));if(window.requestAnimationFrame){window.requestAnimationFrame(function(){_onHighlightChange(_this.highlightedChildren);});}else {_onHighlightChange(_this.highlightedChildren);}}};_this.calculateSelectionBox=function(startPoint,endPoint){if(!_this.state.mouseDown||!startPoint||!endPoint){return null}var left=Math.min(startPoint.x,endPoint.x)-1;var top=Math.min(startPoint.y,endPoint.y)-1;var width=Math.abs(startPoint.x-endPoint.x)+1;var height=Math.abs(startPoint.y-endPoint.y)+1;return {left:left,top:top,width:width,height:height}};_this.state={mouseDown:false,startPoint:null,endPoint:null,selectionBox:null,offset:getOffset(props),zoom:props.zoom||1};_this.selectedChildren=[];_this.highlightedChildren=[];return _this}_createClass(Selection,[{key:"componentDidMount",value:function componentDidMount(){this.reset();this.bind();}},{key:"componentWillReceiveProps",value:function componentWillReceiveProps(nextProps){this.setState({offset:getOffset(nextProps)});}},{key:"componentDidUpdate",value:function componentDidUpdate(){this.reset();this.bind();if(this.state.mouseDown&&this.state.selectionBox){this.updateCollidingChildren(this.state.selectionBox);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.reset();window.document.removeEventListener("mousemove",this.onMouseMove);window.document.removeEventListener("mouseup",this.onMouseUp);}},{key:"render",value:function render(){var style=Object.assign({position:"absolute",background:"rgba(159, 217, 255, 0.3)",border:"solid 1px rgba(123, 123, 123, 0.61)",zIndex:9,cursor:"crosshair"},this.props.style);if(this.state.selectionBox){style=Object.assign({},style,this.state.selectionBox);}if(!this.state.mouseDown||!this.state.endPoint||!this.state.startPoint){return null}return _jsx("div",{className:"react-ds-border",style:style})}}]);return Selection}(_react2.default.PureComponent);var _default = dist.default=Selection;
 
 var useSelect = (function (nodes, previousNodes) {
   var _useState = React$1.useState([]),

@@ -163,13 +163,42 @@ export class FlumeConfig {
       deletable: define(config.deletable, true),
     };
 
-    if ( typeof config.titleColor === 'string' &&
-         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor) )
-      node.titleColor = config.titleColor
+    // if ( typeof config.titleColor === 'string' &&
+    //      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor)
+    // ) node.titleColor = config.titleColor   if ( typeof
+    // config.tileBackground === 'string' &&
+    // RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground)
+    // ) node.tileBackground = config.tileBackground
 
-    if ( typeof config.tileBackground === 'string' &&
-         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground) )
-      node.tileBackground = config.tileBackground
+    // Validating meta data of flume action that is used to render action
+    // header  and category info
+
+    node.meta = {}
+    if ( config.meta && typeof config.meta === 'object' ) {
+      const { meta } = config;
+
+
+      node.meta.category = meta.category && typeof config.category === 'string'
+        ? meta.category : 'Other';
+
+      // Optionally supplying action header color
+      node.meta.titleColor =
+        meta.titleColor && typeof meta.titleColor ===
+        'string' &&
+        RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g)
+          .test(meta.titleColor)
+          ? meta.titleColor : '#000';
+
+
+      // Optionally supplying action header color
+      node.meta.tileBackground =
+        meta.tileBackground &&
+        typeof meta.tileBackground === 'string' &&
+        RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g)
+          .test(meta.tileBackground)
+          ? meta.tileBackground : '#494956';
+
+    }
 
     if ( typeof config.icon === 'string' ) node.icon = config.icon
 

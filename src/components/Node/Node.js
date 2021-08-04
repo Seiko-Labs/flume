@@ -43,8 +43,10 @@ const Node = forwardRef(({
     inputs = [],
     outputs = [],
     icon,
-    titleColor = '#000',
-    tileBackground = '#494956',
+    meta: {
+      titleColor = '#000',
+      tileBackground = '#494956',
+    },
   } = nodeTypes[type];
 
   const [menuOpen, setMenuOpen] = useState(false);

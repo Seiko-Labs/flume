@@ -85,8 +85,11 @@ config
     name: 'selectorAction',
     label: 'Selector action',
     icon: 'https://dummyimage.com/30x30/de21de/fff.png&text=Ic',
-    tileBackground: '#BB0707',
-    titleColor: '#FEFEFE',
+    meta: {
+      category: 'Selectors',
+      tileBackground: '#BB0707',
+      titleColor: '#FEFEFE',
+    },
     inputs: ports => data => [
       ports.string({
         name: 'selectorPath',
@@ -272,6 +275,7 @@ const is = {
 
 export default () => {
   const [output, setOutput] = React.useState();
+
   const [
     {
       nodesState,
@@ -312,8 +316,9 @@ export default () => {
   // })
 
   useEffect(() => {
-    console.log(currentStateIndex)
-  })
+    console.log([nodesState[currentStateIndex]])
+  }, [nodesState, currentStateIndex])
+  useEffect(() => {console.log(config.nodeTypes)}, [])
   return (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
       <ControlsBlock>
