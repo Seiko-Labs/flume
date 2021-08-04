@@ -11,8 +11,9 @@ Forked and updated by Seiko Labs
 # Flume
 
 ## Current fork changelist and features
+* Node builder `titleColor` (HEX) and `tileBackground` (HEX) are now wrapped inside `meta` (json) parameter within additional `category` (string) prop representing node type category name.
 
-* Node builder now accepts and contains additional `icon` (URL string), `comment` (string), `titleColor` (HEX), `tileBackground` (HEX) and `expanded` (boolean) parameters, that define card layout and view.
+* Node builder now accepts and contains additional `icon` (URL string), `comment` (string), `titleColor` (HEX), `tileBackground` (HEX) and `expanded` (boolean) parameters, that define card layout and view. _Refactored_
 
 * Added `NodeEditor` state init params to hook function params. It now accepts:
 
@@ -160,7 +161,10 @@ const App = () => {
   // temp reducers: former sends data directly to the NodeEditor root 
   // state, unlike temp only contains view action type modifiers
   const [
-    nodes, // Contains NodeEditor's current nodes
+    {
+      nodesState,
+      currentStateIndex,
+    }, // Contains NodeEditor's current nodesState and state index
     comments, // Contains NodeEditor's current comments
     dispatch, // This method dispatches actions to NodeEditor
     connector, // Links editor to the controller
