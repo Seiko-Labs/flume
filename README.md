@@ -45,6 +45,9 @@ Forked and updated by Seiko Labs
   
 * New features:
   
+    * Adding new nodes. 
+      See `"ADD_NODE"`  action of `useNodeEditorController` dispatch function
+    
     * Nodes selection / multi selection. 
       See `"TOGGLE_MULTISELECT"` temp action dispatch function
     
@@ -198,12 +201,19 @@ const App = () => {
           nodeIds: Object.keys(nodes),
           doExpand: true,
         })}>Expand all nodes
-        </button>
-        {/* nodes' optional fileds */}
+        </button> 
+        {/* Add new node */}
         <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
           nodeIds: Object.keys(nodes),
-          doExpand: false,
-        })}>Collapse all nodes
+          doExpand: true,
+        })}>Expand all nodes
+        </button>
+        {/* nodes' optional fileds */}
+        <button onClick={() => dispatch('ADD_NODE', {
+          type: 'addNumbers',
+          x: 100,
+          y: 200,
+        })}>Add "addNumbers" node
         </button>
         <label style={{ color: 'white' }}>
           {/*Toggle nodes multiselect mode*/}

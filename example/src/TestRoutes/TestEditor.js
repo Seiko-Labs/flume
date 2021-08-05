@@ -334,6 +334,12 @@ export default () => {
           doExpand: true,
         })}>Expand all nodes
         </button>
+        <button onClick={() => dispatch('ADD_NODE', {
+          type: 'condition',
+          x: 100,
+          y: 200,
+        })}>Add "condition" node
+        </button>
         <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
           nodeIds: Object.keys(nodesState[currentStateIndex].state),
           doExpand: false,

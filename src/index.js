@@ -1,4 +1,15 @@
-import React, { createRef, useEffect, useMemo, useRef } from 'react'
+import React, {
+  createRef,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
 import { useId } from '@reach/auto-id'
 import Stage from './components/Stage/Stage'
 import Node from './components/Node/Node'
@@ -58,16 +69,16 @@ export let NodeEditor = (
   ref,
 ) => {
   const editorId = useId()
-  const cache = React.useRef(new Cache())
-  const stage = React.useRef()
-  const [sideEffectToasts, setSideEffectToasts] = React.useState()
-  const [toasts, dispatchToasts] = React.useReducer(toastsReducer, [])
+  const cache = useRef(new Cache())
+  const stage = useRef()
+  const [sideEffectToasts, setSideEffectToasts] = useState()
+  const [toasts, dispatchToasts] = useReducer(toastsReducer, [])
   const editorRef = useRef()
-  const [spaceIsPressed, setSpaceIsPressed] = React.useState(false)
+  const [spaceIsPressed, setSpaceIsPressed] = useState(false)
 
   const [
     { nodesState, currentStateIndex }, dispatchNodes,
-  ] = React.useReducer(
+  ] = useReducer(
     connectNodesReducer(
       nodesReducer,
       {
@@ -96,7 +107,7 @@ export let NodeEditor = (
       currentStateIndex: 0,
     }),
   )
-  const [comments, dispatchComments] = React.useReducer(
+  const [comments, dispatchComments] = useReducer(
     commentsReducer,
     initialComments || {},
   )
@@ -143,6 +154,17 @@ export let NodeEditor = (
             dispatchNodes({ type: 'TOGGLE_NODE_VIEW', id, doExpand })
           })
           break
+
+        case 'ADD_NODE':
+          const { x, y, type } = data
+
+          dispatchNodes({
+            type: "ADD_NODE",
+            x,
+            y,
+            nodeType: type
+          })
+          break
         default:
           break
 
@@ -158,11 +180,11 @@ export let NodeEditor = (
   const [
     shouldRecalculateConnections,
     setShouldRecalculateConnections,
-  ] = React.useState(true)
+  ] = useState(true)
 
   initialStageParams = initialStageParams || tempState.stage
 
-  const [stageState, dispatchStageState] = React.useReducer(stageReducer, {
+  const [stageState, dispatchStageState] = useReducer(stageReducer, {
     scale: typeof initialStageParams?.scale === 'number'
       ? clamp(initialStageParams?.scale, 0.1, 7)
       : 1,
@@ -182,7 +204,7 @@ export let NodeEditor = (
     }
   }, [stageState, tempState.stage, dispatchTemp])
 
-  const recalculateConnections = React.useCallback(() => {
+  const recalculateConnections = useCallback(() => {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId)
   }, [currentStateIndex, nodesState, editorId, stageState])
 
@@ -192,7 +214,7 @@ export let NodeEditor = (
       .getBoundingClientRect()
   }
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if ( shouldRecalculateConnections ) {
       recalculateConnections()
       setShouldRecalculateConnections(false)
@@ -254,7 +276,7 @@ export let NodeEditor = (
     }
   }
 
-  React.useImperativeHandle(ref, () => ({
+  useImperativeHandle(ref, () => ({
     getNodes: () => {
       return nodesState[currentStateIndex].state
     },
@@ -263,7 +285,7 @@ export let NodeEditor = (
     },
   }))
 
-  React.useMemo(() => {
+  useMemo(() => {
     nodesState[Math.max(currentStateIndex - 1, 0)].state
     && nodesState[currentStateIndex].state !==
     nodesState[Math.max(currentStateIndex - 1, 0)].state
@@ -274,14 +296,14 @@ export let NodeEditor = (
 
   const previousComments = usePrevious(comments)
 
-  React.useEffect(() => {
+  useEffect(() => {
     previousComments
     && comments !== previousComments
     && setComments
     && setComments(comments)
   }, [comments, previousComments, setComments])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if ( sideEffectToasts ) {
       dispatchToasts(sideEffectToasts)
       setSideEffectToasts(null)
@@ -406,7 +428,7 @@ export let NodeEditor = (
                                    ref={
                                      nodeRefs.find(([n]) => n.id === node.id)
                                        ? nodeRefs.find(
-                                       ([n]) => n.id === node.id)[1]
+                                         ([n]) => n.id === node.id)[1]
                                        : createRef()
                                    }
                                    stageRect={stage}
@@ -436,7 +458,7 @@ export let NodeEditor = (
   )
 }
 
-NodeEditor = React.forwardRef(NodeEditor)
+NodeEditor = forwardRef(NodeEditor)
 export { FlumeConfig, Controls, Colors } from './typeBuilders'
 export { RootEngine } from './RootEngine'
 export useNodeEditorController from './hooks/useNodeEditorController'

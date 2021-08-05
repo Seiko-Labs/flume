@@ -28399,27 +28399,27 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       debug = _ref.debug;
 
   var editorId = useId();
-  var cache = React__default['default'].useRef(new Cache());
-  var stage = React__default['default'].useRef();
+  var cache = React$1.useRef(new Cache());
+  var stage = React$1.useRef();
 
-  var _React$useState = React__default['default'].useState(),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      sideEffectToasts = _React$useState2[0],
-      setSideEffectToasts = _React$useState2[1];
+  var _useState = React$1.useState(),
+      _useState2 = _slicedToArray(_useState, 2),
+      sideEffectToasts = _useState2[0],
+      setSideEffectToasts = _useState2[1];
 
-  var _React$useReducer = React__default['default'].useReducer(toastsReducer, []),
-      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
-      toasts = _React$useReducer2[0],
-      dispatchToasts = _React$useReducer2[1];
+  var _useReducer = React$1.useReducer(toastsReducer, []),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      toasts = _useReducer2[0],
+      dispatchToasts = _useReducer2[1];
 
   var editorRef = React$1.useRef();
 
-  var _React$useState3 = React__default['default'].useState(false),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      spaceIsPressed = _React$useState4[0],
-      setSpaceIsPressed = _React$useState4[1];
+  var _useState3 = React$1.useState(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      spaceIsPressed = _useState4[0],
+      setSpaceIsPressed = _useState4[1];
 
-  var _React$useReducer3 = React__default['default'].useReducer(connectNodesReducer(nodesReducer$1, {
+  var _useReducer3 = React$1.useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
     portTypes: portTypes,
     cache: cache,
@@ -28436,16 +28436,16 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       currentStateIndex: 0
     };
   }),
-      _React$useReducer4 = _slicedToArray(_React$useReducer3, 2),
-      _React$useReducer4$ = _React$useReducer4[0],
-      nodesState = _React$useReducer4$.nodesState,
-      currentStateIndex = _React$useReducer4$.currentStateIndex,
-      dispatchNodes = _React$useReducer4[1];
+      _useReducer4 = _slicedToArray(_useReducer3, 2),
+      _useReducer4$ = _useReducer4[0],
+      nodesState = _useReducer4$.nodesState,
+      currentStateIndex = _useReducer4$.currentStateIndex,
+      dispatchNodes = _useReducer4[1];
 
-  var _React$useReducer5 = React__default['default'].useReducer(commentsReducer, initialComments || {}),
-      _React$useReducer6 = _slicedToArray(_React$useReducer5, 2),
-      comments = _React$useReducer6[0],
-      dispatchComments = _React$useReducer6[1];
+  var _useReducer5 = React$1.useReducer(commentsReducer, initialComments || {}),
+      _useReducer6 = _slicedToArray(_useReducer5, 2),
+      comments = _useReducer6[0],
+      dispatchComments = _useReducer6[1];
 
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState, nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState),
       _useSelect2 = _slicedToArray(_useSelect, 4),
@@ -28504,6 +28504,18 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
             });
           });
           break;
+
+        case 'ADD_NODE':
+          var x = data.x,
+              y = data.y,
+              _type = data.type;
+          dispatchNodes({
+            type: "ADD_NODE",
+            x: x,
+            y: y,
+            nodeType: _type
+          });
+          break;
       }
     }
   }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
@@ -28513,23 +28525,23 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     });
   }, []);
 
-  var _React$useState5 = React__default['default'].useState(true),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      shouldRecalculateConnections = _React$useState6[0],
-      setShouldRecalculateConnections = _React$useState6[1];
+  var _useState5 = React$1.useState(true),
+      _useState6 = _slicedToArray(_useState5, 2),
+      shouldRecalculateConnections = _useState6[0],
+      setShouldRecalculateConnections = _useState6[1];
 
   initialStageParams = initialStageParams || tempState.stage;
 
-  var _React$useReducer7 = React__default['default'].useReducer(stageReducer, {
+  var _useReducer7 = React$1.useReducer(stageReducer, {
     scale: typeof ((_initialStageParams = initialStageParams) === null || _initialStageParams === void 0 ? void 0 : _initialStageParams.scale) === 'number' ? clamp_1((_initialStageParams2 = initialStageParams) === null || _initialStageParams2 === void 0 ? void 0 : _initialStageParams2.scale, 0.1, 7) : 1,
     translate: {
       x: typeof ((_initialStageParams3 = initialStageParams) === null || _initialStageParams3 === void 0 ? void 0 : (_initialStageParams3$ = _initialStageParams3.translate) === null || _initialStageParams3$ === void 0 ? void 0 : _initialStageParams3$.x) === 'number' ? initialStageParams.translate.x : 0,
       y: typeof ((_initialStageParams4 = initialStageParams) === null || _initialStageParams4 === void 0 ? void 0 : (_initialStageParams4$ = _initialStageParams4.translate) === null || _initialStageParams4$ === void 0 ? void 0 : _initialStageParams4$.y) === 'number' ? initialStageParams.translate.y : 0
     }
   }),
-      _React$useReducer8 = _slicedToArray(_React$useReducer7, 2),
-      stageState = _React$useReducer8[0],
-      dispatchStageState = _React$useReducer8[1];
+      _useReducer8 = _slicedToArray(_useReducer7, 2),
+      stageState = _useReducer8[0],
+      dispatchStageState = _useReducer8[1];
 
   React$1.useMemo(function () {
     if (!_.isEqual(stageState, tempState.stage)) {
@@ -28545,7 +28557,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       });
     }
   }, [stageState, tempState.stage, dispatchTemp]);
-  var recalculateConnections = React__default['default'].useCallback(function () {
+  var recalculateConnections = React$1.useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);
 
@@ -28553,7 +28565,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
   };
 
-  React__default['default'].useLayoutEffect(function () {
+  React$1.useLayoutEffect(function () {
     if (shouldRecalculateConnections) {
       recalculateConnections();
       setShouldRecalculateConnections(false);
@@ -28614,7 +28626,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     }
   };
 
-  React__default['default'].useImperativeHandle(ref, function () {
+  React$1.useImperativeHandle(ref, function () {
     return {
       getNodes: function getNodes() {
         return nodesState[currentStateIndex].state;
@@ -28624,17 +28636,17 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       }
     };
   });
-  React__default['default'].useMemo(function () {
+  React$1.useMemo(function () {
     nodesState[Math.max(currentStateIndex - 1, 0)].state && nodesState[currentStateIndex].state !== nodesState[Math.max(currentStateIndex - 1, 0)].state && setNodesState && setNodesState({
       nodesState: nodesState,
       currentStateIndex: currentStateIndex
     });
   }, [nodesState, currentStateIndex, setNodesState]);
   var previousComments = usePrevious(comments);
-  React__default['default'].useEffect(function () {
+  React$1.useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);
   }, [comments, previousComments, setComments]);
-  React__default['default'].useEffect(function () {
+  React$1.useEffect(function () {
     if (sideEffectToasts) {
       dispatchToasts(sideEffectToasts);
       setSideEffectToasts(null);
@@ -28761,7 +28773,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     id: "".concat(DRAG_CONNECTION_ID).concat(editorId)
   })))))))))));
 };
-exports.NodeEditor = /*#__PURE__*/React__default['default'].forwardRef(exports.NodeEditor);
+exports.NodeEditor = /*#__PURE__*/React$1.forwardRef(exports.NodeEditor);
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length ? engine.resolveRootNode(nodes, {
     context: context
