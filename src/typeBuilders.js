@@ -163,40 +163,37 @@ export class FlumeConfig {
       deletable: define(config.deletable, true),
     };
 
-    // if ( typeof config.titleColor === 'string' &&
-    //      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor)
-    // ) node.titleColor = config.titleColor   if ( typeof
-    // config.tileBackground === 'string' &&
-    // RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground)
-    // ) node.tileBackground = config.tileBackground
+    // Validating category data of flume action that is used to render action
+    // header and label info
+    node.category = {}
+    if ( config.category && typeof config.category === 'object' ) {
+      const { category } = config;
 
-    // Validating meta data of flume action that is used to render action
-    // header  and category info
+      node.category.id = category.id && typeof config.id === 'number'
+        ? category.id : -1;
 
-    node.meta = {}
-    if ( config.meta && typeof config.meta === 'object' ) {
-      const { meta } = config;
+      node.category.label = category.label && typeof config.label === 'string'
+        ? category.label : 'Other';
 
-
-      node.meta.category = meta.category && typeof config.category === 'string'
-        ? meta.category : 'Other';
+      node.category.description =
+        category.description && typeof config.description === 'string'
+          ? category.description : 'Ungrouped actions are stored here';
 
       // Optionally supplying action header color
-      node.meta.titleColor =
-        meta.titleColor && typeof meta.titleColor ===
-        'string' &&
+      node.category.titleColor =
+        category.titleColor && typeof category.titleColor === 'string' &&
         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g)
-          .test(meta.titleColor)
-          ? meta.titleColor : '#000';
+          .test(category.titleColor)
+          ? category.titleColor : '#000';
 
 
       // Optionally supplying action header color
-      node.meta.tileBackground =
-        meta.tileBackground &&
-        typeof meta.tileBackground === 'string' &&
+      node.category.tileBackground =
+        category.tileBackground &&
+        typeof category.tileBackground === 'string' &&
         RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g)
-          .test(meta.tileBackground)
-          ? meta.tileBackground : '#494956';
+          .test(category.tileBackground)
+          ? category.tileBackground : '#494956';
 
     }
 

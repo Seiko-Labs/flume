@@ -85,8 +85,10 @@ config
     name: 'selectorAction',
     label: 'Selector action',
     icon: 'https://dummyimage.com/30x30/de21de/fff.png&text=Ic',
-    meta: {
-      category: 'Selectors',
+    category: {
+      id: 1,
+      label: 'Selectors',
+      category: 'Selectors action what is',
       tileBackground: '#BB0707',
       titleColor: '#FEFEFE',
     },

@@ -43,7 +43,7 @@ const Node = forwardRef(({
     inputs = [],
     outputs = [],
     icon,
-    meta: {
+    category: {
       titleColor = '#000',
       tileBackground = '#494956',
     },

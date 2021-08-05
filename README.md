@@ -11,9 +11,9 @@ Forked and updated by Seiko Labs
 # Flume
 
 ## Current fork changelist and features
-* Node builder `titleColor` (HEX) and `tileBackground` (HEX) are now wrapped inside `meta` (json) parameter within additional `category` (string) prop representing node type category name.
+* Node builder `titleColor` (HEX) and `tileBackground` (HEX) are now wrapped inside `category` (json) parameter within additional `id` (number), `label` (string) and `description` (string) props representing node type category name.
 
-* Node builder now accepts and contains additional `icon` (URL string), `comment` (string), `titleColor` (HEX), `tileBackground` (HEX) and `expanded` (boolean) parameters, that define card layout and view. _Refactored_
+* Node builder now accepts and contains additional `icon` (URL string), `comment` (string) and `expanded` (boolean) parameters, that define card layout and view.
 
 * Added `NodeEditor` state init params to hook function params. It now accepts:
 
@@ -79,6 +79,14 @@ import { FlumeConfig, Controls, Colors } from "flume";
 
 const flumeConfig = new FlumeConfig()
 
+const numberCategory = {
+  id: 1,
+  label: 'Numbers',
+  description: 'Number actions will appear here',
+  titleColor: '#ccc',
+  tileBackground: '#FF45D3'
+}
+
 flumeConfig
   .addPortType({
     type: "number",
@@ -107,6 +115,7 @@ flumeConfig
     type: "addNumbers",
     label: "Add Numbers",
     initialWidth: 150,
+    category: numberCategory,
     inputs: ports => [
       ports.number({ name: "num1" }),
       ports.number({

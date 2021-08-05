@@ -8814,11 +8814,11 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       _nodeTypes$type$outpu = _nodeTypes$type.outputs,
       outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
       icon = _nodeTypes$type.icon,
-      _nodeTypes$type$meta = _nodeTypes$type.meta,
-      _nodeTypes$type$meta$ = _nodeTypes$type$meta.titleColor,
-      titleColor = _nodeTypes$type$meta$ === void 0 ? '#000' : _nodeTypes$type$meta$,
-      _nodeTypes$type$meta$2 = _nodeTypes$type$meta.tileBackground,
-      tileBackground = _nodeTypes$type$meta$2 === void 0 ? '#494956' : _nodeTypes$type$meta$2;
+      _nodeTypes$type$categ = _nodeTypes$type.category,
+      _nodeTypes$type$categ2 = _nodeTypes$type$categ.titleColor,
+      titleColor = _nodeTypes$type$categ2 === void 0 ? '#000' : _nodeTypes$type$categ2,
+      _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
+      tileBackground = _nodeTypes$type$categ3 === void 0 ? '#494956' : _nodeTypes$type$categ3;
 
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -9311,24 +9311,20 @@ var FlumeConfig = /*#__PURE__*/function () {
         description: define(config.description, ''),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
-      }; // if ( typeof config.titleColor === 'string' &&
-      //      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.titleColor)
-      // ) node.titleColor = config.titleColor   if ( typeof
-      // config.tileBackground === 'string' &&
-      // RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(config.tileBackground)
-      // ) node.tileBackground = config.tileBackground
-      // Validating meta data of flume action that is used to render action
-      // header  and category info
+      }; // Validating category data of flume action that is used to render action
+      // header and label info
 
-      node.meta = {};
+      node.category = {};
 
-      if (config.meta && _typeof(config.meta) === 'object') {
-        var meta = config.meta;
-        node.meta.category = meta.category && typeof config.category === 'string' ? meta.category : 'Other'; // Optionally supplying action header color
+      if (config.category && _typeof(config.category) === 'object') {
+        var category = config.category;
+        node.category.id = category.id && typeof config.id === 'number' ? category.id : -1;
+        node.category.label = category.label && typeof config.label === 'string' ? category.label : 'Other';
+        node.category.description = category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
 
-        node.meta.titleColor = meta.titleColor && typeof meta.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(meta.titleColor) ? meta.titleColor : '#000'; // Optionally supplying action header color
+        node.category.titleColor = category.titleColor && typeof category.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor) ? category.titleColor : '#000'; // Optionally supplying action header color
 
-        node.meta.tileBackground = meta.tileBackground && typeof meta.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(meta.tileBackground) ? meta.tileBackground : '#494956';
+        node.category.tileBackground = category.tileBackground && typeof category.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.tileBackground) ? category.tileBackground : '#494956';
       }
 
       if (typeof config.icon === 'string') node.icon = config.icon;
