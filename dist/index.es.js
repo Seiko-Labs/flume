@@ -9315,18 +9315,14 @@ var FlumeConfig = /*#__PURE__*/function () {
       // header and label info
 
       node.category = {};
+      var category = config.category;
+      node.category.id = category !== null && category !== void 0 && category.id && typeof config.id === 'number' ? category.id : -1;
+      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === 'string' ? category.label : 'Other';
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
 
-      if (config.category && _typeof(config.category) === 'object') {
-        var category = config.category;
-        node.category.id = category.id && typeof config.id === 'number' ? category.id : -1;
-        node.category.label = category.label && typeof config.label === 'string' ? category.label : 'Other';
-        node.category.description = category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
+      node.category.titleColor = category !== null && category !== void 0 && category.titleColor && typeof category.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor) ? category.titleColor : '#000'; // Optionally supplying action header color
 
-        node.category.titleColor = category.titleColor && typeof category.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor) ? category.titleColor : '#000'; // Optionally supplying action header color
-
-        node.category.tileBackground = category.tileBackground && typeof category.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.tileBackground) ? category.tileBackground : '#494956';
-      }
-
+      node.category.tileBackground = category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.tileBackground) ? category.tileBackground : '#494956';
       if (typeof config.icon === 'string') node.icon = config.icon;
       if (typeof config.comment === 'string') node.comment = config.comment;
       if (config.expanded) node.expanded = !!config.expanded;
