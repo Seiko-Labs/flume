@@ -28446,7 +28446,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       comments = _useReducer6[0],
       dispatchComments = _useReducer6[1];
 
-  var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState, nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState),
+  var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState.nodesState[initialNodesState.currentStateIndex]),
       _useSelect2 = _slicedToArray(_useSelect, 4),
       selectedNodes = _useSelect2[0],
       nodeRefs = _useSelect2[1],

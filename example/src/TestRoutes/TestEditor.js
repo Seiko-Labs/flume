@@ -276,7 +276,7 @@ const is = {
 }
 
 export default () => {
-  const [output, setOutput] = React.useState();
+  const [visible, setVisible] = React.useState(false);
 
   const [
     {
@@ -321,7 +321,7 @@ export default () => {
     console.log([nodesState[currentStateIndex]])
   }, [nodesState, currentStateIndex])
   useEffect(() => {console.log(config.nodeTypes)}, [])
-  return (
+  return !visible ? <button onClick={()=> setVisible(true)}/>: (
     <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
       <ControlsBlock>
         <button onClick={() => dispatch('UNDO')}>Undo</button>
@@ -364,7 +364,6 @@ export default () => {
         connector={connector}
         // debug
       />
-      <div id="OUTPUT" style={{ display: 'none' }}>{output}</div>
     </div>
   );
 }

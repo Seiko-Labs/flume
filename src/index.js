@@ -112,8 +112,8 @@ export let NodeEditor = (
     initialComments || {},
   )
   const [selectedNodes, nodeRefs, handleSelection, clearSelection] = useSelect(
-    nodesState[currentStateIndex].state || initialNodesState,
-    nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState,
+    nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex],
+    nodesState[Math.max(currentStateIndex - 1, 0)].state || initialNodesState.nodesState[initialNodesState.currentStateIndex],
   )
 
   useEffect(() => {
