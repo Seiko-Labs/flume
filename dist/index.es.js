@@ -28272,6 +28272,14 @@ var tempStateReducer = function tempStateReducer(state, action) {
         });
       }
 
+    case 'SELECT_NODES':
+      {
+        var selectedNodes = action.selectedNodes;
+        return _objectSpread$1(_objectSpread$1({}, state), {}, {
+          selectedNodes: selectedNodes
+        });
+      }
+
     default:
       return state;
   }
@@ -28547,7 +28555,12 @@ var NodeEditor = function NodeEditor(_ref, ref) {
         y: y
       });
     }
-  }, [stageState, tempState.stage, dispatchTemp]);
+
+    if (!_.isEqual(selectedNodes, tempState.selectedNodes)) dispatchTemp({
+      type: 'SELECT_NODES',
+      selectedNodes: selectedNodes
+    });
+  }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes]);
   var recalculateConnections = useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);

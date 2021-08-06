@@ -21,6 +21,14 @@ const tempStateReducer = (state, action) => {
         }
       }
     }
+    case 'SELECT_NODES': {
+      const {selectedNodes} = action
+
+      return {
+        ...state,
+        selectedNodes
+      }
+    }
     default:
       return state
   }

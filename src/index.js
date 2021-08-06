@@ -202,7 +202,9 @@ export let NodeEditor = (
       const { translate: { x, y }, scale } = stageState
       dispatchTemp({ type: 'SET_STAGE', scale, x, y })
     }
-  }, [stageState, tempState.stage, dispatchTemp])
+    if (!_.isEqual(selectedNodes, tempState.selectedNodes))
+      dispatchTemp({ type: 'SELECT_NODES', selectedNodes })
+  }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes])
 
   const recalculateConnections = useCallback(() => {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId)
