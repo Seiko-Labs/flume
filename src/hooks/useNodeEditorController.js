@@ -27,7 +27,7 @@ const tempStateReducer = (state, action) => {
 }
 
 export default ({
-  initialNodesState = null,
+  initialNodesState = undefined,
   initialTempState = {
     multiselect: false,
     selectedNodes: [],
@@ -39,8 +39,8 @@ export default ({
       }
     }
   },
-  initialNodes = null,
-  defaultNodes = null
+  initialNodes = undefined,
+  defaultNodes = undefined
 }) => {
   const [action, setAction] = useState(null)
   const [nodesState, setNodesState] = useState(initialNodesState || {})

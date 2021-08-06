@@ -28279,7 +28279,7 @@ var tempStateReducer = function tempStateReducer(state, action) {
 
 var useNodeEditorController = (function (_ref) {
   var _ref$initialNodesStat = _ref.initialNodesState,
-      initialNodesState = _ref$initialNodesStat === void 0 ? null : _ref$initialNodesStat,
+      initialNodesState = _ref$initialNodesStat === void 0 ? undefined : _ref$initialNodesStat,
       _ref$initialTempState = _ref.initialTempState,
       initialTempState = _ref$initialTempState === void 0 ? {
     multiselect: false,
@@ -28293,9 +28293,9 @@ var useNodeEditorController = (function (_ref) {
     }
   } : _ref$initialTempState,
       _ref$initialNodes = _ref.initialNodes,
-      initialNodes = _ref$initialNodes === void 0 ? null : _ref$initialNodes,
+      initialNodes = _ref$initialNodes === void 0 ? undefined : _ref$initialNodes,
       _ref$defaultNodes = _ref.defaultNodes,
-      defaultNodes = _ref$defaultNodes === void 0 ? null : _ref$defaultNodes;
+      defaultNodes = _ref$defaultNodes === void 0 ? undefined : _ref$defaultNodes;
 
   var _useState = useState(null),
       _useState2 = _slicedToArray(_useState, 2),
