@@ -350,7 +350,7 @@ export let NodeEditor = (
                             spaceIsPressed ||
                             handleSelection(i, tempState.multiselect)}
                           offset={{
-                            top: 0,
+                            top: editorRef.current.getBoundingClientRect().top,
                             left: 0,
                           }}
                           ignoreTargets={[

@@ -28700,7 +28700,7 @@ var NodeEditor = function NodeEditor(_ref, ref) {
       return spaceIsPressed || handleSelection(i, tempState.multiselect);
     },
     offset: {
-      top: 0,
+      top: editorRef.current.getBoundingClientRect().top,
       left: 0
     },
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
