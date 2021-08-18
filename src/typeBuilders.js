@@ -100,8 +100,8 @@ export const getPortBuilders = ports =>
         name: config.name || port.name,
         label: config.label || port.label,
         noControls: define(config.noControls, false),
-        color: config.color || port.color,
-        optional: config.optional || port.optional || false,
+        color: port.color || config.color,
+        optional: define(config.optional, !!port.optional),
         hidePort: define(config.hidePort, port.hidePort),
         controls: define(config.controls, port.controls),
       };

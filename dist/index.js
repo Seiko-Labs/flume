@@ -1588,47 +1588,6 @@ function baseClamp$1(number, lower, upper) {
 
 var _baseClamp = baseClamp$1;
 
-/** Used to match a single whitespace character. */
-
-var reWhitespace = /\s/;
-
-/**
- * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
- * character of `string`.
- *
- * @private
- * @param {string} string The string to inspect.
- * @returns {number} Returns the index of the last non-whitespace character.
- */
-function trimmedEndIndex$1(string) {
-  var index = string.length;
-
-  while (index-- && reWhitespace.test(string.charAt(index))) {}
-  return index;
-}
-
-var _trimmedEndIndex = trimmedEndIndex$1;
-
-var trimmedEndIndex = _trimmedEndIndex;
-
-/** Used to match leading whitespace. */
-var reTrimStart = /^\s+/;
-
-/**
- * The base implementation of `_.trim`.
- *
- * @private
- * @param {string} string The string to trim.
- * @returns {string} Returns the trimmed string.
- */
-function baseTrim$1(string) {
-  return string
-    ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
-    : string;
-}
-
-var _baseTrim = baseTrim$1;
-
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -1846,12 +1805,14 @@ function isSymbol$5(value) {
 
 var isSymbol_1 = isSymbol$5;
 
-var baseTrim = _baseTrim,
-    isObject$3 = isObject_1,
+var isObject$3 = isObject_1,
     isSymbol$4 = isSymbol_1;
 
 /** Used as references for various `Number` constants. */
 var NAN = 0 / 0;
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
 
 /** Used to detect bad signed hexadecimal string values. */
 var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
@@ -1902,7 +1863,7 @@ function toNumber$1(value) {
   if (typeof value != 'string') {
     return value === 0 ? value : +value;
   }
-  value = baseTrim(value);
+  value = value.replace(reTrim, '');
   var isBinary = reIsBinary.test(value);
   return (isBinary || reIsOctal.test(value))
     ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
@@ -2406,393 +2367,6 @@ function arrayMap$2(array, iteratee) {
 var _arrayMap = arrayMap$2;
 
 /**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(document.body.children);
- * // => false
- *
- * _.isArray('abc');
- * // => false
- *
- * _.isArray(_.noop);
- * // => false
- */
-
-var isArray$a = Array.isArray;
-
-var isArray_1 = isArray$a;
-
-var isArray$9 = isArray_1,
-    isSymbol$3 = isSymbol_1;
-
-/** Used to match property names within property paths. */
-var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
-    reIsPlainProp = /^\w*$/;
-
-/**
- * Checks if `value` is a property name and not a property path.
- *
- * @private
- * @param {*} value The value to check.
- * @param {Object} [object] The object to query keys on.
- * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
- */
-function isKey$3(value, object) {
-  if (isArray$9(value)) {
-    return false;
-  }
-  var type = typeof value;
-  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
-      value == null || isSymbol$3(value)) {
-    return true;
-  }
-  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
-    (object != null && value in Object(object));
-}
-
-var _isKey = isKey$3;
-
-var baseGetTag$3 = _baseGetTag,
-    isObject$2 = isObject_1;
-
-/** `Object#toString` result references. */
-var asyncTag = '[object AsyncFunction]',
-    funcTag$1 = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    proxyTag = '[object Proxy]';
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction$2(value) {
-  if (!isObject$2(value)) {
-    return false;
-  }
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 9 which returns 'object' for typed arrays and other constructors.
-  var tag = baseGetTag$3(value);
-  return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
-}
-
-var isFunction_1 = isFunction$2;
-
-var root$7 = _root;
-
-/** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$7['__core-js_shared__'];
-
-var _coreJsData = coreJsData$1;
-
-var coreJsData = _coreJsData;
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-/**
- * Checks if `func` has its source masked.
- *
- * @private
- * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` is masked, else `false`.
- */
-function isMasked$1(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
-}
-
-var _isMasked = isMasked$1;
-
-/** Used for built-in method references. */
-
-var funcProto$1 = Function.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
-
-/**
- * Converts `func` to its source code.
- *
- * @private
- * @param {Function} func The function to convert.
- * @returns {string} Returns the source code.
- */
-function toSource$2(func) {
-  if (func != null) {
-    try {
-      return funcToString$1.call(func);
-    } catch (e) {}
-    try {
-      return (func + '');
-    } catch (e) {}
-  }
-  return '';
-}
-
-var _toSource = toSource$2;
-
-var isFunction$1 = isFunction_1,
-    isMasked = _isMasked,
-    isObject$1 = isObject_1,
-    toSource$1 = _toSource;
-
-/**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
- */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype,
-    objectProto$9 = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  funcToString.call(hasOwnProperty$7).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/**
- * The base implementation of `_.isNative` without bad shim checks.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function,
- *  else `false`.
- */
-function baseIsNative$1(value) {
-  if (!isObject$1(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = isFunction$1(value) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource$1(value));
-}
-
-var _baseIsNative = baseIsNative$1;
-
-/**
- * Gets the value at `key` of `object`.
- *
- * @private
- * @param {Object} [object] The object to query.
- * @param {string} key The key of the property to get.
- * @returns {*} Returns the property value.
- */
-
-function getValue$1(object, key) {
-  return object == null ? undefined : object[key];
-}
-
-var _getValue = getValue$1;
-
-var baseIsNative = _baseIsNative,
-    getValue = _getValue;
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative$6(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
-}
-
-var _getNative = getNative$6;
-
-var getNative$5 = _getNative;
-
-/* Built-in method references that are verified to be native. */
-var nativeCreate$4 = getNative$5(Object, 'create');
-
-var _nativeCreate = nativeCreate$4;
-
-var nativeCreate$3 = _nativeCreate;
-
-/**
- * Removes all key-value entries from the hash.
- *
- * @private
- * @name clear
- * @memberOf Hash
- */
-function hashClear$1() {
-  this.__data__ = nativeCreate$3 ? nativeCreate$3(null) : {};
-  this.size = 0;
-}
-
-var _hashClear = hashClear$1;
-
-/**
- * Removes `key` and its value from the hash.
- *
- * @private
- * @name delete
- * @memberOf Hash
- * @param {Object} hash The hash to modify.
- * @param {string} key The key of the value to remove.
- * @returns {boolean} Returns `true` if the entry was removed, else `false`.
- */
-
-function hashDelete$1(key) {
-  var result = this.has(key) && delete this.__data__[key];
-  this.size -= result ? 1 : 0;
-  return result;
-}
-
-var _hashDelete = hashDelete$1;
-
-var nativeCreate$2 = _nativeCreate;
-
-/** Used to stand-in for `undefined` hash values. */
-var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
-
-/** Used for built-in method references. */
-var objectProto$8 = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
-
-/**
- * Gets the hash value for `key`.
- *
- * @private
- * @name get
- * @memberOf Hash
- * @param {string} key The key of the value to get.
- * @returns {*} Returns the entry value.
- */
-function hashGet$1(key) {
-  var data = this.__data__;
-  if (nativeCreate$2) {
-    var result = data[key];
-    return result === HASH_UNDEFINED$2 ? undefined : result;
-  }
-  return hasOwnProperty$6.call(data, key) ? data[key] : undefined;
-}
-
-var _hashGet = hashGet$1;
-
-var nativeCreate$1 = _nativeCreate;
-
-/** Used for built-in method references. */
-var objectProto$7 = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
-
-/**
- * Checks if a hash value for `key` exists.
- *
- * @private
- * @name has
- * @memberOf Hash
- * @param {string} key The key of the entry to check.
- * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
- */
-function hashHas$1(key) {
-  var data = this.__data__;
-  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$5.call(data, key);
-}
-
-var _hashHas = hashHas$1;
-
-var nativeCreate = _nativeCreate;
-
-/** Used to stand-in for `undefined` hash values. */
-var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
-
-/**
- * Sets the hash `key` to `value`.
- *
- * @private
- * @name set
- * @memberOf Hash
- * @param {string} key The key of the value to set.
- * @param {*} value The value to set.
- * @returns {Object} Returns the hash instance.
- */
-function hashSet$1(key, value) {
-  var data = this.__data__;
-  this.size += this.has(key) ? 0 : 1;
-  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
-  return this;
-}
-
-var _hashSet = hashSet$1;
-
-var hashClear = _hashClear,
-    hashDelete = _hashDelete,
-    hashGet = _hashGet,
-    hashHas = _hashHas,
-    hashSet = _hashSet;
-
-/**
- * Creates a hash object.
- *
- * @private
- * @constructor
- * @param {Array} [entries] The key-value pairs to cache.
- */
-function Hash$1(entries) {
-  var index = -1,
-      length = entries == null ? 0 : entries.length;
-
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-
-// Add methods to `Hash`.
-Hash$1.prototype.clear = hashClear;
-Hash$1.prototype['delete'] = hashDelete;
-Hash$1.prototype.get = hashGet;
-Hash$1.prototype.has = hashHas;
-Hash$1.prototype.set = hashSet;
-
-var _Hash = Hash$1;
-
-/**
  * Removes all key-value entries from the list cache.
  *
  * @private
@@ -3001,16 +2575,413 @@ ListCache$4.prototype.set = listCacheSet;
 
 var _ListCache = ListCache$4;
 
-var getNative$4 = _getNative,
+var ListCache$3 = _ListCache;
+
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear$1() {
+  this.__data__ = new ListCache$3;
+  this.size = 0;
+}
+
+var _stackClear = stackClear$1;
+
+/**
+ * Removes `key` and its value from the stack.
+ *
+ * @private
+ * @name delete
+ * @memberOf Stack
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+
+function stackDelete$1(key) {
+  var data = this.__data__,
+      result = data['delete'](key);
+
+  this.size = data.size;
+  return result;
+}
+
+var _stackDelete = stackDelete$1;
+
+/**
+ * Gets the stack value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Stack
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+
+function stackGet$1(key) {
+  return this.__data__.get(key);
+}
+
+var _stackGet = stackGet$1;
+
+/**
+ * Checks if a stack value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Stack
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+
+function stackHas$1(key) {
+  return this.__data__.has(key);
+}
+
+var _stackHas = stackHas$1;
+
+var baseGetTag$3 = _baseGetTag,
+    isObject$2 = isObject_1;
+
+/** `Object#toString` result references. */
+var asyncTag = '[object AsyncFunction]',
+    funcTag$1 = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    proxyTag = '[object Proxy]';
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction$2(value) {
+  if (!isObject$2(value)) {
+    return false;
+  }
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = baseGetTag$3(value);
+  return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+
+var isFunction_1 = isFunction$2;
+
+var root$7 = _root;
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData$1 = root$7['__core-js_shared__'];
+
+var _coreJsData = coreJsData$1;
+
+var coreJsData = _coreJsData;
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked$1(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+var _isMasked = isMasked$1;
+
+/** Used for built-in method references. */
+
+var funcProto$1 = Function.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to convert.
+ * @returns {string} Returns the source code.
+ */
+function toSource$2(func) {
+  if (func != null) {
+    try {
+      return funcToString$1.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+var _toSource = toSource$2;
+
+var isFunction$1 = isFunction_1,
+    isMasked = _isMasked,
+    isObject$1 = isObject_1,
+    toSource$1 = _toSource;
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto$9 = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty$7).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative$1(value) {
+  if (!isObject$1(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction$1(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource$1(value));
+}
+
+var _baseIsNative = baseIsNative$1;
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+
+function getValue$1(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+var _getValue = getValue$1;
+
+var baseIsNative = _baseIsNative,
+    getValue = _getValue;
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative$6(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+var _getNative = getNative$6;
+
+var getNative$5 = _getNative,
     root$6 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Map$4 = getNative$4(root$6, 'Map');
+var Map$4 = getNative$5(root$6, 'Map');
 
 var _Map = Map$4;
 
+var getNative$4 = _getNative;
+
+/* Built-in method references that are verified to be native. */
+var nativeCreate$4 = getNative$4(Object, 'create');
+
+var _nativeCreate = nativeCreate$4;
+
+var nativeCreate$3 = _nativeCreate;
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear$1() {
+  this.__data__ = nativeCreate$3 ? nativeCreate$3(null) : {};
+  this.size = 0;
+}
+
+var _hashClear = hashClear$1;
+
+/**
+ * Removes `key` and its value from the hash.
+ *
+ * @private
+ * @name delete
+ * @memberOf Hash
+ * @param {Object} hash The hash to modify.
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+
+function hashDelete$1(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
+}
+
+var _hashDelete = hashDelete$1;
+
+var nativeCreate$2 = _nativeCreate;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
+
+/** Used for built-in method references. */
+var objectProto$8 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet$1(key) {
+  var data = this.__data__;
+  if (nativeCreate$2) {
+    var result = data[key];
+    return result === HASH_UNDEFINED$2 ? undefined : result;
+  }
+  return hasOwnProperty$6.call(data, key) ? data[key] : undefined;
+}
+
+var _hashGet = hashGet$1;
+
+var nativeCreate$1 = _nativeCreate;
+
+/** Used for built-in method references. */
+var objectProto$7 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
+
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas$1(key) {
+  var data = this.__data__;
+  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$5.call(data, key);
+}
+
+var _hashHas = hashHas$1;
+
+var nativeCreate = _nativeCreate;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet$1(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
+  return this;
+}
+
+var _hashSet = hashSet$1;
+
+var hashClear = _hashClear,
+    hashDelete = _hashDelete,
+    hashGet = _hashGet,
+    hashHas = _hashHas,
+    hashSet = _hashSet;
+
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash$1(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+// Add methods to `Hash`.
+Hash$1.prototype.clear = hashClear;
+Hash$1.prototype['delete'] = hashDelete;
+Hash$1.prototype.get = hashGet;
+Hash$1.prototype.has = hashHas;
+Hash$1.prototype.set = hashSet;
+
+var _Hash = Hash$1;
+
 var Hash = _Hash,
-    ListCache$3 = _ListCache,
+    ListCache$2 = _ListCache,
     Map$3 = _Map;
 
 /**
@@ -3024,7 +2995,7 @@ function mapCacheClear$1() {
   this.size = 0;
   this.__data__ = {
     'hash': new Hash,
-    'map': new (Map$3 || ListCache$3),
+    'map': new (Map$3 || ListCache$2),
     'string': new Hash
   };
 }
@@ -3176,342 +3147,9 @@ MapCache$3.prototype.set = mapCacheSet;
 
 var _MapCache = MapCache$3;
 
-var MapCache$2 = _MapCache;
-
-/** Error message constants. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-/**
- * Creates a function that memoizes the result of `func`. If `resolver` is
- * provided, it determines the cache key for storing the result based on the
- * arguments provided to the memoized function. By default, the first argument
- * provided to the memoized function is used as the map cache key. The `func`
- * is invoked with the `this` binding of the memoized function.
- *
- * **Note:** The cache is exposed as the `cache` property on the memoized
- * function. Its creation may be customized by replacing the `_.memoize.Cache`
- * constructor with one whose instances implement the
- * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
- * method interface of `clear`, `delete`, `get`, `has`, and `set`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to have its output memoized.
- * @param {Function} [resolver] The function to resolve the cache key.
- * @returns {Function} Returns the new memoized function.
- * @example
- *
- * var object = { 'a': 1, 'b': 2 };
- * var other = { 'c': 3, 'd': 4 };
- *
- * var values = _.memoize(_.values);
- * values(object);
- * // => [1, 2]
- *
- * values(other);
- * // => [3, 4]
- *
- * object.a = 2;
- * values(object);
- * // => [1, 2]
- *
- * // Modify the result cache.
- * values.cache.set(object, ['a', 'b']);
- * values(object);
- * // => ['a', 'b']
- *
- * // Replace `_.memoize.Cache`.
- * _.memoize.Cache = WeakMap;
- */
-function memoize$1(func, resolver) {
-  if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  var memoized = function() {
-    var args = arguments,
-        key = resolver ? resolver.apply(this, args) : args[0],
-        cache = memoized.cache;
-
-    if (cache.has(key)) {
-      return cache.get(key);
-    }
-    var result = func.apply(this, args);
-    memoized.cache = cache.set(key, result) || cache;
-    return result;
-  };
-  memoized.cache = new (memoize$1.Cache || MapCache$2);
-  return memoized;
-}
-
-// Expose `MapCache`.
-memoize$1.Cache = MapCache$2;
-
-var memoize_1 = memoize$1;
-
-var memoize = memoize_1;
-
-/** Used as the maximum memoize cache size. */
-var MAX_MEMOIZE_SIZE = 500;
-
-/**
- * A specialized version of `_.memoize` which clears the memoized function's
- * cache when it exceeds `MAX_MEMOIZE_SIZE`.
- *
- * @private
- * @param {Function} func The function to have its output memoized.
- * @returns {Function} Returns the new memoized function.
- */
-function memoizeCapped$1(func) {
-  var result = memoize(func, function(key) {
-    if (cache.size === MAX_MEMOIZE_SIZE) {
-      cache.clear();
-    }
-    return key;
-  });
-
-  var cache = result.cache;
-  return result;
-}
-
-var _memoizeCapped = memoizeCapped$1;
-
-var memoizeCapped = _memoizeCapped;
-
-/** Used to match property names within property paths. */
-var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-
-/** Used to match backslashes in property paths. */
-var reEscapeChar = /\\(\\)?/g;
-
-/**
- * Converts `string` to a property path array.
- *
- * @private
- * @param {string} string The string to convert.
- * @returns {Array} Returns the property path array.
- */
-var stringToPath$1 = memoizeCapped(function(string) {
-  var result = [];
-  if (string.charCodeAt(0) === 46 /* . */) {
-    result.push('');
-  }
-  string.replace(rePropName, function(match, number, quote, subString) {
-    result.push(quote ? subString.replace(reEscapeChar, '$1') : (number || match));
-  });
-  return result;
-});
-
-var _stringToPath = stringToPath$1;
-
-var Symbol$2 = _Symbol,
-    arrayMap$1 = _arrayMap,
-    isArray$8 = isArray_1,
-    isSymbol$2 = isSymbol_1;
-
-/** Used as references for various `Number` constants. */
-var INFINITY$1 = 1 / 0;
-
-/** Used to convert symbols to primitives and strings. */
-var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : undefined,
-    symbolToString = symbolProto$1 ? symbolProto$1.toString : undefined;
-
-/**
- * The base implementation of `_.toString` which doesn't convert nullish
- * values to empty strings.
- *
- * @private
- * @param {*} value The value to process.
- * @returns {string} Returns the string.
- */
-function baseToString$1(value) {
-  // Exit early for strings to avoid a performance hit in some environments.
-  if (typeof value == 'string') {
-    return value;
-  }
-  if (isArray$8(value)) {
-    // Recursively convert values (susceptible to call stack limits).
-    return arrayMap$1(value, baseToString$1) + '';
-  }
-  if (isSymbol$2(value)) {
-    return symbolToString ? symbolToString.call(value) : '';
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
-}
-
-var _baseToString = baseToString$1;
-
-var baseToString = _baseToString;
-
-/**
- * Converts `value` to a string. An empty string is returned for `null`
- * and `undefined` values. The sign of `-0` is preserved.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- * @example
- *
- * _.toString(null);
- * // => ''
- *
- * _.toString(-0);
- * // => '-0'
- *
- * _.toString([1, 2, 3]);
- * // => '1,2,3'
- */
-function toString$1(value) {
-  return value == null ? '' : baseToString(value);
-}
-
-var toString_1 = toString$1;
-
-var isArray$7 = isArray_1,
-    isKey$2 = _isKey,
-    stringToPath = _stringToPath,
-    toString = toString_1;
-
-/**
- * Casts `value` to a path array if it's not one.
- *
- * @private
- * @param {*} value The value to inspect.
- * @param {Object} [object] The object to query keys on.
- * @returns {Array} Returns the cast property path array.
- */
-function castPath$2(value, object) {
-  if (isArray$7(value)) {
-    return value;
-  }
-  return isKey$2(value, object) ? [value] : stringToPath(toString(value));
-}
-
-var _castPath = castPath$2;
-
-var isSymbol$1 = isSymbol_1;
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
-
-/**
- * Converts `value` to a string key if it's not a string or symbol.
- *
- * @private
- * @param {*} value The value to inspect.
- * @returns {string|symbol} Returns the key.
- */
-function toKey$4(value) {
-  if (typeof value == 'string' || isSymbol$1(value)) {
-    return value;
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-}
-
-var _toKey = toKey$4;
-
-var castPath$1 = _castPath,
-    toKey$3 = _toKey;
-
-/**
- * The base implementation of `_.get` without support for default values.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {Array|string} path The path of the property to get.
- * @returns {*} Returns the resolved value.
- */
-function baseGet$3(object, path) {
-  path = castPath$1(path, object);
-
-  var index = 0,
-      length = path.length;
-
-  while (object != null && index < length) {
-    object = object[toKey$3(path[index++])];
-  }
-  return (index && index == length) ? object : undefined;
-}
-
-var _baseGet = baseGet$3;
-
-var ListCache$2 = _ListCache;
-
-/**
- * Removes all key-value entries from the stack.
- *
- * @private
- * @name clear
- * @memberOf Stack
- */
-function stackClear$1() {
-  this.__data__ = new ListCache$2;
-  this.size = 0;
-}
-
-var _stackClear = stackClear$1;
-
-/**
- * Removes `key` and its value from the stack.
- *
- * @private
- * @name delete
- * @memberOf Stack
- * @param {string} key The key of the value to remove.
- * @returns {boolean} Returns `true` if the entry was removed, else `false`.
- */
-
-function stackDelete$1(key) {
-  var data = this.__data__,
-      result = data['delete'](key);
-
-  this.size = data.size;
-  return result;
-}
-
-var _stackDelete = stackDelete$1;
-
-/**
- * Gets the stack value for `key`.
- *
- * @private
- * @name get
- * @memberOf Stack
- * @param {string} key The key of the value to get.
- * @returns {*} Returns the entry value.
- */
-
-function stackGet$1(key) {
-  return this.__data__.get(key);
-}
-
-var _stackGet = stackGet$1;
-
-/**
- * Checks if a stack value for `key` exists.
- *
- * @private
- * @name has
- * @memberOf Stack
- * @param {string} key The key of the entry to check.
- * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
- */
-
-function stackHas$1(key) {
-  return this.__data__.has(key);
-}
-
-var _stackHas = stackHas$1;
-
 var ListCache$1 = _ListCache,
     Map$2 = _Map,
-    MapCache$1 = _MapCache;
+    MapCache$2 = _MapCache;
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -3535,7 +3173,7 @@ function stackSet$1(key, value) {
       this.size = ++data.size;
       return this;
     }
-    data = this.__data__ = new MapCache$1(pairs);
+    data = this.__data__ = new MapCache$2(pairs);
   }
   data.set(key, value);
   this.size = data.size;
@@ -3609,7 +3247,7 @@ function setCacheHas$1(value) {
 
 var _setCacheHas = setCacheHas$1;
 
-var MapCache = _MapCache,
+var MapCache$1 = _MapCache,
     setCacheAdd = _setCacheAdd,
     setCacheHas = _setCacheHas;
 
@@ -3625,7 +3263,7 @@ function SetCache$1(values) {
   var index = -1,
       length = values == null ? 0 : values.length;
 
-  this.__data__ = new MapCache;
+  this.__data__ = new MapCache$1;
   while (++index < length) {
     this.add(values[index]);
   }
@@ -3706,11 +3344,10 @@ function equalArrays$2(array, other, bitmask, customizer, equalFunc, stack) {
   if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
     return false;
   }
-  // Check that cyclic values are equal.
-  var arrStacked = stack.get(array);
-  var othStacked = stack.get(other);
-  if (arrStacked && othStacked) {
-    return arrStacked == other && othStacked == array;
+  // Assume cyclic values are equal.
+  var stacked = stack.get(array);
+  if (stacked && stack.get(other)) {
+    return stacked == other;
   }
   var index = -1,
       result = true,
@@ -3809,7 +3446,7 @@ function setToArray$1(set) {
 
 var _setToArray = setToArray$1;
 
-var Symbol$1 = _Symbol,
+var Symbol$2 = _Symbol,
     Uint8Array = _Uint8Array,
     eq = eq_1,
     equalArrays$1 = _equalArrays,
@@ -3835,8 +3472,8 @@ var arrayBufferTag$1 = '[object ArrayBuffer]',
     dataViewTag$2 = '[object DataView]';
 
 /** Used to convert symbols to primitives and strings. */
-var symbolProto = Symbol$1 ? Symbol$1.prototype : undefined,
-    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : undefined,
+    symbolValueOf = symbolProto$1 ? symbolProto$1.valueOf : undefined;
 
 /**
  * A specialized version of `baseIsEqualDeep` for comparing objects of
@@ -3944,8 +3581,36 @@ function arrayPush$1(array, values) {
 
 var _arrayPush = arrayPush$1;
 
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+
+var isArray$9 = Array.isArray;
+
+var isArray_1 = isArray$9;
+
 var arrayPush = _arrayPush,
-    isArray$6 = isArray_1;
+    isArray$8 = isArray_1;
 
 /**
  * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
@@ -3960,7 +3625,7 @@ var arrayPush = _arrayPush,
  */
 function baseGetAllKeys$1(object, keysFunc, symbolsFunc) {
   var result = keysFunc(object);
-  return isArray$6(object) ? result : arrayPush(result, symbolsFunc(object));
+  return isArray$8(object) ? result : arrayPush(result, symbolsFunc(object));
 }
 
 var _baseGetAllKeys = baseGetAllKeys$1;
@@ -4395,7 +4060,7 @@ var isTypedArray_1 = isTypedArray$2;
 
 var baseTimes = _baseTimes,
     isArguments$1 = isArguments_1,
-    isArray$5 = isArray_1,
+    isArray$7 = isArray_1,
     isBuffer$1 = isBuffer$2.exports,
     isIndex$1 = _isIndex,
     isTypedArray$1 = isTypedArray_1;
@@ -4415,7 +4080,7 @@ var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
  * @returns {Array} Returns the array of property names.
  */
 function arrayLikeKeys$1(value, inherited) {
-  var isArr = isArray$5(value),
+  var isArr = isArray$7(value),
       isArg = !isArr && isArguments$1(value),
       isBuff = !isArr && !isArg && isBuffer$1(value),
       isType = !isArr && !isArg && !isBuff && isTypedArray$1(value),
@@ -4648,11 +4313,10 @@ function equalObjects$1(object, other, bitmask, customizer, equalFunc, stack) {
       return false;
     }
   }
-  // Check that cyclic values are equal.
-  var objStacked = stack.get(object);
-  var othStacked = stack.get(other);
-  if (objStacked && othStacked) {
-    return objStacked == other && othStacked == object;
+  // Assume cyclic values are equal.
+  var stacked = stack.get(object);
+  if (stacked && stack.get(other)) {
+    return stacked == other;
   }
   var result = true;
   stack.set(object, other);
@@ -4794,7 +4458,7 @@ var Stack$1 = _Stack,
     equalByTag = _equalByTag,
     equalObjects = _equalObjects,
     getTag = _getTag,
-    isArray$4 = isArray_1,
+    isArray$6 = isArray_1,
     isBuffer = isBuffer$2.exports,
     isTypedArray = isTypedArray_1;
 
@@ -4827,8 +4491,8 @@ var hasOwnProperty = objectProto.hasOwnProperty;
  * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
  */
 function baseIsEqualDeep$1(object, other, bitmask, customizer, equalFunc, stack) {
-  var objIsArr = isArray$4(object),
-      othIsArr = isArray$4(other),
+  var objIsArr = isArray$6(object),
+      othIsArr = isArray$6(other),
       objTag = objIsArr ? arrayTag : getTag(object),
       othTag = othIsArr ? arrayTag : getTag(other);
 
@@ -5051,7 +4715,302 @@ function baseMatches$1(source) {
 
 var _baseMatches = baseMatches$1;
 
-var baseGet$2 = _baseGet;
+var isArray$5 = isArray_1,
+    isSymbol$3 = isSymbol_1;
+
+/** Used to match property names within property paths. */
+var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+    reIsPlainProp = /^\w*$/;
+
+/**
+ * Checks if `value` is a property name and not a property path.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {Object} [object] The object to query keys on.
+ * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+ */
+function isKey$3(value, object) {
+  if (isArray$5(value)) {
+    return false;
+  }
+  var type = typeof value;
+  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+      value == null || isSymbol$3(value)) {
+    return true;
+  }
+  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+    (object != null && value in Object(object));
+}
+
+var _isKey = isKey$3;
+
+var MapCache = _MapCache;
+
+/** Error message constants. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/**
+ * Creates a function that memoizes the result of `func`. If `resolver` is
+ * provided, it determines the cache key for storing the result based on the
+ * arguments provided to the memoized function. By default, the first argument
+ * provided to the memoized function is used as the map cache key. The `func`
+ * is invoked with the `this` binding of the memoized function.
+ *
+ * **Note:** The cache is exposed as the `cache` property on the memoized
+ * function. Its creation may be customized by replacing the `_.memoize.Cache`
+ * constructor with one whose instances implement the
+ * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
+ * method interface of `clear`, `delete`, `get`, `has`, and `set`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Function
+ * @param {Function} func The function to have its output memoized.
+ * @param {Function} [resolver] The function to resolve the cache key.
+ * @returns {Function} Returns the new memoized function.
+ * @example
+ *
+ * var object = { 'a': 1, 'b': 2 };
+ * var other = { 'c': 3, 'd': 4 };
+ *
+ * var values = _.memoize(_.values);
+ * values(object);
+ * // => [1, 2]
+ *
+ * values(other);
+ * // => [3, 4]
+ *
+ * object.a = 2;
+ * values(object);
+ * // => [1, 2]
+ *
+ * // Modify the result cache.
+ * values.cache.set(object, ['a', 'b']);
+ * values(object);
+ * // => ['a', 'b']
+ *
+ * // Replace `_.memoize.Cache`.
+ * _.memoize.Cache = WeakMap;
+ */
+function memoize$1(func, resolver) {
+  if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  var memoized = function() {
+    var args = arguments,
+        key = resolver ? resolver.apply(this, args) : args[0],
+        cache = memoized.cache;
+
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    var result = func.apply(this, args);
+    memoized.cache = cache.set(key, result) || cache;
+    return result;
+  };
+  memoized.cache = new (memoize$1.Cache || MapCache);
+  return memoized;
+}
+
+// Expose `MapCache`.
+memoize$1.Cache = MapCache;
+
+var memoize_1 = memoize$1;
+
+var memoize = memoize_1;
+
+/** Used as the maximum memoize cache size. */
+var MAX_MEMOIZE_SIZE = 500;
+
+/**
+ * A specialized version of `_.memoize` which clears the memoized function's
+ * cache when it exceeds `MAX_MEMOIZE_SIZE`.
+ *
+ * @private
+ * @param {Function} func The function to have its output memoized.
+ * @returns {Function} Returns the new memoized function.
+ */
+function memoizeCapped$1(func) {
+  var result = memoize(func, function(key) {
+    if (cache.size === MAX_MEMOIZE_SIZE) {
+      cache.clear();
+    }
+    return key;
+  });
+
+  var cache = result.cache;
+  return result;
+}
+
+var _memoizeCapped = memoizeCapped$1;
+
+var memoizeCapped = _memoizeCapped;
+
+/** Used to match property names within property paths. */
+var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+
+/** Used to match backslashes in property paths. */
+var reEscapeChar = /\\(\\)?/g;
+
+/**
+ * Converts `string` to a property path array.
+ *
+ * @private
+ * @param {string} string The string to convert.
+ * @returns {Array} Returns the property path array.
+ */
+var stringToPath$1 = memoizeCapped(function(string) {
+  var result = [];
+  if (string.charCodeAt(0) === 46 /* . */) {
+    result.push('');
+  }
+  string.replace(rePropName, function(match, number, quote, subString) {
+    result.push(quote ? subString.replace(reEscapeChar, '$1') : (number || match));
+  });
+  return result;
+});
+
+var _stringToPath = stringToPath$1;
+
+var Symbol$1 = _Symbol,
+    arrayMap$1 = _arrayMap,
+    isArray$4 = isArray_1,
+    isSymbol$2 = isSymbol_1;
+
+/** Used as references for various `Number` constants. */
+var INFINITY$1 = 1 / 0;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol$1 ? Symbol$1.prototype : undefined,
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString$1(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isArray$4(value)) {
+    // Recursively convert values (susceptible to call stack limits).
+    return arrayMap$1(value, baseToString$1) + '';
+  }
+  if (isSymbol$2(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
+}
+
+var _baseToString = baseToString$1;
+
+var baseToString = _baseToString;
+
+/**
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString$1(value) {
+  return value == null ? '' : baseToString(value);
+}
+
+var toString_1 = toString$1;
+
+var isArray$3 = isArray_1,
+    isKey$2 = _isKey,
+    stringToPath = _stringToPath,
+    toString = toString_1;
+
+/**
+ * Casts `value` to a path array if it's not one.
+ *
+ * @private
+ * @param {*} value The value to inspect.
+ * @param {Object} [object] The object to query keys on.
+ * @returns {Array} Returns the cast property path array.
+ */
+function castPath$2(value, object) {
+  if (isArray$3(value)) {
+    return value;
+  }
+  return isKey$2(value, object) ? [value] : stringToPath(toString(value));
+}
+
+var _castPath = castPath$2;
+
+var isSymbol$1 = isSymbol_1;
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/**
+ * Converts `value` to a string key if it's not a string or symbol.
+ *
+ * @private
+ * @param {*} value The value to inspect.
+ * @returns {string|symbol} Returns the key.
+ */
+function toKey$4(value) {
+  if (typeof value == 'string' || isSymbol$1(value)) {
+    return value;
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+var _toKey = toKey$4;
+
+var castPath$1 = _castPath,
+    toKey$3 = _toKey;
+
+/**
+ * The base implementation of `_.get` without support for default values.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array|string} path The path of the property to get.
+ * @returns {*} Returns the resolved value.
+ */
+function baseGet$2(object, path) {
+  path = castPath$1(path, object);
+
+  var index = 0,
+      length = path.length;
+
+  while (object != null && index < length) {
+    object = object[toKey$3(path[index++])];
+  }
+  return (index && index == length) ? object : undefined;
+}
+
+var _baseGet = baseGet$2;
+
+var baseGet$1 = _baseGet;
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -5079,7 +5038,7 @@ var baseGet$2 = _baseGet;
  * // => 'default'
  */
 function get$1(object, path, defaultValue) {
-  var result = object == null ? undefined : baseGet$2(object, path);
+  var result = object == null ? undefined : baseGet$1(object, path);
   return result === undefined ? defaultValue : result;
 }
 
@@ -5102,7 +5061,7 @@ var _baseHasIn = baseHasIn$1;
 
 var castPath = _castPath,
     isArguments = isArguments_1,
-    isArray$3 = isArray_1,
+    isArray$2 = isArray_1,
     isIndex = _isIndex,
     isLength = isLength_1,
     toKey$2 = _toKey;
@@ -5135,7 +5094,7 @@ function hasPath$1(object, path, hasFunc) {
   }
   length = object == null ? 0 : object.length;
   return !!length && isLength(length) && isIndex(key, length) &&
-    (isArray$3(object) || isArguments(object));
+    (isArray$2(object) || isArguments(object));
 }
 
 var _hasPath = hasPath$1;
@@ -5248,7 +5207,7 @@ function baseProperty$1(key) {
 
 var _baseProperty = baseProperty$1;
 
-var baseGet$1 = _baseGet;
+var baseGet = _baseGet;
 
 /**
  * A specialized version of `baseProperty` which supports deep paths.
@@ -5259,7 +5218,7 @@ var baseGet$1 = _baseGet;
  */
 function basePropertyDeep$1(path) {
   return function(object) {
-    return baseGet$1(object, path);
+    return baseGet(object, path);
   };
 }
 
@@ -5301,7 +5260,7 @@ var property_1 = property$1;
 var baseMatches = _baseMatches,
     baseMatchesProperty = _baseMatchesProperty,
     identity$1 = identity_1,
-    isArray$2 = isArray_1,
+    isArray$1 = isArray_1,
     property = property_1;
 
 /**
@@ -5321,7 +5280,7 @@ function baseIteratee$1(value) {
     return identity$1;
   }
   if (typeof value == 'object') {
-    return isArray$2(value)
+    return isArray$1(value)
       ? baseMatchesProperty(value[0], value[1])
       : baseMatches(value);
   }
@@ -5573,14 +5532,12 @@ function compareMultiple$1(object, other, orders) {
 var _compareMultiple = compareMultiple$1;
 
 var arrayMap = _arrayMap,
-    baseGet = _baseGet,
     baseIteratee = _baseIteratee,
     baseMap = _baseMap,
     baseSortBy = _baseSortBy,
     baseUnary = _baseUnary,
     compareMultiple = _compareMultiple,
-    identity = identity_1,
-    isArray$1 = isArray_1;
+    identity = identity_1;
 
 /**
  * The base implementation of `_.orderBy` without param guards.
@@ -5592,21 +5549,8 @@ var arrayMap = _arrayMap,
  * @returns {Array} Returns the new sorted array.
  */
 function baseOrderBy$1(collection, iteratees, orders) {
-  if (iteratees.length) {
-    iteratees = arrayMap(iteratees, function(iteratee) {
-      if (isArray$1(iteratee)) {
-        return function(value) {
-          return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
-        }
-      }
-      return iteratee;
-    });
-  } else {
-    iteratees = [identity];
-  }
-
   var index = -1;
-  iteratees = arrayMap(iteratees, baseUnary(baseIteratee));
+  iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(baseIteratee));
 
   var result = baseMap(collection, function(value, key, collection) {
     var criteria = arrayMap(iteratees, function(iteratee) {
@@ -6405,7 +6349,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$9 = ".IoPorts_wrapper__3d2hh {\n\tdisplay: flex;\n\tflex-direction: column;\n\tmargin-top: auto;\n\twidth: 100%;\n\tpadding: 5px;\n\tz-index:-1;\n}\n\n.IoPorts_inputs__2etkb {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding-right: 15px;\n\tmargin-right: -15px;\n\tjustify-content: flex-end;\n\talign-items: flex-end;\n\n\twidth: calc(100% + 15px);\n\n\toverflow-y: hidden;\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\n\n\theight: auto;\n\tmax-height: 9999px;\n}\n\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_inputs__2etkb:first-child {\n\t\tmargin-top: 5px;\n\t}\n\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\n\t\tmax-height: 0;\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\n\t}\n\n.IoPorts_outputs__3JGh- {\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: flex-end;\n\tmargin-bottom: 10px;\n}\n\n.IoPorts_outputs__3JGh-:last-child {\n\t\tmargin-bottom: 0px;\n\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-top: 5px;\n\t\t\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_transput__1wbHA {\n\tdisplay: flex;\n\talign-items: center;\n\tmargin-top: 6px;\n\tmargin-bottom: 6px;\n\twidth: 100%;\n\tjustify-content: flex-start;\n}\n\n.IoPorts_transput__1wbHA:first-child {\n\t\tmargin-top: 0px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\n\t\tmargin-top: 6px;\n\t\tmargin-bottom: 6px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\n\t\t\tmargin-top: 0px;\n\t\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\n\t\tmargin-top: 2px;\n\t\tmargin-bottom: 2px;\n\t}\n\n.IoPorts_controls__1dKFt {\n\tdisplay: flex;\n\tflex-direction: column;\n\twidth: 100%;\n}\n\n.IoPorts_portLabel__qOE7y {\n\tfont-size: 13px;\n\tfont-weight: 400;\n\twidth: 100%;\n}\n\n.IoPorts_port__1_a6J {\n\twidth: 12px;\n\theight: 12px;\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\n\tborder-radius: 100%;\n\tmargin-right: 5px;\n\tmargin-left: -11px;\n\tflex: 0 0 auto;\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\n}\n\n.IoPorts_port__1_a6J:last-child {\n\t\tmargin-right: -11px;\n\t\tmargin-left: 5px;\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\n\t}\n";
+var css_248z$9 = ".IoPorts_wrapper__3d2hh {\n\tdisplay: flex;\n\tflex-direction: column;\n\tmargin-top: auto;\n\twidth: 100%;\n\tpadding: 5px;\n\tz-index:-1;\n}\n\n.IoPorts_inputs__2etkb {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding-right: 15px;\n\tmargin-right: -15px;\n\tjustify-content: flex-end;\n\talign-items: flex-end;\n\n\twidth: calc(100% + 15px);\n\n\toverflow-y: hidden;\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\n\n\theight: auto;\n\tmax-height: 9999px;\n}\n\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_inputs__2etkb:first-child {\n\t\tmargin-top: 5px;\n\t}\n\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\n\t\tmax-height: 0;\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\n\t}\n\n.IoPorts_outputs__3JGh- {\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: flex-end;\n\tmargin-bottom: 10px;\n}\n\n.IoPorts_outputs__3JGh-:last-child {\n\t\tmargin-bottom: 0px;\n\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-top: 5px;\n\t\t\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_transput__1wbHA {\n\tdisplay: flex;\n\talign-items: center;\n\tmargin-top: 6px;\n\tmargin-bottom: 6px;\n\twidth: 100%;\n\tjustify-content: flex-start;\n}\n\n.IoPorts_transput__1wbHA:first-child {\n\t\tmargin-top: 0px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\n\t\tmargin-top: 6px;\n\t\tmargin-bottom: 6px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\n\t\t\tmargin-top: 0px;\n\t\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\n\t\tmargin-top: 2px;\n\t\tmargin-bottom: 2px;\n\t}\n\n.IoPorts_controls__1dKFt {\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\n\n.IoPorts_portLabel__qOE7y {\n\tfont-size: 13px;\n\tfont-weight: 400;\n\twidth: 100%;\n}\n\n.IoPorts_port__1_a6J {\n\twidth: 12px;\n\theight: 12px;\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\n\tborder-radius: 100%;\n\tmargin-right: 5px;\n\tmargin-left: -11px;\n\tflex: 0 0 auto;\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\n}\n\n.IoPorts_port__1_a6J:last-child {\n\t\tmargin-right: -11px;\n\t\tmargin-left: 5px;\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\n\t}\n";
 var styles$a = {"wrapper":"IoPorts_wrapper__3d2hh","inputs":"IoPorts_inputs__2etkb","transput":"IoPorts_transput__1wbHA","portLabel":"IoPorts_portLabel__qOE7y","port":"IoPorts_port__1_a6J","collapsed":"IoPorts_collapsed__1LdSU","outputs":"IoPorts_outputs__3JGh-","controls":"IoPorts_controls__1dKFt"};
 styleInject(css_248z$9);
 
@@ -9262,8 +9206,8 @@ var getPortBuilders = function getPortBuilders(ports) {
         name: config.name || port.name,
         label: config.label || port.label,
         noControls: define(config.noControls, false),
-        color: config.color || port.color,
-        optional: config.optional || port.optional || false,
+        color: port.color || config.color,
+        optional: define(config.optional, !!port.optional),
         hidePort: define(config.hidePort, port.hidePort),
         controls: define(config.controls, port.controls)
       };
@@ -9921,15 +9865,14 @@ var lodash = {exports: {}};
   var undefined$1;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.21';
+  var VERSION = '4.17.15';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
 
   /** Error message constants. */
   var CORE_ERROR_TEXT = 'Unsupported core-js use. Try https://npms.io/search?q=ponyfill.',
-      FUNC_ERROR_TEXT = 'Expected a function',
-      INVALID_TEMPL_VAR_ERROR_TEXT = 'Invalid `variable` option passed into `_.template`';
+      FUNC_ERROR_TEXT = 'Expected a function';
 
   /** Used to stand-in for `undefined` hash values. */
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -10062,11 +10005,10 @@ var lodash = {exports: {}};
   var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
       reHasRegExpChar = RegExp(reRegExpChar.source);
 
-  /** Used to match leading whitespace. */
-  var reTrimStart = /^\s+/;
-
-  /** Used to match a single whitespace character. */
-  var reWhitespace = /\s/;
+  /** Used to match leading and trailing whitespace. */
+  var reTrim = /^\s+|\s+$/g,
+      reTrimStart = /^\s+/,
+      reTrimEnd = /\s+$/;
 
   /** Used to match wrap detail comments. */
   var reWrapComment = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/,
@@ -10075,18 +10017,6 @@ var lodash = {exports: {}};
 
   /** Used to match words composed of alphanumeric characters. */
   var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
-
-  /**
-   * Used to validate the `validate` option in `_.template` variable.
-   *
-   * Forbids characters which could potentially change the meaning of the function argument definition:
-   * - "()," (modification of function parameters)
-   * - "=" (default value)
-   * - "[]{}" (destructuring of function parameters)
-   * - "/" (beginning of a comment)
-   * - whitespace
-   */
-  var reForbiddenIdentifierChars = /[()=,{}\[\]\/\s]/;
 
   /** Used to match backslashes in property paths. */
   var reEscapeChar = /\\(\\)?/g;
@@ -10917,19 +10847,6 @@ var lodash = {exports: {}};
   }
 
   /**
-   * The base implementation of `_.trim`.
-   *
-   * @private
-   * @param {string} string The string to trim.
-   * @returns {string} Returns the trimmed string.
-   */
-  function baseTrim(string) {
-    return string
-      ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
-      : string;
-  }
-
-  /**
    * The base implementation of `_.unary` without support for storing metadata.
    *
    * @private
@@ -11260,21 +11177,6 @@ var lodash = {exports: {}};
     return hasUnicode(string)
       ? unicodeToArray(string)
       : asciiToArray(string);
-  }
-
-  /**
-   * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
-   * character of `string`.
-   *
-   * @private
-   * @param {string} string The string to inspect.
-   * @returns {number} Returns the index of the last non-whitespace character.
-   */
-  function trimmedEndIndex(string) {
-    var index = string.length;
-
-    while (index-- && reWhitespace.test(string.charAt(index))) {}
-    return index;
   }
 
   /**
@@ -13670,21 +13572,8 @@ var lodash = {exports: {}};
      * @returns {Array} Returns the new sorted array.
      */
     function baseOrderBy(collection, iteratees, orders) {
-      if (iteratees.length) {
-        iteratees = arrayMap(iteratees, function(iteratee) {
-          if (isArray(iteratee)) {
-            return function(value) {
-              return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
-            }
-          }
-          return iteratee;
-        });
-      } else {
-        iteratees = [identity];
-      }
-
       var index = -1;
-      iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
+      iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(getIteratee()));
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -13941,10 +13830,6 @@ var lodash = {exports: {}};
         var key = toKey(path[index]),
             newValue = value;
 
-        if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
-          return object;
-        }
-
         if (index != lastIndex) {
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : undefined$1;
@@ -14097,14 +13982,11 @@ var lodash = {exports: {}};
      *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
-      var low = 0,
-          high = array == null ? 0 : array.length;
-      if (high === 0) {
-        return 0;
-      }
-
       value = iteratee(value);
-      var valIsNaN = value !== value,
+
+      var low = 0,
+          high = array == null ? 0 : array.length,
+          valIsNaN = value !== value,
           valIsNull = value === null,
           valIsSymbol = isSymbol(value),
           valIsUndefined = value === undefined$1;
@@ -15589,11 +15471,10 @@ var lodash = {exports: {}};
       if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
         return false;
       }
-      // Check that cyclic values are equal.
-      var arrStacked = stack.get(array);
-      var othStacked = stack.get(other);
-      if (arrStacked && othStacked) {
-        return arrStacked == other && othStacked == array;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(array);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var index = -1,
           result = true,
@@ -15755,11 +15636,10 @@ var lodash = {exports: {}};
           return false;
         }
       }
-      // Check that cyclic values are equal.
-      var objStacked = stack.get(object);
-      var othStacked = stack.get(other);
-      if (objStacked && othStacked) {
-        return objStacked == other && othStacked == object;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(object);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var result = true;
       stack.set(object, other);
@@ -19140,10 +19020,6 @@ var lodash = {exports: {}};
      * // The `_.property` iteratee shorthand.
      * _.filter(users, 'active');
      * // => objects for ['barney']
-     *
-     * // Combining several predicates using `_.overEvery` or `_.overSome`.
-     * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
-     * // => objects for ['fred', 'barney']
      */
     function filter(collection, predicate) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -19893,15 +19769,15 @@ var lodash = {exports: {}};
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 30 },
+     *   { 'user': 'fred',   'age': 40 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -22445,7 +22321,7 @@ var lodash = {exports: {}};
       if (typeof value != 'string') {
         return value === 0 ? value : +value;
       }
-      value = baseTrim(value);
+      value = value.replace(reTrim, '');
       var isBinary = reIsBinary.test(value);
       return (isBinary || reIsOctal.test(value))
         ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
@@ -24776,11 +24652,11 @@ var lodash = {exports: {}};
 
       // Use a sourceURL for easier debugging.
       // The sourceURL gets injected into the source that's eval-ed, so be careful
-      // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in
-      // and escape the comment, thus injecting code that gets evaled.
+      // with lookup (in case of e.g. prototype pollution), and strip newlines if any.
+      // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.
       var sourceURL = '//# sourceURL=' +
         (hasOwnProperty.call(options, 'sourceURL')
-          ? (options.sourceURL + '').replace(/\s/g, ' ')
+          ? (options.sourceURL + '').replace(/[\r\n]/g, ' ')
           : ('lodash.templateSources[' + (++templateCounter) + ']')
         ) + '\n';
 
@@ -24813,16 +24689,12 @@ var lodash = {exports: {}};
 
       // If `variable` is not specified wrap a with-statement around the generated
       // code to add the data object to the top of the scope chain.
+      // Like with sourceURL, we take care to not check the option's prototype,
+      // as this configuration is a code injection vector.
       var variable = hasOwnProperty.call(options, 'variable') && options.variable;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
       }
-      // Throw an error if a forbidden character was found in `variable`, to prevent
-      // potential command injection attacks.
-      else if (reForbiddenIdentifierChars.test(variable)) {
-        throw new Error(INVALID_TEMPL_VAR_ERROR_TEXT);
-      }
-
       // Cleanup code by stripping empty strings.
       source = (isEvaluating ? source.replace(reEmptyStringLeading, '') : source)
         .replace(reEmptyStringMiddle, '$1')
@@ -24936,7 +24808,7 @@ var lodash = {exports: {}};
     function trim(string, chars, guard) {
       string = toString(string);
       if (string && (guard || chars === undefined$1)) {
-        return baseTrim(string);
+        return string.replace(reTrim, '');
       }
       if (!string || !(chars = baseToString(chars))) {
         return string;
@@ -24971,7 +24843,7 @@ var lodash = {exports: {}};
     function trimEnd(string, chars, guard) {
       string = toString(string);
       if (string && (guard || chars === undefined$1)) {
-        return string.slice(0, trimmedEndIndex(string) + 1);
+        return string.replace(reTrimEnd, '');
       }
       if (!string || !(chars = baseToString(chars))) {
         return string;
@@ -25525,9 +25397,6 @@ var lodash = {exports: {}};
      * values against any array or object value, respectively. See `_.isEqual`
      * for a list of supported value comparisons.
      *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
-     *
      * @static
      * @memberOf _
      * @since 3.0.0
@@ -25543,10 +25412,6 @@ var lodash = {exports: {}};
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
-     *
-     * // Checking for several possible values
-     * _.filter(objects, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
       return baseMatches(baseClone(source, CLONE_DEEP_FLAG));
@@ -25560,9 +25425,6 @@ var lodash = {exports: {}};
      * **Note:** Partial comparisons will match empty array and empty object
      * `srcValue` values against any array or object value, respectively. See
      * `_.isEqual` for a list of supported value comparisons.
-     *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
      *
      * @static
      * @memberOf _
@@ -25580,10 +25442,6 @@ var lodash = {exports: {}};
      *
      * _.find(objects, _.matchesProperty('a', 4));
      * // => { 'a': 4, 'b': 5, 'c': 6 }
-     *
-     * // Checking for several possible values
-     * _.filter(objects, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
       return baseMatchesProperty(path, baseClone(srcValue, CLONE_DEEP_FLAG));
@@ -25807,10 +25665,6 @@ var lodash = {exports: {}};
      * Creates a function that checks if **all** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -25837,10 +25691,6 @@ var lodash = {exports: {}};
      * Creates a function that checks if **any** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -25860,9 +25710,6 @@ var lodash = {exports: {}};
      *
      * func(NaN);
      * // => false
-     *
-     * var matchesFunc = _.overSome([{ 'a': 1 }, { 'a': 2 }])
-     * var matchesPropertyFunc = _.overSome([['a', 1], ['a', 2]])
      */
     var overSome = createOver(arraySome);
 
@@ -28453,7 +28300,8 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   var _useReducer5 = React$1.useReducer(commentsReducer, initialComments || {}),
       _useReducer6 = _slicedToArray(_useReducer5, 2),
       comments = _useReducer6[0],
-      dispatchComments = _useReducer6[1];
+      dispatchComments = _useReducer6[1]; // TODO: Fix ref gathering
+
 
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
       _useSelect2 = _slicedToArray(_useSelect, 4),
