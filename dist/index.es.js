@@ -6958,9 +6958,9 @@ var Output = function Output(_ref9) {
 
 var Port = function Port(_ref11) {
   var _ref11$color = _ref11.color,
-      color = _ref11$color === void 0 ? "grey" : _ref11$color,
+      color = _ref11$color === void 0 ? 'grey' : _ref11$color,
       _ref11$name = _ref11.name,
-      name = _ref11$name === void 0 ? "" : _ref11$name,
+      name = _ref11$name === void 0 ? '' : _ref11$name,
       type = _ref11.type,
       isInput = _ref11.isInput,
       nodeId = _ref11.nodeId,
@@ -7001,27 +7001,27 @@ var Port = function Port(_ref11) {
         x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
         y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
       };
-      lineInToPort.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, to));
+      if (!!lineInToPort.current) lineInToPort.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, to));else line.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, to));
     } else {
       var _to = {
         x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
         y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
       };
-      line.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, _to));
+      line.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, _to));
     }
   };
 
   var handleDragEnd = function handleDragEnd(e) {
     var droppedOnPort = !!e.target.dataset.portName;
 
-    if (isInput) {
+    if (isInput && lineInToPort.current) {
       var _lineInToPort$current = lineInToPort.current.dataset,
           inputNodeId = _lineInToPort$current.inputNodeId,
           inputPortName = _lineInToPort$current.inputPortName,
           outputNodeId = _lineInToPort$current.outputNodeId,
           outputPortName = _lineInToPort$current.outputPortName;
       nodesDispatch({
-        type: "REMOVE_CONNECTION",
+        type: 'REMOVE_CONNECTION',
         input: {
           nodeId: inputNodeId,
           portName: inputPortName
@@ -7040,12 +7040,12 @@ var Port = function Port(_ref11) {
             connectToTransputType = _e$target$dataset.portTransputType;
         var isNotSameNode = outputNodeId !== connectToNodeId;
 
-        if (isNotSameNode && connectToTransputType !== "output") {
+        if (isNotSameNode && connectToTransputType !== 'output') {
           var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
 
           if (inputWillAcceptConnection) {
             nodesDispatch({
-              type: "ADD_CONNECTION",
+              type: 'ADD_CONNECTION',
               input: {
                 nodeId: connectToNodeId,
                 portName: connectToPortName
@@ -7060,30 +7060,59 @@ var Port = function Port(_ref11) {
       }
     } else {
       if (droppedOnPort) {
-        var _e$target$dataset2 = e.target.dataset,
-            _inputPortName = _e$target$dataset2.portName,
-            _inputNodeId = _e$target$dataset2.nodeId,
-            inputNodeType = _e$target$dataset2.portType,
-            inputTransputType = _e$target$dataset2.portTransputType;
+        if (!isInput) {
+          var _e$target$dataset2 = e.target.dataset,
+              _inputPortName = _e$target$dataset2.portName,
+              _inputNodeId = _e$target$dataset2.nodeId,
+              inputNodeType = _e$target$dataset2.portType,
+              inputTransputType = _e$target$dataset2.portTransputType;
 
-        var _isNotSameNode = _inputNodeId !== nodeId;
+          var _isNotSameNode = _inputNodeId !== nodeId;
 
-        if (_isNotSameNode && inputTransputType !== "output") {
-          var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
+          if (_isNotSameNode && inputTransputType !== 'output') {
+            var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
 
-          if (_inputWillAcceptConnection) {
-            nodesDispatch({
-              type: "ADD_CONNECTION",
-              output: {
-                nodeId: nodeId,
-                portName: name
-              },
-              input: {
-                nodeId: _inputNodeId,
-                portName: _inputPortName
-              }
-            });
-            triggerRecalculation();
+            if (_inputWillAcceptConnection) {
+              nodesDispatch({
+                type: 'ADD_CONNECTION',
+                output: {
+                  nodeId: nodeId,
+                  portName: name
+                },
+                input: {
+                  nodeId: _inputNodeId,
+                  portName: _inputPortName
+                }
+              });
+              triggerRecalculation();
+            }
+          }
+        } else {
+          var _e$target$dataset3 = e.target.dataset,
+              _inputPortName2 = _e$target$dataset3.portName,
+              _inputNodeId2 = _e$target$dataset3.nodeId,
+              _inputNodeType = _e$target$dataset3.portType,
+              _inputTransputType = _e$target$dataset3.portTransputType;
+
+          var _isNotSameNode2 = _inputNodeId2 !== nodeId;
+
+          if (_isNotSameNode2 && _inputTransputType === 'output') {
+            var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
+
+            if (_inputWillAcceptConnection2) {
+              nodesDispatch({
+                type: 'ADD_CONNECTION',
+                output: {
+                  nodeId: _inputNodeId2,
+                  portName: _inputPortName2
+                },
+                input: {
+                  nodeId: nodeId,
+                  portName: name
+                }
+              });
+              triggerRecalculation();
+            }
           }
         }
       }
@@ -7119,8 +7148,8 @@ var Port = function Port(_ref11) {
 
 
     setIsDragging(false);
-    document.removeEventListener("mouseup", handleDragEnd);
-    document.removeEventListener("mousemove", handleDrag);
+    document.removeEventListener('mouseup', handleDragEnd);
+    document.removeEventListener('mousemove', handleDrag);
   };
 
   var handleDragStart = function handleDragStart(e) {
@@ -7134,8 +7163,9 @@ var Port = function Port(_ref11) {
       var portIsConnected = !!lineInToPort.current;
 
       if (portIsConnected) {
+        console.log('Removing connected');
         lineInToPort.current.parentNode.style.zIndex = 9999;
-        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
+        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, 'output');
         var coordinates = {
           x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
           y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
@@ -7143,19 +7173,31 @@ var Port = function Port(_ref11) {
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
         setIsDragging(true);
-        document.addEventListener("mouseup", handleDragEnd);
-        document.addEventListener("mousemove", handleDrag);
+        document.addEventListener('mouseup', handleDragEnd);
+        document.addEventListener('mousemove', handleDrag);
+      } else {
+        console.log('Adding connection from input');
+        var _coordinates = {
+          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
+          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+        };
+        setDragStartCoordinates(_coordinates);
+        dragStartCoordinatesCache.current = _coordinates;
+        setIsDragging(true);
+        document.addEventListener('mouseup', handleDragEnd);
+        document.addEventListener('mousemove', handleDrag);
       }
     } else {
-      var _coordinates = {
+      console.log('Adding connection');
+      var _coordinates2 = {
         x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
         y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
       };
-      setDragStartCoordinates(_coordinates);
-      dragStartCoordinatesCache.current = _coordinates;
+      setDragStartCoordinates(_coordinates2);
+      dragStartCoordinatesCache.current = _coordinates2;
       setIsDragging(true);
-      document.addEventListener("mouseup", handleDragEnd);
-      document.addEventListener("mousemove", handleDrag);
+      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener('mousemove', handleDrag);
     }
   };
 
@@ -7168,14 +7210,14 @@ var Port = function Port(_ref11) {
     "data-port-color": color,
     "data-port-name": name,
     "data-port-type": type,
-    "data-port-transput-type": isInput ? "input" : "output",
+    "data-port-transput-type": isInput ? 'input' : 'output',
     "data-node-id": nodeId,
     onDragStart: function onDragStart(e) {
       e.preventDefault();
       e.stopPropagation();
     },
     ref: port
-  }), isDragging && !isInput ? /*#__PURE__*/React$1.createElement(Portal$1, {
+  }), isDragging ? /*#__PURE__*/React$1.createElement(Portal$1, {
     node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
   }, /*#__PURE__*/React$1.createElement(Connection, {
     from: dragStartCoordinates,
