@@ -27702,6 +27702,14 @@ var useSelect = (function (nodes, previousNodes) {
   };
 
   React$1.useMemo(function () {
+    if (!nodeRefs.length) {
+      setNodesRef(function () {
+        return Object.values(nodes).map(function (n) {
+          return [n, /*#__PURE__*/React$1.createRef()];
+        }) || [];
+      }) && clearSelection();
+    }
+
     if (previousNodes && nodes !== previousNodes) {
       Object.values(nodes).every(function (_ref) {
         var id = _ref.id;
@@ -28566,8 +28574,10 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: spaceIsPressed ? {
       display: 'none'
-    } : {}
-  }), (editorRef === null || editorRef === void 0 ? void 0 : editorRef.current) && editorRef.current.getBoundingClientRect().top, /*#__PURE__*/React__default['default'].createElement(Stage, {
+    } : {
+      zIndex: 100
+    }
+  }), /*#__PURE__*/React__default['default'].createElement(Stage, {
     ref: editorRef,
     editorId: editorId,
     setSpaceIsPressed: setSpaceIsPressed,

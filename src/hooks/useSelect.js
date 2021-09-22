@@ -1,4 +1,4 @@
-import { createRef, useMemo, useState } from 'react';
+import {createRef, useMemo, useState} from 'react';
 
 export default (nodes, previousNodes) => {
   const [nodeRefs, setNodesRef] = useState([])
@@ -15,16 +15,21 @@ export default (nodes, previousNodes) => {
   }
 
   useMemo(() => {
-    if ( previousNodes && nodes !== previousNodes ) {
-      (Object.values(nodes).every(({ id }) =>
-        Object.values(previousNodes).some(({ id: oldId }) =>
-          id === oldId))) ||
-      (
-        !setNodesRef(() =>
-          Object.values(nodes).map(n => [n, createRef()]) || [],
-        ) && clearSelection()
-      )
+    if (!nodeRefs.length) {
+      setNodesRef(() =>
+        Object.values(nodes).map(n => [n, createRef()]) || [],
+      ) && clearSelection()
     }
+      if (previousNodes && nodes !== previousNodes) {
+        (Object.values(nodes).every(({id}) =>
+          Object.values(previousNodes).some(({id: oldId}) =>
+            id === oldId))) ||
+        (
+          !setNodesRef(() =>
+            Object.values(nodes).map(n => [n, createRef()]) || [],
+          ) && clearSelection()
+        )
+      }
   }, [nodes, previousNodes]);
 
 

@@ -223,56 +223,44 @@ config
     ],
   })
 
-const is = {
-  'nodesState': [
-    {
-      'action': { 'type': 'HYDRATE_DEFAULT_NODES' },
-      'state': {
-        '-oIeb93f6D': {
-          'x': -410,
-          'y': -150,
-          'type': 'start',
-          'width': 90,
-          'connections': { 'inputs': {}, 'outputs': {} },
-          'inputData': { 'action': {} },
-          'root': true,
-          'id': '-oIeb93f6D',
-        },
-      },
-    }, {
-      'action': {
-        'type': 'ADD_NODE',
-        'x': 105.9090909090909,
-        'y': -104.0909090909091,
-        'nodeType': 'condition',
-      },
-      'state': {
-        '-oIeb93f6D': {
-          'x': -410,
-          'y': -150,
-          'type': 'start',
-          'width': 90,
-          'connections': { 'inputs': {}, 'outputs': {} },
-          'inputData': { 'action': {} },
-          'root': true,
-          'id': '-oIeb93f6D',
-        },
-        'x1YIeHXfUx': {
-          'id': 'x1YIeHXfUx',
-          'x': 105.9090909090909,
-          'y': -104.0909090909091,
-          'type': 'condition',
-          'width': 200,
-          'connections': { 'inputs': {}, 'outputs': {} },
-          'inputData': {
-            'condition': { 'string': '' },
-            'trueCaseAction': {},
-            'falseCaseAction': {},
-          },
-        },
+const initNodes = {
+  'action': {
+    'type': 'ADD_NODE',
+    'x': 105.9090909090909,
+    'y': -104.0909090909091,
+    'nodeType': 'condition',
+  },
+  'state': {
+    '-oIeb93f6D': {
+      'x': -410,
+      'y': -150,
+      'type': 'start',
+      'width': 90,
+      'connections': { 'inputs': {}, 'outputs': {} },
+      'inputData': { 'action': {} },
+      'root': true,
+      'id': '-oIeb93f6D',
+    },
+    'x1YIeHXfUx': {
+      'id': 'x1YIeHXfUx',
+      'x': 105.9090909090909,
+      'y': -104.0909090909091,
+      'type': 'condition',
+      'width': 200,
+      'connections': { 'inputs': {}, 'outputs': {} },
+      'inputData': {
+        'condition': { 'string': '' },
+        'trueCaseAction': {},
+        'falseCaseAction': {},
       },
     },
-  ], 'currentStateIndex': 1,
+  },
+}
+
+const is = {
+  'nodesState': [
+    initNodes
+  ], 'currentStateIndex': 0,
 }
 
 export default () => {
@@ -317,10 +305,10 @@ export default () => {
   //   }
   // })
 
-  useEffect(() => {
-    console.log([nodesState[currentStateIndex]])
-  }, [nodesState, currentStateIndex])
-  useEffect(() => {console.log(config.nodeTypes)}, [])
+  // useEffect(() => {
+  //   console.log([nodesState[currentStateIndex]])
+  // }, [nodesState, currentStateIndex])
+  // useEffect(() => {console.log(config.nodeTypes)}, [])
   return !visible ? <button onClick={()=> setVisible(true)}/>: (
     <div className="wrapper" style={{ width: '100vw', height: 'calc(100vh - 51px)', marginTop: '51px' }}>
       <ControlsBlock>

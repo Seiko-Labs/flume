@@ -360,10 +360,9 @@ export let NodeEditor = (
                             'div[class^="Comment_wrapper__"]',
                             'div[class^="Comment_wrapper__"] *',
                           ]}
-                          style={spaceIsPressed ? { display: 'none' } : {}}
+                          style={spaceIsPressed ? { display: 'none' } : { zIndex: 100 }}
                         />
                       }
-                      {editorRef?.current && editorRef.current.getBoundingClientRect().top}
                       <Stage
                         ref={editorRef}
                         editorId={editorId}
