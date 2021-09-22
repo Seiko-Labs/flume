@@ -38,17 +38,17 @@
 }
 
 .expander {
-  transform: translateZ(1px);
   padding: 5px;
 	margin: 0 0 3px;
 	width: 100%;
   overflow: hidden;
   border: none;
   border-radius: 5px;
-	line-height: .7;
+	line-height: 9px;
+  text-rendering: geometricPrecision;
 
 	& .expandToggle {
-		line-height: .7;
+		line-height: 13px;
 	}
 
 	& > img {

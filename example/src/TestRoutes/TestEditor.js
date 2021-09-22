@@ -322,7 +322,7 @@ export default () => {
   }, [nodesState, currentStateIndex])
   useEffect(() => {console.log(config.nodeTypes)}, [])
   return !visible ? <button onClick={()=> setVisible(true)}/>: (
-    <div className="wrapper" style={{ width: '100vw', height: '100vh' }}>
+    <div className="wrapper" style={{ width: '100vw', height: 'calc(100vh - 51px)', marginTop: '51px' }}>
       <ControlsBlock>
         <button onClick={() => dispatch('UNDO')}>Undo</button>
         <button onClick={() => dispatch('REDO')}>Redo</button>

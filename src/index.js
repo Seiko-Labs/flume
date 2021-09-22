@@ -351,7 +351,7 @@ export let NodeEditor = (
                             spaceIsPressed ||
                             handleSelection(i, tempState.multiselect)}
                           offset={{
-                            top: editorRef.current.getBoundingClientRect().top,
+                            top: 0,
                             left: 0,
                           }}
                           ignoreTargets={[
@@ -363,6 +363,7 @@ export let NodeEditor = (
                           style={spaceIsPressed ? { display: 'none' } : {}}
                         />
                       }
+                      {editorRef?.current && editorRef.current.getBoundingClientRect().top}
                       <Stage
                         ref={editorRef}
                         editorId={editorId}
