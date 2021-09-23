@@ -308,7 +308,9 @@ export default () => {
   // useEffect(() => {
   //   console.log([nodesState[currentStateIndex]])
   // }, [nodesState, currentStateIndex])
-  // useEffect(() => {console.log(config.nodeTypes)}, [])
+  useEffect(() => {
+    console.log(temp.state.stage.scale)
+  }, [temp.state.stage.scale])
   return !visible ? <button onClick={()=> setVisible(true)}/>: (
     <div className="wrapper" style={{ width: '100vw', height: 'calc(100vh - 51px)', marginTop: '51px' }}>
       <ControlsBlock>

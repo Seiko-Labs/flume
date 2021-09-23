@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
+import {useDebounce} from "@react-hook/debounce";
 
 const tempStateReducer = (state, action) => {
   switch (action.type) {
@@ -56,6 +57,16 @@ export default ({
 
   const [tempState, dispatchTemp] = useReducer(
     tempStateReducer, {initialTempState}, () => initialTempState)
+  const [tempStateDebounced, setTempStateDebounced] = useDebounce(tempState, 1000)
+  const [nodesStateDebounced, setNodesStateDebounced] = useDebounce(tempState, 200)
+
+  useEffect(() => {
+    setTempStateDebounced(tempState)
+  }, [tempState])
+
+  useEffect(() => {
+    setNodesStateDebounced(nodesState)
+  }, [nodesState])
 
   const dispatch = (type, data = {}) =>
     setAction(() => () => ({ type, data }))
@@ -65,7 +76,7 @@ export default ({
   }, [action]);
 
   return [
-    nodesState, comments, dispatch, {
+    nodesStateDebounced, comments, dispatch, {
       action,
       setNodesState,
       setComments,
@@ -74,6 +85,6 @@ export default ({
       defaultNodes,
       temp: { state: tempState, dispatch: dispatchTemp },
     },
-    { state: tempState, dispatch: dispatchTemp },
+    { state: tempStateDebounced, dispatch: dispatchTemp },
   ]
 }
