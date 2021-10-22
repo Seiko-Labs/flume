@@ -264,7 +264,7 @@ const is = {
 }
 
 export default () => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = React.useState(true);
 
   const [
     {

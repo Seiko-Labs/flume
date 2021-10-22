@@ -54,7 +54,7 @@ const Stage = React.forwardRef(({
         const delta = e.deltaY;
         dispatchStageState(({ scale }) => ({
           type: "SET_SCALE",
-          scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 7)
+          scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 1.2)
         }));
       }
     },

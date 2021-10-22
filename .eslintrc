@@ -1,16 +1,25 @@
 {
-  "extends": "react-app",
+  "extends": [
+    "alloy",
+    "alloy/react",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
   "globals": {
     "cy": true,
     "Cypress": true
   },
   "rules": {
-    "import/no-anonymous-default-export": "off"
+    "prettier/prettier": "error"
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 2021,
     "requireConfigFile": false,
+    "sourceType": "module",
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    },
     "ecmaFeatures": {
       "jsx": true
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import {calculateCurve} from '../../connectionCalculator'
+import { calculateCurve } from "../../connectionCalculator";
 import styles from "./Connection.css";
 
 const Connection = ({
@@ -10,9 +10,9 @@ const Connection = ({
   outputNodeId,
   outputPortName,
   inputNodeId,
-  inputPortName
+  inputPortName,
 }) => {
-  const curve = calculateCurve(from, to)
+  const curve = calculateCurve(from, to);
   return (
     <svg className={styles.svg}>
       <path
@@ -21,9 +21,10 @@ const Connection = ({
         data-output-port-name={outputPortName}
         data-input-node-id={inputNodeId}
         data-input-port-name={inputPortName}
-        stroke="rgb(185, 186, 189)"
+        stroke="white"
+        strokeOpacity={0.3}
         fill="none"
-        strokeWidth={3}
+        strokeWidth={1}
         strokeLinecap="round"
         d={curve}
         ref={lineRef}

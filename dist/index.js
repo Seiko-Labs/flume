@@ -346,7 +346,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #1B1B21;\n  background-image: linear-gradient(\n      0deg,\n      transparent 24%,\n      rgba(255, 255, 255, 0.04) 25%,\n      rgba(255, 255, 255, 0.04) 26%,\n      transparent 27%,\n      transparent 74%,\n      rgba(255, 255, 255, 0.04) 75%,\n      rgba(255, 255, 255, 0.04) 76%,\n      transparent 77%,\n      transparent\n    ),\n    linear-gradient(\n      90deg,\n      transparent 24%,\n      rgba(255, 255, 255, 0.04) 25%,\n      rgba(255, 255, 255, 0.04) 26%,\n      transparent 27%,\n      transparent 74%,\n      rgba(255, 255, 255, 0.04) 75%,\n      rgba(255, 255, 255, 0.04) 76%,\n      transparent 77%,\n      transparent\n    );\n  color: #000;\n  background-size: 30px 30px;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 0px;\n  height: 0px;\n}\n";
+var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #2F2F3B;\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='transparent' stroke='white' stroke-opacity='.02' xmlns='http://www.w3.org/2000/svg'%3E %3Crect x='0' y='0' width='11' height='11' stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5'/%3E %3C/svg%3E\");\n  color: #000;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 0px;\n  height: 0px;\n}\n";
 var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$d);
 
@@ -5739,7 +5739,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
         var scale = _ref2.scale;
         return {
           type: "SET_SCALE",
-          scale: clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 7)
+          scale: clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 1.2)
         };
       });
     }
@@ -5940,11 +5940,7 @@ var css_248z$b = ".Node_wrapper__3SmT7{\n  background: rgba(98, 98, 115, .9);\n 
 var styles$c = {"wrapper":"Node_wrapper__3SmT7","header":"Node_header__3epFg","expander":"Node_expander__1n2IJ","expandToggle":"Node_expandToggle__23dRP","label":"Node_label__3MmhF","comment":"Node_comment__3vlXC","input":"Node_input__2ebEN","actionsContainer":"Node_actionsContainer__2Pn0B"};
 styleInject(css_248z$b);
 
-var css_248z$a = ".Connection_svg__-fKLY{\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  pointer-events: none;\n  z-index: 0;\n  overflow: visible !important;\n}\n";
-var styles$b = {"svg":"Connection_svg__-fKLY"};
-styleInject(css_248z$a);
-
-var pi = Math.PI,
+const pi = Math.PI,
     tau = 2 * pi,
     epsilon = 1e-6,
     tauEpsilon = tau - epsilon;
@@ -6079,6 +6075,12 @@ function constant(x) {
   };
 }
 
+function array(x) {
+  return typeof x === "object" && "length" in x
+    ? x // Array, TypedArray, NodeList, array-like
+    : Array.from(x); // Map, Set, iterable, string, or anything else
+}
+
 function Linear(context) {
   this._context = context;
 }
@@ -6101,7 +6103,7 @@ Linear.prototype = {
     x = +x, y = +y;
     switch (this._point) {
       case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
-      case 1: this._point = 2; // proceed
+      case 1: this._point = 2; // falls through
       default: this._context.lineTo(x, y); break;
     }
   }
@@ -6119,17 +6121,18 @@ function y(p) {
   return p[1];
 }
 
-function line() {
-  var x$1 = x,
-      y$1 = y,
-      defined = constant(true),
+function line(x$1, y$1) {
+  var defined = constant(true),
       context = null,
       curve = curveLinear,
       output = null;
 
+  x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant(x$1);
+  y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant(y$1);
+
   function line(data) {
     var i,
-        n = data.length,
+        n = (data = array(data)).length,
         d,
         defined0 = false,
         buffer;
@@ -6199,7 +6202,7 @@ Basis.prototype = {
   },
   lineEnd: function() {
     switch (this._point) {
-      case 3: point(this, this._x1, this._y1); // proceed
+      case 3: point(this, this._x1, this._y1); // falls through
       case 2: this._context.lineTo(this._x1, this._y1); break;
     }
     if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
@@ -6210,7 +6213,7 @@ Basis.prototype = {
     switch (this._point) {
       case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
       case 1: this._point = 2; break;
-      case 2: this._point = 3; this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // proceed
+      case 2: this._point = 3; this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // falls through
       default: point(this, x, y); break;
     }
     this._x0 = this._x1, this._x1 = x;
@@ -6218,9 +6221,64 @@ Basis.prototype = {
   }
 };
 
-function curveBasis(context) {
-  return new Basis(context);
+function Bundle(context, beta) {
+  this._basis = new Basis(context);
+  this._beta = beta;
 }
+
+Bundle.prototype = {
+  lineStart: function() {
+    this._x = [];
+    this._y = [];
+    this._basis.lineStart();
+  },
+  lineEnd: function() {
+    var x = this._x,
+        y = this._y,
+        j = x.length - 1;
+
+    if (j > 0) {
+      var x0 = x[0],
+          y0 = y[0],
+          dx = x[j] - x0,
+          dy = y[j] - y0,
+          i = -1,
+          t;
+
+      while (++i <= j) {
+        t = i / j;
+        this._basis.point(
+          this._beta * x[i] + (1 - this._beta) * (x0 + t * dx),
+          this._beta * y[i] + (1 - this._beta) * (y0 + t * dy)
+        );
+      }
+    }
+
+    this._x = this._y = null;
+    this._basis.lineEnd();
+  },
+  point: function(x, y) {
+    this._x.push(+x);
+    this._y.push(+y);
+  }
+};
+
+var curveBundle = (function custom(beta) {
+
+  function bundle(context) {
+    return beta === 1 ? new Basis(context) : new Bundle(context, beta);
+  }
+
+  bundle.beta = function(beta) {
+    return custom(+beta);
+  };
+
+  return bundle;
+})(0.85);
+
+var css_248z$a = ".Connection_svg__-fKLY{\n  position: absolute;\n  left: 0;\n  top: 0;\n  pointer-events: none;\n  z-index: 0;\n  overflow: visible !important;\n}\n";
+var styles$b = {"svg":"Connection_svg__-fKLY"};
+styleInject(css_248z$a);
 
 function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
@@ -6255,10 +6313,10 @@ var getPortRect = function getPortRect(nodeId, portName) {
   }
 };
 var calculateCurve = function calculateCurve(from, to) {
-  var length = to.x - from.x;
-  var thirdLength = length / 3;
-  var curve = line().curve(curveBasis)([[from.x, from.y], [from.x + thirdLength, from.y], [from.x + thirdLength * 2, to.y], [to.x, to.y]]);
-  return curve;
+  var fFrom = from;
+  var fTo = to;
+  var length = Math.min(Math.abs(fTo.x - fFrom.x) / 3, 200);
+  return line().curve(curveBundle.beta(0.75))([[fFrom.x, fFrom.y], [fFrom.x + length, fFrom.y], [fTo.x - length, fTo.y], [fTo.x, fTo.y]]);
 };
 var deleteConnection = function deleteConnection(_ref3) {
   var id = _ref3.id;
@@ -6321,8 +6379,9 @@ var createSVG = function createSVG(_ref5) {
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   var curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
-  path.setAttribute("stroke", "rgb(185, 186, 189)");
-  path.setAttribute("stroke-width", "3");
+  path.setAttribute("stroke", "white");
+  path.setAttribute("stroke-opacity", ".3");
+  path.setAttribute("stroke-width", "1");
   path.setAttribute("stroke-linecap", "round");
   path.setAttribute("fill", "none");
   path.setAttribute("data-connection-id", id);
@@ -6351,6 +6410,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
       return 1 / scale * value;
     };
 
+    console.log("I can do here");
     Object.values(nodes).forEach(function (node) {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
@@ -6370,11 +6430,11 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
               if (existingLine) {
                 updateConnection({
                   line: existingLine,
-                  from: {
+                  to: {
                     x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
                     y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
                   },
-                  to: {
+                  from: {
                     x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
                     y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
                   }
@@ -6386,11 +6446,11 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
                   outputPortName: output.portName,
                   inputNodeId: node.id,
                   inputPortName: inputName,
-                  from: {
+                  to: {
                     x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
                     y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
                   },
-                  to: {
+                  from: {
                     x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
                     y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
                   },
@@ -6405,17 +6465,21 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$9 = ".IoPorts_wrapper__3d2hh {\n\tdisplay: flex;\n\tflex-direction: column;\n\tmargin-top: auto;\n\twidth: 100%;\n\tpadding: 5px;\n\tz-index:-1;\n}\n\n.IoPorts_inputs__2etkb {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding-right: 15px;\n\tmargin-right: -15px;\n\tjustify-content: flex-end;\n\talign-items: flex-end;\n\n\twidth: calc(100% + 15px);\n\n\toverflow-y: hidden;\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\n\n\theight: auto;\n\tmax-height: 9999px;\n}\n\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_inputs__2etkb:first-child {\n\t\tmargin-top: 5px;\n\t}\n\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\n\t\tmax-height: 0;\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\n\t}\n\n.IoPorts_outputs__3JGh- {\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: flex-end;\n\tmargin-bottom: 10px;\n}\n\n.IoPorts_outputs__3JGh-:last-child {\n\t\tmargin-bottom: 0px;\n\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-top: 5px;\n\t\t\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_transput__1wbHA {\n\tdisplay: flex;\n\talign-items: center;\n\tmargin-top: 6px;\n\tmargin-bottom: 6px;\n\twidth: 100%;\n\tjustify-content: flex-start;\n}\n\n.IoPorts_transput__1wbHA:first-child {\n\t\tmargin-top: 0px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\n\t\tmargin-top: 6px;\n\t\tmargin-bottom: 6px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\n\t\t\tmargin-top: 0px;\n\t\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\n\t\tmargin-top: 2px;\n\t\tmargin-bottom: 2px;\n\t}\n\n.IoPorts_controls__1dKFt {\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\n\n.IoPorts_portLabel__qOE7y {\n\tfont-size: 13px;\n\tfont-weight: 400;\n\twidth: 100%;\n}\n\n.IoPorts_port__1_a6J {\n\twidth: 12px;\n\theight: 12px;\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\n\tborder-radius: 100%;\n\tmargin-right: 5px;\n\tmargin-left: -11px;\n\tflex: 0 0 auto;\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\n}\n\n.IoPorts_port__1_a6J:last-child {\n\t\tmargin-right: -11px;\n\t\tmargin-left: 5px;\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\n\t}\n";
-var styles$a = {"wrapper":"IoPorts_wrapper__3d2hh","inputs":"IoPorts_inputs__2etkb","transput":"IoPorts_transput__1wbHA","portLabel":"IoPorts_portLabel__qOE7y","port":"IoPorts_port__1_a6J","collapsed":"IoPorts_collapsed__1LdSU","outputs":"IoPorts_outputs__3JGh-","controls":"IoPorts_controls__1dKFt"};
+var usePrevious = function usePrevious(value) {
+  var ref = React__default['default'].useRef();
+  React__default['default'].useEffect(function () {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
+var css_248z$9 = ".Control_wrapper__VZIiC {\n  width: 100%;\n  padding-right: 3px;\n  padding-top: 3px;\n  padding-bottom: 5px;\n}\n.Control_label__1OX-Q {\n  font-size: 14px;\n}\n.Control_controlLabel__3ga2- {\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 2px;\n}\n";
+var styles$a = {"wrapper":"Control_wrapper__VZIiC","label":"Control_label__1OX-Q","controlLabel":"Control_controlLabel__3ga2-"};
 styleInject(css_248z$9);
 
-var css_248z$8 = ".Control_wrapper__VZIiC {\n  width: 100%;\n  padding-right: 3px;\n  padding-top: 3px;\n  padding-bottom: 5px;\n}\n.Control_label__1OX-Q {\n  font-size: 14px;\n}\n.Control_controlLabel__3ga2- {\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 2px;\n}\n";
-var styles$9 = {"wrapper":"Control_wrapper__VZIiC","label":"Control_label__1OX-Q","controlLabel":"Control_controlLabel__3ga2-"};
+var css_248z$8 = ".Checkbox_wrapper__aSqyY{\n  display: flex;\n  align-items: center;\n}\n.Checkbox_checkbox__Qv5gn{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  margin-right: 8px;\n}\n.Checkbox_label__2RxP-{\n  padding-top: 2px;\n  font-size: 13px;\n}\n";
+var styles$9 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","label":"Checkbox_label__2RxP-"};
 styleInject(css_248z$8);
-
-var css_248z$7 = ".Checkbox_wrapper__aSqyY{\n  display: flex;\n  align-items: center;\n}\n.Checkbox_checkbox__Qv5gn{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  margin-right: 8px;\n}\n.Checkbox_label__2RxP-{\n  padding-top: 2px;\n  font-size: 13px;\n}\n";
-var styles$8 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","label":"Checkbox_label__2RxP-"};
-styleInject(css_248z$7);
 
 var Checkbox = function Checkbox(_ref) {
   var label = _ref.label,
@@ -6423,9 +6487,9 @@ var Checkbox = function Checkbox(_ref) {
       _onChange = _ref.onChange;
   var id = React__default['default'].useRef(nonSecure(10));
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$8.wrapper
+    className: styles$9.wrapper
   }, /*#__PURE__*/React__default['default'].createElement("input", {
-    className: styles$8.checkbox,
+    className: styles$9.checkbox,
     type: "checkbox",
     id: id,
     value: data,
@@ -6434,14 +6498,14 @@ var Checkbox = function Checkbox(_ref) {
       return _onChange(e.target.checked);
     }
   }), /*#__PURE__*/React__default['default'].createElement("label", {
-    className: styles$8.label,
+    className: styles$9.label,
     htmlFor: id
   }, label));
 };
 
-var css_248z$6 = ".TextInput_wrapper__tefOZ{\n  background: none;\n  border: none;\n}\n.TextInput_input__1QHwS{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  font-size: 13px;\n  padding: 5px;\n  resize: vertical;\n  outline: none;\n}\n.TextInput_input__1QHwS::placeholder{\n    color: rgb(47, 49, 50);\n  }\n.TextInput_input__1QHwS:focus{\n    background: linear-gradient(to bottom, #676b6e, #75797c);\n  }\n";
-var styles$7 = {"wrapper":"TextInput_wrapper__tefOZ","input":"TextInput_input__1QHwS"};
-styleInject(css_248z$6);
+var css_248z$7 = ".TextInput_wrapper__tefOZ{\n  background: none;\n  border: none;\n}\n.TextInput_input__1QHwS{\n  background: linear-gradient(to bottom, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  border-radius: 4px;\n  font-size: 13px;\n  padding: 5px;\n  resize: vertical;\n  outline: none;\n}\n.TextInput_input__1QHwS::placeholder{\n    color: rgb(47, 49, 50);\n  }\n.TextInput_input__1QHwS:focus{\n    background: linear-gradient(to bottom, #676b6e, #75797c);\n  }\n";
+var styles$8 = {"wrapper":"TextInput_wrapper__tefOZ","input":"TextInput_input__1QHwS"};
+styleInject(css_248z$7);
 
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
@@ -6471,7 +6535,7 @@ var TextInput = function TextInput(_ref) {
   };
 
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$7.wrapper
+    className: styles$8.wrapper
   }, type === "number" ? /*#__PURE__*/React__default['default'].createElement("input", {
     onKeyDown: function onKeyDown(e) {
       if (e.keyCode === 69) {
@@ -6505,7 +6569,7 @@ var TextInput = function TextInput(_ref) {
     onMouseDown: handlePossibleResize,
     type: type || "text",
     placeholder: placeholder,
-    className: styles$7.input,
+    className: styles$8.input,
     defaultValue: data,
     onDragStart: function onDragStart(e) {
       return e.stopPropagation();
@@ -6522,13 +6586,13 @@ var TextInput = function TextInput(_ref) {
     onMouseDown: handlePossibleResize,
     type: "text",
     placeholder: placeholder,
-    className: styles$7.input
+    className: styles$8.input
   }));
 };
 
-var css_248z$5 = ".Select_wrapper__eAPoQ{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  padding-right: 15px;\n  position: relative;\n}\n  .Select_wrapper__eAPoQ::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: 8px;\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n  .Select_wrapper__eAPoQ:hover{\n    background: linear-gradient(to top, #63676a, #777b7e);\n  }\n.Select_chipWrapper__3hK2u{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  margin: 2px;\n  position: relative;\n}\n.Select_chipWrapper__3hK2u:hover .Select_deleteButton__1FnLK{\n  opacity: 1;\n}\n.Select_chipsWrapper__4Alw8{\n  display: flex;\n  flex-direction: column;\n  margin-bottom: 6px;\n}\n.Select_deleteButton__1FnLK{\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  height: 100%;\n  width: 22px;\n  padding: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border-radius: 3px;\n  border: none;\n  font-weight: bold;\n  opacity: 0;\n}\n.Select_deleteButton__1FnLK:focus{\n  opacity: 1;\n}\n.Select_deleteButton__1FnLK:hover{\n  background: linear-gradient(to top, #64696c, #797f82);\n}\n.Select_selectedWrapper__SUs4D{\n  display: flex;\n  flex-direction: column;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  font-size: 14px;\n  padding: 3px 6px;\n  padding-right: 15px;\n  position: relative;\n}\n.Select_selectedWrapper__SUs4D::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: calc(50% - 4px);\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n.Select_selectedWrapper__SUs4D label{\n    margin: 0px;\n  }\n.Select_selectedWrapper__SUs4D p{\n    margin: 0px;\n    margin-top: 5px;\n    font-size: 12px;\n    font-style: italic;\n    color: rgb(50, 50, 50);\n  }\n";
-var styles$6 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK","chipsWrapper":"Select_chipsWrapper__4Alw8","selectedWrapper":"Select_selectedWrapper__SUs4D"};
-styleInject(css_248z$5);
+var css_248z$6 = ".Select_wrapper__eAPoQ{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  padding-right: 15px;\n  position: relative;\n}\n  .Select_wrapper__eAPoQ::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: 8px;\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n  .Select_wrapper__eAPoQ:hover{\n    background: linear-gradient(to top, #63676a, #777b7e);\n  }\n.Select_chipWrapper__3hK2u{\n  font-size: 14px;\n  padding: 3px 6px;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border: 1px solid #3c3e40;\n  margin: 2px;\n  position: relative;\n}\n.Select_chipWrapper__3hK2u:hover .Select_deleteButton__1FnLK{\n  opacity: 1;\n}\n.Select_chipsWrapper__4Alw8{\n  display: flex;\n  flex-direction: column;\n  margin-bottom: 6px;\n}\n.Select_deleteButton__1FnLK{\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  height: 100%;\n  width: 22px;\n  padding: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  border-radius: 3px;\n  border: none;\n  font-weight: bold;\n  opacity: 0;\n}\n.Select_deleteButton__1FnLK:focus{\n  opacity: 1;\n}\n.Select_deleteButton__1FnLK:hover{\n  background: linear-gradient(to top, #64696c, #797f82);\n}\n.Select_selectedWrapper__SUs4D{\n  display: flex;\n  flex-direction: column;\n  border-radius: 4px;\n  background: linear-gradient(to top, #5b5f62, #6f7477);\n  width: 100%;\n  border: 1px solid #3c3e40;\n  font-size: 14px;\n  padding: 3px 6px;\n  padding-right: 15px;\n  position: relative;\n}\n.Select_selectedWrapper__SUs4D::after{\n    content: \"\";\n    position: absolute;\n    background: none;\n    right: 5px;\n    top: calc(50% - 4px);\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 6px 5px 0 5px;\n    border-color: #191b1c transparent transparent transparent;\n  }\n.Select_selectedWrapper__SUs4D label{\n    margin: 0px;\n  }\n.Select_selectedWrapper__SUs4D p{\n    margin: 0px;\n    margin-top: 5px;\n    font-size: 12px;\n    font-style: italic;\n    color: rgb(50, 50, 50);\n  }\n";
+var styles$7 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK","chipsWrapper":"Select_chipsWrapper__4Alw8","selectedWrapper":"Select_selectedWrapper__SUs4D"};
+styleInject(css_248z$6);
 
 function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -6604,7 +6668,7 @@ var Select = function Select(_ref) {
     }
   }, [options, data]);
   return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, allowMultiple ? data.length ? /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$6.chipsWrapper
+    className: styles$7.chipsWrapper
   }, data.map(function (val, i) {
     var optLabel = (options.find(function (opt) {
       return opt.value === val;
@@ -6620,7 +6684,7 @@ var Select = function Select(_ref) {
     option: selectedOption,
     onClick: openDrawer
   }) : null, (allowMultiple || !data) && /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$6.wrapper,
+    className: styles$7.wrapper,
     ref: wrapper,
     onClick: openDrawer
   }, placeholder), drawerOpen && /*#__PURE__*/React__default['default'].createElement(Portal$1, null, /*#__PURE__*/React__default['default'].createElement(ContextMenu, {
@@ -6641,7 +6705,7 @@ var SelectedOption = function SelectedOption(_ref2) {
       wrapperRef = _ref2.wrapperRef,
       onClick = _ref2.onClick;
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$6.selectedWrapper,
+    className: styles$7.selectedWrapper,
     onClick: onClick,
     ref: wrapperRef
   }, /*#__PURE__*/React__default['default'].createElement("label", null, label), description ? /*#__PURE__*/React__default['default'].createElement("p", null, description) : null);
@@ -6651,9 +6715,9 @@ var OptionChip = function OptionChip(_ref3) {
   var children = _ref3.children,
       onRequestDelete = _ref3.onRequestDelete;
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$6.chipWrapper
+    className: styles$7.chipWrapper
   }, children, /*#__PURE__*/React__default['default'].createElement("button", {
-    className: styles$6.deleteButton,
+    className: styles$7.deleteButton,
     onMouseDown: function onMouseDown(e) {
       e.stopPropagation();
     },
@@ -6754,11 +6818,15 @@ var Control = function Control(_ref) {
   };
 
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$9.wrapper
+    className: styles$a.wrapper
   }, calculatedLabel && type !== "checkbox" && type !== "custom" && /*#__PURE__*/React__default['default'].createElement("label", {
-    className: styles$9.controlLabel
+    className: styles$a.controlLabel
   }, calculatedLabel), getControlByType(type));
 };
+
+var css_248z$5 = ".IoPorts_wrapper__3d2hh {\n\tdisplay: flex;\n\tflex-direction: column;\n\tmargin-top: auto;\n\twidth: 100%;\n\tpadding: 5px;\n\tz-index:-1;\n}\n\n.IoPorts_inputs__2etkb {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding-right: 15px;\n\tmargin-right: -15px;\n\tjustify-content: flex-end;\n\talign-items: flex-end;\n\n\twidth: calc(100% + 15px);\n\n\toverflow-y: hidden;\n\ttransition: max-height .5s cubic-bezier(1, 0, 1, 0);\n\n\theight: auto;\n\tmax-height: 9999px;\n}\n\n.IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_inputs__2etkb .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_inputs__2etkb:first-child {\n\t\tmargin-top: 5px;\n\t}\n\n.IoPorts_inputs__2etkb.IoPorts_collapsed__1LdSU {\n\t\tmax-height: 0;\n\t\ttransition: max-height .5s cubic-bezier(0, 1, 0, 1);\n\t}\n\n.IoPorts_outputs__3JGh- {\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: flex-end;\n\tmargin-bottom: 10px;\n}\n\n.IoPorts_outputs__3JGh-:last-child {\n\t\tmargin-bottom: 0px;\n\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:first-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-top: 5px;\n\t\t\t}\n\n.IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_portLabel__qOE7y, .IoPorts_outputs__3JGh- .IoPorts_transput__1wbHA:last-child .IoPorts_port__1_a6J {\n\t\t\t\tmargin-bottom: 5px;\n\t\t\t}\n\n.IoPorts_transput__1wbHA {\n\tdisplay: flex;\n\talign-items: center;\n\tmargin-top: 6px;\n\tmargin-bottom: 6px;\n\twidth: 100%;\n\tjustify-content: flex-start;\n}\n\n.IoPorts_transput__1wbHA:first-child {\n\t\tmargin-top: 0px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"] {\n\t\tmargin-top: 6px;\n\t\tmargin-bottom: 6px;\n\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"true\"]:first-child {\n\t\t\tmargin-top: 0px;\n\t\t}\n\n.IoPorts_transput__1wbHA[data-controlless=\"false\"] {\n\t\tmargin-top: 2px;\n\t\tmargin-bottom: 2px;\n\t}\n\n.IoPorts_controls__1dKFt {\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\n\n.IoPorts_portLabel__qOE7y {\n\tfont-size: 13px;\n\tfont-weight: 400;\n\twidth: 100%;\n}\n\n.IoPorts_port__1_a6J {\n\twidth: 12px;\n\theight: 12px;\n\tbackground: linear-gradient(to bottom, #ACB1B4, #919699);\n\tborder-radius: 100%;\n\tmargin-right: 5px;\n\tmargin-left: -11px;\n\tflex: 0 0 auto;\n\tbox-shadow: 0px 2px 1px 0px rgba(0, 0, 0, .6);\n}\n\n.IoPorts_port__1_a6J:last-child {\n\t\tmargin-right: -11px;\n\t\tmargin-left: 5px;\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"red\"] {\n\t\tbackground: linear-gradient(to bottom, #FA4A6F, #C22E4D);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"purple\"] {\n\t\tbackground: linear-gradient(to bottom, #9E55FB, #6024B6);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"blue\"] {\n\t\tbackground: linear-gradient(to bottom, #4284F7, #2867D4);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"green\"] {\n\t\tbackground: linear-gradient(to bottom, #31DD9F, #11AD7A);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"yellow\"] {\n\t\tbackground: linear-gradient(to bottom, #D6BF47, #9D8923);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"orange\"] {\n\t\tbackground: linear-gradient(to bottom, #FA7841, #C94B23);\n\t}\n\n.IoPorts_port__1_a6J[data-port-color=\"pink\"] {\n\t\tbackground: linear-gradient(to bottom, #FE8AEB, #E046C3);\n\t}\n";
+var styles$6 = {"wrapper":"IoPorts_wrapper__3d2hh","inputs":"IoPorts_inputs__2etkb","transput":"IoPorts_transput__1wbHA","portLabel":"IoPorts_portLabel__qOE7y","port":"IoPorts_port__1_a6J","collapsed":"IoPorts_collapsed__1LdSU","outputs":"IoPorts_outputs__3JGh-","controls":"IoPorts_controls__1dKFt"};
+styleInject(css_248z$5);
 
 var Connection = function Connection(_ref) {
   var from = _ref.from,
@@ -6778,21 +6846,315 @@ var Connection = function Connection(_ref) {
     "data-output-port-name": outputPortName,
     "data-input-node-id": inputNodeId,
     "data-input-port-name": inputPortName,
-    stroke: "rgb(185, 186, 189)",
+    stroke: "white",
+    strokeOpacity: 0.3,
     fill: "none",
-    strokeWidth: 3,
+    strokeWidth: 1,
     strokeLinecap: "round",
     d: curve,
     ref: lineRef
   }));
 };
 
-var usePrevious = function usePrevious(value) {
-  var ref = React__default['default'].useRef();
+var Port = function Port(_ref) {
+  var _ref$color = _ref.color,
+      color = _ref$color === void 0 ? "grey" : _ref$color,
+      _ref$name = _ref.name,
+      name = _ref$name === void 0 ? "" : _ref$name,
+      type = _ref.type,
+      isInput = _ref.isInput,
+      nodeId = _ref.nodeId,
+      triggerRecalculation = _ref.triggerRecalculation;
+  var nodesDispatch = React__default['default'].useContext(NodeDispatchContext);
+  var stageState = React__default['default'].useContext(StageContext);
+  var editorId = React__default['default'].useContext(EditorIdContext);
+  var stageId = "".concat(STAGE_ID).concat(editorId);
+  var inputTypes = React__default['default'].useContext(PortTypesContext);
+
+  var _React$useState = React__default['default'].useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      isDragging = _React$useState2[0],
+      setIsDragging = _React$useState2[1];
+
+  var _React$useState3 = React__default['default'].useState({
+    x: 0,
+    y: 0
+  }),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      dragStartCoordinates = _React$useState4[0],
+      setDragStartCoordinates = _React$useState4[1];
+
+  var dragStartCoordinatesCache = React__default['default'].useRef(dragStartCoordinates);
+  var port = React__default['default'].useRef();
+  var line = React__default['default'].useRef();
+  var lineInToPort = React__default['default'].useRef();
+
+  var byScale = function byScale(value) {
+    return 1 / stageState.scale * value;
+  };
+
+  var handleDrag = function handleDrag(e) {
+    var stage = document.getElementById(stageId).getBoundingClientRect();
+
+    if (isInput) {
+      var to = {
+        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
+        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
+      };
+      if (lineInToPort.current) lineInToPort.current.setAttribute("d", calculateCurve(to, dragStartCoordinatesCache.current));else line.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, to));
+    } else {
+      var _to = {
+        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
+        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
+      };
+      line.current.setAttribute("d", calculateCurve(_to, dragStartCoordinatesCache.current));
+    }
+  }; // TODO: Refactor onDragEnd method (input -> output part)
+
+
+  var handleDragEnd = function handleDragEnd(e) {
+    var droppedOnPort = !!e.target.dataset.portName;
+
+    if (isInput && lineInToPort.current) {
+      var _lineInToPort$current = lineInToPort.current.dataset,
+          inputNodeId = _lineInToPort$current.inputNodeId,
+          inputPortName = _lineInToPort$current.inputPortName,
+          outputNodeId = _lineInToPort$current.outputNodeId,
+          outputPortName = _lineInToPort$current.outputPortName;
+      nodesDispatch({
+        type: "REMOVE_CONNECTION",
+        input: {
+          nodeId: inputNodeId,
+          portName: inputPortName
+        },
+        output: {
+          nodeId: outputNodeId,
+          portName: outputPortName
+        }
+      });
+
+      if (droppedOnPort) {
+        var _e$target$dataset = e.target.dataset,
+            connectToPortName = _e$target$dataset.portName,
+            connectToNodeId = _e$target$dataset.nodeId,
+            connectToPortType = _e$target$dataset.portType,
+            connectToTransputType = _e$target$dataset.portTransputType;
+        var isNotSameNode = outputNodeId !== connectToNodeId;
+
+        if (isNotSameNode && connectToTransputType !== "output") {
+          var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
+
+          if (inputWillAcceptConnection) {
+            nodesDispatch({
+              type: "ADD_CONNECTION",
+              input: {
+                nodeId: connectToNodeId,
+                portName: connectToPortName
+              },
+              output: {
+                nodeId: outputNodeId,
+                portName: outputPortName
+              }
+            });
+          }
+        }
+      }
+    } else {
+      if (droppedOnPort) {
+        if (!isInput) {
+          var _e$target$dataset2 = e.target.dataset,
+              _inputPortName = _e$target$dataset2.portName,
+              _inputNodeId = _e$target$dataset2.nodeId,
+              inputNodeType = _e$target$dataset2.portType,
+              inputTransputType = _e$target$dataset2.portTransputType;
+
+          var _isNotSameNode = _inputNodeId !== nodeId;
+
+          if (_isNotSameNode && inputTransputType !== "output") {
+            var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
+
+            if (_inputWillAcceptConnection) {
+              nodesDispatch({
+                type: "ADD_CONNECTION",
+                output: {
+                  nodeId: nodeId,
+                  portName: name
+                },
+                input: {
+                  nodeId: _inputNodeId,
+                  portName: _inputPortName
+                }
+              });
+              triggerRecalculation();
+            }
+          }
+        } else {
+          var _e$target$dataset3 = e.target.dataset,
+              _inputPortName2 = _e$target$dataset3.portName,
+              _inputNodeId2 = _e$target$dataset3.nodeId,
+              _inputNodeType = _e$target$dataset3.portType,
+              _inputTransputType = _e$target$dataset3.portTransputType;
+
+          var _isNotSameNode2 = _inputNodeId2 !== nodeId;
+
+          if (_isNotSameNode2 && _inputTransputType === "output") {
+            var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
+
+            if (_inputWillAcceptConnection2) {
+              nodesDispatch({
+                type: "ADD_CONNECTION",
+                output: {
+                  nodeId: _inputNodeId2,
+                  portName: _inputPortName2
+                },
+                input: {
+                  nodeId: nodeId,
+                  portName: name
+                }
+              });
+              triggerRecalculation();
+            }
+          }
+        }
+      }
+    }
+
+    setIsDragging(false);
+    document.removeEventListener("mouseup", handleDragEnd);
+    document.removeEventListener("mousemove", handleDrag);
+  };
+
+  var handleDragStart = function handleDragStart(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var startPort = port.current.getBoundingClientRect();
+    var stage = document.getElementById(stageId).getBoundingClientRect();
+
+    if (isInput) {
+      lineInToPort.current = document.querySelector("[data-input-node-id=\"".concat(nodeId, "\"][data-input-port-name=\"").concat(name, "\"]"));
+      var portIsConnected = !!lineInToPort.current;
+
+      if (portIsConnected) {
+        lineInToPort.current.parentNode.style.zIndex = 9999;
+        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
+        var coordinates = {
+          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
+          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+        };
+        setDragStartCoordinates(coordinates);
+        dragStartCoordinatesCache.current = coordinates;
+        setIsDragging(true);
+        document.addEventListener("mouseup", handleDragEnd);
+        document.addEventListener("mousemove", handleDrag);
+      } else {
+        var _coordinates = {
+          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
+          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+        };
+        setDragStartCoordinates(_coordinates);
+        dragStartCoordinatesCache.current = _coordinates;
+        setIsDragging(true);
+        document.addEventListener("mouseup", handleDragEnd);
+        document.addEventListener("mousemove", handleDrag);
+      }
+    } else {
+      var _coordinates2 = {
+        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
+        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+      };
+      setDragStartCoordinates(_coordinates2);
+      dragStartCoordinatesCache.current = _coordinates2;
+      setIsDragging(true);
+      document.addEventListener("mouseup", handleDragEnd);
+      document.addEventListener("mousemove", handleDrag);
+    }
+  };
+
+  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
+    style: {
+      zIndex: 999
+    },
+    onMouseDown: handleDragStart,
+    className: styles$6.port,
+    "data-port-color": color,
+    "data-port-name": name,
+    "data-port-type": type,
+    "data-port-transput-type": isInput ? "input" : "output",
+    "data-node-id": nodeId,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    ref: port
+  }), isDragging ? /*#__PURE__*/React__default['default'].createElement(Portal$1, {
+    node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
+  }, /*#__PURE__*/React__default['default'].createElement(Connection, {
+    from: dragStartCoordinates,
+    to: dragStartCoordinates,
+    lineRef: line
+  })) : null);
+};
+
+var Input = function Input(_ref) {
+  var type = _ref.type,
+      label = _ref.label,
+      name = _ref.name,
+      nodeId = _ref.nodeId,
+      data = _ref.data,
+      localControls = _ref.controls,
+      inputTypes = _ref.inputTypes,
+      noControls = _ref.noControls,
+      triggerRecalculation = _ref.triggerRecalculation,
+      updateNodeConnections = _ref.updateNodeConnections,
+      isConnected = _ref.isConnected,
+      inputData = _ref.inputData,
+      hidePort = _ref.hidePort;
+
+  var _ref2 = inputTypes[type] || {},
+      defaultLabel = _ref2.label,
+      color = _ref2.color,
+      _ref2$controls = _ref2.controls,
+      defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
+
+  var prevConnected = usePrevious(isConnected);
+  var controls = localControls || defaultControls;
   React__default['default'].useEffect(function () {
-    ref.current = value;
-  });
-  return ref.current;
+    if (isConnected !== prevConnected) {
+      triggerRecalculation();
+    }
+  }, [isConnected, prevConnected, triggerRecalculation]);
+  return /*#__PURE__*/React__default['default'].createElement("div", {
+    className: styles$6.transput,
+    "data-controlless": isConnected || noControls || !controls.length,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, (!controls.length || noControls || isConnected) && /*#__PURE__*/React__default['default'].createElement("label", {
+    className: styles$6.portLabel
+  }, label || defaultLabel), !noControls && !isConnected ? /*#__PURE__*/React__default['default'].createElement("div", {
+    className: styles$6.controls
+  }, controls.map(function (control) {
+    return /*#__PURE__*/React__default['default'].createElement(Control, _extends$1({}, control, {
+      nodeId: nodeId,
+      portName: name,
+      triggerRecalculation: triggerRecalculation,
+      updateNodeConnections: updateNodeConnections,
+      inputLabel: label,
+      data: data[control.name],
+      allData: data,
+      key: control.name,
+      inputData: inputData,
+      isMonoControl: controls.length === 1
+    }));
+  })) : null, !hidePort ? /*#__PURE__*/React__default['default'].createElement(Port, {
+    type: type,
+    color: color,
+    name: name,
+    nodeId: nodeId,
+    isInput: true,
+    triggerRecalculation: triggerRecalculation
+  }) : null);
 };
 
 function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -6846,6 +7208,36 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
+var Output = function Output(_ref) {
+  var label = _ref.label,
+      name = _ref.name,
+      nodeId = _ref.nodeId,
+      type = _ref.type,
+      inputTypes = _ref.inputTypes,
+      triggerRecalculation = _ref.triggerRecalculation;
+
+  var _ref2 = inputTypes[type] || {},
+      defaultLabel = _ref2.label,
+      color = _ref2.color;
+
+  return /*#__PURE__*/React__default['default'].createElement("div", {
+    className: styles$6.transput,
+    "data-controlless": true,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, /*#__PURE__*/React__default['default'].createElement(Port, {
+    type: type,
+    name: name,
+    color: color,
+    nodeId: nodeId,
+    triggerRecalculation: triggerRecalculation
+  }), /*#__PURE__*/React__default['default'].createElement("label", {
+    className: styles$6.portLabel
+  }, label || defaultLabel));
+};
+
 var IoPorts = function IoPorts(_ref) {
   var nodeId = _ref.nodeId,
       _ref$inputs = _ref.inputs,
@@ -6859,8 +7251,8 @@ var IoPorts = function IoPorts(_ref) {
       countOptionals = _ref.countOptionals;
   var inputTypes = React__default['default'].useContext(PortTypesContext);
   var triggerRecalculation = React__default['default'].useContext(ConnectionRecalculateContext);
-  var resolvedInputs = useTransputs(inputs, 'input', nodeId, inputData, connections);
-  var resolvedOutputs = useTransputs(outputs, 'output', nodeId, inputData, connections);
+  var resolvedInputs = useTransputs(inputs, "input", nodeId, inputData, connections);
+  var resolvedOutputs = useTransputs(outputs, "output", nodeId, inputData, connections);
   React$1.useMemo(function () {
     countOptionals && resolvedInputs && countOptionals(resolvedInputs.filter(function (_ref2) {
       var optional = _ref2.optional;
@@ -6868,12 +7260,12 @@ var IoPorts = function IoPorts(_ref) {
     }).length);
   }, [resolvedInputs, countOptionals]);
   return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.wrapper
+    className: styles$6.wrapper
   }, resolvedInputs.some(function (_ref3) {
     var optional = _ref3.optional;
     return !optional;
   }) && /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.inputs
+    className: styles$6.inputs
   }, resolvedInputs.filter(function (_ref4) {
     var optional = _ref4.optional;
     return !optional;
@@ -6889,7 +7281,7 @@ var IoPorts = function IoPorts(_ref) {
       key: input.name
     }));
   })), !!resolvedOutputs.length && /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.outputs
+    className: styles$6.outputs
   }, resolvedOutputs.map(function (output) {
     return /*#__PURE__*/React__default['default'].createElement(Output, _extends$1({}, output, {
       triggerRecalculation: triggerRecalculation,
@@ -6903,7 +7295,7 @@ var IoPorts = function IoPorts(_ref) {
     var optional = _ref5.optional;
     return optional;
   }) && /*#__PURE__*/React__default['default'].createElement("div", {
-    className: "".concat(styles$a.inputs, " ").concat(!expanded ? styles$a.collapsed : '')
+    className: "".concat(styles$6.inputs, " ").concat(!expanded ? styles$6.collapsed : "")
   }, resolvedInputs.filter(function (_ref6) {
     var optional = _ref6.optional;
     return optional;
@@ -6919,337 +7311,6 @@ var IoPorts = function IoPorts(_ref) {
       key: input.name
     }));
   })));
-};
-
-var Input = function Input(_ref7) {
-  var type = _ref7.type,
-      label = _ref7.label,
-      name = _ref7.name,
-      nodeId = _ref7.nodeId,
-      data = _ref7.data,
-      localControls = _ref7.controls,
-      inputTypes = _ref7.inputTypes,
-      noControls = _ref7.noControls,
-      triggerRecalculation = _ref7.triggerRecalculation,
-      updateNodeConnections = _ref7.updateNodeConnections,
-      isConnected = _ref7.isConnected,
-      inputData = _ref7.inputData,
-      hidePort = _ref7.hidePort;
-
-  var _ref8 = inputTypes[type] || {},
-      defaultLabel = _ref8.label,
-      color = _ref8.color,
-      _ref8$controls = _ref8.controls,
-      defaultControls = _ref8$controls === void 0 ? [] : _ref8$controls;
-
-  var prevConnected = usePrevious(isConnected);
-  var controls = localControls || defaultControls;
-  React__default['default'].useEffect(function () {
-    if (isConnected !== prevConnected) {
-      triggerRecalculation();
-    }
-  }, [isConnected, prevConnected, triggerRecalculation]);
-  return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.transput,
-    "data-controlless": isConnected || noControls || !controls.length,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, (!controls.length || noControls || isConnected) && /*#__PURE__*/React__default['default'].createElement("label", {
-    className: styles$a.portLabel
-  }, label || defaultLabel), !noControls && !isConnected ? /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.controls
-  }, controls.map(function (control) {
-    return /*#__PURE__*/React__default['default'].createElement(Control, _extends$1({}, control, {
-      nodeId: nodeId,
-      portName: name,
-      triggerRecalculation: triggerRecalculation,
-      updateNodeConnections: updateNodeConnections,
-      inputLabel: label,
-      data: data[control.name],
-      allData: data,
-      key: control.name,
-      inputData: inputData,
-      isMonoControl: controls.length === 1
-    }));
-  })) : null, !hidePort ? /*#__PURE__*/React__default['default'].createElement(Port, {
-    type: type,
-    color: color,
-    name: name,
-    nodeId: nodeId,
-    isInput: true,
-    triggerRecalculation: triggerRecalculation
-  }) : null);
-};
-
-var Output = function Output(_ref9) {
-  var label = _ref9.label,
-      name = _ref9.name,
-      nodeId = _ref9.nodeId,
-      type = _ref9.type,
-      inputTypes = _ref9.inputTypes,
-      triggerRecalculation = _ref9.triggerRecalculation;
-
-  var _ref10 = inputTypes[type] || {},
-      defaultLabel = _ref10.label,
-      color = _ref10.color;
-
-  return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$a.transput,
-    "data-controlless": true,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, /*#__PURE__*/React__default['default'].createElement(Port, {
-    type: type,
-    name: name,
-    color: color,
-    nodeId: nodeId,
-    triggerRecalculation: triggerRecalculation
-  }), /*#__PURE__*/React__default['default'].createElement("label", {
-    className: styles$a.portLabel
-  }, label || defaultLabel));
-};
-
-var Port = function Port(_ref11) {
-  var _ref11$color = _ref11.color,
-      color = _ref11$color === void 0 ? 'grey' : _ref11$color,
-      _ref11$name = _ref11.name,
-      name = _ref11$name === void 0 ? '' : _ref11$name,
-      type = _ref11.type,
-      isInput = _ref11.isInput,
-      nodeId = _ref11.nodeId,
-      triggerRecalculation = _ref11.triggerRecalculation;
-  var nodesDispatch = React__default['default'].useContext(NodeDispatchContext);
-  var stageState = React__default['default'].useContext(StageContext);
-  var editorId = React__default['default'].useContext(EditorIdContext);
-  var stageId = "".concat(STAGE_ID).concat(editorId);
-  var inputTypes = React__default['default'].useContext(PortTypesContext);
-
-  var _React$useState = React__default['default'].useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      isDragging = _React$useState2[0],
-      setIsDragging = _React$useState2[1];
-
-  var _React$useState3 = React__default['default'].useState({
-    x: 0,
-    y: 0
-  }),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      dragStartCoordinates = _React$useState4[0],
-      setDragStartCoordinates = _React$useState4[1];
-
-  var dragStartCoordinatesCache = React__default['default'].useRef(dragStartCoordinates);
-  var port = React__default['default'].useRef();
-  var line = React__default['default'].useRef();
-  var lineInToPort = React__default['default'].useRef();
-
-  var byScale = function byScale(value) {
-    return 1 / stageState.scale * value;
-  };
-
-  var handleDrag = function handleDrag(e) {
-    var stage = document.getElementById(stageId).getBoundingClientRect();
-
-    if (isInput) {
-      var to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
-      };
-      if (!!lineInToPort.current) lineInToPort.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, to));else line.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, to));
-    } else {
-      var _to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
-      };
-      line.current.setAttribute('d', calculateCurve(dragStartCoordinatesCache.current, _to));
-    }
-  }; // TODO: Refactor onDragEnd method (input -> output part)
-
-
-  var handleDragEnd = function handleDragEnd(e) {
-    var droppedOnPort = !!e.target.dataset.portName;
-
-    if (isInput && lineInToPort.current) {
-      var _lineInToPort$current = lineInToPort.current.dataset,
-          inputNodeId = _lineInToPort$current.inputNodeId,
-          inputPortName = _lineInToPort$current.inputPortName,
-          outputNodeId = _lineInToPort$current.outputNodeId,
-          outputPortName = _lineInToPort$current.outputPortName;
-      nodesDispatch({
-        type: 'REMOVE_CONNECTION',
-        input: {
-          nodeId: inputNodeId,
-          portName: inputPortName
-        },
-        output: {
-          nodeId: outputNodeId,
-          portName: outputPortName
-        }
-      });
-
-      if (droppedOnPort) {
-        var _e$target$dataset = e.target.dataset,
-            connectToPortName = _e$target$dataset.portName,
-            connectToNodeId = _e$target$dataset.nodeId,
-            connectToPortType = _e$target$dataset.portType,
-            connectToTransputType = _e$target$dataset.portTransputType;
-        var isNotSameNode = outputNodeId !== connectToNodeId;
-
-        if (isNotSameNode && connectToTransputType !== 'output') {
-          var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
-
-          if (inputWillAcceptConnection) {
-            nodesDispatch({
-              type: 'ADD_CONNECTION',
-              input: {
-                nodeId: connectToNodeId,
-                portName: connectToPortName
-              },
-              output: {
-                nodeId: outputNodeId,
-                portName: outputPortName
-              }
-            });
-          }
-        }
-      }
-    } else {
-      if (droppedOnPort) {
-        if (!isInput) {
-          var _e$target$dataset2 = e.target.dataset,
-              _inputPortName = _e$target$dataset2.portName,
-              _inputNodeId = _e$target$dataset2.nodeId,
-              inputNodeType = _e$target$dataset2.portType,
-              inputTransputType = _e$target$dataset2.portTransputType;
-
-          var _isNotSameNode = _inputNodeId !== nodeId;
-
-          if (_isNotSameNode && inputTransputType !== 'output') {
-            var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
-
-            if (_inputWillAcceptConnection) {
-              nodesDispatch({
-                type: 'ADD_CONNECTION',
-                output: {
-                  nodeId: nodeId,
-                  portName: name
-                },
-                input: {
-                  nodeId: _inputNodeId,
-                  portName: _inputPortName
-                }
-              });
-              triggerRecalculation();
-            }
-          }
-        } else {
-          var _e$target$dataset3 = e.target.dataset,
-              _inputPortName2 = _e$target$dataset3.portName,
-              _inputNodeId2 = _e$target$dataset3.nodeId,
-              _inputNodeType = _e$target$dataset3.portType,
-              _inputTransputType = _e$target$dataset3.portTransputType;
-
-          var _isNotSameNode2 = _inputNodeId2 !== nodeId;
-
-          if (_isNotSameNode2 && _inputTransputType === 'output') {
-            var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
-
-            if (_inputWillAcceptConnection2) {
-              nodesDispatch({
-                type: 'ADD_CONNECTION',
-                output: {
-                  nodeId: _inputNodeId2,
-                  portName: _inputPortName2
-                },
-                input: {
-                  nodeId: nodeId,
-                  portName: name
-                }
-              });
-              triggerRecalculation();
-            }
-          }
-        }
-      }
-    }
-
-    setIsDragging(false);
-    document.removeEventListener('mouseup', handleDragEnd);
-    document.removeEventListener('mousemove', handleDrag);
-  };
-
-  var handleDragStart = function handleDragStart(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var startPort = port.current.getBoundingClientRect();
-    var stage = document.getElementById(stageId).getBoundingClientRect();
-
-    if (isInput) {
-      lineInToPort.current = document.querySelector("[data-input-node-id=\"".concat(nodeId, "\"][data-input-port-name=\"").concat(name, "\"]"));
-      var portIsConnected = !!lineInToPort.current;
-
-      if (portIsConnected) {
-        lineInToPort.current.parentNode.style.zIndex = 9999;
-        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, 'output');
-        var coordinates = {
-          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
-        };
-        setDragStartCoordinates(coordinates);
-        dragStartCoordinatesCache.current = coordinates;
-        setIsDragging(true);
-        document.addEventListener('mouseup', handleDragEnd);
-        document.addEventListener('mousemove', handleDrag);
-      } else {
-        var _coordinates = {
-          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
-        };
-        setDragStartCoordinates(_coordinates);
-        dragStartCoordinatesCache.current = _coordinates;
-        setIsDragging(true);
-        document.addEventListener('mouseup', handleDragEnd);
-        document.addEventListener('mousemove', handleDrag);
-      }
-    } else {
-      var _coordinates2 = {
-        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
-      };
-      setDragStartCoordinates(_coordinates2);
-      dragStartCoordinatesCache.current = _coordinates2;
-      setIsDragging(true);
-      document.addEventListener('mouseup', handleDragEnd);
-      document.addEventListener('mousemove', handleDrag);
-    }
-  };
-
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
-    style: {
-      zIndex: 999
-    },
-    onMouseDown: handleDragStart,
-    className: styles$a.port,
-    "data-port-color": color,
-    "data-port-name": name,
-    "data-port-type": type,
-    "data-port-transput-type": isInput ? 'input' : 'output',
-    "data-node-id": nodeId,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    ref: port
-  }), isDragging ? /*#__PURE__*/React__default['default'].createElement(Portal$1, {
-    node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
-  }, /*#__PURE__*/React__default['default'].createElement(Connection, {
-    from: dragStartCoordinates,
-    to: dragStartCoordinates,
-    lineRef: line
-  })) : null);
 };
 
 var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -8828,9 +8889,9 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
       icon = _nodeTypes$type.icon,
       _nodeTypes$type$categ = _nodeTypes$type.category,
       _nodeTypes$type$categ2 = _nodeTypes$type$categ.titleColor,
-      titleColor = _nodeTypes$type$categ2 === void 0 ? '#000' : _nodeTypes$type$categ2,
+      titleColor = _nodeTypes$type$categ2 === void 0 ? "#000" : _nodeTypes$type$categ2,
       _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
-      tileBackground = _nodeTypes$type$categ3 === void 0 ? '#494956' : _nodeTypes$type$categ3;
+      tileBackground = _nodeTypes$type$categ3 === void 0 ? "#494956" : _nodeTypes$type$categ3;
 
   var _useState = React$1.useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -8875,9 +8936,9 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
           outputs = _ref3[1];
 
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? 'output' : 'input' // cache
+        var toRect = getPortRect(id, portName, isOutput ? "output" : "input" // cache
         );
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? 'input' : 'output' // cache
+        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
         );
         var portHalf = fromRect.width / 2;
         var combined;
@@ -8886,10 +8947,10 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
           combined = id + portName + output.nodeId + output.portName;
         } else {
           combined = output.nodeId + output.portName + id + portName;
-        }
+        } // const cachedConnection = null; /* cache.current.connections[combined] */
 
-        var cnx;
-        cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
+
+        var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
         var from = {
           x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
           y: byScale(toRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + byScale(stageState.translate.y)
@@ -8898,7 +8959,7 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
           x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
           y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + byScale(stageState.translate.y)
         };
-        cnx.setAttribute('d', calculateCurve(from, to));
+        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray$1(isOutput ? [to, from] : [from, to])));
       });
     });
   };
@@ -8946,9 +9007,9 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     var value = _ref5.value;
 
     switch (value) {
-      case 'deleteNode':
+      case "deleteNode":
         nodesDispatch({
-          type: 'REMOVE_NODE',
+          type: "REMOVE_NODE",
           nodeId: id
         });
         break;
@@ -8963,7 +9024,7 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
 
     if (c && c.innerText !== comment) {
       nodesDispatch({
-        type: 'SET_NODE_DATA',
+        type: "SET_NODE_DATA",
         nodeId: id,
         comment: c.innerText
       });
@@ -8981,9 +9042,9 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
         if (el) {
           commentRef.current.focus();
 
-          if (typeof el.selectionStart == 'number') {
+          if (typeof el.selectionStart === "number") {
             el.selectionStart = el.selectionEnd = el.value.length;
-          } else if (typeof el.createTextRange != 'undefined') {
+          } else if (typeof el.createTextRange !== "undefined") {
             el.focus();
             var range = el.createTextRange();
             range.collapse(false);
@@ -8998,8 +9059,8 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     className: styles$c.wrapper,
     style: {
       width: width,
-      border: isSelected ? '2px solid skyblue' : 'none',
-      margin: isSelected ? '0' : '2px',
+      border: isSelected ? "2px solid skyblue" : "none",
+      margin: isSelected ? "0" : "2px",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
     onDragStart: startDrag,
@@ -9016,8 +9077,8 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: styles$c.header,
     style: {
-      overflow: isInputComment ? 'visible' : '',
-      maxHeight: isInputComment ? '150' : '',
+      overflow: isInputComment ? "visible" : "",
+      maxHeight: isInputComment ? "150" : "",
       backgroundColor: tileBackground,
       color: titleColor
     }
@@ -9038,11 +9099,11 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     },
     onClick: function onClick() {
       return nodesDispatch({
-        type: 'TOGGLE_NODE_VIEW',
+        type: "TOGGLE_NODE_VIEW",
         id: id
       });
     }
-  }, expanded ? '▲' : '▼') : null), comment ? /*#__PURE__*/React__default['default'].createElement("span", {
+  }, expanded ? "▲" : "▼") : null), comment ? /*#__PURE__*/React__default['default'].createElement("span", {
     className: styles$c.comment,
     onMouseDown: function onMouseDown() {
       return setDrag(0);
@@ -9068,10 +9129,10 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     onClickOut: handleFieldBlur
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     style: {
-      boxShadow: '0 0 0 2px #4284f7 inset',
+      boxShadow: "0 0 0 2px #4284f7 inset",
       padding: 1,
-      transform: 'translateZ(1px)',
-      overflow: 'hidden',
+      transform: "translateZ(1px)",
+      overflow: "hidden",
       borderRadius: 5
     }
   }, /*#__PURE__*/React__default['default'].createElement(lib.Scrollbars, {
@@ -9104,9 +9165,9 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: _toConsumableArray$1(deletable !== false ? [{
-      label: 'Delete Node',
-      value: 'deleteNode',
-      description: 'Deletes a node and all of its connections.'
+      label: "Delete Node",
+      value: "deleteNode",
+      description: "Deletes a node and all of its connections."
     }] : []),
     onRequestClose: closeContextMenu,
     onOptionSelected: handleMenuOption,
@@ -28408,8 +28469,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var defaultContext = {};
-exports.NodeEditor = function NodeEditor(_ref, ref) {
-  var _initialStageParams, _initialStageParams2, _initialStageParams3, _initialStageParams3$, _initialStageParams4, _initialStageParams4$;
+var NodeEditor = /*#__PURE__*/React$1.forwardRef(function (_ref, ref) {
+  var _initialStageParams$t, _initialStageParams$t2;
 
   var initialComments = _ref.comments,
       _ref$nodeTypes = _ref.nodeTypes,
@@ -28430,7 +28491,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       dispatchTemp = _ref$connector$temp.dispatch,
       initialNodesState = _ref$connector.initialNodesState;
       _objectWithoutProperties$1(_ref$connector, _excluded);
-      var initialStageParams = _ref.initialStageParams,
+      var _initialStageParams = _ref.initialStageParams,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === void 0 ? false : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
@@ -28470,7 +28531,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       nodesState: [{
         state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
         action: {
-          type: 'INITIAL'
+          type: "INITIAL"
         }
       }],
       currentStateIndex: 0
@@ -28485,8 +28546,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   var _useReducer5 = React$1.useReducer(commentsReducer, initialComments || {}),
       _useReducer6 = _slicedToArray(_useReducer5, 2),
       comments = _useReducer6[0],
-      dispatchComments = _useReducer6[1]; // TODO: Fix ref gathering
-
+      dispatchComments = _useReducer6[1];
 
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
       _useSelect2 = _slicedToArray(_useSelect, 4),
@@ -28495,6 +28555,22 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       handleSelection = _useSelect2[2],
       clearSelection = _useSelect2[3];
 
+  var undoChanges = function undoChanges() {
+    dispatchNodes({
+      type: "UNDO_CHANGES"
+    });
+    clearConnections();
+    triggerRecalculation();
+  };
+
+  var redoChanges = function redoChanges() {
+    dispatchNodes({
+      type: "REDO_CHANGES"
+    });
+    clearConnections();
+    triggerRecalculation();
+  };
+
   React$1.useEffect(function () {
     if (connectorAction) {
       var _connectorAction = connectorAction(),
@@ -28502,67 +28578,71 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
           data = _connectorAction.data;
 
       switch (type) {
-        case 'UNDO':
+        case "UNDO":
           undoChanges();
           break;
 
-        case 'REDO':
+        case "REDO":
           redoChanges();
           break;
 
-        case 'COPY':
+        case "COPY":
           dispatchNodes({
-            type: 'COPY_NODES',
+            type: "COPY_NODES",
             selectedNodeIds: selectedNodes
           });
           break;
 
-        case 'CUT':
+        case "CUT":
           dispatchNodes({
-            type: 'CUT_NODES',
+            type: "CUT_NODES",
             selectedNodeIds: selectedNodes
           });
           clearConnections();
           triggerRecalculation();
           break;
 
-        case 'PASTE':
+        case "PASTE":
           dispatchNodes({
-            type: 'PASTE_NODES'
+            type: "PASTE_NODES"
           });
           clearConnections();
           triggerRecalculation();
           break;
 
-        case 'TOGGLE_NODES_VIEW':
-          var nodeIds = data.nodeIds,
-              doExpand = data.doExpand;
-          nodeIds.forEach(function (id) {
-            dispatchNodes({
-              type: 'TOGGLE_NODE_VIEW',
-              id: id,
-              doExpand: doExpand
+        case "TOGGLE_NODES_VIEW":
+          {
+            var nodeIds = data.nodeIds,
+                doExpand = data.doExpand;
+            nodeIds.forEach(function (id) {
+              dispatchNodes({
+                type: "TOGGLE_NODE_VIEW",
+                id: id,
+                doExpand: doExpand
+              });
             });
-          });
-          break;
+            break;
+          }
 
-        case 'ADD_NODE':
-          var x = data.x,
-              y = data.y,
-              _type = data.type;
-          dispatchNodes({
-            type: "ADD_NODE",
-            x: x,
-            y: y,
-            nodeType: _type
-          });
-          break;
+        case "ADD_NODE":
+          {
+            var x = data.x,
+                y = data.y,
+                _type = data.type;
+            dispatchNodes({
+              type: "ADD_NODE",
+              x: x,
+              y: y,
+              nodeType: _type
+            });
+            break;
+          }
       }
     }
   }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
   React$1.useEffect(function () {
     !currentStateIndex && dispatchNodes({
-      type: 'HYDRATE_DEFAULT_NODES'
+      type: "HYDRATE_DEFAULT_NODES"
     });
   }, []);
 
@@ -28571,46 +28651,46 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       shouldRecalculateConnections = _useState6[0],
       setShouldRecalculateConnections = _useState6[1];
 
-  initialStageParams = initialStageParams || tempState.stage;
+  var initialStageParams = _initialStageParams || tempState.stage;
 
   var _useReducer7 = React$1.useReducer(stageReducer, {
-    scale: typeof ((_initialStageParams = initialStageParams) === null || _initialStageParams === void 0 ? void 0 : _initialStageParams.scale) === 'number' ? clamp_1((_initialStageParams2 = initialStageParams) === null || _initialStageParams2 === void 0 ? void 0 : _initialStageParams2.scale, 0.1, 7) : 1,
+    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
     translate: {
-      x: typeof ((_initialStageParams3 = initialStageParams) === null || _initialStageParams3 === void 0 ? void 0 : (_initialStageParams3$ = _initialStageParams3.translate) === null || _initialStageParams3$ === void 0 ? void 0 : _initialStageParams3$.x) === 'number' ? initialStageParams.translate.x : 0,
-      y: typeof ((_initialStageParams4 = initialStageParams) === null || _initialStageParams4 === void 0 ? void 0 : (_initialStageParams4$ = _initialStageParams4.translate) === null || _initialStageParams4$ === void 0 ? void 0 : _initialStageParams4$.y) === 'number' ? initialStageParams.translate.y : 0
+      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
+      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
     }
   }),
       _useReducer8 = _slicedToArray(_useReducer7, 2),
       stageState = _useReducer8[0],
       dispatchStageState = _useReducer8[1];
 
-  React$1.useMemo(function () {
+  React$1.useCallback(function () {
     if (!_.isEqual(stageState, tempState.stage)) {
       var _stageState$translate = stageState.translate,
           x = _stageState$translate.x,
           y = _stageState$translate.y,
           scale = stageState.scale;
       dispatchTemp({
-        type: 'SET_STAGE',
+        type: "SET_STAGE",
         scale: scale,
         x: x,
         y: y
       });
     }
 
-    if (!_.isEqual(selectedNodes, tempState.selectedNodes)) dispatchTemp({
-      type: 'SELECT_NODES',
-      selectedNodes: selectedNodes
-    });
+    if (!_.isEqual(selectedNodes, tempState.selectedNodes)) {
+      dispatchTemp({
+        type: "SELECT_NODES",
+        selectedNodes: selectedNodes
+      });
+    }
   }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes]);
   var recalculateConnections = React$1.useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);
-
-  var recalculateStageRect = function recalculateStageRect() {
+  var recalculateStageRect = React$1.useCallback(function () {
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
-  };
-
+  }, [stage.current, editorId]);
   React$1.useLayoutEffect(function () {
     if (shouldRecalculateConnections) {
       recalculateConnections();
@@ -28619,9 +28699,9 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   }, [shouldRecalculateConnections, recalculateConnections]);
 
   var handleDragEnd = function handleDragEnd(e, id, coordinates) {
-    if (selectedNodes.length) {
+    if (selectedNodes.length > 0) {
       dispatchNodes({
-        type: 'SET_MULTIPLE_NODES_COORDINATES',
+        type: "SET_MULTIPLE_NODES_COORDINATES",
         nodesInfo: selectedNodes.map(function (id) {
           var nodeRef = nodeRefs.find(function (_ref2) {
             var _ref3 = _slicedToArray(_ref2, 1),
@@ -28629,7 +28709,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 
             return nId === id;
           })[1];
-          var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
+          var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
           return {
             nodeId: id,
             x: newPositions[1],
@@ -28639,7 +28719,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       });
     } else {
       dispatchNodes(_objectSpread(_objectSpread({
-        type: 'SET_NODE_COORDINATES'
+        type: "SET_NODE_COORDINATES"
       }, coordinates), {}, {
         nodeId: id
       }));
@@ -28653,7 +28733,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
   };
 
   var dragSelectedNodes = function dragSelectedNodes(excludedNodeId, deltaX, deltaY) {
-    if (selectedNodes.length) {
+    if (selectedNodes.length > 0) {
       if (selectedNodes.includes(excludedNodeId)) {
         selectedNodes.forEach(function (id) {
           if (id !== excludedNodeId) {
@@ -28663,12 +28743,17 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
 
               return nId === id;
             })[1];
-            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
-            if (oldPositions.length === 3) nodeRef.current.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+
+            if (oldPositions.length === 3) {
+              nodeRef.current.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+            }
           }
         });
         recalculateConnections();
-      } else clearSelection();
+      } else {
+        clearSelection();
+      }
     }
   };
 
@@ -28698,23 +28783,6 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-
-  var undoChanges = function undoChanges() {
-    dispatchNodes({
-      type: 'UNDO_CHANGES'
-    });
-    clearConnections();
-    triggerRecalculation();
-  };
-
-  var redoChanges = function redoChanges() {
-    dispatchNodes({
-      type: 'REDO_CHANGES'
-    });
-    clearConnections();
-    triggerRecalculation();
-  };
-
   return /*#__PURE__*/React__default['default'].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default['default'].createElement(NodeTypesContext.Provider, {
@@ -28747,7 +28815,7 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     },
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: spaceIsPressed ? {
-      display: 'none'
+      display: "none"
     } : {
       zIndex: 100
     }
@@ -28820,10 +28888,10 @@ exports.NodeEditor = function NodeEditor(_ref, ref) {
     className: styles.dragWrapper,
     id: "".concat(DRAG_CONNECTION_ID).concat(editorId)
   })))))))))));
-};
-exports.NodeEditor = /*#__PURE__*/React$1.forwardRef(exports.NodeEditor);
+});
+NodeEditor.displayName = "NodeEditor";
 var useRootEngine = function useRootEngine(nodes, engine, context) {
-  return Object.keys(nodes).length ? engine.resolveRootNode(nodes, {
+  return Object.keys(nodes).length > 0 ? engine.resolveRootNode(nodes, {
     context: context
   }) : {};
 };
@@ -28831,6 +28899,7 @@ var useRootEngine = function useRootEngine(nodes, engine, context) {
 exports.Colors = Colors;
 exports.Controls = Controls;
 exports.FlumeConfig = FlumeConfig;
+exports.NodeEditor = NodeEditor;
 exports.RootEngine = RootEngine;
 exports.useNodeEditorController = useNodeEditorController;
 exports.useRootEngine = useRootEngine;
