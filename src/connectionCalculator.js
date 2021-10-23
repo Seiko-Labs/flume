@@ -137,7 +137,7 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
     const stageHalfWidth = stage.width / 2;
     const stageHalfHeight = stage.height / 2;
 
-    const byScale = (value) => (1 / scale) * value;
+    const byScale = (value) => value / scale;
 
     console.log("I can do here");
 

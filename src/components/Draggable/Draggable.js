@@ -19,34 +19,34 @@ export default ({
   const offset = React.useRef();
   const wrapper = React.useRef();
 
-  const byScale = value => (1 / stageState.scale) * value;
+  const byScale = (value) => value / stageState.scale;
 
-  const getScaledCoordinates = e => {
+  const getScaledCoordinates = (e) => {
     const x =
       byScale(
         e.clientX -
           (stageRect ? stageRect.current.left : 0) -
           offset.current.x -
           (stageRect ? stageRect.current.width : 0) / 2
-      ) + byScale(stageState.translate.x);
+      ) + stageState.translate.x;
     const y =
       byScale(
         e.clientY -
           (stageRect ? stageRect.current.top : 0) -
           offset.current.y -
           (stageRect ? stageRect.current.height : 0) / 2
-      ) + byScale(stageState.translate.y);
+      ) + stageState.translate.y;
     return { x, y };
   };
 
-  const updateCoordinates = e => {
+  const updateCoordinates = (e) => {
     const coordinates = getScaledCoordinates(e);
     if (onDrag) {
       onDrag(coordinates, e);
     }
   };
 
-  const stopDrag = e => {
+  const stopDrag = (e) => {
     const coordinates = getScaledCoordinates(e);
     if (onDragEnd) {
       onDragEnd(e, coordinates);
@@ -55,20 +55,20 @@ export default ({
     window.removeEventListener("mousemove", updateCoordinates);
   };
 
-  const startDrag = e => {
+  const startDrag = (e) => {
     if (onDragStart) {
       onDragStart(e);
     }
     const nodeRect = wrapper.current.getBoundingClientRect();
     offset.current = {
       x: startCoordinates.current.x - nodeRect.left,
-      y: startCoordinates.current.y - nodeRect.top
+      y: startCoordinates.current.y - nodeRect.top,
     };
     window.addEventListener("mouseup", stopDrag);
     window.addEventListener("mousemove", updateCoordinates);
   };
 
-  const checkDragDelay = e => {
+  const checkDragDelay = (e) => {
     let x;
     let y;
     if ("ontouchstart" in window && e.touches) {
@@ -95,7 +95,7 @@ export default ({
     startCoordinates.current = null;
   };
 
-  const startDragDelay = e => {
+  const startDragDelay = (e) => {
     if (onDragDelayStart) {
       onDragDelayStart(e);
     }
@@ -117,7 +117,7 @@ export default ({
 
   return (
     <div
-      onMouseDown={e => {
+      onMouseDown={(e) => {
         if (!disabled) {
           startDragDelay(e);
         }
@@ -125,7 +125,7 @@ export default ({
           onMouseDown(e);
         }
       }}
-      onTouchStart={e => {
+      onTouchStart={(e) => {
         if (!disabled) {
           startDragDelay(e);
         }
@@ -133,11 +133,11 @@ export default ({
           onTouchStart(e);
         }
       }}
-      onDragStart={e => {
+      onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-      ref={ref => {
+      ref={(ref) => {
         wrapper.current = ref;
         if (innerRef) {
           innerRef.current = ref;

@@ -57,7 +57,7 @@ const Node = forwardRef(
 
     const commentRef = useRef();
 
-    const byScale = (value) => (1 / stageState.scale) * value;
+    const byScale = (value) => value / stageState.scale;
 
     const updateConnectionsByTransput = (transput = {}, isOutput) => {
       Object.entries(transput).forEach(([portName, outputs]) => {
@@ -92,14 +92,14 @@ const Node = forwardRef(
                   stageRect.current.x +
                   portHalf -
                   stageRect.current.width / 2
-              ) + byScale(stageState.translate.x),
+              ) + stageState.translate.x,
             y:
               byScale(
                 toRect.y -
                   stageRect.current.y +
                   portHalf -
                   stageRect.current.height / 2
-              ) + byScale(stageState.translate.y),
+              ) + stageState.translate.y,
           };
           const to = {
             x:
@@ -108,14 +108,14 @@ const Node = forwardRef(
                   stageRect.current.x +
                   portHalf -
                   stageRect.current.width / 2
-              ) + byScale(stageState.translate.x),
+              ) + stageState.translate.x,
             y:
               byScale(
                 fromRect.y -
                   stageRect.current.y +
                   portHalf -
                   stageRect.current.height / 2
-              ) + byScale(stageState.translate.y),
+              ) + stageState.translate.y,
           };
           cnx.setAttribute(
             "d",

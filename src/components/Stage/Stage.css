@@ -3,6 +3,7 @@
   height: 100%;
   min-height: 100px;
   background-color: #2F2F3B;
+  /*noinspection ALL*/
   background-image: svg-load('../../img/bg-cell.svg', fill=transparent, stroke=white, stroke-opacity=.02);
   color: #000;
   position: relative;
@@ -31,8 +32,8 @@ select {
 }
 .scaleWrapper {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 50%;
+  top: 50%;
   width: 0px;
   height: 0px;
 }

@@ -288,6 +288,7 @@ export const NodeEditor = forwardRef(
       triggerRecalculation();
     };
 
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     const triggerRecalculation = () => {
       setShouldRecalculateConnections(true);
     };

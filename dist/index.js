@@ -346,7 +346,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #2F2F3B;\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='transparent' stroke='white' stroke-opacity='.02' xmlns='http://www.w3.org/2000/svg'%3E %3Crect x='0' y='0' width='11' height='11' stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5'/%3E %3C/svg%3E\");\n  color: #000;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 0px;\n  height: 0px;\n}\n";
+var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #2F2F3B;\n  /*noinspection ALL*/\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='transparent' stroke='white' stroke-opacity='.02' xmlns='http://www.w3.org/2000/svg'%3E %3Crect x='0' y='0' width='11' height='11' stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5'/%3E %3C/svg%3E\");\n  color: #000;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n";
 var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$d);
 
@@ -2248,12 +2248,12 @@ var Draggable = (function (_ref) {
   var wrapper = React__default['default'].useRef();
 
   var byScale = function byScale(value) {
-    return 1 / stageState.scale * value;
+    return value / stageState.scale;
   };
 
   var getScaledCoordinates = function getScaledCoordinates(e) {
-    var x = byScale(e.clientX - (stageRect ? stageRect.current.left : 0) - offset.current.x - (stageRect ? stageRect.current.width : 0) / 2) + byScale(stageState.translate.x);
-    var y = byScale(e.clientY - (stageRect ? stageRect.current.top : 0) - offset.current.y - (stageRect ? stageRect.current.height : 0) / 2) + byScale(stageState.translate.y);
+    var x = byScale(e.clientX - (stageRect ? stageRect.current.left : 0) - offset.current.x - (stageRect ? stageRect.current.width : 0) / 2) + stageState.translate.x;
+    var y = byScale(e.clientY - (stageRect ? stageRect.current.top : 0) - offset.current.y - (stageRect ? stageRect.current.height : 0) / 2) + stageState.translate.y;
     return {
       x: x,
       y: y
@@ -5692,6 +5692,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
   var nodeTypes = React__default['default'].useContext(NodeTypesContext);
   var dispatchNodes = React__default['default'].useContext(NodeDispatchContext);
   var translateWrapper = React__default['default'].useRef();
+  var scaleWrapper = React__default['default'].useRef();
 
   var _React$useState = React__default['default'].useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -5739,7 +5740,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
         var scale = _ref2.scale;
         return {
           type: "SET_SCALE",
-          scale: clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 1.2)
+          scale: clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 2)
         };
       });
     }
@@ -5752,20 +5753,21 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
   var handleDragStart = function handleDragStart(e) {
     e.preventDefault();
     dragData.current = {
-      x: e.clientX,
-      y: e.clientY
+      x: e.clientX / scale,
+      y: e.clientY / scale
     };
   };
 
   var handleMouseDrag = function handleMouseDrag(coords, e) {
-    var xDistance = dragData.current.x - e.clientX;
-    var yDistance = dragData.current.y - e.clientY;
+    var xDistance = dragData.current.x - e.clientX / scale;
+    var yDistance = dragData.current.y - e.clientY / scale;
+    wrapper.current.style.backgroundPosition = "calc(50% + ".concat(-(translate.x + xDistance) * scale % (10 * scale), "px) calc(50% + ").concat(-(translate.y + yDistance) * scale % (10 * scale), "px) ");
     translateWrapper.current.style.transform = "translate(".concat(-(translate.x + xDistance), "px, ").concat(-(translate.y + yDistance), "px)");
   };
 
   var handleDragEnd = function handleDragEnd(e) {
-    var xDistance = dragData.current.x - e.clientX;
-    var yDistance = dragData.current.y - e.clientY;
+    var xDistance = dragData.current.x - e.clientX / scale;
+    var yDistance = dragData.current.y - e.clientY / scale;
     dragData.current.x = e.clientX;
     dragData.current.y = e.clientY;
     dispatchStageState(function (_ref3) {
@@ -5795,15 +5797,15 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
   };
 
   var byScale = function byScale(value) {
-    return 1 / scale * value;
+    return value / scale;
   };
 
   var addNode = function addNode(_ref4) {
     var node = _ref4.node,
         internalType = _ref4.internalType;
     var wrapperRect = wrapper.current.getBoundingClientRect();
-    var x = byScale(menuCoordinates.x - wrapperRect.x - wrapperRect.width / 2) + byScale(translate.x);
-    var y = byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) + byScale(translate.y);
+    var x = byScale(menuCoordinates.x - wrapperRect.x - wrapperRect.width / 2) + translate.x;
+    var y = byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) + translate.y;
 
     if (internalType === "comment") {
       dispatchComments({
@@ -5895,7 +5897,10 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
       translate: translate
     },
     style: {
-      cursor: spaceIsPressed && spaceToPan ? "grab" : ""
+      cursor: spaceIsPressed && spaceToPan ? "grab" : "",
+      backgroundSize: 10 * scale,
+      backgroundOrigin: "center",
+      backgroundPosition: "calc(50% + ".concat(-(translate.x * scale) % (10 * scale), "px) calc(50% + ").concat(-(translate.y * scale) % (10 * scale), "px) ")
     },
     disabled: disablePan || spaceToPan && !spaceIsPressed,
     "data-flume-stage": true
@@ -5907,15 +5912,17 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
     onOptionSelected: addNode,
     label: "Add Node"
   })) : null, /*#__PURE__*/React__default['default'].createElement("div", {
+    ref: scaleWrapper,
+    className: styles$e.scaleWrapper,
+    style: {
+      transformOrigin: "center",
+      transform: "scale(".concat(scale, ")")
+    }
+  }, /*#__PURE__*/React__default['default'].createElement("div", {
     ref: translateWrapper,
     className: styles$e.transformWrapper,
     style: {
       transform: "translate(".concat(-translate.x, "px, ").concat(-translate.y, "px)")
-    }
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
-    className: styles$e.scaleWrapper,
-    style: {
-      transform: "scale(".concat(scale, ")")
     }
   }, children)), outerStageChildren);
 });
@@ -6407,7 +6414,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
     var stageHalfHeight = stage.height / 2;
 
     var byScale = function byScale(value) {
-      return 1 / scale * value;
+      return value / scale;
     };
 
     console.log("I can do here");
@@ -6890,7 +6897,7 @@ var Port = function Port(_ref) {
   var lineInToPort = React__default['default'].useRef();
 
   var byScale = function byScale(value) {
-    return 1 / stageState.scale * value;
+    return value / stageState.scale;
   };
 
   var handleDrag = function handleDrag(e) {
@@ -6898,14 +6905,14 @@ var Port = function Port(_ref) {
 
     if (isInput) {
       var to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
+        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
+        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
       };
       if (lineInToPort.current) lineInToPort.current.setAttribute("d", calculateCurve(to, dragStartCoordinatesCache.current));else line.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, to));
     } else {
       var _to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stage.height / 2) + byScale(stageState.translate.y)
+        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
+        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
       };
       line.current.setAttribute("d", calculateCurve(_to, dragStartCoordinatesCache.current));
     }
@@ -7038,8 +7045,8 @@ var Port = function Port(_ref) {
         lineInToPort.current.parentNode.style.zIndex = 9999;
         var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
         var coordinates = {
-          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + stageState.translate.x,
+          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + stageState.translate.y
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -7048,8 +7055,8 @@ var Port = function Port(_ref) {
         document.addEventListener("mousemove", handleDrag);
       } else {
         var _coordinates = {
-          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
+          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
         };
         setDragStartCoordinates(_coordinates);
         dragStartCoordinatesCache.current = _coordinates;
@@ -7059,8 +7066,8 @@ var Port = function Port(_ref) {
       }
     } else {
       var _coordinates2 = {
-        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + byScale(stageState.translate.x),
-        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + byScale(stageState.translate.y)
+        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
+        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
       };
       setDragStartCoordinates(_coordinates2);
       dragStartCoordinatesCache.current = _coordinates2;
@@ -8924,7 +8931,7 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
   var commentRef = React$1.useRef();
 
   var byScale = function byScale(value) {
-    return 1 / stageState.scale * value;
+    return value / stageState.scale;
   };
 
   var updateConnectionsByTransput = function updateConnectionsByTransput() {
@@ -8952,12 +8959,12 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
 
         var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
         var from = {
-          x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
-          y: byScale(toRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + byScale(stageState.translate.y)
+          x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
+          y: byScale(toRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
         };
         var to = {
-          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + byScale(stageState.translate.x),
-          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + byScale(stageState.translate.y)
+          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
+          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
         };
         cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray$1(isOutput ? [to, from] : [from, to])));
       });
@@ -27856,15 +27863,15 @@ function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if 
 function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$5(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var stageReducer = (function (state, incomingAction) {
-  var action = typeof incomingAction === 'function' ? incomingAction(state) : incomingAction;
+  var action = typeof incomingAction === "function" ? incomingAction(state) : incomingAction;
 
   switch (action.type) {
-    case 'SET_SCALE':
+    case "SET_SCALE":
       return _objectSpread$5(_objectSpread$5({}, state), {}, {
         scale: action.scale
       });
 
-    case 'SET_TRANSLATE':
+    case "SET_TRANSLATE":
       return _objectSpread$5(_objectSpread$5({}, state), {}, {
         translate: action.translate
       });
@@ -28190,22 +28197,7 @@ _defineProperty(LoopError, "maxLoopsExceeded", 1);
 
 var RootEngine = /*#__PURE__*/function () {
   function RootEngine(config, resolveInputControls, fireNodeFunction) {
-    var _this2 = this;
-
     _classCallCheck$1(this, RootEngine);
-
-    _defineProperty(this, "resetLoops", function (maxLoops) {
-      _this2.maxLoops = maxLoops !== undefined ? maxLoops : 1000;
-      _this2.loops = 0;
-    });
-
-    _defineProperty(this, "checkLoops", function () {
-      if (_this2.maxLoops >= 0 && _this2.loops > _this2.maxLoops) {
-        throw new LoopError("Max loop count exceeded.", LoopError.maxLoopsExceeded);
-      } else {
-        _this2.loops++;
-      }
-    });
 
     _defineProperty(this, "getRootNode", function (nodes) {
       var roots = Object.values(nodes).filter(function (n) {
@@ -28219,7 +28211,31 @@ var RootEngine = /*#__PURE__*/function () {
       return roots[0];
     });
 
-    _defineProperty(this, "reduceRootInputs", function (inputs, callback) {
+    this.config = config;
+    this.fireNodeFunction = fireNodeFunction;
+    this.resolveInputControls = resolveInputControls;
+    this.loops = 0;
+    this.maxLoops = 1000;
+  }
+
+  _createClass$1(RootEngine, [{
+    key: "resetLoops",
+    value: function resetLoops(maxLoops) {
+      this.maxLoops = maxLoops !== undefined ? maxLoops : 1000;
+      this.loops = 0;
+    }
+  }, {
+    key: "checkLoops",
+    value: function checkLoops() {
+      if (this.maxLoops >= 0 && this.loops > this.maxLoops) {
+        throw new LoopError("Max loop count exceeded.", LoopError.maxLoopsExceeded);
+      } else {
+        this.loops++;
+      }
+    }
+  }, {
+    key: "reduceRootInputs",
+    value: function reduceRootInputs(inputs, callback) {
       return Object.entries(inputs).reduce(function (obj, _ref) {
         var _ref2 = _slicedToArray(_ref, 2),
             inputName = _ref2[0],
@@ -28229,12 +28245,15 @@ var RootEngine = /*#__PURE__*/function () {
         obj[input.name] = input.value;
         return obj;
       }, {});
-    });
+    }
+  }, {
+    key: "resolveInputValues",
+    value: function resolveInputValues(node, nodeType, nodes, context) {
+      var _this2 = this;
 
-    _defineProperty(this, "resolveInputValues", function (node, nodeType, nodes, context) {
       var inputs = nodeType.inputs;
 
-      if (typeof inputs === 'function') {
+      if (typeof inputs === "function") {
         inputs = inputs(node.inputData, node.connections, context);
       }
 
@@ -28249,29 +28268,17 @@ var RootEngine = /*#__PURE__*/function () {
 
         return obj;
       }, {});
-    });
-
-    _defineProperty(this, "getValueOfConnection", function (connection, nodes, context) {
-      _this2.checkLoops();
-
+    }
+  }, {
+    key: "getValueOfConnection",
+    value: function getValueOfConnection(connection, nodes, context) {
+      this.checkLoops();
       var outputNode = nodes[connection.nodeId];
-      var outputNodeType = _this2.config.nodeTypes[outputNode.type];
-
-      var inputValues = _this2.resolveInputValues(outputNode, outputNodeType, nodes, context);
-
-      var outputResult = _this2.fireNodeFunction(outputNode, inputValues, outputNodeType, context)[connection.portName];
-
-      return outputResult;
-    });
-
-    this.config = config;
-    this.fireNodeFunction = fireNodeFunction;
-    this.resolveInputControls = resolveInputControls;
-    this.loops = 0;
-    this.maxLoops = 1000;
-  }
-
-  _createClass$1(RootEngine, [{
+      var outputNodeType = this.config.nodeTypes[outputNode.type];
+      var inputValues = this.resolveInputValues(outputNode, outputNodeType, nodes, context);
+      return this.fireNodeFunction(outputNode, inputValues, outputNodeType, context)[connection.portName];
+    }
+  }, {
     key: "resolveRootNode",
     value: function resolveRootNode(nodes) {
       var _this3 = this;
@@ -28282,7 +28289,7 @@ var RootEngine = /*#__PURE__*/function () {
       if (rootNode) {
         var inputs = this.config.nodeTypes[rootNode.type].inputs;
 
-        if (typeof inputs === 'function') {
+        if (typeof inputs === "function") {
           inputs = inputs(rootNode.inputData, rootNode.connections, options.context);
         }
 
@@ -28303,12 +28310,12 @@ var RootEngine = /*#__PURE__*/function () {
             } else {
               console.error(e);
             }
-          } finally {
-            return {
-              name: inputName,
-              value: value
-            };
           }
+
+          return {
+            name: inputName,
+            value: value
+          };
         });
 
         if (options.onlyResolveConnected) {
@@ -28726,7 +28733,8 @@ var NodeEditor = /*#__PURE__*/React$1.forwardRef(function (_ref, ref) {
     }
 
     triggerRecalculation();
-  };
+  }; // eslint-disable-next-line react/jsx-no-constructed-context-values
+
 
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);

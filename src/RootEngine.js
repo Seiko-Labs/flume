@@ -14,11 +14,13 @@ export class RootEngine {
     this.loops = 0;
     this.maxLoops = 1000;
   }
-  resetLoops = maxLoops => {
+
+  resetLoops(maxLoops) {
     this.maxLoops = maxLoops !== undefined ? maxLoops : 1000;
     this.loops = 0;
-  };
-  checkLoops = () => {
+  }
+
+  checkLoops() {
     if (this.maxLoops >= 0 && this.loops > this.maxLoops) {
       throw new LoopError(
         "Max loop count exceeded.",
@@ -27,9 +29,10 @@ export class RootEngine {
     } else {
       this.loops++;
     }
-  };
-  getRootNode = nodes => {
-    const roots = Object.values(nodes).filter(n => n.root);
+  }
+
+  getRootNode = (nodes) => {
+    const roots = Object.values(nodes).filter((n) => n.root);
     if (roots.length > 1) {
       throw new Error(
         "The root engine must not be called with more than one root node."
@@ -37,16 +40,19 @@ export class RootEngine {
     }
     return roots[0];
   };
-  reduceRootInputs = (inputs, callback) =>
-    Object.entries(inputs).reduce((obj, [inputName, connection]) => {
+
+  reduceRootInputs(inputs, callback) {
+    return Object.entries(inputs).reduce((obj, [inputName, connection]) => {
       const input = callback(inputName, connection);
       obj[input.name] = input.value;
       return obj;
     }, {});
-  resolveInputValues = (node, nodeType, nodes, context) => {
-    let inputs = nodeType.inputs
-    if (typeof inputs === 'function') {
-      inputs = inputs(node.inputData, node.connections, context)
+  }
+
+  resolveInputValues(node, nodeType, nodes, context) {
+    let inputs = nodeType.inputs;
+    if (typeof inputs === "function") {
+      inputs = inputs(node.inputData, node.connections, context);
     }
     return inputs.reduce((obj, input) => {
       const inputConnections = node.connections.inputs[input.name] || [];
@@ -65,8 +71,9 @@ export class RootEngine {
       }
       return obj;
     }, {});
-  };
-  getValueOfConnection = (connection, nodes, context) => {
+  }
+
+  getValueOfConnection(connection, nodes, context) {
     this.checkLoops();
     const outputNode = nodes[connection.nodeId];
     const outputNodeType = this.config.nodeTypes[outputNode.type];
@@ -76,34 +83,35 @@ export class RootEngine {
       nodes,
       context
     );
-    const outputResult = this.fireNodeFunction(
+    return this.fireNodeFunction(
       outputNode,
       inputValues,
       outputNodeType,
       context
     )[connection.portName];
-    return outputResult;
-  };
+  }
+
   resolveRootNode(nodes, options = {}) {
     const rootNode = options.rootNodeId
       ? nodes[options.rootNodeId]
       : this.getRootNode(nodes);
     if (rootNode) {
       let inputs = this.config.nodeTypes[rootNode.type].inputs;
-      if (typeof inputs === 'function') {
-        inputs = inputs(rootNode.inputData, rootNode.connections, options.context);
+      if (typeof inputs === "function") {
+        inputs = inputs(
+          rootNode.inputData,
+          rootNode.connections,
+          options.context
+        );
       }
-      const controlValues = inputs.reduce(
-        (obj, input) => {
-          obj[input.name] = this.resolveInputControls(
-            input.type,
-            rootNode.inputData[input.name] || {},
-            options.context
-          );
-          return obj;
-        },
-        {}
-      );
+      const controlValues = inputs.reduce((obj, input) => {
+        obj[input.name] = this.resolveInputControls(
+          input.type,
+          rootNode.inputData[input.name] || {},
+          options.context
+        );
+        return obj;
+      }, {});
       const inputValues = this.reduceRootInputs(
         rootNode.connections.inputs,
         (inputName, connection) => {
@@ -117,16 +125,17 @@ export class RootEngine {
             );
           } catch (e) {
             if (e.code === LoopError.maxLoopsExceeded) {
-              console.error(`${e.message} Circular nodes detected in ${inputName} port.`);
+              console.error(
+                `${e.message} Circular nodes detected in ${inputName} port.`
+              );
             } else {
-              console.error(e)
+              console.error(e);
             }
-          } finally {
-            return {
-              name: inputName,
-              value
-            };
           }
+          return {
+            name: inputName,
+            value,
+          };
         }
       );
       if (options.onlyResolveConnected) {

@@ -34,7 +34,7 @@ const Port = ({
   const line = React.useRef();
   const lineInToPort = React.useRef();
 
-  const byScale = (value) => (1 / stageState.scale) * value;
+  const byScale = (value) => value / stageState.scale;
 
   const handleDrag = (e) => {
     const stage = document.getElementById(stageId).getBoundingClientRect();
@@ -43,10 +43,10 @@ const Port = ({
       const to = {
         x:
           byScale(e.clientX - stage.x - stage.width / 2) +
-          byScale(stageState.translate.x),
+          stageState.translate.x,
         y:
           byScale(e.clientY - stage.y - stage.height / 2) +
-          byScale(stageState.translate.y),
+          stageState.translate.y,
       };
       if (lineInToPort.current)
         lineInToPort.current.setAttribute(
@@ -62,10 +62,10 @@ const Port = ({
       const to = {
         x:
           byScale(e.clientX - stage.x - stage.width / 2) +
-          byScale(stageState.translate.x),
+          stageState.translate.x,
         y:
           byScale(e.clientY - stage.y - stage.height / 2) +
-          byScale(stageState.translate.y),
+          stageState.translate.y,
       };
       line.current.setAttribute(
         "d",
@@ -179,11 +179,11 @@ const Port = ({
           x:
             byScale(
               outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2
-            ) + byScale(stageState.translate.x),
+            ) + stageState.translate.x,
           y:
             byScale(
               outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2
-            ) + byScale(stageState.translate.y),
+            ) + stageState.translate.y,
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -195,11 +195,11 @@ const Port = ({
           x:
             byScale(
               startPort.x - stage.x + startPort.width / 2 - stage.width / 2
-            ) + byScale(stageState.translate.x),
+            ) + stageState.translate.x,
           y:
             byScale(
               startPort.y - stage.y + startPort.width / 2 - stage.height / 2
-            ) + byScale(stageState.translate.y),
+            ) + stageState.translate.y,
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -212,11 +212,11 @@ const Port = ({
         x:
           byScale(
             startPort.x - stage.x + startPort.width / 2 - stage.width / 2
-          ) + byScale(stageState.translate.x),
+          ) + stageState.translate.x,
         y:
           byScale(
             startPort.y - stage.y + startPort.width / 2 - stage.height / 2
-          ) + byScale(stageState.translate.y),
+          ) + stageState.translate.y,
       };
       setDragStartCoordinates(coordinates);
       dragStartCoordinatesCache.current = coordinates;

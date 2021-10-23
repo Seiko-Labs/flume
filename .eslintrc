@@ -10,7 +10,8 @@
     "Cypress": true
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "max-params": "off"
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
