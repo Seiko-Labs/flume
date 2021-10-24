@@ -20,7 +20,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "release": "npx np",
-    "postinstall": "yarn build"
+    "postinstall": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
   },
   "np": {
     "testScript": "test"
