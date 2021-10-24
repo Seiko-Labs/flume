@@ -20,7 +20,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "release": "npx np",
-    "prepare": "yarn run build"
+    "postinstall": "yarn build"
   },
   "np": {
     "testScript": "test"
@@ -79,9 +79,6 @@
     "rollup-plugin-url": "^3.0.1",
     "wait-on": "^5.2.1"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@reach/auto-id": "^0.10.5",
     "@react-hook/debounce": "^4.0.0",

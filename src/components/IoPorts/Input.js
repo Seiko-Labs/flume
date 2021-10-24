@@ -5,22 +5,25 @@ import styles from "./IoPorts.css";
 import Port from "./Port";
 
 const Input = ({
-                 type,
-                 label,
-                 name,
-                 nodeId,
-                 data,
-                 controls: localControls,
-                 inputTypes,
-                 noControls,
-                 triggerRecalculation,
-                 updateNodeConnections,
-                 isConnected,
-                 inputData,
-                 hidePort,
-               }) => {
-  const {label: defaultLabel, color, controls: defaultControls = []} =
-  inputTypes[type] || {};
+  type,
+  label,
+  name,
+  nodeId,
+  data,
+  controls: localControls,
+  inputTypes,
+  noControls,
+  triggerRecalculation,
+  updateNodeConnections,
+  isConnected,
+  inputData,
+  hidePort,
+}) => {
+  const {
+    label: defaultLabel,
+    color,
+    controls: defaultControls = [],
+  } = inputTypes[type] || {};
   const prevConnected = usePrevious(isConnected);
 
   const controls = localControls || defaultControls;
@@ -35,7 +38,7 @@ const Input = ({
     <div
       className={styles.transput}
       data-controlless={isConnected || noControls || !controls.length}
-      onDragStart={e => {
+      onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
@@ -43,29 +46,25 @@ const Input = ({
       {(!controls.length || noControls || isConnected) && (
         <label className={styles.portLabel}>{label || defaultLabel}</label>
       )}
-      {!noControls && !isConnected
-        ? (
-          <div className={styles.controls}>
-            {
-              controls.map(control => (
-                <Control
-                  {...control}
-                  nodeId={nodeId}
-                  portName={name}
-                  triggerRecalculation={triggerRecalculation}
-                  updateNodeConnections={updateNodeConnections}
-                  inputLabel={label}
-                  data={data[control.name]}
-                  allData={data}
-                  key={control.name}
-                  inputData={inputData}
-                  isMonoControl={controls.length === 1}
-                />
-              ))
-            }
-          </div>
-        )
-        : null}
+      {!noControls && !isConnected ? (
+        <div className={styles.controls}>
+          {controls.map((control) => (
+            <Control
+              {...control}
+              nodeId={nodeId}
+              portName={name}
+              triggerRecalculation={triggerRecalculation}
+              updateNodeConnections={updateNodeConnections}
+              inputLabel={label}
+              data={data[control.name]}
+              allData={data}
+              key={control.name}
+              inputData={inputData}
+              isMonoControl={controls.length === 1}
+            />
+          ))}
+        </div>
+      ) : null}
       {!hidePort ? (
         <Port
           type={type}
@@ -80,4 +79,4 @@ const Input = ({
   );
 };
 
-export default Input
+export default Input;

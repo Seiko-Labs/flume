@@ -1,29 +1,31 @@
 import React from "react";
 import styles from "./TextInput.css";
-import { RecalculateStageRectContext } from '../../context'
+import { RecalculateStageRectContext } from "../../context";
 
 const TextInput = ({
   placeholder,
   updateNodeConnections,
   onChange,
+  transformer,
+  predicate,
   data,
   step,
-  type
+  type,
 }) => {
-  const numberInput = React.useRef()
-  const recalculateStageRect = React.useContext(RecalculateStageRectContext)
+  const numberInput = React.useRef();
+  const recalculateStageRect = React.useContext(RecalculateStageRectContext);
 
   const handleDragEnd = () => {
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleDragEnd);
   };
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e) => {
     e.stopPropagation();
     updateNodeConnections();
   };
 
-  const handlePossibleResize = e => {
+  const handlePossibleResize = (e) => {
     e.stopPropagation();
     recalculateStageRect();
     document.addEventListener("mousemove", handleMouseMove);
@@ -34,15 +36,15 @@ const TextInput = ({
     <div className={styles.wrapper}>
       {type === "number" ? (
         <input
-          onKeyDown={e => {
-            if(e.keyCode === 69){
-              e.preventDefault()
+          onKeyDown={(e) => {
+            if (e.keyCode === 69) {
+              e.preventDefault();
               return false;
             }
           }}
-          onChange={e => {
-            const inputValue = e.target.value.replace(/[^0-9.]+/g, '');
-            if (!!inputValue) {
+          onChange={(e) => {
+            const inputValue = e.target.value.replace(/[^0-9.]+/g, "");
+            if (inputValue) {
               const value = parseFloat(inputValue, 10);
               if (Number.isNaN(value)) {
                 onChange(0);
@@ -52,7 +54,7 @@ const TextInput = ({
               }
             }
           }}
-          onBlur={e => {
+          onBlur={(e) => {
             if (!e.target.value) {
               onChange(0);
               numberInput.current.value = 0;
@@ -64,14 +66,20 @@ const TextInput = ({
           placeholder={placeholder}
           className={styles.input}
           defaultValue={data}
-          onDragStart={e => e.stopPropagation()}
+          onDragStart={(e) => e.stopPropagation()}
           ref={numberInput}
         />
       ) : (
         <textarea
-          onChange={e => onChange(e.target.value)}
+          onChange={(e) => {
+            const res =
+              typeof transformer === "function"
+                ? transformer(e.target.value)
+                : e.target.value;
+            typeof predicate === "function" && predicate(res) && onChange();
+          }}
           value={data}
-          onDragStart={e => e.stopPropagation()}
+          onDragStart={(e) => e.stopPropagation()}
           onMouseDown={handlePossibleResize}
           type="text"
           placeholder={placeholder}

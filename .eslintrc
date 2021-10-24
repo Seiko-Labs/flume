@@ -1,7 +1,5 @@
 {
   "extends": [
-    "alloy",
-    "alloy/react",
     "plugin:prettier/recommended",
     "prettier"
   ],
@@ -19,7 +17,7 @@
     "requireConfigFile": false,
     "sourceType": "module",
     "babelOptions": {
-      "presets": ["@babel/preset-react"]
+      "configFile": "./.babelrc"
     },
     "ecmaFeatures": {
       "jsx": true

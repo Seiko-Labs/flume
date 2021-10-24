@@ -60,12 +60,20 @@ export const getPortRectsByNodes = (nodes, forEachConnection) =>
 export const calculateCurve = (from, to) => {
   const fFrom = from;
   const fTo = to;
-  const length = Math.min(Math.abs(fTo.x - fFrom.x) / 3, 200);
+  const deltaX = fTo.x - fFrom.x;
+  const deltaY = fTo.y - fFrom.y;
+  const xSlope = Math.min(
+    deltaX > 0 ? Math.abs(deltaX) / 3 : Math.abs(deltaX) / 3 + 30,
+    200
+  );
+  const ySlope = deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0;
 
-  return line().curve(curveBundle.beta(0.75))([
+  return line().curve(
+    curveBundle.beta(Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8 ? 0 : 0.75)
+  )([
     [fFrom.x, fFrom.y],
-    [fFrom.x + length, fFrom.y],
-    [fTo.x - length, fTo.y],
+    [fFrom.x + xSlope, fFrom.y - ySlope],
+    [fTo.x - xSlope, fTo.y + ySlope],
     [fTo.x, fTo.y],
   ]);
 };
@@ -132,14 +140,13 @@ export const getStageRef = (editorId) =>
 
 export const createConnections = (nodes, { scale, stageId }, editorId) => {
   const stageRef = getStageRef(editorId);
+
   if (stageRef) {
     const stage = stageRef.getBoundingClientRect();
     const stageHalfWidth = stage.width / 2;
     const stageHalfHeight = stage.height / 2;
 
     const byScale = (value) => value / scale;
-
-    console.log("I can do here");
 
     Object.values(nodes).forEach((node) => {
       if (node.connections && node.connections.inputs) {

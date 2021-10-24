@@ -1,4 +1,12 @@
-import React from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "./Stage.css";
 import { Portal } from "react-portal";
 import ContextMenu from "../ContextMenu/ContextMenu";
@@ -8,7 +16,7 @@ import orderBy from "lodash/orderBy";
 import clamp from "lodash/clamp";
 import { STAGE_ID } from "../../constants";
 
-const Stage = React.forwardRef(
+const Stage = forwardRef(
   (
     {
       scale,
@@ -28,23 +36,23 @@ const Stage = React.forwardRef(
     },
     wrapper
   ) => {
-    const nodeTypes = React.useContext(NodeTypesContext);
-    const dispatchNodes = React.useContext(NodeDispatchContext);
-    const translateWrapper = React.useRef();
-    const scaleWrapper = React.useRef();
-    const [menuOpen, setMenuOpen] = React.useState(false);
-    const [menuCoordinates, setMenuCoordinates] = React.useState({
+    const nodeTypes = useContext(NodeTypesContext);
+    const dispatchNodes = useContext(NodeDispatchContext);
+    const translateWrapper = useRef();
+    const scaleWrapper = useRef();
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuCoordinates, setMenuCoordinates] = useState({
       x: 0,
       y: 0,
     });
-    const dragData = React.useRef({ x: 0, y: 0 });
-    const [spaceIsPressed, setSpaceIsPressed] = React.useState(false);
+    const dragData = useRef({ x: 0, y: 0 });
+    const [spaceIsPressed, setSpaceIsPressed] = useState(false);
 
-    const setStageRect = React.useCallback(() => {
+    const setStageRect = useCallback(() => {
       stageRef.current = wrapper.current.getBoundingClientRect();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
       stageRef.current = wrapper.current.getBoundingClientRect();
       window.addEventListener("resize", setStageRect);
       return () => {
@@ -52,7 +60,7 @@ const Stage = React.forwardRef(
       };
     }, [stageRef, setStageRect]);
 
-    const handleWheel = React.useCallback(
+    const handleWheel = useCallback(
       (e) => {
         if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
           if (e.target.clientHeight < e.target.scrollHeight) return;
@@ -171,7 +179,7 @@ const Stage = React.forwardRef(
       }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (!disableZoom) {
         let stageWrapper = wrapper.current;
         stageWrapper.addEventListener("wheel", handleWheel);
@@ -181,7 +189,7 @@ const Stage = React.forwardRef(
       }
     }, [handleWheel, disableZoom]);
 
-    const menuOptions = React.useMemo(() => {
+    const menuOptions = useMemo(() => {
       const options = orderBy(
         Object.values(nodeTypes)
           .filter((node) => node.addable !== false)
@@ -265,4 +273,7 @@ const Stage = React.forwardRef(
     );
   }
 );
+
+Stage.displayName = "Stage";
+
 export default Stage;

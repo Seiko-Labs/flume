@@ -221,6 +221,7 @@ const Node = forwardRef(
       <Draggable
         className={styles.wrapper}
         style={{
+          backgroundColor: tileBackground,
           width,
           border: isSelected ? "2px solid skyblue" : "none",
           margin: isSelected ? "0" : "2px",
@@ -324,7 +325,6 @@ const Node = forwardRef(
           nodeId={id}
           inputs={inputs}
           outputs={outputs}
-          expanded={expanded}
           connections={connections}
           updateNodeConnections={updateNodeConnections}
           inputData={inputData}

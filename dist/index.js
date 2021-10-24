@@ -5674,7 +5674,7 @@ var STAGE_ID = '__node_editor_stage__';
 var DRAG_CONNECTION_ID = '__node_editor_drag_connection__';
 var CONNECTIONS_ID = '__node_editor_connections__';
 
-var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wrapper) {
+var Stage = /*#__PURE__*/React$1.forwardRef(function (_ref, wrapper) {
   var scale = _ref.scale,
       translate = _ref.translate,
       editorId = _ref.editorId,
@@ -5689,45 +5689,45 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
       disableComments = _ref.disableComments,
       disablePan = _ref.disablePan,
       disableZoom = _ref.disableZoom;
-  var nodeTypes = React__default['default'].useContext(NodeTypesContext);
-  var dispatchNodes = React__default['default'].useContext(NodeDispatchContext);
-  var translateWrapper = React__default['default'].useRef();
-  var scaleWrapper = React__default['default'].useRef();
+  var nodeTypes = React$1.useContext(NodeTypesContext);
+  var dispatchNodes = React$1.useContext(NodeDispatchContext);
+  var translateWrapper = React$1.useRef();
+  var scaleWrapper = React$1.useRef();
 
-  var _React$useState = React__default['default'].useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      menuOpen = _React$useState2[0],
-      setMenuOpen = _React$useState2[1];
+  var _useState = React$1.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      menuOpen = _useState2[0],
+      setMenuOpen = _useState2[1];
 
-  var _React$useState3 = React__default['default'].useState({
+  var _useState3 = React$1.useState({
     x: 0,
     y: 0
   }),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      menuCoordinates = _React$useState4[0],
-      setMenuCoordinates = _React$useState4[1];
+      _useState4 = _slicedToArray(_useState3, 2),
+      menuCoordinates = _useState4[0],
+      setMenuCoordinates = _useState4[1];
 
-  var dragData = React__default['default'].useRef({
+  var dragData = React$1.useRef({
     x: 0,
     y: 0
   });
 
-  var _React$useState5 = React__default['default'].useState(false),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      spaceIsPressed = _React$useState6[0],
-      setSpaceIsPressed = _React$useState6[1];
+  var _useState5 = React$1.useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      spaceIsPressed = _useState6[0],
+      setSpaceIsPressed = _useState6[1];
 
-  var setStageRect = React__default['default'].useCallback(function () {
+  var setStageRect = React$1.useCallback(function () {
     stageRef.current = wrapper.current.getBoundingClientRect();
   }, []);
-  React__default['default'].useEffect(function () {
+  React$1.useEffect(function () {
     stageRef.current = wrapper.current.getBoundingClientRect();
     window.addEventListener("resize", setStageRect);
     return function () {
       window.removeEventListener("resize", setStageRect);
     };
   }, [stageRef, setStageRect]);
-  var handleWheel = React__default['default'].useCallback(function (e) {
+  var handleWheel = React$1.useCallback(function (e) {
     if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
       if (e.target.clientHeight < e.target.scrollHeight) return;
     }
@@ -5847,7 +5847,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
     }
   };
 
-  React__default['default'].useEffect(function () {
+  React$1.useEffect(function () {
     if (!disableZoom) {
       var stageWrapper = wrapper.current;
       stageWrapper.addEventListener("wheel", handleWheel);
@@ -5856,7 +5856,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
       };
     }
   }, [handleWheel, disableZoom]);
-  var menuOptions = React__default['default'].useMemo(function () {
+  var menuOptions = React$1.useMemo(function () {
     var options = orderBy_1(Object.values(nodeTypes).filter(function (node) {
       return node.addable !== false;
     }).map(function (node) {
@@ -5926,6 +5926,7 @@ var Stage = /*#__PURE__*/React__default['default'].forwardRef(function (_ref, wr
     }
   }, children)), outerStageChildren);
 });
+Stage.displayName = "Stage";
 
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray$3(arr);
@@ -6322,8 +6323,11 @@ var getPortRect = function getPortRect(nodeId, portName) {
 var calculateCurve = function calculateCurve(from, to) {
   var fFrom = from;
   var fTo = to;
-  var length = Math.min(Math.abs(fTo.x - fFrom.x) / 3, 200);
-  return line().curve(curveBundle.beta(0.75))([[fFrom.x, fFrom.y], [fFrom.x + length, fFrom.y], [fTo.x - length, fTo.y], [fTo.x, fTo.y]]);
+  var deltaX = fTo.x - fFrom.x;
+  var deltaY = fTo.y - fFrom.y;
+  var xSlope = Math.min(deltaX > 0 ? Math.abs(deltaX) / 3 : Math.abs(deltaX) / 3 + 30, 200);
+  var ySlope = deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0;
+  return line().curve(curveBundle.beta(Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8 ? 0 : 0.75))([[fFrom.x, fFrom.y], [fFrom.x + xSlope, fFrom.y - ySlope], [fTo.x - xSlope, fTo.y + ySlope], [fTo.x, fTo.y]]);
 };
 var deleteConnection = function deleteConnection(_ref3) {
   var id = _ref3.id;
@@ -6417,7 +6421,6 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
       return value / scale;
     };
 
-    console.log("I can do here");
     Object.values(nodes).forEach(function (node) {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
@@ -6518,6 +6521,8 @@ var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
       updateNodeConnections = _ref.updateNodeConnections,
       _onChange = _ref.onChange,
+      transformer = _ref.transformer,
+      predicate = _ref.predicate,
       data = _ref.data,
       step = _ref.step,
       type = _ref.type;
@@ -6551,9 +6556,9 @@ var TextInput = function TextInput(_ref) {
       }
     },
     onChange: function onChange(e) {
-      var inputValue = e.target.value.replace(/[^0-9.]+/g, '');
+      var inputValue = e.target.value.replace(/[^0-9.]+/g, "");
 
-      if (!!inputValue) {
+      if (inputValue) {
         var value = parseFloat(inputValue, 10);
 
         if (Number.isNaN(value)) {
@@ -6584,7 +6589,8 @@ var TextInput = function TextInput(_ref) {
     ref: numberInput
   }) : /*#__PURE__*/React__default['default'].createElement("textarea", {
     onChange: function onChange(e) {
-      return _onChange(e.target.value);
+      var res = typeof transformer === "function" ? transformer(e.target.value) : e.target.value;
+      typeof predicate === "function" && predicate(res) && _onChange();
     },
     value: data,
     onDragStart: function onDragStart(e) {
@@ -6742,8 +6748,10 @@ var Control = function Control(_ref) {
       data = _ref.data,
       allData = _ref.allData,
       render = _ref.render,
-      step = _ref.step,
-      _ref$options = _ref.options,
+      predicate = _ref.predicate,
+      step = _ref.step;
+      _ref.transformer;
+      var _ref$options = _ref.options,
       options = _ref$options === void 0 ? [] : _ref$options,
       placeholder = _ref.placeholder,
       inputData = _ref.inputData,
@@ -6786,12 +6794,14 @@ var Control = function Control(_ref) {
 
       case "text":
         return /*#__PURE__*/React__default['default'].createElement(TextInput, _extends$1({}, commonProps, {
+          predicate: predicate,
           placeholder: placeholder
         }));
 
       case "number":
         return /*#__PURE__*/React__default['default'].createElement(TextInput, _extends$1({}, commonProps, {
           step: step,
+          predicate: predicate,
           type: "number",
           placeholder: placeholder
         }));
@@ -9065,6 +9075,7 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
   return /*#__PURE__*/React__default['default'].createElement(Draggable, {
     className: styles$c.wrapper,
     style: {
+      backgroundColor: tileBackground,
       width: width,
       border: isSelected ? "2px solid skyblue" : "none",
       margin: isSelected ? "0" : "2px",
@@ -9163,7 +9174,6 @@ var Node = /*#__PURE__*/React$1.forwardRef(function (_ref, nodeWrapper) {
     nodeId: id,
     inputs: inputs,
     outputs: outputs,
-    expanded: expanded,
     connections: connections,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData,
@@ -9251,8 +9261,8 @@ var buildControlType = function buildControlType(defaultConfig) {
     validate(config);
     return _objectSpread$c({
       type: defaultConfig.type,
-      label: define(config.label, defaultConfig.label || ''),
-      name: define(config.name, defaultConfig.name || ''),
+      label: define(config.label, defaultConfig.label || ""),
+      name: define(config.name, defaultConfig.name || ""),
       defaultValue: define(config.defaultValue, defaultConfig.defaultValue),
       setValue: define(config.setValue, undefined)
     }, setup(config));
@@ -9261,15 +9271,15 @@ var buildControlType = function buildControlType(defaultConfig) {
 
 var Controls = {
   text: buildControlType({
-    type: 'text',
-    name: 'text',
-    defaultValue: ''
+    type: "text",
+    name: "text",
+    defaultValue: ""
   }),
   select: buildControlType({
-    type: 'select',
-    name: 'select',
+    type: "select",
+    name: "select",
     options: [],
-    defaultValue: ''
+    defaultValue: ""
   }, function () {}, function (config) {
     return {
       options: define(config.options, []),
@@ -9278,8 +9288,8 @@ var Controls = {
     };
   }),
   number: buildControlType({
-    type: 'number',
-    name: 'number',
+    type: "number",
+    name: "number",
     defaultValue: 0
   }, function () {}, function (config) {
     return {
@@ -9287,13 +9297,13 @@ var Controls = {
     };
   }),
   checkbox: buildControlType({
-    type: 'checkbox',
-    name: 'checkbox',
+    type: "checkbox",
+    name: "checkbox",
     defaultValue: false
   }),
   multiselect: buildControlType({
-    type: 'multiselect',
-    name: 'multiselect',
+    type: "multiselect",
+    name: "multiselect",
     options: [],
     defaultValue: []
   }, function () {}, function (config) {
@@ -9304,8 +9314,8 @@ var Controls = {
     };
   }),
   custom: buildControlType({
-    type: 'custom',
-    name: 'custom',
+    type: "custom",
+    name: "custom",
     render: function render() {},
     defaultValue: undefined
   }, function () {}, function (config) {
@@ -9315,14 +9325,14 @@ var Controls = {
   })
 };
 var Colors = {
-  yellow: 'yellow',
-  orange: 'orange',
-  red: 'red',
-  pink: 'pink',
-  purple: 'purple',
-  blue: 'blue',
-  green: 'green',
-  grey: 'grey'
+  yellow: "yellow",
+  orange: "orange",
+  red: "red",
+  pink: "pink",
+  purple: "purple",
+  blue: "blue",
+  green: "green",
+  grey: "grey"
 };
 var getPortBuilders = function getPortBuilders(ports) {
   return Object.values(ports).reduce(function (obj, port) {
@@ -9369,15 +9379,15 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addNodeType",
     value: function addNodeType(config) {
-      if (_typeof(config) !== 'object' && config !== null) {
-        throw new Error('You must provide a configuration object when calling addNodeType.');
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addNodeType.");
       }
 
-      if (typeof config.type !== 'string') {
+      if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
       }
 
-      if (typeof config.initialWidth !== 'undefined' && typeof config.initialWidth !== 'number') {
+      if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
         throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
       }
 
@@ -9387,8 +9397,8 @@ var FlumeConfig = /*#__PURE__*/function () {
 
       var node = {
         type: config.type,
-        label: define(config.label, ''),
-        description: define(config.description, ''),
+        label: define(config.label, ""),
+        description: define(config.description, ""),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
       }; // Validating category data of flume action that is used to render action
@@ -9396,22 +9406,22 @@ var FlumeConfig = /*#__PURE__*/function () {
 
       node.category = {};
       var category = config.category;
-      node.category.id = category !== null && category !== void 0 && category.id && typeof config.id === 'number' ? category.id : -1;
-      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === 'string' ? category.label : 'Other';
-      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
+      node.category.id = category !== null && category !== void 0 && category.id && typeof config.id === "number" ? category.id : -1;
+      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
 
-      node.category.titleColor = category !== null && category !== void 0 && category.titleColor && typeof category.titleColor === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor) ? category.titleColor : '#000'; // Optionally supplying action header color
+      node.category.titleColor = category !== null && category !== void 0 && category.titleColor && typeof category.titleColor === "string" && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor) ? category.titleColor : "#000"; // Optionally supplying action header color
 
-      node.category.tileBackground = category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === 'string' && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.tileBackground) ? category.tileBackground : '#494956';
-      if (typeof config.icon === 'string') node.icon = config.icon;
-      if (typeof config.comment === 'string') node.comment = config.comment;
+      node.category.tileBackground = category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.tileBackground) ? category.tileBackground : "#494956";
+      if (typeof config.icon === "string") node.icon = config.icon;
+      if (typeof config.comment === "string") node.comment = config.comment;
       if (config.expanded) node.expanded = !!config.expanded;
       if (config.initialWidth) node.initialWidth = config.initialWidth;
       if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
 
-      if (typeof config.inputs === 'function') {
+      if (typeof config.inputs === "function") {
         var inputs = config.inputs(getPortBuilders(this.portTypes));
-        if (!Array.isArray(inputs) && typeof config.inputs !== 'function') throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
+        if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
         node.inputs = inputs;
       } else if (config.inputs === undefined) {
         node.inputs = [];
@@ -9421,10 +9431,10 @@ var FlumeConfig = /*#__PURE__*/function () {
         node.inputs = config.inputs;
       }
 
-      if (typeof config.outputs === 'function') {
+      if (typeof config.outputs === "function") {
         var outputs = config.outputs(getPortBuilders(this.portTypes));
 
-        if (!Array.isArray(outputs) && typeof config.outputs !== 'function') {
+        if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
           throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
         }
 
@@ -9438,7 +9448,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       }
 
       if (config.root !== undefined) {
-        if (typeof config.root !== 'boolean') {
+        if (typeof config.root !== "boolean") {
           throw new Error("Optional key, \"root\" must be a boolean.");
         } else {
           node.root = config.root;
@@ -9466,11 +9476,11 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addPortType",
     value: function addPortType(config) {
-      if (_typeof(config) !== 'object' && config !== null) {
-        throw new Error('You must provide a configuration object when calling addPortType');
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addPortType");
       }
 
-      if (typeof config.type !== 'string') {
+      if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addPortType.");
       }
 
@@ -9478,14 +9488,14 @@ var FlumeConfig = /*#__PURE__*/function () {
         throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
       }
 
-      if (typeof config.name !== 'string') {
+      if (typeof config.name !== "string") {
         throw new Error("Required key, \"name\" must be a string when calling addPortType.");
       }
 
       var port = {
         type: config.type,
         name: config.name,
-        label: define(config.label, ''),
+        label: define(config.label, ""),
         color: define(config.color, Colors.grey),
         hidePort: define(config.hidePort, false)
       };
@@ -9521,7 +9531,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         if (!skipDynamicNodesCheck) {
           var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
-            return typeof node.inputs === 'function' || typeof node.outputs === 'function';
+            return typeof node.inputs === "function" || typeof node.outputs === "function";
           });
 
           if (dynamicNodes.length) {
@@ -9540,7 +9550,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         if (affectedNodes.length) {
           throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
             return "".concat(n.type);
-          }).join(', '), "]"));
+          }).join(", "), "]"));
         } else {
           var _this$portTypes = this.portTypes;
               _this$portTypes[type];
