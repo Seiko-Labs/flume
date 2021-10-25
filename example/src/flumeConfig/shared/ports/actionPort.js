@@ -4,5 +4,5 @@ export const actionPort = {
   type: "actionPort",
   name: "actionPort",
   label: "Action",
-  color: Colors.green,
+  hidePort: false,
 };

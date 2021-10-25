@@ -1,4 +1,11 @@
-import React, { forwardRef, useContext, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import useTransputs from "../../hooks/useTransputs";
 import styles from "./Node.css";
 import {
   NodeDispatchContext,
@@ -10,8 +17,7 @@ import { Portal } from "react-portal";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import IoPorts from "../IoPorts/IoPorts";
 import Draggable from "../Draggable/Draggable";
-import ClickOutHandler from "react-onclickout";
-import { Scrollbars } from "react-custom-scrollbars-2";
+import { ReactComponent as Ticker } from "../../img/ticker.svg";
 
 const Node = forwardRef(
   (
@@ -23,12 +29,13 @@ const Node = forwardRef(
       isSelected,
       comment,
       y,
-      expanded = false,
+      expanded,
       delay = 6,
       stageRect,
       connections,
       type,
       inputData,
+      description,
       onDragStart,
       onDragEnd,
       onDragHandle,
@@ -46,14 +53,30 @@ const Node = forwardRef(
       inputs = [],
       outputs = [],
       icon,
-      category: { titleColor = "#000", tileBackground = "#494956" },
+      category: {
+        tileFontColor = "#B3B3B3",
+        tileBackground = "rgba(89, 89, 102, 0.9)",
+      },
     } = nodeTypes[type];
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [menuCoordinates, setMenuCoordinates] = useState({ x: 0, y: 0 });
-    const [optionalAmount, setOptionalAmount] = useState(0);
     const [isInputComment, setIsInputComment] = useState(false);
-    const [drag, setDrag] = useState(0);
+    const resolvedInputs = useTransputs(
+      inputs,
+      "input",
+      id,
+      inputData,
+      connections
+    );
+
+    const resolvedOutputs = useTransputs(
+      outputs,
+      "output",
+      id,
+      inputData,
+      connections
+    );
 
     const commentRef = useRef();
 
@@ -197,24 +220,27 @@ const Node = forwardRef(
       setIsInputComment(false);
     };
 
+    const hasInner = useMemo(
+      () => !!resolvedInputs?.some?.(({ hidePort }) => hidePort),
+      [resolvedInputs]
+    );
+
     const handleMouseUp = () => {
-      if (drag < 10) {
-        setIsInputComment(true);
-        setTimeout(() => {
-          const el = commentRef.current;
-          if (el) {
-            commentRef.current.focus();
-            if (typeof el.selectionStart === "number") {
-              el.selectionStart = el.selectionEnd = el.value.length;
-            } else if (typeof el.createTextRange !== "undefined") {
-              el.focus();
-              const range = el.createTextRange();
-              range.collapse(false);
-              range.select();
-            }
+      setIsInputComment(true);
+      setTimeout(() => {
+        const el = commentRef.current;
+        if (el) {
+          commentRef.current.focus();
+          if (typeof el.selectionStart === "number") {
+            el.selectionStart = el.selectionEnd = el.value.length;
+          } else if (typeof el.createTextRange !== "undefined") {
+            el.focus();
+            const range = el.createTextRange();
+            range.collapse(false);
+            range.select();
           }
-        }, 50);
-      }
+        }
+      }, 50);
     };
 
     return (
@@ -222,9 +248,8 @@ const Node = forwardRef(
         className={styles.wrapper}
         style={{
           backgroundColor: tileBackground,
-          width,
-          border: isSelected ? "2px solid skyblue" : "none",
-          margin: isSelected ? "0" : "2px",
+          color: tileFontColor,
+          boxShadow: isSelected ? "0 0 0 2px rgba(75, 174, 252, 0.5)" : "none",
           transform: `translate(${x}px, ${y}px)`,
         }}
         onDragStart={startDrag}
@@ -237,98 +262,67 @@ const Node = forwardRef(
         stageState={stageState}
         stageRect={stageRect}
       >
-        <div
-          className={styles.header}
-          style={{
-            overflow: isInputComment ? "visible" : "",
-            maxHeight: isInputComment ? "150" : "",
-            backgroundColor: tileBackground,
-            color: titleColor,
-          }}
-        >
-          {!isInputComment && (
-            <div
-              {...(comment && {
-                className: styles.expander,
-                style: {
-                  background: `linear-gradient(to bottom, transparent, transparent 70px, ${tileBackground} 70px)`,
-                },
-              })}
-            >
-              {icon && <img alt="" src={icon} />}
-              <div className={styles.actionsContainer}>
-                {optionalAmount ? (
-                  <button
-                    className={styles.expandToggle}
-                    style={{ color: titleColor }}
-                    onClick={() =>
-                      nodesDispatch({ type: "TOGGLE_NODE_VIEW", id })
-                    }
-                  >
-                    {expanded ? "▲" : "▼"}
-                  </button>
-                ) : null}
-              </div>
-              {comment ? (
-                <span
-                  className={styles.comment}
-                  onMouseDown={() => setDrag(0)}
-                  onMouseMove={() => setDrag((d) => d + 1)}
-                  onMouseUp={handleMouseUp}
-                >
-                  {comment}
-                </span>
-              ) : (
-                <span
-                  className={styles.label}
-                  onMouseDown={() => setDrag(0)}
-                  onMouseMove={() => setDrag((d) => d + 1)}
-                  onMouseUp={handleMouseUp}
-                >
-                  {label}
-                </span>
+        <IoPorts
+          nodeId={id}
+          resolvedOutputs={resolvedOutputs}
+          show="outputsOnly"
+          color={tileBackground}
+          connections={connections}
+          updateNodeConnections={updateNodeConnections}
+          inputData={inputData}
+        />
+        <div className={styles.body}>
+          <div className={styles.header}>
+            <div className={styles.headerMeta}>
+              {hasInner && (
+                <Ticker
+                  onClick={() =>
+                    nodesDispatch({ type: "TOGGLE_NODE_VIEW", id })
+                  }
+                  style={{
+                    transform: expanded ? "none" : "rotate(-90deg)",
+                    stroke: tileFontColor,
+                  }}
+                />
               )}
-            </div>
-          )}
-          {isInputComment && (
-            <ClickOutHandler onClickOut={handleFieldBlur}>
-              <div
-                style={{
-                  boxShadow: "0 0 0 2px #4284f7 inset",
-                  padding: 1,
-                  transform: "translateZ(1px)",
-                  overflow: "hidden",
-                  borderRadius: 5,
-                }}
-              >
-                <Scrollbars autoHeight autoHeightMin={13} autoHeightMax={150}>
-                  <span
-                    role="textbox"
-                    contentEditable
-                    ref={commentRef}
-                    autoFocus
-                    onInput={() => updateNodeConnections()}
-                    className={styles.input}
-                    style={{
-                      background: `linear-gradient(to bottom, transparent, transparent 70px, ${tileBackground} 70px)`,
-                    }}
-                    onBlur={handleFieldBlur}
-                  >
-                    {comment}
-                  </span>
-                </Scrollbars>
+              <div className={styles.title}>
+                {icon && <img src={icon} />}
+                <span className={styles.label}>{label}</span>
               </div>
-            </ClickOutHandler>
+              <span
+                className={styles.id}
+                onClick={() => navigator.clipboard.writeText(id)}
+              >
+                {id}
+              </span>
+            </div>
+            {/* TODO: Provide quick actions feature functional implementation */}
+            <div className={styles.headerActions}>{}</div>
+          </div>
+          {expanded && hasInner ? (
+            <IoPorts
+              nodeId={id}
+              resolvedInputs={resolvedInputs}
+              show={"innerOnly"}
+              connections={connections}
+              updateNodeConnections={updateNodeConnections}
+              inputData={inputData}
+            />
+          ) : (
+            // TODO: Provide comment field
+            description && (
+              <div className={styles.description}>{description}</div>
+            )
           )}
         </div>
         <IoPorts
           nodeId={id}
-          inputs={inputs}
-          outputs={outputs}
+          resolvedInputs={resolvedInputs}
+          show={"inputsOnly"}
+          color={tileBackground}
           connections={connections}
           updateNodeConnections={updateNodeConnections}
           inputData={inputData}
-          countOptionals={setOptionalAmount}
         />
         {menuOpen ? (
           <Portal>
@@ -359,5 +353,7 @@ const Node = forwardRef(
     );
   }
 );
+
+Node.displayName = "Node";
 
 export default Node;

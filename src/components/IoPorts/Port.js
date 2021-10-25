@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Portal } from "react-portal";
 import { calculateCurve, getPortRect } from "../../connectionCalculator";
 import { DRAG_CONNECTION_ID, STAGE_ID } from "../../constants";
@@ -10,29 +10,30 @@ import {
 } from "../../context";
 import Connection from "../Connection/Connection";
 import styles from "./IoPorts.css";
+import { ReactComponent as PortArrow } from "../../img/port-arrow.svg";
 
 const Port = ({
-  color = "grey",
+  color,
   name = "",
   type,
   isInput,
   nodeId,
   triggerRecalculation,
 }) => {
-  const nodesDispatch = React.useContext(NodeDispatchContext);
-  const stageState = React.useContext(StageContext);
-  const editorId = React.useContext(EditorIdContext);
+  const nodesDispatch = useContext(NodeDispatchContext);
+  const stageState = useContext(StageContext);
+  const editorId = useContext(EditorIdContext);
   const stageId = `${STAGE_ID}${editorId}`;
-  const inputTypes = React.useContext(PortTypesContext);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [dragStartCoordinates, setDragStartCoordinates] = React.useState({
+  const inputTypes = useContext(PortTypesContext);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartCoordinates, setDragStartCoordinates] = useState({
     x: 0,
     y: 0,
   });
-  const dragStartCoordinatesCache = React.useRef(dragStartCoordinates);
-  const port = React.useRef();
-  const line = React.useRef();
-  const lineInToPort = React.useRef();
+  const dragStartCoordinatesCache = useRef(dragStartCoordinates);
+  const port = useRef();
+  const line = useRef();
+  const lineInToPort = useRef();
 
   const byScale = (value) => value / stageState.scale;
 
@@ -229,10 +230,13 @@ const Port = ({
   return (
     <>
       <div
-        style={{ zIndex: 999 }}
         onMouseDown={handleDragStart}
         className={styles.port}
-        data-port-color={color}
+        style={{
+          zIndex: 999,
+          marginLeft: isInput ? 0 : -9,
+          backgroundColor: color,
+        }}
         data-port-name={name}
         data-port-type={type}
         data-port-transput-type={isInput ? "input" : "output"}
@@ -242,7 +246,9 @@ const Port = ({
           e.stopPropagation();
         }}
         ref={port}
-      />
+      >
+        <PortArrow />
+      </div>
       {isDragging ? (
         <Portal
           node={document.getElementById(`${DRAG_CONNECTION_ID}${editorId}`)}

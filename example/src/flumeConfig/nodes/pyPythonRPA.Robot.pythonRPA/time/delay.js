@@ -8,6 +8,10 @@ export const delayNode = {
   type: "delay",
   name: "delay",
   label: "DELAY",
+  category: {
+    tileBackground: "rgba(27, 119, 64, 0.9)",
+    tileFontColor: "white",
+  },
   description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
@@ -17,6 +21,7 @@ export const delayNode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "nextAction",
         label: "Next action",
       }),

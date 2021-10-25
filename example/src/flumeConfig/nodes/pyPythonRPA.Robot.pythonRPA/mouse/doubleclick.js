@@ -35,6 +35,7 @@ export const doubleClickNode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "nextAction",
         label: "Next action",
       }),

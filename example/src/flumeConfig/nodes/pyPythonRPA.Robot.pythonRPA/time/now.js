@@ -12,6 +12,7 @@ export const nowNode = {
   inputs: (ports) => (_, connections) =>
     [
       ports.actionPort({
+        color: "#5ED28E",
         name: "nextAction",
         label: "Next action",
       }),

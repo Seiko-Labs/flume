@@ -66,7 +66,7 @@ export const calculateCurve = (from, to) => {
     deltaX > 0 ? Math.abs(deltaX) / 3 : Math.abs(deltaX) / 3 + 30,
     200
   );
-  const ySlope = deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0;
+  const ySlope = deltaX < 0 ? (deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0) : 0;
 
   return line().curve(
     curveBundle.beta(Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8 ? 0 : 0.75)

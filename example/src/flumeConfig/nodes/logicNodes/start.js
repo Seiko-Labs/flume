@@ -4,6 +4,7 @@ export const startRootNode = {
   initialWidth: 90,
   inputs: (ports) => [
     ports.actionPort({
+      color: "#5ED28E",
       label: "Next action",
     }),
   ],

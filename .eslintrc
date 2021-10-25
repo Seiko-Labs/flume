@@ -17,7 +17,7 @@
     "requireConfigFile": false,
     "sourceType": "module",
     "babelOptions": {
-      "configFile": "./.babelrc"
+      "rootMode": "upward"
     },
     "ecmaFeatures": {
       "jsx": true

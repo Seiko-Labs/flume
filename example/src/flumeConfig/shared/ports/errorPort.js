@@ -4,7 +4,6 @@ export const errorPort = {
   type: "errorPort",
   name: "errorPort",
   label: "Error action",
-  color: Colors.green,
   hidePort: true,
   controls: [
     Controls.number({

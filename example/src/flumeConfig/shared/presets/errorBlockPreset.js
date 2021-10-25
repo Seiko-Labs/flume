@@ -7,8 +7,7 @@ export const configErrorBlockPreset = (ports, connections) => [
   ports.actionPort({
     name: "errorAction",
     label: "Error action",
-    color: Colors.red,
-    optional: !connections.inputs.errorAction,
+    color: "#F16969",
   }),
 ];
 

@@ -34,11 +34,13 @@ export const switchCaseNode = {
       }),
       ...conditions.map(([k], ind) =>
         ports.actionPort({
+          color: "#5ED28E",
           name: `${k}_action`,
           label: `Condition ${ind + 1} case action`,
         })
       ),
       ports.actionPort({
+        color: "#5ED28E",
         name: "elseCaseAction",
         label: "Default case action",
       }),

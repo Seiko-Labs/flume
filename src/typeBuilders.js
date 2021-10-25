@@ -1,3 +1,5 @@
+import { checkColor } from "./utilities";
+
 const define = (value, defaultValue) =>
   value !== undefined ? value : defaultValue;
 
@@ -99,7 +101,6 @@ export const getPortBuilders = (ports) =>
         label: config.label || port.label,
         noControls: define(config.noControls, false),
         color: port.color || config.color,
-        optional: define(config.optional, !!port.optional),
         hidePort: define(config.hidePort, port.hidePort),
         controls: define(config.controls, port.controls),
       };
@@ -180,28 +181,26 @@ export class FlumeConfig {
         : "Ungrouped actions are stored here";
 
     // Optionally supplying action header color
-    node.category.titleColor =
-      category?.titleColor &&
-      typeof category.titleColor === "string" &&
-      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(category.titleColor)
-        ? category.titleColor
-        : "#000";
+    if (
+      category?.tileFontColor &&
+      typeof category.tileFontColor === "string" &&
+      checkColor(category.tileFontColor)
+    )
+      node.category.tileFontColor = category.tileFontColor;
 
     // Optionally supplying action header color
-    node.category.tileBackground =
+    if (
       category?.tileBackground &&
       typeof category.tileBackground === "string" &&
-      RegExp(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/g).test(
-        category.tileBackground
-      )
-        ? category.tileBackground
-        : "#494956";
+      checkColor(category.tileBackground)
+    )
+      node.category.tileBackground = category.tileBackground;
 
     if (typeof config.icon === "string") node.icon = config.icon;
 
     if (typeof config.comment === "string") node.comment = config.comment;
 
-    if (config.expanded) node.expanded = !!config.expanded;
+    node.expanded = config.expanded || true;
 
     if (config.initialWidth) node.initialWidth = config.initialWidth;
 
@@ -286,8 +285,7 @@ export class FlumeConfig {
       type: config.type,
       name: config.name,
       label: define(config.label, ""),
-      color: define(config.color, Colors.grey),
-      hidePort: define(config.hidePort, false),
+      hidePort: define(config.hidePort, true),
     };
 
     if (config.acceptTypes === undefined) {
@@ -305,6 +303,14 @@ export class FlumeConfig {
     } else {
       port.controls = config.controls;
     }
+
+    if (
+      !port.color &&
+      config.color &&
+      typeof config.color === "string" &&
+      checkColor(config.color)
+    )
+      port.color = config.color;
 
     this.portTypes[config.type] = port;
     return this;

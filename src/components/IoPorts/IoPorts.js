@@ -1,102 +1,91 @@
-import React, { useMemo } from "react";
+import React, { useContext, useEffect } from "react";
+import Inner from "./Inner";
 import Input from "./Input";
 import styles from "./IoPorts.css";
 import { ConnectionRecalculateContext, PortTypesContext } from "../../context";
-import useTransputs from "../../hooks/useTransputs";
 import Output from "./Output";
 
 const IoPorts = ({
   nodeId,
-  inputs = [],
-  outputs = [],
+  show = "innerOnly",
+  resolvedInputs = [],
+  resolvedOutputs = [],
   connections,
-  expanded,
+  color,
   inputData,
   updateNodeConnections,
-  countOptionals,
 }) => {
-  const inputTypes = React.useContext(PortTypesContext);
-  const triggerRecalculation = React.useContext(ConnectionRecalculateContext);
-  const resolvedInputs = useTransputs(
-    inputs,
-    "input",
-    nodeId,
-    inputData,
-    connections
-  );
-  const resolvedOutputs = useTransputs(
-    outputs,
-    "output",
-    nodeId,
-    inputData,
-    connections
-  );
+  const inputTypes = useContext(PortTypesContext);
+  const triggerRecalculation = useContext(ConnectionRecalculateContext);
 
-  useMemo(() => {
-    countOptionals &&
-      resolvedInputs &&
-      countOptionals(resolvedInputs.filter(({ optional }) => optional).length);
-  }, [resolvedInputs, countOptionals]);
-
-  return (
-    <div className={styles.wrapper}>
-      {resolvedInputs.some(({ optional }) => !optional) && (
-        <div className={styles.inputs}>
-          {resolvedInputs
-            .filter(({ optional }) => !optional)
-            .map((input) => (
-              <Input
-                {...input}
-                data={inputData[input.name] || {}}
-                isConnected={!!connections.inputs[input.name]}
+  switch (show) {
+    case "outputsOnly":
+      return (
+        (resolvedOutputs.length || null) && (
+          <div className={styles.outputs} data-show={show}>
+            {resolvedOutputs.map((output) => (
+              <Output
+                {...output}
+                optColor={color}
                 triggerRecalculation={triggerRecalculation}
-                updateNodeConnections={updateNodeConnections}
                 inputTypes={inputTypes}
                 nodeId={nodeId}
                 inputData={inputData}
-                key={input.name}
+                key={output.name}
               />
             ))}
-        </div>
-      )}
-      {!!resolvedOutputs.length && (
-        <div className={styles.outputs}>
-          {resolvedOutputs.map((output) => (
-            <Output
-              {...output}
-              triggerRecalculation={triggerRecalculation}
-              inputTypes={inputTypes}
-              nodeId={nodeId}
-              inputData={inputData}
-              portOnRight
-              key={output.name}
-            />
-          ))}
-        </div>
-      )}
-      {resolvedInputs.some(({ optional }) => optional) && (
-        <div
-          className={`${styles.inputs} ${!expanded ? styles.collapsed : ""}`}
-        >
-          {resolvedInputs
-            .filter(({ optional }) => optional)
-            .map((input) => (
-              <Input
-                {...input}
-                data={inputData[input.name] || {}}
-                isConnected={!!connections.inputs[input.name]}
-                triggerRecalculation={triggerRecalculation}
-                updateNodeConnections={updateNodeConnections}
-                inputTypes={inputTypes}
-                nodeId={nodeId}
-                inputData={inputData}
-                key={input.name}
-              />
-            ))}
-        </div>
-      )}
-    </div>
-  );
+          </div>
+        )
+      );
+    case "inputsOnly":
+      return (
+        resolvedInputs.some(({ hidePort }) => !hidePort) && (
+          <div className={styles.inputs} data-show={show}>
+            {resolvedInputs
+              .filter(({ hidePort }) => !hidePort)
+              .map((input) => (
+                <Input
+                  optColor={color}
+                  {...input}
+                  data={inputData[input.name] || {}}
+                  isConnected={!!connections.inputs[input.name]}
+                  triggerRecalculation={triggerRecalculation}
+                  updateNodeConnections={updateNodeConnections}
+                  inputTypes={inputTypes}
+                  nodeId={nodeId}
+                  inputData={inputData}
+                  key={input.name}
+                />
+              ))}
+          </div>
+        )
+      );
+
+    default:
+      return (
+        <>
+          {resolvedInputs.some(({ hidePort }) => hidePort) && (
+            <div className={styles.inner}>
+              {resolvedInputs
+                .filter(({ hidePort }) => hidePort)
+                .map((input) => (
+                  <Inner
+                    {...input}
+                    data={inputData[input.name] || {}}
+                    isConnected={!!connections.inputs[input.name]}
+                    triggerRecalculation={triggerRecalculation}
+                    updateNodeConnections={updateNodeConnections}
+                    inputTypes={inputTypes}
+                    nodeId={nodeId}
+                    inputData={inputData}
+                    key={input.name}
+                  />
+                ))}
+            </div>
+          )}
+        </>
+      );
+  }
 };
 
 export default IoPorts;

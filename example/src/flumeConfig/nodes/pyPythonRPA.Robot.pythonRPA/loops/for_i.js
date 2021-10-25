@@ -27,10 +27,12 @@ export const forINode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#4BAEFC",
         name: "trueCaseAction",
         label: "Loop actions",
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "falseCaseAction",
         label: "After loop actions",
       }),

@@ -32,6 +32,7 @@ export const pressNode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "nextAction",
         label: "Next action",
       }),

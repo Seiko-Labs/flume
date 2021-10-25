@@ -59,7 +59,7 @@ const TestEditor = () => {
             </Card.Header>
             <Card.Body>
               <ReactJson src={res.actionPort || res} />
-              {/* {JSON.stringify(res)} */}
+              {/*{JSON.stringify(res)}*/}
             </Card.Body>
           </Card>
 

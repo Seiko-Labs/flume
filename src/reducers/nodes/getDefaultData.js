@@ -1,4 +1,4 @@
-export default ({node, nodeType, portTypes, context}) => {
+export default ({ node, nodeType, portTypes, context }) => {
   const inputs = Array.isArray(nodeType.inputs)
     ? nodeType.inputs
     : nodeType.inputs(node.inputData, node.connections, context);

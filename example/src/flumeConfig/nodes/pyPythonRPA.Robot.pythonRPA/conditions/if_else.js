@@ -17,10 +17,12 @@ export const ifElseNode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "trueCaseAction",
         label: "True case action",
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "falseCaseAction",
         label: "False case action",
       }),

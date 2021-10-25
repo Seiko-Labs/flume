@@ -17,6 +17,7 @@ export const breakLoopNode = {
         hidePort: true,
       }),
       ports.actionPort({
+        color: "#5ED28E",
         name: "elseCaseAction",
         label: "False case action",
       }),
