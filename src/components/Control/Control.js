@@ -1,7 +1,8 @@
 import React from "react";
+import NumberInput from "../FieldInput/NumberInput";
 import styles from "./Control.css";
 import Checkbox from "../Checkbox/Checkbox";
-import TextInput from "../TextInput/TextInput";
+import TextInput from "../FieldInput/TextInput";
 import Select from "../Select/Select";
 import { NodeDispatchContext, ContextContext } from "../../context";
 
@@ -73,11 +74,10 @@ const Control = ({
         );
       case "number":
         return (
-          <TextInput
+          <NumberInput
             {...commonProps}
             step={step}
             predicate={predicate}
-            type="number"
             placeholder={placeholder}
           />
         );
@@ -115,14 +115,7 @@ const Control = ({
     }
   };
 
-  return (
-    <div className={styles.wrapper}>
-      {calculatedLabel && type !== "checkbox" && type !== "custom" && (
-        <label className={styles.controlLabel}>{calculatedLabel}</label>
-      )}
-      {getControlByType(type)}
-    </div>
-  );
+  return <div className={styles.wrapper}>{getControlByType(type)}</div>;
 };
 
 export default Control;

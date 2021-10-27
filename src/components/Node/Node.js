@@ -8,6 +8,7 @@ import React, {
 import useTransputs from "../../hooks/useTransputs";
 import styles from "./Node.css";
 import {
+  ConnectionRecalculateContext,
   NodeDispatchContext,
   NodeTypesContext,
   StageContext,
@@ -35,7 +36,6 @@ const Node = forwardRef(
       connections,
       type,
       inputData,
-      description,
       onDragStart,
       onDragEnd,
       onDragHandle,
@@ -47,12 +47,14 @@ const Node = forwardRef(
     const nodeTypes = useContext(NodeTypesContext);
     const nodesDispatch = useContext(NodeDispatchContext);
     const stageState = useContext(StageContext);
+    const recalculateConnections = useContext(ConnectionRecalculateContext);
     const {
       label,
       deletable,
       inputs = [],
       outputs = [],
       icon,
+      description,
       category: {
         tileFontColor = "#B3B3B3",
         tileBackground = "rgba(89, 89, 102, 0.9)",
@@ -276,11 +278,13 @@ const Node = forwardRef(
             <div className={styles.headerMeta}>
               {hasInner && (
                 <Ticker
-                  onClick={() =>
-                    nodesDispatch({ type: "TOGGLE_NODE_VIEW", id })
-                  }
+                  onClick={() => {
+                    nodesDispatch({ type: "TOGGLE_NODE_VIEW", id });
+                    recalculateConnections();
+                  }}
                   style={{
                     transform: expanded ? "none" : "rotate(-90deg)",
+                    cursor: "pointer",
                     stroke: tileFontColor,
                   }}
                 />

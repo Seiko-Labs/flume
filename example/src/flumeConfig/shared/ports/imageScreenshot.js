@@ -11,6 +11,10 @@ export const imageScreenshot = {
       name: "image",
       label: "Image (Base64)",
     }),
+    Controls.text({
+      name: "image1",
+      label: "Image (Base64)",
+    }),
     Controls.custom({
       name: "imageRender",
       render: (...props) => <Img props={props} />,

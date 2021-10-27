@@ -22,16 +22,16 @@ const Inner = ({
   const controls = localControls || defaultControls;
 
   return (
-    <div
-      className={styles.transput}
+    <tr
       data-controlless={noControls || !controls.length}
+      data-is-inner={true}
       onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
     >
-      <label className={styles.portLabel}>{label || defaultLabel}</label>
-      <div className={styles.controls}>
+      <td className={styles.portLabel}>{label || defaultLabel}</td>
+      <td className={styles.controls}>
         {controls.map((control) => (
           <Control
             {...control}
@@ -47,8 +47,8 @@ const Inner = ({
             isMonoControl={controls.length === 1}
           />
         ))}
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };
 

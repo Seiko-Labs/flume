@@ -35,7 +35,7 @@ const TestEditor = () => {
   return (
     <Container fluid>
       <Row>
-        <NodeWrapper md={8} className="px-0">
+        <NodeWrapper md={8} className="px-0" id="editorArea">
           <NodeEditor
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}
@@ -58,7 +58,7 @@ const TestEditor = () => {
               <Card.Title className="mb-0">RootEngine result</Card.Title>
             </Card.Header>
             <Card.Body>
-              <ReactJson src={res.actionPort || res} />
+              <ReactJson src={res.actionPort || res} name={null} />
               {/*{JSON.stringify(res)}*/}
             </Card.Body>
           </Card>
@@ -69,7 +69,7 @@ const TestEditor = () => {
             </Card.Header>
             <Card.Body>
               {ns.nodesState && (
-                <ReactJson src={ns.nodesState[ns.currentStateIndex].state} />
+                <ReactJson src={ns.nodesState[ns.currentStateIndex].state}  name={null} />
               )}
             </Card.Body>
           </Card>

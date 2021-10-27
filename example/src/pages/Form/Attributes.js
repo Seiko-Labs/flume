@@ -3,7 +3,7 @@ import {
   DesignerStateContext,
   DesignerDispatchContext,
   FieldsContext,
-  FieldsDispatchContext
+  FieldsDispatchContext,
 } from "./Form";
 import fieldTypes from "./fieldTypes";
 import Checkbox from "../../components/Checkbox";
@@ -11,7 +11,10 @@ import OptionsEditor from "../../components/OptionsEditor";
 import LogicEditor from "../../components/LogicEditor";
 import NodeTypes from "./NodeTypes";
 import { getInputTypes } from "./InputTypes";
-import { NodeTypes as WizardNodeTypes, InputTypes as WizardInputTypes } from './wizardLogic/logicTypes'
+import {
+  NodeTypes as WizardNodeTypes,
+  InputTypes as WizardInputTypes,
+} from "./wizardLogic/logicTypes";
 
 export default ({ previewing, editingWizard }) => {
   const designerState = React.useContext(DesignerStateContext);
@@ -23,33 +26,33 @@ export default ({ previewing, editingWizard }) => {
   const currentFieldType = currentField ? fieldTypes[currentField.type] : {};
 
   const deleteField = () => {
-    const fieldId = designerState.selectedFieldId
+    const fieldId = designerState.selectedFieldId;
 
     designerDispatch({
       type: "SET_SELECTED_FIELD_ID",
-      fieldId: null
-    })
+      fieldId: null,
+    });
 
     fieldsDispatch({
       type: "REMOVE_FIELD",
-      fieldId
-    })
-  }
+      fieldId,
+    });
+  };
 
-  const setWizardTitle = title => {
+  const setWizardTitle = (title) => {
     designerDispatch({
       type: "SET_TITLE",
-      title
-    })
-  }
+      title,
+    });
+  };
 
-  const setWizardLogic = logic => {
+  const setWizardLogic = (logic) => {
     console.log(logic);
     designerDispatch({
       type: "SET_LOGIC",
-      logic
-    })
-  }
+      logic,
+    });
+  };
 
   return (
     <div className="attributes">
@@ -58,9 +61,8 @@ export default ({ previewing, editingWizard }) => {
         data-previewing={previewing}
       >
         <h2>Attributes</h2>
-        {
-          !editingWizard ?
-          <React.Fragment>
+        {!editingWizard ? (
+          <>
             {currentField && currentFieldType ? (
               <Attributes
                 attributes={currentFieldType.attributes}
@@ -71,31 +73,37 @@ export default ({ previewing, editingWizard }) => {
             )}
             {currentField && currentFieldType ? (
               <AttributeWrapper>
-                <AttributeButton danger onClick={deleteField}>Delete Field</AttributeButton>
+                <AttributeButton danger onClick={deleteField}>
+                  Delete Field
+                </AttributeButton>
               </AttributeWrapper>
             ) : null}
-          </React.Fragment>
-          :
-          <React.Fragment>
+          </>
+        ) : (
+          <>
             <AttributeWrapper label="Form Title">
               <input
                 type="text"
                 value={designerState.title}
-                onChange={e => setWizardTitle(e.target.value)}
+                onChange={(e) => setWizardTitle(e.target.value)}
               />
             </AttributeWrapper>
             <AttributeWrapper>
-              <WizardLogic logic={designerState.wizardLogic} fields={fields} onChange={setWizardLogic} />
+              <WizardLogic
+                logic={designerState.wizardLogic}
+                fields={fields}
+                onChange={setWizardLogic}
+              />
             </AttributeWrapper>
-          </React.Fragment>
-        }
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 const Attributes = ({ attributes = [], currentField }) => {
-  return attributes.map(attr => (
+  return attributes.map((attr) => (
     <Attribute
       {...attr}
       value={currentField[attr.name]}
@@ -107,13 +115,13 @@ const Attributes = ({ attributes = [], currentField }) => {
 
 const hiddenLabelTypes = ["checkbox", "options", "logic"];
 
-const WizardLogic = ({logic, fields, onChange}) => {
+const WizardLogic = ({ logic, fields, onChange }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const closeModal = () => setModalOpen(false);
 
   return (
-    <React.Fragment>
+    <>
       <AttributeButton onClick={() => setModalOpen(true)}>
         Edit Logic
       </AttributeButton>
@@ -122,32 +130,32 @@ const WizardLogic = ({logic, fields, onChange}) => {
         onChange={onChange}
         onCloseRequested={closeModal}
         isOpen={modalOpen}
-        context={{fields}}
+        context={{ fields }}
         nodeTypes={WizardNodeTypes}
         inputTypes={WizardInputTypes}
         defaultNodes={[
           {
             type: "output",
             x: 900,
-            y: 330
-          }
+            y: 330,
+          },
         ]}
       />
-    </React.Fragment>
-  )
-}
+    </>
+  );
+};
 
 const Attribute = ({ field, label, name, type, value }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const fieldsDispatch = React.useContext(FieldsDispatchContext);
   const fields = React.useContext(FieldsContext);
 
-  const setAttribute = value => {
+  const setAttribute = (value) => {
     fieldsDispatch({
       type: "SET_ATTRIBUTE_VALUE",
       fieldId: field.id,
       name,
-      value
+      value,
     });
   };
 
@@ -159,7 +167,7 @@ const Attribute = ({ field, label, name, type, value }) => {
         return <Checkbox label={label} value={value} onChange={setAttribute} />;
       case "options":
         return (
-          <React.Fragment>
+          <>
             <AttributeButton onClick={() => setModalOpen(true)}>
               Edit Options
             </AttributeButton>
@@ -169,11 +177,11 @@ const Attribute = ({ field, label, name, type, value }) => {
               isOpen={modalOpen}
               onCloseRequested={closeModal}
             />
-          </React.Fragment>
+          </>
         );
       case "logic":
         return (
-          <React.Fragment>
+          <>
             <AttributeButton onClick={() => setModalOpen(true)}>
               Edit Logic
             </AttributeButton>
@@ -185,7 +193,7 @@ const Attribute = ({ field, label, name, type, value }) => {
               nodeTypes={NodeTypes}
               inputTypes={getInputTypes(fields)}
             />
-          </React.Fragment>
+          </>
         );
       case "text":
       default:
@@ -193,7 +201,7 @@ const Attribute = ({ field, label, name, type, value }) => {
           <input
             type="text"
             value={value}
-            onChange={e => setAttribute(e.target.value)}
+            onChange={(e) => setAttribute(e.target.value)}
           />
         );
     }

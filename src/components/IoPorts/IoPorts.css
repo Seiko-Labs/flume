@@ -41,20 +41,46 @@
   }
 }
 
-.inner {
+table.inner {
+  border: none;
+  margin: 0 0 4px;
+  padding: 0;
+  width: max-content;
+  border-spacing: 0;
 
-}
+  & > tbody > tr {
+    & > td {
+      padding: 0;
+      margin: 0;
+    }
 
-.controls {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-}
+    & > td.portLabel {
+      padding-left: 4px;
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 10px;
+      max-width: 80px;
 
-.portLabel {
-	font-size: 13px;
-	font-weight: 400;
-	width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    & > td.controls {
+      max-width: 184px;
+      display: flex;
+      flex-wrap: wrap;
+      padding-right: 4px;
+
+      & > * {
+        float: left;
+        display: inline-block;
+        width: 60px;
+        overflow-x: hidden;
+      }
+    }
+  }
+
 }
 
 .port {

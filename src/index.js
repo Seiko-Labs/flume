@@ -499,6 +499,8 @@ export const NodeEditor = forwardRef(
 NodeEditor.displayName = "NodeEditor";
 
 export { FlumeConfig, Controls, Colors } from "./typeBuilders";
+export * as monaco from "@monaco-editor/react";
+export * as monacoTheme from "./components/FieldInput/editorTheme.json";
 export { RootEngine } from "./RootEngine";
 export useNodeEditorController from "./hooks/useNodeEditorController";
 export const useRootEngine = (nodes, engine, context) =>

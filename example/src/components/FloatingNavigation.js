@@ -17,7 +17,7 @@ export default () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div
         className="floating-nav"
         onMouseEnter={openMenu}
@@ -37,7 +37,7 @@ export default () => {
         <NavIcon menuOpen={menuOpen} />
       </div>
       <div className="floating-nav-exit" onMouseLeave={closeMenu} />
-    </React.Fragment>
+    </>
   );
 };
 
@@ -45,7 +45,7 @@ const HoverLink = ({ to, children, label, style }) => {
   const [showLabel, setShowLabel] = React.useState(false);
 
   return (
-    <React.Fragment>
+    <>
       <Portal>
         <div className="hover-label" style={style} data-show-label={showLabel}>
           {label}
@@ -58,7 +58,7 @@ const HoverLink = ({ to, children, label, style }) => {
       >
         {children}
       </Link>
-    </React.Fragment>
+    </>
   );
 };
 

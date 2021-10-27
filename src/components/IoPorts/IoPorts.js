@@ -63,9 +63,9 @@ const IoPorts = ({
 
     default:
       return (
-        <>
-          {resolvedInputs.some(({ hidePort }) => hidePort) && (
-            <div className={styles.inner}>
+        resolvedInputs.some(({ hidePort }) => hidePort) && (
+          <table className={styles.inner}>
+            <tbody>
               {resolvedInputs
                 .filter(({ hidePort }) => hidePort)
                 .map((input) => (
@@ -81,9 +81,9 @@ const IoPorts = ({
                     key={input.name}
                   />
                 ))}
-            </div>
-          )}
-        </>
+            </tbody>
+          </table>
+        )
       );
   }
 };

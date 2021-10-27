@@ -1,6 +1,6 @@
 {
   "name": "flume",
-  "version": "0.10.11",
+  "version": "0.12.0",
   "description": "A node editor for React",
   "author": "chrisjpatty",
   "license": "MIT",
@@ -42,6 +42,7 @@
     "@babel/preset-react": "^7.14.5",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@svgr/rollup": "^2.4.1",
     "@testing-library/dom": "^7.20.0",
@@ -80,16 +81,15 @@
     "wait-on": "^5.2.1"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.3.1",
     "@reach/auto-id": "^0.10.5",
     "@react-hook/debounce": "^4.0.0",
     "d3-shape": "^3.0.1",
     "lodash": "^4.17.15",
     "md5": "2.3.0",
     "nanoid": "^2.1.11",
-    "react-custom-scrollbars-2": "^4.4.0",
     "react-ds": "^1.13.0",
     "react-onclickout": "^2.0.8",
-    "react-portal": "^4.2.1",
-    "react-textarea-autosize": "^8.3.3"
+    "react-portal": "^4.2.1"
   }
 }
