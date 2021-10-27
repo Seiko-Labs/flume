@@ -6,8 +6,9 @@ import postcss from "rollup-plugin-postcss";
 import resolve from "@rollup/plugin-node-resolve";
 import url from "rollup-plugin-url";
 import svgr from "@svgr/rollup";
-
 import pkg from "./package.json";
+import postcss_nested from "postcss-nested";
+import postcss_inline_svg from "postcss-inline-svg";
 
 export default {
   input: "src/index.js",
@@ -28,7 +29,7 @@ export default {
     external(),
     postcss({
       modules: true,
-      plugins: [require("postcss-nested"), require("postcss-inline-svg")()],
+      plugins: [postcss_nested, postcss_inline_svg()],
     }),
     url(),
     svgr(),

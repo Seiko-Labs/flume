@@ -69,7 +69,7 @@ const TestEditor = () => {
             </Card.Header>
             <Card.Body>
               {ns.nodesState && (
-                <ReactJson src={ns.nodesState[ns.currentStateIndex].state}  name={null} />
+                <ReactJson src={ns.nodesState[ns.currentStateIndex].state} />
               )}
             </Card.Body>
           </Card>
