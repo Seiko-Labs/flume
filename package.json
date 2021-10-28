@@ -1,6 +1,6 @@
 {
   "name": "flume",
-  "version": "0.12.4",
+  "version": "0.12.5",
   "description": "A node editor for React",
   "author": "chrisjpatty",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "release": "npx np",
-    "postinstall": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
+    "postinstall_hidden": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
   },
   "np": {
     "testScript": "test"
@@ -44,6 +44,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-url": "^6.1.0",
     "@svgr/rollup": "^5.5.0",
     "@testing-library/dom": "^7.20.0",
     "@testing-library/react": "^10.4.3",
@@ -75,7 +76,6 @@
     "rollup": "^2.52.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.1",
-    "rollup-plugin-url": "^3.0.1",
     "wait-on": "^5.2.1"
   },
   "dependencies": {

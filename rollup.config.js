@@ -25,14 +25,14 @@ export default {
     },
   ],
   plugins: [
+    url(),
+    svgr(),
     json(),
     external(),
     postcss({
       modules: true,
       plugins: [postcss_nested, postcss_inline_svg()],
     }),
-    url(),
-    svgr(),
     babel({
       babelHelpers: "runtime",
       exclude: "node_modules/**",
