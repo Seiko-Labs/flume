@@ -199,7 +199,9 @@ export const NodeEditor = forwardRef(
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
       if (connector.options) {
-        const { options } = connector.options;
+        const { options } = connector;
+
+        console.log(connector);
 
         if (options.monacoPath) {
           loader?.config?.({ paths: { vs: options.monacoPath } });

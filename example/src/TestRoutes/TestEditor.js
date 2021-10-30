@@ -24,6 +24,10 @@ const TestEditor = () => {
         y: 0,
       },
     ],
+    // options: {
+    //   monacoPath:
+    //     "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
+    // },
   });
 
   const res = useRootEngine(

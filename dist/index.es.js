@@ -30824,6 +30824,10 @@ var useNodeEditorController = (function (_ref) {
       comments = _useState6[0],
       setComments = _useState6[1];
 
+  useEffect(function () {
+    console.log(options.monacoPath);
+  }, []);
+
   var _useReducer = useReducer(tempStateReducer, {
     initialTempState: initialTempState
   }, function () {
@@ -31066,7 +31070,8 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     });
 
     if (connector.options) {
-      var options = connector.options.options;
+      var options = connector.options;
+      console.log(connector);
 
       if (options.monacoPath) {
         var _loader$config;
