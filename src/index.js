@@ -201,8 +201,6 @@ export const NodeEditor = forwardRef(
       if (connector.options) {
         const { options } = connector;
 
-        console.log(connector);
-
         if (options.monacoPath) {
           loader?.config?.({ paths: { vs: options.monacoPath } });
         }

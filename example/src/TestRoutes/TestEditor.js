@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "normalize.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import ReactJson from "react-json-view";
@@ -16,6 +16,7 @@ const NodeWrapper = styled(Col)`
 `;
 
 const TestEditor = () => {
+  const editorRef = useRef(null);
   const [ns, , , connector] = useNodeEditorController({
     defaultNodes: [
       {
@@ -24,10 +25,11 @@ const TestEditor = () => {
         y: 0,
       },
     ],
-    // options: {
-    //   monacoPath:
-    //     "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
-    // },
+    options: {
+      editorAreaRef: editorRef,
+      monacoPath:
+        "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
+    },
   });
 
   const res = useRootEngine(
@@ -39,7 +41,7 @@ const TestEditor = () => {
   return (
     <Container fluid>
       <Row>
-        <NodeWrapper md={8} className="px-0" id="editorArea">
+        <NodeWrapper md={8} className="px-0" ref={editorRef}>
           <NodeEditor
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}

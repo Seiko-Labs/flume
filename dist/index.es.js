@@ -10498,7 +10498,7 @@ var TextInput = function TextInput(_ref) {
   var monaco = useMonaco();
 
   var _useContext = useContext(ControllerOptionsContext),
-      editorAreaRef = _useContext.editorAreaRef;
+      editorArea = _useContext.editorArea;
 
   useEffect(function () {
     if (monaco) {
@@ -10522,7 +10522,7 @@ var TextInput = function TextInput(_ref) {
   }), /*#__PURE__*/React__default.createElement(PortalWithState$1, {
     closeOnEsc: true,
     closeOnOutsideClick: true,
-    node: (editorAreaRef === null || editorAreaRef === void 0 ? void 0 : editorAreaRef.current) || document.getElementById("editorArea")
+    node: editorArea || document.getElementById("editorArea")
   }, function (_ref3) {
     var openPortal = _ref3.openPortal,
         portal = _ref3.portal,
@@ -31071,7 +31071,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
 
     if (connector.options) {
       var options = connector.options;
-      console.log(connector);
 
       if (options.monacoPath) {
         var _loader$config;

@@ -14,7 +14,7 @@ const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
   const preventPropagation = (e) => e.stopPropagation();
   /** @type {Monaco} */
   const monaco = useMonaco();
-  const { editorAreaRef } = useContext(ControllerOptionsContext);
+  const { editorArea } = useContext(ControllerOptionsContext);
 
   useEffect(() => {
     if (monaco) {
@@ -36,7 +36,7 @@ const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
       <PortalWithState
         closeOnEsc
         closeOnOutsideClick
-        node={editorAreaRef?.current || document.getElementById("editorArea")}
+        node={editorArea || document.getElementById("editorArea")}
       >
         {({ openPortal, portal, closePortal }) => (
           <>
