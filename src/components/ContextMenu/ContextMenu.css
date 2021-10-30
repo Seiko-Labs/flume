@@ -82,7 +82,7 @@
 	}
 
 	&[data-selected=true] {
-		background: rgba(255, 255, 255, .05);
+		background: #2F2F3B;
 	}
 }
 

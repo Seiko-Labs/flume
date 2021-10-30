@@ -1,9 +1,10 @@
 {
   "name": "flume",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "A node editor for React",
   "author": "chrisjpatty",
   "license": "MIT",
+  "private": true,
   "homepage": "https://flume.dev",
   "repository": "chrisjpatty/flume",
   "main": "dist/index.js",

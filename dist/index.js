@@ -4327,7 +4327,7 @@ module.exports = exports['default'];
 
 var ScrollBar = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
 
-var css_248z$c = ".ContextMenu_menuWrapper__1BheJ{background:#25252f;border:1px solid #2f2f3b;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(32,35,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #3b3b45;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#b3b3b3;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#b3b3b3;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #3b3b45;color:#b3b3b3;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#2f2f3b}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:hsla(0,0%,100%,.3);font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:hsla(0,0%,100%,.05)}.ContextMenu_emptyText__2rcXy{color:#b3b3b3;padding:6px}";
+var css_248z$c = ".ContextMenu_menuWrapper__1BheJ{background:#25252f;border:1px solid #2f2f3b;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(32,35,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #3b3b45;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#b3b3b3;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#b3b3b3;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #3b3b45;color:#b3b3b3;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#2f2f3b}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:hsla(0,0%,100%,.3);font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:#2f2f3b}.ContextMenu_emptyText__2rcXy{color:#b3b3b3;padding:6px}";
 var styles$c = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
 styleInject(css_248z$c);
 
@@ -30780,12 +30780,12 @@ function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { 
 
 var tempStateReducer = function tempStateReducer(state, action) {
   switch (action.type) {
-    case 'TOGGLE_MULTISELECT':
+    case "TOGGLE_MULTISELECT":
       return _objectSpread$1(_objectSpread$1({}, state), {}, {
         multiselect: action.doEnable
       });
 
-    case 'SET_STAGE':
+    case "SET_STAGE":
       {
         var x = action.x,
             y = action.y,
@@ -30801,7 +30801,7 @@ var tempStateReducer = function tempStateReducer(state, action) {
         });
       }
 
-    case 'SELECT_NODES':
+    case "SELECT_NODES":
       {
         var selectedNodes = action.selectedNodes;
         return _objectSpread$1(_objectSpread$1({}, state), {}, {
@@ -30832,7 +30832,9 @@ var useNodeEditorController = (function (_ref) {
       _ref$initialNodes = _ref.initialNodes,
       initialNodes = _ref$initialNodes === void 0 ? undefined : _ref$initialNodes,
       _ref$defaultNodes = _ref.defaultNodes,
-      defaultNodes = _ref$defaultNodes === void 0 ? undefined : _ref$defaultNodes;
+      defaultNodes = _ref$defaultNodes === void 0 ? undefined : _ref$defaultNodes,
+      _ref$options = _ref.options,
+      options = _ref$options === void 0 ? {} : _ref$options;
 
   var _useState = React.useState(null),
       _useState2 = _slicedToArray$1(_useState, 2),
@@ -30900,7 +30902,8 @@ var useNodeEditorController = (function (_ref) {
     temp: {
       state: tempState,
       dispatch: dispatchTemp
-    }
+    },
+    options: options
   }, {
     state: tempStateDebounced,
     dispatch: dispatchTemp

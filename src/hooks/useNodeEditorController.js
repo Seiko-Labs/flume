@@ -1,15 +1,15 @@
-import { useEffect, useReducer, useState } from 'react';
-import {useDebounce} from "@react-hook/debounce";
+import { useEffect, useReducer, useState } from "react";
+import { useDebounce } from "@react-hook/debounce";
 
 const tempStateReducer = (state, action) => {
   switch (action.type) {
-    case 'TOGGLE_MULTISELECT':
+    case "TOGGLE_MULTISELECT":
       return {
         ...state,
         multiselect: action.doEnable,
-      }
-    case 'SET_STAGE': {
-      const {x, y, scale} = action
+      };
+    case "SET_STAGE": {
+      const { x, y, scale } = action;
 
       return {
         ...state,
@@ -17,23 +17,23 @@ const tempStateReducer = (state, action) => {
           scale,
           translate: {
             x,
-            y
-          }
-        }
-      }
+            y,
+          },
+        },
+      };
     }
-    case 'SELECT_NODES': {
-      const {selectedNodes} = action
+    case "SELECT_NODES": {
+      const { selectedNodes } = action;
 
       return {
         ...state,
-        selectedNodes
-      }
+        selectedNodes,
+      };
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default ({
   initialNodesState = undefined,
@@ -44,39 +44,51 @@ export default ({
       scale: 1,
       translate: {
         x: 0,
-        y: 0
-      }
-    }
+        y: 0,
+      },
+    },
   },
   initialNodes = undefined,
-  defaultNodes = undefined
+  defaultNodes = undefined,
+  options = {},
 }) => {
-  const [action, setAction] = useState(null)
-  const [nodesState, setNodesState] = useState(initialNodesState || {})
-  const [comments, setComments] = useState({})
+  const [action, setAction] = useState(null);
+  const [nodesState, setNodesState] = useState(initialNodesState || {});
+  const [comments, setComments] = useState({});
 
   const [tempState, dispatchTemp] = useReducer(
-    tempStateReducer, {initialTempState}, () => initialTempState)
-  const [tempStateDebounced, setTempStateDebounced] = useDebounce(tempState, 1000)
-  const [nodesStateDebounced, setNodesStateDebounced] = useDebounce(tempState, 200)
+    tempStateReducer,
+    { initialTempState },
+    () => initialTempState
+  );
+  const [tempStateDebounced, setTempStateDebounced] = useDebounce(
+    tempState,
+    1000
+  );
+  const [nodesStateDebounced, setNodesStateDebounced] = useDebounce(
+    tempState,
+    200
+  );
 
   useEffect(() => {
-    setTempStateDebounced(tempState)
-  }, [tempState])
+    setTempStateDebounced(tempState);
+  }, [tempState]);
 
   useEffect(() => {
-    setNodesStateDebounced(nodesState)
-  }, [nodesState])
+    setNodesStateDebounced(nodesState);
+  }, [nodesState]);
 
-  const dispatch = (type, data = {}) =>
-    setAction(() => () => ({ type, data }))
+  const dispatch = (type, data = {}) => setAction(() => () => ({ type, data }));
 
   useEffect(() => {
-    action && setAction(null)
+    action && setAction(null);
   }, [action]);
 
   return [
-    nodesStateDebounced, comments, dispatch, {
+    nodesStateDebounced,
+    comments,
+    dispatch,
+    {
       action,
       setNodesState,
       setComments,
@@ -84,7 +96,8 @@ export default ({
       initialNodesState,
       defaultNodes,
       temp: { state: tempState, dispatch: dispatchTemp },
+      options,
     },
     { state: tempStateDebounced, dispatch: dispatchTemp },
-  ]
-}
+  ];
+};
