@@ -10496,6 +10496,10 @@ var TextInput = function TextInput(_ref) {
 
 
   var monaco = useMonaco();
+
+  var _useContext = useContext(ControllerOptionsContext),
+      editorAreaRef = _useContext.editorAreaRef;
+
   useEffect(function () {
     if (monaco) {
       monaco.editor.defineTheme("custom", editorTheme);
@@ -10518,7 +10522,7 @@ var TextInput = function TextInput(_ref) {
   }), /*#__PURE__*/React__default.createElement(PortalWithState$1, {
     closeOnEsc: true,
     closeOnOutsideClick: true,
-    node: document.getElementById("editorArea")
+    node: (editorAreaRef === null || editorAreaRef === void 0 ? void 0 : editorAreaRef.current) || document.getElementById("editorArea")
   }, function (_ref3) {
     var openPortal = _ref3.openPortal,
         portal = _ref3.portal,
@@ -30823,10 +30827,6 @@ var useNodeEditorController = (function (_ref) {
       _useState6 = _slicedToArray$1(_useState5, 2),
       comments = _useState6[0],
       setComments = _useState6[1];
-
-  useEffect(function () {
-    console.log(options.monacoPath);
-  }, []);
 
   var _useReducer = useReducer(tempStateReducer, {
     initialTempState: initialTempState

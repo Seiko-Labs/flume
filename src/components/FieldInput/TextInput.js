@@ -1,7 +1,8 @@
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
 import { dirname } from "path";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PortalWithState } from "react-portal";
+import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
 import editorTheme from "./editorTheme.json";
 
@@ -13,6 +14,7 @@ const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
   const preventPropagation = (e) => e.stopPropagation();
   /** @type {Monaco} */
   const monaco = useMonaco();
+  const { editorAreaRef } = useContext(ControllerOptionsContext);
 
   useEffect(() => {
     if (monaco) {
@@ -34,7 +36,7 @@ const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
       <PortalWithState
         closeOnEsc
         closeOnOutsideClick
-        node={document.getElementById("editorArea")}
+        node={editorAreaRef?.current || document.getElementById("editorArea")}
       >
         {({ openPortal, portal, closePortal }) => (
           <>

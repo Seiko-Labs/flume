@@ -56,10 +56,6 @@ export default ({
   const [nodesState, setNodesState] = useState(initialNodesState || {});
   const [comments, setComments] = useState({});
 
-  useEffect(() => {
-    console.log(options.monacoPath);
-  }, []);
-
   const [tempState, dispatchTemp] = useReducer(
     tempStateReducer,
     { initialTempState },
