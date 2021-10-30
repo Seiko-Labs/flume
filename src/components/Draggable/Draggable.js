@@ -82,8 +82,7 @@ export default ({
     let a = Math.abs(startCoordinates.current.x - x);
     let b = Math.abs(startCoordinates.current.y - y);
     let distance = Math.round(Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2)));
-    let dragDistance = delay;
-    if (distance >= dragDistance) {
+    if (distance >= delay) {
       startDrag(e);
       endDragDelay();
     }

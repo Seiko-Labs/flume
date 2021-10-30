@@ -115,7 +115,18 @@ const Control = ({
     }
   };
 
-  return <div className={styles.wrapper}>{getControlByType(type)}</div>;
+  return (
+    <div
+      className={styles.wrapper}
+      style={{
+        ...(type.match(/^multiselect$/) && {
+          width: "auto",
+        }),
+      }}
+    >
+      {getControlByType(type)}
+    </div>
+  );
 };
 
 export default Control;

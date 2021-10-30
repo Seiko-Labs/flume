@@ -67,23 +67,30 @@ const Select = ({
 
   return (
     <>
+      {(allowMultiple || !data) && (
+        <div
+          className={selectStyles.wrapper}
+          ref={wrapper}
+          onClick={openDrawer}
+          title={placeholder}
+        >
+          {placeholder}
+        </div>
+      )}
       {allowMultiple ? (
-        data.length ? (
-          <div className={styles.chipsWrapper}>
-            {data.map((val, i) => {
-              const optLabel =
-                (options.find((opt) => opt.value === val) || {}).label || "";
-              return (
-                <OptionChip
-                  onRequestDelete={() => handleOptionDeleted(i)}
-                  key={val}
-                >
-                  {optLabel}
-                </OptionChip>
-              );
-            })}
-          </div>
-        ) : null
+        !!data.length &&
+        data.map((val, i) => {
+          const optLabel =
+            (options.find((opt) => opt.value === val) || {}).label || "";
+          return (
+            <OptionChip
+              onRequestDelete={() => handleOptionDeleted(i)}
+              key={val}
+            >
+              {optLabel}
+            </OptionChip>
+          );
+        })
       ) : data ? (
         <SelectedOption
           wrapperRef={wrapper}
@@ -91,15 +98,6 @@ const Select = ({
           onClick={openDrawer}
         />
       ) : null}
-      {(allowMultiple || !data) && (
-        <div
-          className={selectStyles.wrapper}
-          ref={wrapper}
-          onClick={openDrawer}
-        >
-          {placeholder}
-        </div>
-      )}
       {drawerOpen && (
         <Portal>
           <ContextMenu
@@ -123,14 +121,13 @@ const SelectedOption = ({
   wrapperRef,
   onClick,
 }) => (
-  <div className={styles.selectedWrapper} onClick={onClick} ref={wrapperRef}>
-    <label>{label}</label>
-    {description ? <p>{description}</p> : null}
+  <div className={styles.wrapper} onClick={onClick} ref={wrapperRef}>
+    {label}
   </div>
 );
 
 const OptionChip = ({ children, onRequestDelete }) => (
-  <div className={styles.chipWrapper}>
+  <div className={styles.chipWrapper} title={children.toString()}>
     {children}
     <button
       className={styles.deleteButton}

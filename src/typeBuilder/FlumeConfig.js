@@ -1,85 +1,5 @@
-import { checkColor } from "./utilities";
-
-const define = (value, defaultValue) =>
-  value !== undefined ? value : defaultValue;
-
-const buildControlType =
-  (defaultConfig, validate = () => {}, setup = () => ({})) =>
-  (config) => {
-    validate(config);
-    return {
-      type: defaultConfig.type,
-      label: define(config.label, defaultConfig.label || ""),
-      name: define(config.name, defaultConfig.name || ""),
-      defaultValue: define(config.defaultValue, defaultConfig.defaultValue),
-      setValue: define(config.setValue, undefined),
-      ...setup(config),
-    };
-  };
-
-export const Controls = {
-  text: buildControlType({
-    type: "text",
-    name: "text",
-    defaultValue: "",
-  }),
-  select: buildControlType(
-    {
-      type: "select",
-      name: "select",
-      options: [],
-      defaultValue: "",
-    },
-    () => {},
-    (config) => ({
-      options: define(config.options, []),
-      getOptions: define(config.getOptions, undefined),
-      placeholder: define(config.placeholder, undefined),
-    })
-  ),
-  number: buildControlType(
-    {
-      type: "number",
-      name: "number",
-      defaultValue: 0,
-    },
-    () => {},
-    (config) => ({
-      step: define(config.step, undefined),
-    })
-  ),
-  checkbox: buildControlType({
-    type: "checkbox",
-    name: "checkbox",
-    defaultValue: false,
-  }),
-  multiselect: buildControlType(
-    {
-      type: "multiselect",
-      name: "multiselect",
-      options: [],
-      defaultValue: [],
-    },
-    () => {},
-    (config) => ({
-      options: define(config.options, []),
-      getOptions: define(config.getOptions, undefined),
-      placeholder: define(config.placeholder, undefined),
-    })
-  ),
-  custom: buildControlType(
-    {
-      type: "custom",
-      name: "custom",
-      render: () => {},
-      defaultValue: undefined,
-    },
-    () => {},
-    (config) => ({
-      render: define(config.render, () => {}),
-    })
-  ),
-};
+import { checkColor, define } from "../utilities";
+import { getPortBuilders } from "./Ports";
 
 export const Colors = {
   yellow: "yellow",
@@ -92,23 +12,7 @@ export const Colors = {
   grey: "grey",
 };
 
-export const getPortBuilders = (ports) =>
-  Object.values(ports).reduce((obj, port) => {
-    obj[port.type] = (config = {}) => {
-      return {
-        type: port.type,
-        name: config.name || port.name,
-        label: config.label || port.label,
-        noControls: define(config.noControls, false),
-        color: port.color || config.color,
-        hidePort: define(config.hidePort, port.hidePort),
-        controls: define(config.controls, port.controls),
-      };
-    };
-    return obj;
-  }, {});
-
-export class FlumeConfig {
+export default class FlumeConfig {
   constructor(config) {
     if (config) {
       this.nodeTypes = { ...config.nodeTypes };
@@ -135,6 +39,8 @@ export class FlumeConfig {
         "You must provide a configuration object when calling addNodeType."
       );
     }
+
+    // noinspection JSObjectNullOrUndefined
     if (typeof config.type !== "string") {
       throw new Error(
         `Required key, "type" must be a string when calling addNodeType.`
@@ -265,6 +171,8 @@ export class FlumeConfig {
         "You must provide a configuration object when calling addPortType"
       );
     }
+
+    // noinspection JSObjectNullOrUndefined
     if (typeof config.type !== "string") {
       throw new Error(
         `Required key, "type" must be a string when calling addPortType.`

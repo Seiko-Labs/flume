@@ -1,4 +1,5 @@
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor, { useMonaco, loader } from "@monaco-editor/react";
+import { dirname } from "path";
 import React, { useEffect, useState } from "react";
 import { PortalWithState } from "react-portal";
 import styles from "./TextInput.css";

@@ -1,3 +1,4 @@
+import { loader } from "@monaco-editor/react";
 import { useId } from "@reach/auto-id";
 import Stage from "./components/Stage/Stage";
 import Node from "./components/Node/Node";
@@ -21,6 +22,7 @@ import {
   CacheContext,
   ConnectionRecalculateContext,
   ContextContext,
+  ControllerOptionsContext,
   EditorIdContext,
   NodeDispatchContext,
   NodeTypesContext,
@@ -196,6 +198,13 @@ export const NodeEditor = forwardRef(
 
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
+      if (connector.options) {
+        const { options } = connector.options;
+
+        if (options.monacoPath) {
+          loader?.config?.({ paths: { vs: options.monacoPath } });
+        }
+      }
     }, []);
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =
@@ -288,7 +297,6 @@ export const NodeEditor = forwardRef(
       triggerRecalculation();
     };
 
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
     const triggerRecalculation = () => {
       setShouldRecalculateConnections(true);
     };
@@ -359,131 +367,137 @@ export const NodeEditor = forwardRef(
                 <StageContext.Provider value={stageState}>
                   <CacheContext.Provider value={cache}>
                     <EditorIdContext.Provider value={editorId}>
-                      <RecalculateStageRectContext.Provider
-                        value={recalculateStageRect}
+                      <ControllerOptionsContext.Provider
+                        value={connector.options || {}}
                       >
-                        {editorRef.current && (
-                          <Selection
-                            target={editorRef.current}
-                            elements={nodeRefs.map((n) => n[1].current)}
-                            onSelectionChange={(i) =>
-                              spaceIsPressed ||
-                              handleSelection(i, tempState.multiselect)
+                        <RecalculateStageRectContext.Provider
+                          value={recalculateStageRect}
+                        >
+                          {editorRef.current && (
+                            <Selection
+                              target={editorRef.current}
+                              elements={nodeRefs.map((n) => n[1].current)}
+                              onSelectionChange={(i) =>
+                                spaceIsPressed ||
+                                handleSelection(i, tempState.multiselect)
+                              }
+                              offset={{
+                                top: 0,
+                                left: 0,
+                              }}
+                              ignoreTargets={[
+                                'div[class^="Node_wrapper__"]',
+                                'div[class^="Node_wrapper__"] *',
+                                'div[class^="Comment_wrapper__"]',
+                                'div[class^="Comment_wrapper__"] *',
+                              ]}
+                              style={
+                                spaceIsPressed
+                                  ? { display: "none" }
+                                  : { zIndex: 100 }
+                              }
+                            />
+                          )}
+                          <Stage
+                            ref={editorRef}
+                            editorId={editorId}
+                            setSpaceIsPressed={setSpaceIsPressed}
+                            scale={stageState.scale}
+                            translate={stageState.translate}
+                            spaceToPan={true}
+                            disablePan={false}
+                            disableZoom={false}
+                            dispatchStageState={dispatchStageState}
+                            dispatchComments={dispatchComments}
+                            disableComments={disableComments || hideComments}
+                            stageRef={stage}
+                            numNodes={
+                              Object.keys(nodesState[currentStateIndex].state)
+                                .length
                             }
-                            offset={{
-                              top: 0,
-                              left: 0,
-                            }}
-                            ignoreTargets={[
-                              'div[class^="Node_wrapper__"]',
-                              'div[class^="Node_wrapper__"] *',
-                              'div[class^="Comment_wrapper__"]',
-                              'div[class^="Comment_wrapper__"] *',
-                            ]}
-                            style={
-                              spaceIsPressed
-                                ? { display: "none" }
-                                : { zIndex: 100 }
-                            }
-                          />
-                        )}
-                        <Stage
-                          ref={editorRef}
-                          editorId={editorId}
-                          setSpaceIsPressed={setSpaceIsPressed}
-                          scale={stageState.scale}
-                          translate={stageState.translate}
-                          spaceToPan={true}
-                          disablePan={false}
-                          disableZoom={false}
-                          dispatchStageState={dispatchStageState}
-                          dispatchComments={dispatchComments}
-                          disableComments={disableComments || hideComments}
-                          stageRef={stage}
-                          numNodes={
-                            Object.keys(nodesState[currentStateIndex].state)
-                              .length
-                          }
-                          outerStageChildren={
-                            <>
-                              {debug && (
-                                <div className={styles.debugWrapper}>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() =>
-                                      console.log(
-                                        nodesState[currentStateIndex].state
-                                      )
-                                    }
-                                  >
-                                    Log Nodes
-                                  </button>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() =>
-                                      console.log(
-                                        JSON.stringify(
+                            outerStageChildren={
+                              <>
+                                {debug && (
+                                  <div className={styles.debugWrapper}>
+                                    <button
+                                      className={styles.debugButton}
+                                      onClick={() =>
+                                        console.log(
                                           nodesState[currentStateIndex].state
                                         )
-                                      )
-                                    }
-                                  >
-                                    Export Nodes
-                                  </button>
-                                  <button
-                                    className={styles.debugButton}
-                                    onClick={() => console.log(comments)}
-                                  >
-                                    Log Comments
-                                  </button>
-                                </div>
-                              )}
-                              <Toaster
-                                toasts={toasts}
-                                dispatchToasts={dispatchToasts}
-                              />
-                            </>
-                          }
-                        >
-                          {!hideComments &&
-                            Object.values(comments).map((comment) => (
-                              <Comment
-                                {...comment}
+                                      }
+                                    >
+                                      Log Nodes
+                                    </button>
+                                    <button
+                                      className={styles.debugButton}
+                                      onClick={() =>
+                                        console.log(
+                                          JSON.stringify(
+                                            nodesState[currentStateIndex].state
+                                          )
+                                        )
+                                      }
+                                    >
+                                      Export Nodes
+                                    </button>
+                                    <button
+                                      className={styles.debugButton}
+                                      onClick={() => console.log(comments)}
+                                    >
+                                      Log Comments
+                                    </button>
+                                  </div>
+                                )}
+                                <Toaster
+                                  toasts={toasts}
+                                  dispatchToasts={dispatchToasts}
+                                />
+                              </>
+                            }
+                          >
+                            {!hideComments &&
+                              Object.values(comments).map((comment) => (
+                                <Comment
+                                  {...comment}
+                                  stageRect={stage}
+                                  dispatch={dispatchComments}
+                                  onDragStart={recalculateStageRect}
+                                  key={comment.id}
+                                />
+                              ))}
+                            {Object.values(
+                              nodesState[currentStateIndex].state
+                            ).map((node) => (
+                              <Node
+                                {...node}
+                                isSelected={selectedNodes.includes(node.id)}
+                                ref={
+                                  nodeRefs.find(([n]) => n.id === node.id)
+                                    ? nodeRefs.find(
+                                        ([n]) => n.id === node.id
+                                      )[1]
+                                    : createRef()
+                                }
                                 stageRect={stage}
-                                dispatch={dispatchComments}
+                                onDragEnd={handleDragEnd}
+                                onDragHandle={dragSelectedNodes}
                                 onDragStart={recalculateStageRect}
-                                key={comment.id}
+                                key={node.id}
                               />
                             ))}
-                          {Object.values(
-                            nodesState[currentStateIndex].state
-                          ).map((node) => (
-                            <Node
-                              {...node}
-                              isSelected={selectedNodes.includes(node.id)}
-                              ref={
-                                nodeRefs.find(([n]) => n.id === node.id)
-                                  ? nodeRefs.find(([n]) => n.id === node.id)[1]
-                                  : createRef()
-                              }
-                              stageRect={stage}
-                              onDragEnd={handleDragEnd}
-                              onDragHandle={dragSelectedNodes}
-                              onDragStart={recalculateStageRect}
-                              key={node.id}
+                            <Connections
+                              nodes={nodesState[currentStateIndex].state}
+                              editorId={editorId}
                             />
-                          ))}
-                          <Connections
-                            nodes={nodesState[currentStateIndex].state}
-                            editorId={editorId}
-                          />
-                          <div
-                            className={styles.dragWrapper}
-                            id={`${DRAG_CONNECTION_ID}${editorId}`}
-                          />
-                        </Stage>
-                        {/* </HotKeys> */}
-                      </RecalculateStageRectContext.Provider>
+                            <div
+                              className={styles.dragWrapper}
+                              id={`${DRAG_CONNECTION_ID}${editorId}`}
+                            />
+                          </Stage>
+                          {/* </HotKeys> */}
+                        </RecalculateStageRectContext.Provider>
+                      </ControllerOptionsContext.Provider>
                     </EditorIdContext.Provider>
                   </CacheContext.Provider>
                 </StageContext.Provider>
@@ -498,9 +512,8 @@ export const NodeEditor = forwardRef(
 
 NodeEditor.displayName = "NodeEditor";
 
-export { FlumeConfig, Controls, Colors } from "./typeBuilders";
-export * as monaco from "@monaco-editor/react";
-export * as monacoTheme from "./components/FieldInput/editorTheme.json";
+export FlumeConfig, { Colors } from "./typeBuilder/FlumeConfig";
+export Controls from "./typeBuilder/Controls";
 export { RootEngine } from "./RootEngine";
 export useNodeEditorController from "./hooks/useNodeEditorController";
 export const useRootEngine = (nodes, engine, context) =>

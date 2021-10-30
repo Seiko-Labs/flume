@@ -1,4 +1,11 @@
-import React from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "./ContextMenu.css";
 import clamp from "lodash/clamp";
 import nanoid from "nanoid/non-secure/index";
@@ -12,34 +19,51 @@ const ContextMenu = ({
   label,
   hideHeader,
   hideFilter,
-  emptyText
+  emptyText,
 }) => {
-  const menuWrapper = React.useRef();
-  const menuOptionsWrapper = React.useRef();
-  const filterInput = React.useRef();
-  const [filter, setFilter] = React.useState("");
-  const [menuWidth, setMenuWidth] = React.useState(0);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const menuId = React.useRef(nanoid(10));
+  const menuWrapper = useRef();
+  const menuOptionsWrapper = useRef();
+  const filterInput = useRef();
+  const [filter, setFilter] = useState("");
+  const [menuWidth, setMenuWidth] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const menuId = useRef(nanoid(10));
 
-  const handleOptionSelected = option => {
+  // function handleWheel(e) {
+  //   console.log(e);
+  //   e.wheelDelta < e.preventDefault();
+  // }
+  //
+  // useLayoutEffect(() => {
+  //   menuWrapper.current.addEventListener("touchstart", handleWheel);
+  //
+  //   return () => {
+  //     menuWrapper.current.removeEventListener("touchstart", handleWheel);
+  //   };
+  // }, []);
+
+  const handleOptionSelected = (option) => {
     onOptionSelected(option);
     onRequestClose();
   };
 
-  const testClickOutside = React.useCallback(
-    e => {
+  const testClickOutside = useCallback(
+    (e) => {
       if (menuWrapper.current && !menuWrapper.current.contains(e.target)) {
         onRequestClose();
-        document.removeEventListener("click", testClickOutside, { capture: true });
-        document.removeEventListener("contextmenu", testClickOutside, { capture: true });
+        document.removeEventListener("click", testClickOutside, {
+          capture: true,
+        });
+        document.removeEventListener("contextmenu", testClickOutside, {
+          capture: true,
+        });
       }
     },
     [menuWrapper, onRequestClose]
   );
 
-  const testEscape = React.useCallback(
-    e => {
+  const testEscape = useCallback(
+    (e) => {
       if (e.keyCode === 27) {
         onRequestClose();
         document.removeEventListener("keydown", testEscape, { capture: true });
@@ -48,41 +72,49 @@ const ContextMenu = ({
     [onRequestClose]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (filterInput.current) {
       filterInput.current.focus();
     }
     setMenuWidth(menuWrapper.current.getBoundingClientRect().width);
     document.addEventListener("keydown", testEscape, { capture: true });
     document.addEventListener("click", testClickOutside, { capture: true });
-    document.addEventListener("contextmenu", testClickOutside, { capture: true });
+    document.addEventListener("contextmenu", testClickOutside, {
+      capture: true,
+    });
     return () => {
-      document.removeEventListener("click", testClickOutside, { capture: true });
-      document.removeEventListener("contextmenu", testClickOutside, { capture: true });
+      document.removeEventListener("click", testClickOutside, {
+        capture: true,
+      });
+      document.removeEventListener("contextmenu", testClickOutside, {
+        capture: true,
+      });
       document.removeEventListener("keydown", testEscape, { capture: true });
     };
   }, [testClickOutside, testEscape]);
 
-  const filteredOptions = React.useMemo(() => {
+  const filteredOptions = useMemo(() => {
     if (!filter) return options;
     const lowerFilter = filter.toLowerCase();
-    return options.filter(opt => opt.label.toLowerCase().includes(lowerFilter));
+    return options.filter((opt) =>
+      opt.label.toLowerCase().includes(lowerFilter)
+    );
   }, [filter, options]);
 
-  const handleFilterChange = e => {
+  const handleFilterChange = (e) => {
     const value = e.target.value;
     setFilter(value);
     setSelectedIndex(0);
   };
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     // Up pressed
     if (e.which === 38) {
       e.preventDefault();
       if (selectedIndex === null) {
         setSelectedIndex(0);
       } else if (selectedIndex > 0) {
-        setSelectedIndex(i => i - 1);
+        setSelectedIndex((i) => i - 1);
       }
     }
     // Down pressed
@@ -91,7 +123,7 @@ const ContextMenu = ({
       if (selectedIndex === null) {
         setSelectedIndex(0);
       } else if (selectedIndex < filteredOptions.length - 1) {
-        setSelectedIndex(i => i + 1);
+        setSelectedIndex((i) => i + 1);
       }
     }
     // Enter pressed
@@ -103,13 +135,13 @@ const ContextMenu = ({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (hideFilter || hideHeader) {
       menuWrapper.current.focus();
     }
   }, [hideFilter, hideHeader]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const menuOption = document.getElementById(
       `${menuId.current}-${selectedIndex}`
     );
@@ -128,12 +160,12 @@ const ContextMenu = ({
   return (
     <div
       className={styles.menuWrapper}
-      onMouseDown={e => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
       onKeyDown={handleKeyDown}
       style={{
         left: x,
         top: y,
-        width: filter ? menuWidth : "auto"
+        width: filter ? menuWidth : "auto",
       }}
       ref={menuWrapper}
       tabIndex={0}
@@ -189,7 +221,7 @@ const ContextOption = ({
   children,
   onClick,
   selected,
-  onMouseEnter
+  onMouseEnter,
 }) => {
   return (
     <div

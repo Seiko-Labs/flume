@@ -30,7 +30,9 @@ const Inner = ({
         e.stopPropagation();
       }}
     >
-      <td className={styles.portLabel}>{label || defaultLabel}</td>
+      <td className={styles.portLabel} title={label || defaultLabel}>
+        {label || defaultLabel}
+      </td>
       <td className={styles.controls}>
         {controls.map((control) => (
           <Control

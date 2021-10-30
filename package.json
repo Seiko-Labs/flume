@@ -1,6 +1,6 @@
 {
   "name": "flume",
-  "version": "0.12.5",
+  "version": "0.13.0",
   "description": "A node editor for React",
   "author": "chrisjpatty",
   "license": "MIT",
@@ -18,7 +18,8 @@
     "lint": "eslint . --cache --ext .js,.jsx",
     "test:watch": "react-scripts test --env=jsdom",
     "build": "rollup -c",
-    "start": "rollup -c -w",
+    "start": "concurrently \"yarn --cwd example/ run start\" \"rollup -cw\"",
+    "start_separate": "rollup -c -w",
     "release": "npx np",
     "postinstall_hidden": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
   },
@@ -48,6 +49,7 @@
     "@svgr/rollup": "^5.5.0",
     "@testing-library/dom": "^7.20.0",
     "@testing-library/react": "^10.4.3",
+    "concurrently": "^6.3.0",
     "cross-env": "^5.1.4",
     "cypress": "^4.9.0",
     "eslint": "^7.30.0",
@@ -85,6 +87,7 @@
     "d3-shape": "^3.0.1",
     "lodash": "^4.17.15",
     "md5": "2.3.0",
+    "monaco-editor": "^0.29.1",
     "nanoid": "^2.1.11",
     "react-ds": "^1.13.0",
     "react-onclickout": "^2.0.8",

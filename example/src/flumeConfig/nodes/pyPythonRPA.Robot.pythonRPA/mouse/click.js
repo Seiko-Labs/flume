@@ -79,10 +79,14 @@ export const clickNodeButtonPort = {
   name: "buttonPort",
   label: "Button",
   controls: [
-    Controls.select({
+    Controls.multiselect({
       name: "select",
-      defaultValue: "left",
-      options: [{ value: "left", label: "left" }],
+      options: [
+        { value: "left", label: "left" },
+        { value: "center", label: "center" },
+        { value: "other", label: "Very long something" },
+        { value: "right", label: "right" },
+      ],
     }),
   ],
 };

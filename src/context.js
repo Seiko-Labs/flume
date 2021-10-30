@@ -9,3 +9,4 @@ export const StageContext = createContext();
 export const CacheContext = createContext();
 export const RecalculateStageRectContext = createContext();
 export const EditorIdContext = createContext();
+export const ControllerOptionsContext = createContext();
