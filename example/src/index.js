@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import App from "./App";
 import TestEditor from "./TestRoutes/TestEditor";
 import "./index.css";
+import "react-perfect-scrollbar/dist/css/styles.min.css";
 
 ReactDOM.render(
   <Router>

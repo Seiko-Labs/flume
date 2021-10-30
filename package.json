@@ -1,6 +1,6 @@
 {
   "name": "flume",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "A node editor for React",
   "author": "chrisjpatty",
   "license": "MIT",
@@ -91,6 +91,7 @@
     "nanoid": "^2.1.11",
     "react-ds": "^1.13.0",
     "react-onclickout": "^2.0.8",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-portal": "^4.2.1"
   }
 }

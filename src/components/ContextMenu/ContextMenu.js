@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import ScrollBar from "react-perfect-scrollbar";
 import styles from "./ContextMenu.css";
 import clamp from "lodash/clamp";
 import nanoid from "nanoid/non-secure/index";
@@ -23,6 +24,7 @@ const ContextMenu = ({
 }) => {
   const menuWrapper = useRef();
   const menuOptionsWrapper = useRef();
+  const menuOptionsScroll = useRef();
   const filterInput = useRef();
   const [filter, setFilter] = useState("");
   const [menuWidth, setMenuWidth] = useState(0);
@@ -107,6 +109,10 @@ const ContextMenu = ({
     setSelectedIndex(0);
   };
 
+  useLayoutEffect(() => {
+    menuOptionsScroll.current.updateScroll();
+  });
+
   const handleKeyDown = (e) => {
     // Up pressed
     if (e.which === 38) {
@@ -188,29 +194,33 @@ const ContextMenu = ({
           ) : null}
         </div>
       ) : null}
-      <div
-        className={styles.optionsWrapper}
-        role="menu"
-        ref={menuOptionsWrapper}
+      <ScrollBar
+        options={{
+          suppressScrollX: true,
+        }}
+        ref={(el) => (menuOptionsScroll.current = el)}
+        containerRef={(el) => (menuOptionsWrapper.current = el)}
         style={{ maxHeight: clamp(window.innerHeight - y - 70, 10, 300) }}
       >
-        {filteredOptions.map((option, i) => (
-          <ContextOption
-            menuId={menuId.current}
-            selected={selectedIndex === i}
-            onClick={() => handleOptionSelected(option)}
-            onMouseEnter={() => setSelectedIndex(null)}
-            index={i}
-            key={option.value + i}
-          >
-            <label>{option.label}</label>
-            {option.description ? <p>{option.description}</p> : null}
-          </ContextOption>
-        ))}
-        {!options.length ? (
-          <span className={styles.emptyText}>{emptyText}</span>
-        ) : null}
-      </div>
+        <div className={styles.optionsWrapper} role="menu">
+          {filteredOptions.map((option, i) => (
+            <ContextOption
+              menuId={menuId.current}
+              selected={selectedIndex === i}
+              onClick={() => handleOptionSelected(option)}
+              onMouseEnter={() => setSelectedIndex(null)}
+              index={i}
+              key={option.value + i}
+            >
+              <label>{option.label}</label>
+              {option.description ? <p>{option.description}</p> : null}
+            </ContextOption>
+          ))}
+          {!options.length ? (
+            <span className={styles.emptyText}>{emptyText}</span>
+          ) : null}
+        </div>
+      </ScrollBar>
     </div>
   );
 };

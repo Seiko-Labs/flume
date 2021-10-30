@@ -30,6 +30,7 @@ export default {
     json(),
     external(),
     postcss({
+      minimize: true,
       modules: true,
       plugins: [postcss_nested, postcss_inline_svg()],
     }),

@@ -735,6 +735,25 @@ var loader = {
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function getAugmentedNamespace(n) {
+	if (n.__esModule) return n;
+	var a = Object.defineProperty({}, '__esModule', {value: true});
+	Object.keys(n).forEach(function (k) {
+		var d = Object.getOwnPropertyDescriptor(n, k);
+		Object.defineProperty(a, k, d.get ? d : {
+			enumerable: true,
+			get: function () {
+				return n[k];
+			}
+		});
+	});
+	return a;
+}
+
 var propTypes = {exports: {}};
 
 var reactIs = {exports: {}};
@@ -2422,7 +2441,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$d = ".Stage_wrapper__1X5K_ {\n  width: 100%;\n  height: 100%;\n  min-height: 100px;\n  background-color: #2F2F3B;\n  /*noinspection ALL*/\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='transparent' stroke='white' stroke-opacity='.02'%3E %3Crect x='0' y='0' width='11' height='11' stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5'/%3E %3C/svg%3E\");\n  color: #000;\n  position: relative;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n  text-align: left;\n  line-height: 1;\n  outline: none !important;\n}\n.Stage_wrapper__1X5K_ * {\n  box-sizing: border-box;\n}\n.Stage_wrapper__1X5K_ input,\ntextarea,\nselect {\n  font-family: \"Segoe UI\", Helvetica, sans-serif;\n}\n.Stage_transformWrapper__3CfIp {\n  transform-origin: center center;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n.Stage_scaleWrapper__2Y7Ck {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 0px;\n  height: 0px;\n}\n";
+var css_248z$d = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
 var styles$d = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$d);
 
@@ -2698,7 +2717,1617 @@ PortalWithState.defaultProps = {
 
 var PortalWithState$1 = PortalWithState;
 
-var css_248z$c = ".ContextMenu_menuWrapper__1BheJ {\n\tposition: fixed;\n\tz-index: 9999;\n\tbackground: #25252f;\n\tfont-size: 14px;\n\tmax-width: 300px;\n\tmin-width: 150px;\n\tfont-family: \"Segoe UI\", Helvetica, sans-serif;\n\tline-height: 1.15;\n\toutline: none;\n  box-shadow: 1px 3px 6px 2px rgba(32, 35, 48, 0.35);\n  border: 1px solid #2f2f3b;\n  border-radius: 4px;\n\n  touch-action: pan-x pan-y;\n}\n\n.ContextMenu_menuHeader__1Cw58 {\n\tpadding: 6px;\n\tborder-bottom: 1px solid #3B3B45;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.ContextMenu_menuLabel__158Pv {\n\tmargin: 0;\n\tcolor: #B3B3B3;\n\tfont-size: 16px;\n\tfont-weight: 600;\n}\n\n.ContextMenu_optionsWrapper__2YK_z {\n\tmax-height: 300px;\n\toverflow-y: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n.ContextMenu_menuFilter__1goBp {\n\tborder: none;\n\tbackground: none;\n\theight: 24px;\n\tflex: 1 1 auto;\n\twidth: 100%;\n\toutline: none;\n\tcolor: #B3B3B3;\n}\n\n.ContextMenu_menuFilter__1goBp::placeholder {\n\t\tfont-style: italic;\n\t}\n\n.ContextMenu_option__33MDL {\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-shrink: 0;\n\tpadding: 6px;\n\tborder-bottom: 1px solid #3B3B45;\n\tcolor: #B3B3B3;\n}\n\n.ContextMenu_option__33MDL:last-child {\n\t\tborder-bottom: none;\n\t}\n\n.ContextMenu_option__33MDL:hover {\n\t\tbackground: #2F2F3B;\n\t}\n\n.ContextMenu_option__33MDL label {\n\t\tmargin-bottom: 6px;\n\t\tuser-select: none;\n\t}\n\n.ContextMenu_option__33MDL label:last-child {\n\t\t\tmargin-bottom: 0;\n\t\t}\n\n.ContextMenu_option__33MDL p {\n\t\tmargin: 0;\n\t\tfont-style: italic;\n\t\tfont-size: 13px;\n\t\tcolor: rgba(255, 255, 255, .3);\n\t\tuser-select: none;\n\t}\n\n.ContextMenu_option__33MDL[data-selected=true] {\n\t\tbackground: rgba(255, 255, 255, .05);\n\t}\n\n.ContextMenu_emptyText__2rcXy {\n\tcolor: #B3B3B3;\n\tpadding: 6px;\n}\n";
+var lib = {exports: {}};
+
+var scrollbar = {exports: {}};
+
+/*!
+ * perfect-scrollbar v1.5.3
+ * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
+ * Licensed under MIT
+ */
+
+function get$2(element) {
+  return getComputedStyle(element);
+}
+
+function set(element, obj) {
+  for (var key in obj) {
+    var val = obj[key];
+    if (typeof val === 'number') {
+      val = val + "px";
+    }
+    element.style[key] = val;
+  }
+  return element;
+}
+
+function div(className) {
+  var div = document.createElement('div');
+  div.className = className;
+  return div;
+}
+
+var elMatches =
+  typeof Element !== 'undefined' &&
+  (Element.prototype.matches ||
+    Element.prototype.webkitMatchesSelector ||
+    Element.prototype.mozMatchesSelector ||
+    Element.prototype.msMatchesSelector);
+
+function matches(element, query) {
+  if (!elMatches) {
+    throw new Error('No element matching method supported');
+  }
+
+  return elMatches.call(element, query);
+}
+
+function remove(element) {
+  if (element.remove) {
+    element.remove();
+  } else {
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+  }
+}
+
+function queryChildren(element, selector) {
+  return Array.prototype.filter.call(element.children, function (child) { return matches(child, selector); }
+  );
+}
+
+var cls = {
+  main: 'ps',
+  rtl: 'ps__rtl',
+  element: {
+    thumb: function (x) { return ("ps__thumb-" + x); },
+    rail: function (x) { return ("ps__rail-" + x); },
+    consuming: 'ps__child--consume',
+  },
+  state: {
+    focus: 'ps--focus',
+    clicking: 'ps--clicking',
+    active: function (x) { return ("ps--active-" + x); },
+    scrolling: function (x) { return ("ps--scrolling-" + x); },
+  },
+};
+
+/*
+ * Helper methods
+ */
+var scrollingClassTimeout = { x: null, y: null };
+
+function addScrollingClass(i, x) {
+  var classList = i.element.classList;
+  var className = cls.state.scrolling(x);
+
+  if (classList.contains(className)) {
+    clearTimeout(scrollingClassTimeout[x]);
+  } else {
+    classList.add(className);
+  }
+}
+
+function removeScrollingClass(i, x) {
+  scrollingClassTimeout[x] = setTimeout(
+    function () { return i.isAlive && i.element.classList.remove(cls.state.scrolling(x)); },
+    i.settings.scrollingThreshold
+  );
+}
+
+function setScrollingClassInstantly(i, x) {
+  addScrollingClass(i, x);
+  removeScrollingClass(i, x);
+}
+
+var EventElement = function EventElement(element) {
+  this.element = element;
+  this.handlers = {};
+};
+
+var prototypeAccessors = { isEmpty: { configurable: true } };
+
+EventElement.prototype.bind = function bind (eventName, handler) {
+  if (typeof this.handlers[eventName] === 'undefined') {
+    this.handlers[eventName] = [];
+  }
+  this.handlers[eventName].push(handler);
+  this.element.addEventListener(eventName, handler, false);
+};
+
+EventElement.prototype.unbind = function unbind (eventName, target) {
+    var this$1$1 = this;
+
+  this.handlers[eventName] = this.handlers[eventName].filter(function (handler) {
+    if (target && handler !== target) {
+      return true;
+    }
+    this$1$1.element.removeEventListener(eventName, handler, false);
+    return false;
+  });
+};
+
+EventElement.prototype.unbindAll = function unbindAll () {
+  for (var name in this.handlers) {
+    this.unbind(name);
+  }
+};
+
+prototypeAccessors.isEmpty.get = function () {
+    var this$1$1 = this;
+
+  return Object.keys(this.handlers).every(
+    function (key) { return this$1$1.handlers[key].length === 0; }
+  );
+};
+
+Object.defineProperties( EventElement.prototype, prototypeAccessors );
+
+var EventManager = function EventManager() {
+  this.eventElements = [];
+};
+
+EventManager.prototype.eventElement = function eventElement (element) {
+  var ee = this.eventElements.filter(function (ee) { return ee.element === element; })[0];
+  if (!ee) {
+    ee = new EventElement(element);
+    this.eventElements.push(ee);
+  }
+  return ee;
+};
+
+EventManager.prototype.bind = function bind (element, eventName, handler) {
+  this.eventElement(element).bind(eventName, handler);
+};
+
+EventManager.prototype.unbind = function unbind (element, eventName, handler) {
+  var ee = this.eventElement(element);
+  ee.unbind(eventName, handler);
+
+  if (ee.isEmpty) {
+    // remove
+    this.eventElements.splice(this.eventElements.indexOf(ee), 1);
+  }
+};
+
+EventManager.prototype.unbindAll = function unbindAll () {
+  this.eventElements.forEach(function (e) { return e.unbindAll(); });
+  this.eventElements = [];
+};
+
+EventManager.prototype.once = function once (element, eventName, handler) {
+  var ee = this.eventElement(element);
+  var onceHandler = function (evt) {
+    ee.unbind(eventName, onceHandler);
+    handler(evt);
+  };
+  ee.bind(eventName, onceHandler);
+};
+
+function createEvent(name) {
+  if (typeof window.CustomEvent === 'function') {
+    return new CustomEvent(name);
+  } else {
+    var evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(name, false, false, undefined);
+    return evt;
+  }
+}
+
+function processScrollDiff(
+  i,
+  axis,
+  diff,
+  useScrollingClass,
+  forceFireReachEvent
+) {
+  if ( useScrollingClass === void 0 ) useScrollingClass = true;
+  if ( forceFireReachEvent === void 0 ) forceFireReachEvent = false;
+
+  var fields;
+  if (axis === 'top') {
+    fields = [
+      'contentHeight',
+      'containerHeight',
+      'scrollTop',
+      'y',
+      'up',
+      'down' ];
+  } else if (axis === 'left') {
+    fields = [
+      'contentWidth',
+      'containerWidth',
+      'scrollLeft',
+      'x',
+      'left',
+      'right' ];
+  } else {
+    throw new Error('A proper axis should be provided');
+  }
+
+  processScrollDiff$1(i, diff, fields, useScrollingClass, forceFireReachEvent);
+}
+
+function processScrollDiff$1(
+  i,
+  diff,
+  ref,
+  useScrollingClass,
+  forceFireReachEvent
+) {
+  var contentHeight = ref[0];
+  var containerHeight = ref[1];
+  var scrollTop = ref[2];
+  var y = ref[3];
+  var up = ref[4];
+  var down = ref[5];
+  if ( useScrollingClass === void 0 ) useScrollingClass = true;
+  if ( forceFireReachEvent === void 0 ) forceFireReachEvent = false;
+
+  var element = i.element;
+
+  // reset reach
+  i.reach[y] = null;
+
+  // 1 for subpixel rounding
+  if (element[scrollTop] < 1) {
+    i.reach[y] = 'start';
+  }
+
+  // 1 for subpixel rounding
+  if (element[scrollTop] > i[contentHeight] - i[containerHeight] - 1) {
+    i.reach[y] = 'end';
+  }
+
+  if (diff) {
+    element.dispatchEvent(createEvent(("ps-scroll-" + y)));
+
+    if (diff < 0) {
+      element.dispatchEvent(createEvent(("ps-scroll-" + up)));
+    } else if (diff > 0) {
+      element.dispatchEvent(createEvent(("ps-scroll-" + down)));
+    }
+
+    if (useScrollingClass) {
+      setScrollingClassInstantly(i, y);
+    }
+  }
+
+  if (i.reach[y] && (diff || forceFireReachEvent)) {
+    element.dispatchEvent(createEvent(("ps-" + y + "-reach-" + (i.reach[y]))));
+  }
+}
+
+function toInt(x) {
+  return parseInt(x, 10) || 0;
+}
+
+function isEditable(el) {
+  return (
+    matches(el, 'input,[contenteditable]') ||
+    matches(el, 'select,[contenteditable]') ||
+    matches(el, 'textarea,[contenteditable]') ||
+    matches(el, 'button,[contenteditable]')
+  );
+}
+
+function outerWidth(element) {
+  var styles = get$2(element);
+  return (
+    toInt(styles.width) +
+    toInt(styles.paddingLeft) +
+    toInt(styles.paddingRight) +
+    toInt(styles.borderLeftWidth) +
+    toInt(styles.borderRightWidth)
+  );
+}
+
+var env = {
+  isWebKit:
+    typeof document !== 'undefined' &&
+    'WebkitAppearance' in document.documentElement.style,
+  supportsTouch:
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window ||
+      ('maxTouchPoints' in window.navigator &&
+        window.navigator.maxTouchPoints > 0) ||
+      (window.DocumentTouch && document instanceof window.DocumentTouch)),
+  supportsIePointer:
+    typeof navigator !== 'undefined' && navigator.msMaxTouchPoints,
+  isChrome:
+    typeof navigator !== 'undefined' &&
+    /Chrome/i.test(navigator && navigator.userAgent),
+};
+
+function updateGeometry(i) {
+  var element = i.element;
+  var roundedScrollTop = Math.floor(element.scrollTop);
+  var rect = element.getBoundingClientRect();
+
+  i.containerWidth = Math.round(rect.width);
+  i.containerHeight = Math.round(rect.height);
+
+  i.contentWidth = element.scrollWidth;
+  i.contentHeight = element.scrollHeight;
+
+  if (!element.contains(i.scrollbarXRail)) {
+    // clean up and append
+    queryChildren(element, cls.element.rail('x')).forEach(function (el) { return remove(el); }
+    );
+    element.appendChild(i.scrollbarXRail);
+  }
+  if (!element.contains(i.scrollbarYRail)) {
+    // clean up and append
+    queryChildren(element, cls.element.rail('y')).forEach(function (el) { return remove(el); }
+    );
+    element.appendChild(i.scrollbarYRail);
+  }
+
+  if (
+    !i.settings.suppressScrollX &&
+    i.containerWidth + i.settings.scrollXMarginOffset < i.contentWidth
+  ) {
+    i.scrollbarXActive = true;
+    i.railXWidth = i.containerWidth - i.railXMarginWidth;
+    i.railXRatio = i.containerWidth / i.railXWidth;
+    i.scrollbarXWidth = getThumbSize(
+      i,
+      toInt((i.railXWidth * i.containerWidth) / i.contentWidth)
+    );
+    i.scrollbarXLeft = toInt(
+      ((i.negativeScrollAdjustment + element.scrollLeft) *
+        (i.railXWidth - i.scrollbarXWidth)) /
+        (i.contentWidth - i.containerWidth)
+    );
+  } else {
+    i.scrollbarXActive = false;
+  }
+
+  if (
+    !i.settings.suppressScrollY &&
+    i.containerHeight + i.settings.scrollYMarginOffset < i.contentHeight
+  ) {
+    i.scrollbarYActive = true;
+    i.railYHeight = i.containerHeight - i.railYMarginHeight;
+    i.railYRatio = i.containerHeight / i.railYHeight;
+    i.scrollbarYHeight = getThumbSize(
+      i,
+      toInt((i.railYHeight * i.containerHeight) / i.contentHeight)
+    );
+    i.scrollbarYTop = toInt(
+      (roundedScrollTop * (i.railYHeight - i.scrollbarYHeight)) /
+        (i.contentHeight - i.containerHeight)
+    );
+  } else {
+    i.scrollbarYActive = false;
+  }
+
+  if (i.scrollbarXLeft >= i.railXWidth - i.scrollbarXWidth) {
+    i.scrollbarXLeft = i.railXWidth - i.scrollbarXWidth;
+  }
+  if (i.scrollbarYTop >= i.railYHeight - i.scrollbarYHeight) {
+    i.scrollbarYTop = i.railYHeight - i.scrollbarYHeight;
+  }
+
+  updateCss(element, i);
+
+  if (i.scrollbarXActive) {
+    element.classList.add(cls.state.active('x'));
+  } else {
+    element.classList.remove(cls.state.active('x'));
+    i.scrollbarXWidth = 0;
+    i.scrollbarXLeft = 0;
+    element.scrollLeft = i.isRtl === true ? i.contentWidth : 0;
+  }
+  if (i.scrollbarYActive) {
+    element.classList.add(cls.state.active('y'));
+  } else {
+    element.classList.remove(cls.state.active('y'));
+    i.scrollbarYHeight = 0;
+    i.scrollbarYTop = 0;
+    element.scrollTop = 0;
+  }
+}
+
+function getThumbSize(i, thumbSize) {
+  if (i.settings.minScrollbarLength) {
+    thumbSize = Math.max(thumbSize, i.settings.minScrollbarLength);
+  }
+  if (i.settings.maxScrollbarLength) {
+    thumbSize = Math.min(thumbSize, i.settings.maxScrollbarLength);
+  }
+  return thumbSize;
+}
+
+function updateCss(element, i) {
+  var xRailOffset = { width: i.railXWidth };
+  var roundedScrollTop = Math.floor(element.scrollTop);
+
+  if (i.isRtl) {
+    xRailOffset.left =
+      i.negativeScrollAdjustment +
+      element.scrollLeft +
+      i.containerWidth -
+      i.contentWidth;
+  } else {
+    xRailOffset.left = element.scrollLeft;
+  }
+  if (i.isScrollbarXUsingBottom) {
+    xRailOffset.bottom = i.scrollbarXBottom - roundedScrollTop;
+  } else {
+    xRailOffset.top = i.scrollbarXTop + roundedScrollTop;
+  }
+  set(i.scrollbarXRail, xRailOffset);
+
+  var yRailOffset = { top: roundedScrollTop, height: i.railYHeight };
+  if (i.isScrollbarYUsingRight) {
+    if (i.isRtl) {
+      yRailOffset.right =
+        i.contentWidth -
+        (i.negativeScrollAdjustment + element.scrollLeft) -
+        i.scrollbarYRight -
+        i.scrollbarYOuterWidth -
+        9;
+    } else {
+      yRailOffset.right = i.scrollbarYRight - element.scrollLeft;
+    }
+  } else {
+    if (i.isRtl) {
+      yRailOffset.left =
+        i.negativeScrollAdjustment +
+        element.scrollLeft +
+        i.containerWidth * 2 -
+        i.contentWidth -
+        i.scrollbarYLeft -
+        i.scrollbarYOuterWidth;
+    } else {
+      yRailOffset.left = i.scrollbarYLeft + element.scrollLeft;
+    }
+  }
+  set(i.scrollbarYRail, yRailOffset);
+
+  set(i.scrollbarX, {
+    left: i.scrollbarXLeft,
+    width: i.scrollbarXWidth - i.railBorderXWidth,
+  });
+  set(i.scrollbarY, {
+    top: i.scrollbarYTop,
+    height: i.scrollbarYHeight - i.railBorderYWidth,
+  });
+}
+
+function clickRail(i) {
+  i.element;
+
+  i.event.bind(i.scrollbarY, 'mousedown', function (e) { return e.stopPropagation(); });
+  i.event.bind(i.scrollbarYRail, 'mousedown', function (e) {
+    var positionTop =
+      e.pageY -
+      window.pageYOffset -
+      i.scrollbarYRail.getBoundingClientRect().top;
+    var direction = positionTop > i.scrollbarYTop ? 1 : -1;
+
+    i.element.scrollTop += direction * i.containerHeight;
+    updateGeometry(i);
+
+    e.stopPropagation();
+  });
+
+  i.event.bind(i.scrollbarX, 'mousedown', function (e) { return e.stopPropagation(); });
+  i.event.bind(i.scrollbarXRail, 'mousedown', function (e) {
+    var positionLeft =
+      e.pageX -
+      window.pageXOffset -
+      i.scrollbarXRail.getBoundingClientRect().left;
+    var direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
+
+    i.element.scrollLeft += direction * i.containerWidth;
+    updateGeometry(i);
+
+    e.stopPropagation();
+  });
+}
+
+function dragThumb(i) {
+  bindMouseScrollHandler(i, [
+    'containerWidth',
+    'contentWidth',
+    'pageX',
+    'railXWidth',
+    'scrollbarX',
+    'scrollbarXWidth',
+    'scrollLeft',
+    'x',
+    'scrollbarXRail' ]);
+  bindMouseScrollHandler(i, [
+    'containerHeight',
+    'contentHeight',
+    'pageY',
+    'railYHeight',
+    'scrollbarY',
+    'scrollbarYHeight',
+    'scrollTop',
+    'y',
+    'scrollbarYRail' ]);
+}
+
+function bindMouseScrollHandler(
+  i,
+  ref
+) {
+  var containerHeight = ref[0];
+  var contentHeight = ref[1];
+  var pageY = ref[2];
+  var railYHeight = ref[3];
+  var scrollbarY = ref[4];
+  var scrollbarYHeight = ref[5];
+  var scrollTop = ref[6];
+  var y = ref[7];
+  var scrollbarYRail = ref[8];
+
+  var element = i.element;
+
+  var startingScrollTop = null;
+  var startingMousePageY = null;
+  var scrollBy = null;
+
+  function mouseMoveHandler(e) {
+    if (e.touches && e.touches[0]) {
+      e[pageY] = e.touches[0].pageY;
+    }
+    element[scrollTop] =
+      startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+    addScrollingClass(i, y);
+    updateGeometry(i);
+
+    e.stopPropagation();
+    if (e.type.startsWith('touch') && e.changedTouches.length > 1) {
+      e.preventDefault();
+    }
+  }
+
+  function mouseUpHandler() {
+    removeScrollingClass(i, y);
+    i[scrollbarYRail].classList.remove(cls.state.clicking);
+    i.event.unbind(i.ownerDocument, 'mousemove', mouseMoveHandler);
+  }
+
+  function bindMoves(e, touchMode) {
+    startingScrollTop = element[scrollTop];
+    if (touchMode && e.touches) {
+      e[pageY] = e.touches[0].pageY;
+    }
+    startingMousePageY = e[pageY];
+    scrollBy =
+      (i[contentHeight] - i[containerHeight]) /
+      (i[railYHeight] - i[scrollbarYHeight]);
+    if (!touchMode) {
+      i.event.bind(i.ownerDocument, 'mousemove', mouseMoveHandler);
+      i.event.once(i.ownerDocument, 'mouseup', mouseUpHandler);
+      e.preventDefault();
+    } else {
+      i.event.bind(i.ownerDocument, 'touchmove', mouseMoveHandler);
+    }
+
+    i[scrollbarYRail].classList.add(cls.state.clicking);
+
+    e.stopPropagation();
+  }
+
+  i.event.bind(i[scrollbarY], 'mousedown', function (e) {
+    bindMoves(e);
+  });
+  i.event.bind(i[scrollbarY], 'touchstart', function (e) {
+    bindMoves(e, true);
+  });
+}
+
+function keyboard(i) {
+  var element = i.element;
+
+  var elementHovered = function () { return matches(element, ':hover'); };
+  var scrollbarFocused = function () { return matches(i.scrollbarX, ':focus') || matches(i.scrollbarY, ':focus'); };
+
+  function shouldPreventDefault(deltaX, deltaY) {
+    var scrollTop = Math.floor(element.scrollTop);
+    if (deltaX === 0) {
+      if (!i.scrollbarYActive) {
+        return false;
+      }
+      if (
+        (scrollTop === 0 && deltaY > 0) ||
+        (scrollTop >= i.contentHeight - i.containerHeight && deltaY < 0)
+      ) {
+        return !i.settings.wheelPropagation;
+      }
+    }
+
+    var scrollLeft = element.scrollLeft;
+    if (deltaY === 0) {
+      if (!i.scrollbarXActive) {
+        return false;
+      }
+      if (
+        (scrollLeft === 0 && deltaX < 0) ||
+        (scrollLeft >= i.contentWidth - i.containerWidth && deltaX > 0)
+      ) {
+        return !i.settings.wheelPropagation;
+      }
+    }
+    return true;
+  }
+
+  i.event.bind(i.ownerDocument, 'keydown', function (e) {
+    if (
+      (e.isDefaultPrevented && e.isDefaultPrevented()) ||
+      e.defaultPrevented
+    ) {
+      return;
+    }
+
+    if (!elementHovered() && !scrollbarFocused()) {
+      return;
+    }
+
+    var activeElement = document.activeElement
+      ? document.activeElement
+      : i.ownerDocument.activeElement;
+    if (activeElement) {
+      if (activeElement.tagName === 'IFRAME') {
+        activeElement = activeElement.contentDocument.activeElement;
+      } else {
+        // go deeper if element is a webcomponent
+        while (activeElement.shadowRoot) {
+          activeElement = activeElement.shadowRoot.activeElement;
+        }
+      }
+      if (isEditable(activeElement)) {
+        return;
+      }
+    }
+
+    var deltaX = 0;
+    var deltaY = 0;
+
+    switch (e.which) {
+      case 37: // left
+        if (e.metaKey) {
+          deltaX = -i.contentWidth;
+        } else if (e.altKey) {
+          deltaX = -i.containerWidth;
+        } else {
+          deltaX = -30;
+        }
+        break;
+      case 38: // up
+        if (e.metaKey) {
+          deltaY = i.contentHeight;
+        } else if (e.altKey) {
+          deltaY = i.containerHeight;
+        } else {
+          deltaY = 30;
+        }
+        break;
+      case 39: // right
+        if (e.metaKey) {
+          deltaX = i.contentWidth;
+        } else if (e.altKey) {
+          deltaX = i.containerWidth;
+        } else {
+          deltaX = 30;
+        }
+        break;
+      case 40: // down
+        if (e.metaKey) {
+          deltaY = -i.contentHeight;
+        } else if (e.altKey) {
+          deltaY = -i.containerHeight;
+        } else {
+          deltaY = -30;
+        }
+        break;
+      case 32: // space bar
+        if (e.shiftKey) {
+          deltaY = i.containerHeight;
+        } else {
+          deltaY = -i.containerHeight;
+        }
+        break;
+      case 33: // page up
+        deltaY = i.containerHeight;
+        break;
+      case 34: // page down
+        deltaY = -i.containerHeight;
+        break;
+      case 36: // home
+        deltaY = i.contentHeight;
+        break;
+      case 35: // end
+        deltaY = -i.contentHeight;
+        break;
+      default:
+        return;
+    }
+
+    if (i.settings.suppressScrollX && deltaX !== 0) {
+      return;
+    }
+    if (i.settings.suppressScrollY && deltaY !== 0) {
+      return;
+    }
+
+    element.scrollTop -= deltaY;
+    element.scrollLeft += deltaX;
+    updateGeometry(i);
+
+    if (shouldPreventDefault(deltaX, deltaY)) {
+      e.preventDefault();
+    }
+  });
+}
+
+function wheel(i) {
+  var element = i.element;
+
+  function shouldPreventDefault(deltaX, deltaY) {
+    var roundedScrollTop = Math.floor(element.scrollTop);
+    var isTop = element.scrollTop === 0;
+    var isBottom =
+      roundedScrollTop + element.offsetHeight === element.scrollHeight;
+    var isLeft = element.scrollLeft === 0;
+    var isRight =
+      element.scrollLeft + element.offsetWidth === element.scrollWidth;
+
+    var hitsBound;
+
+    // pick axis with primary direction
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      hitsBound = isTop || isBottom;
+    } else {
+      hitsBound = isLeft || isRight;
+    }
+
+    return hitsBound ? !i.settings.wheelPropagation : true;
+  }
+
+  function getDeltaFromEvent(e) {
+    var deltaX = e.deltaX;
+    var deltaY = -1 * e.deltaY;
+
+    if (typeof deltaX === 'undefined' || typeof deltaY === 'undefined') {
+      // OS X Safari
+      deltaX = (-1 * e.wheelDeltaX) / 6;
+      deltaY = e.wheelDeltaY / 6;
+    }
+
+    if (e.deltaMode && e.deltaMode === 1) {
+      // Firefox in deltaMode 1: Line scrolling
+      deltaX *= 10;
+      deltaY *= 10;
+    }
+
+    if (deltaX !== deltaX && deltaY !== deltaY /* NaN checks */) {
+      // IE in some mouse drivers
+      deltaX = 0;
+      deltaY = e.wheelDelta;
+    }
+
+    if (e.shiftKey) {
+      // reverse axis with shift key
+      return [-deltaY, -deltaX];
+    }
+    return [deltaX, deltaY];
+  }
+
+  function shouldBeConsumedByChild(target, deltaX, deltaY) {
+    // FIXME: this is a workaround for <select> issue in FF and IE #571
+    if (!env.isWebKit && element.querySelector('select:focus')) {
+      return true;
+    }
+
+    if (!element.contains(target)) {
+      return false;
+    }
+
+    var cursor = target;
+
+    while (cursor && cursor !== element) {
+      if (cursor.classList.contains(cls.element.consuming)) {
+        return true;
+      }
+
+      var style = get$2(cursor);
+
+      // if deltaY && vertical scrollable
+      if (deltaY && style.overflowY.match(/(scroll|auto)/)) {
+        var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
+        if (maxScrollTop > 0) {
+          if (
+            (cursor.scrollTop > 0 && deltaY < 0) ||
+            (cursor.scrollTop < maxScrollTop && deltaY > 0)
+          ) {
+            return true;
+          }
+        }
+      }
+      // if deltaX && horizontal scrollable
+      if (deltaX && style.overflowX.match(/(scroll|auto)/)) {
+        var maxScrollLeft = cursor.scrollWidth - cursor.clientWidth;
+        if (maxScrollLeft > 0) {
+          if (
+            (cursor.scrollLeft > 0 && deltaX < 0) ||
+            (cursor.scrollLeft < maxScrollLeft && deltaX > 0)
+          ) {
+            return true;
+          }
+        }
+      }
+
+      cursor = cursor.parentNode;
+    }
+
+    return false;
+  }
+
+  function mousewheelHandler(e) {
+    var ref = getDeltaFromEvent(e);
+    var deltaX = ref[0];
+    var deltaY = ref[1];
+
+    if (shouldBeConsumedByChild(e.target, deltaX, deltaY)) {
+      return;
+    }
+
+    var shouldPrevent = false;
+    if (!i.settings.useBothWheelAxes) {
+      // deltaX will only be used for horizontal scrolling and deltaY will
+      // only be used for vertical scrolling - this is the default
+      element.scrollTop -= deltaY * i.settings.wheelSpeed;
+      element.scrollLeft += deltaX * i.settings.wheelSpeed;
+    } else if (i.scrollbarYActive && !i.scrollbarXActive) {
+      // only vertical scrollbar is active and useBothWheelAxes option is
+      // active, so let's scroll vertical bar using both mouse wheel axes
+      if (deltaY) {
+        element.scrollTop -= deltaY * i.settings.wheelSpeed;
+      } else {
+        element.scrollTop += deltaX * i.settings.wheelSpeed;
+      }
+      shouldPrevent = true;
+    } else if (i.scrollbarXActive && !i.scrollbarYActive) {
+      // useBothWheelAxes and only horizontal bar is active, so use both
+      // wheel axes for horizontal bar
+      if (deltaX) {
+        element.scrollLeft += deltaX * i.settings.wheelSpeed;
+      } else {
+        element.scrollLeft -= deltaY * i.settings.wheelSpeed;
+      }
+      shouldPrevent = true;
+    }
+
+    updateGeometry(i);
+
+    shouldPrevent = shouldPrevent || shouldPreventDefault(deltaX, deltaY);
+    if (shouldPrevent && !e.ctrlKey) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }
+
+  if (typeof window.onwheel !== 'undefined') {
+    i.event.bind(element, 'wheel', mousewheelHandler);
+  } else if (typeof window.onmousewheel !== 'undefined') {
+    i.event.bind(element, 'mousewheel', mousewheelHandler);
+  }
+}
+
+function touch(i) {
+  if (!env.supportsTouch && !env.supportsIePointer) {
+    return;
+  }
+
+  var element = i.element;
+
+  function shouldPrevent(deltaX, deltaY) {
+    var scrollTop = Math.floor(element.scrollTop);
+    var scrollLeft = element.scrollLeft;
+    var magnitudeX = Math.abs(deltaX);
+    var magnitudeY = Math.abs(deltaY);
+
+    if (magnitudeY > magnitudeX) {
+      // user is perhaps trying to swipe up/down the page
+
+      if (
+        (deltaY < 0 && scrollTop === i.contentHeight - i.containerHeight) ||
+        (deltaY > 0 && scrollTop === 0)
+      ) {
+        // set prevent for mobile Chrome refresh
+        return window.scrollY === 0 && deltaY > 0 && env.isChrome;
+      }
+    } else if (magnitudeX > magnitudeY) {
+      // user is perhaps trying to swipe left/right across the page
+
+      if (
+        (deltaX < 0 && scrollLeft === i.contentWidth - i.containerWidth) ||
+        (deltaX > 0 && scrollLeft === 0)
+      ) {
+        return true;
+      }
+    }
+
+    return true;
+  }
+
+  function applyTouchMove(differenceX, differenceY) {
+    element.scrollTop -= differenceY;
+    element.scrollLeft -= differenceX;
+
+    updateGeometry(i);
+  }
+
+  var startOffset = {};
+  var startTime = 0;
+  var speed = {};
+  var easingLoop = null;
+
+  function getTouch(e) {
+    if (e.targetTouches) {
+      return e.targetTouches[0];
+    } else {
+      // Maybe IE pointer
+      return e;
+    }
+  }
+
+  function shouldHandle(e) {
+    if (e.pointerType && e.pointerType === 'pen' && e.buttons === 0) {
+      return false;
+    }
+    if (e.targetTouches && e.targetTouches.length === 1) {
+      return true;
+    }
+    if (
+      e.pointerType &&
+      e.pointerType !== 'mouse' &&
+      e.pointerType !== e.MSPOINTER_TYPE_MOUSE
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  function touchStart(e) {
+    if (!shouldHandle(e)) {
+      return;
+    }
+
+    var touch = getTouch(e);
+
+    startOffset.pageX = touch.pageX;
+    startOffset.pageY = touch.pageY;
+
+    startTime = new Date().getTime();
+
+    if (easingLoop !== null) {
+      clearInterval(easingLoop);
+    }
+  }
+
+  function shouldBeConsumedByChild(target, deltaX, deltaY) {
+    if (!element.contains(target)) {
+      return false;
+    }
+
+    var cursor = target;
+
+    while (cursor && cursor !== element) {
+      if (cursor.classList.contains(cls.element.consuming)) {
+        return true;
+      }
+
+      var style = get$2(cursor);
+
+      // if deltaY && vertical scrollable
+      if (deltaY && style.overflowY.match(/(scroll|auto)/)) {
+        var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
+        if (maxScrollTop > 0) {
+          if (
+            (cursor.scrollTop > 0 && deltaY < 0) ||
+            (cursor.scrollTop < maxScrollTop && deltaY > 0)
+          ) {
+            return true;
+          }
+        }
+      }
+      // if deltaX && horizontal scrollable
+      if (deltaX && style.overflowX.match(/(scroll|auto)/)) {
+        var maxScrollLeft = cursor.scrollWidth - cursor.clientWidth;
+        if (maxScrollLeft > 0) {
+          if (
+            (cursor.scrollLeft > 0 && deltaX < 0) ||
+            (cursor.scrollLeft < maxScrollLeft && deltaX > 0)
+          ) {
+            return true;
+          }
+        }
+      }
+
+      cursor = cursor.parentNode;
+    }
+
+    return false;
+  }
+
+  function touchMove(e) {
+    if (shouldHandle(e)) {
+      var touch = getTouch(e);
+
+      var currentOffset = { pageX: touch.pageX, pageY: touch.pageY };
+
+      var differenceX = currentOffset.pageX - startOffset.pageX;
+      var differenceY = currentOffset.pageY - startOffset.pageY;
+
+      if (shouldBeConsumedByChild(e.target, differenceX, differenceY)) {
+        return;
+      }
+
+      applyTouchMove(differenceX, differenceY);
+      startOffset = currentOffset;
+
+      var currentTime = new Date().getTime();
+
+      var timeGap = currentTime - startTime;
+      if (timeGap > 0) {
+        speed.x = differenceX / timeGap;
+        speed.y = differenceY / timeGap;
+        startTime = currentTime;
+      }
+
+      if (shouldPrevent(differenceX, differenceY)) {
+        e.preventDefault();
+      }
+    }
+  }
+  function touchEnd() {
+    if (i.settings.swipeEasing) {
+      clearInterval(easingLoop);
+      easingLoop = setInterval(function() {
+        if (i.isInitialized) {
+          clearInterval(easingLoop);
+          return;
+        }
+
+        if (!speed.x && !speed.y) {
+          clearInterval(easingLoop);
+          return;
+        }
+
+        if (Math.abs(speed.x) < 0.01 && Math.abs(speed.y) < 0.01) {
+          clearInterval(easingLoop);
+          return;
+        }
+
+        if (!i.element) {
+          clearInterval(easingLoop);
+          return;
+        }
+
+        applyTouchMove(speed.x * 30, speed.y * 30);
+
+        speed.x *= 0.8;
+        speed.y *= 0.8;
+      }, 10);
+    }
+  }
+
+  if (env.supportsTouch) {
+    i.event.bind(element, 'touchstart', touchStart);
+    i.event.bind(element, 'touchmove', touchMove);
+    i.event.bind(element, 'touchend', touchEnd);
+  } else if (env.supportsIePointer) {
+    if (window.PointerEvent) {
+      i.event.bind(element, 'pointerdown', touchStart);
+      i.event.bind(element, 'pointermove', touchMove);
+      i.event.bind(element, 'pointerup', touchEnd);
+    } else if (window.MSPointerEvent) {
+      i.event.bind(element, 'MSPointerDown', touchStart);
+      i.event.bind(element, 'MSPointerMove', touchMove);
+      i.event.bind(element, 'MSPointerUp', touchEnd);
+    }
+  }
+}
+
+var defaultSettings = function () { return ({
+  handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel', 'touch'],
+  maxScrollbarLength: null,
+  minScrollbarLength: null,
+  scrollingThreshold: 1000,
+  scrollXMarginOffset: 0,
+  scrollYMarginOffset: 0,
+  suppressScrollX: false,
+  suppressScrollY: false,
+  swipeEasing: true,
+  useBothWheelAxes: false,
+  wheelPropagation: true,
+  wheelSpeed: 1,
+}); };
+
+var handlers = {
+  'click-rail': clickRail,
+  'drag-thumb': dragThumb,
+  keyboard: keyboard,
+  wheel: wheel,
+  touch: touch,
+};
+
+var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
+  var this$1$1 = this;
+  if ( userSettings === void 0 ) userSettings = {};
+
+  if (typeof element === 'string') {
+    element = document.querySelector(element);
+  }
+
+  if (!element || !element.nodeName) {
+    throw new Error('no element is specified to initialize PerfectScrollbar');
+  }
+
+  this.element = element;
+
+  element.classList.add(cls.main);
+
+  this.settings = defaultSettings();
+  for (var key in userSettings) {
+    this.settings[key] = userSettings[key];
+  }
+
+  this.containerWidth = null;
+  this.containerHeight = null;
+  this.contentWidth = null;
+  this.contentHeight = null;
+
+  var focus = function () { return element.classList.add(cls.state.focus); };
+  var blur = function () { return element.classList.remove(cls.state.focus); };
+
+  this.isRtl = get$2(element).direction === 'rtl';
+  if (this.isRtl === true) {
+    element.classList.add(cls.rtl);
+  }
+  this.isNegativeScroll = (function () {
+    var originalScrollLeft = element.scrollLeft;
+    var result = null;
+    element.scrollLeft = -1;
+    result = element.scrollLeft < 0;
+    element.scrollLeft = originalScrollLeft;
+    return result;
+  })();
+  this.negativeScrollAdjustment = this.isNegativeScroll
+    ? element.scrollWidth - element.clientWidth
+    : 0;
+  this.event = new EventManager();
+  this.ownerDocument = element.ownerDocument || document;
+
+  this.scrollbarXRail = div(cls.element.rail('x'));
+  element.appendChild(this.scrollbarXRail);
+  this.scrollbarX = div(cls.element.thumb('x'));
+  this.scrollbarXRail.appendChild(this.scrollbarX);
+  this.scrollbarX.setAttribute('tabindex', 0);
+  this.event.bind(this.scrollbarX, 'focus', focus);
+  this.event.bind(this.scrollbarX, 'blur', blur);
+  this.scrollbarXActive = null;
+  this.scrollbarXWidth = null;
+  this.scrollbarXLeft = null;
+  var railXStyle = get$2(this.scrollbarXRail);
+  this.scrollbarXBottom = parseInt(railXStyle.bottom, 10);
+  if (isNaN(this.scrollbarXBottom)) {
+    this.isScrollbarXUsingBottom = false;
+    this.scrollbarXTop = toInt(railXStyle.top);
+  } else {
+    this.isScrollbarXUsingBottom = true;
+  }
+  this.railBorderXWidth =
+    toInt(railXStyle.borderLeftWidth) + toInt(railXStyle.borderRightWidth);
+  // Set rail to display:block to calculate margins
+  set(this.scrollbarXRail, { display: 'block' });
+  this.railXMarginWidth =
+    toInt(railXStyle.marginLeft) + toInt(railXStyle.marginRight);
+  set(this.scrollbarXRail, { display: '' });
+  this.railXWidth = null;
+  this.railXRatio = null;
+
+  this.scrollbarYRail = div(cls.element.rail('y'));
+  element.appendChild(this.scrollbarYRail);
+  this.scrollbarY = div(cls.element.thumb('y'));
+  this.scrollbarYRail.appendChild(this.scrollbarY);
+  this.scrollbarY.setAttribute('tabindex', 0);
+  this.event.bind(this.scrollbarY, 'focus', focus);
+  this.event.bind(this.scrollbarY, 'blur', blur);
+  this.scrollbarYActive = null;
+  this.scrollbarYHeight = null;
+  this.scrollbarYTop = null;
+  var railYStyle = get$2(this.scrollbarYRail);
+  this.scrollbarYRight = parseInt(railYStyle.right, 10);
+  if (isNaN(this.scrollbarYRight)) {
+    this.isScrollbarYUsingRight = false;
+    this.scrollbarYLeft = toInt(railYStyle.left);
+  } else {
+    this.isScrollbarYUsingRight = true;
+  }
+  this.scrollbarYOuterWidth = this.isRtl ? outerWidth(this.scrollbarY) : null;
+  this.railBorderYWidth =
+    toInt(railYStyle.borderTopWidth) + toInt(railYStyle.borderBottomWidth);
+  set(this.scrollbarYRail, { display: 'block' });
+  this.railYMarginHeight =
+    toInt(railYStyle.marginTop) + toInt(railYStyle.marginBottom);
+  set(this.scrollbarYRail, { display: '' });
+  this.railYHeight = null;
+  this.railYRatio = null;
+
+  this.reach = {
+    x:
+      element.scrollLeft <= 0
+        ? 'start'
+        : element.scrollLeft >= this.contentWidth - this.containerWidth
+        ? 'end'
+        : null,
+    y:
+      element.scrollTop <= 0
+        ? 'start'
+        : element.scrollTop >= this.contentHeight - this.containerHeight
+        ? 'end'
+        : null,
+  };
+
+  this.isAlive = true;
+
+  this.settings.handlers.forEach(function (handlerName) { return handlers[handlerName](this$1$1); });
+
+  this.lastScrollTop = Math.floor(element.scrollTop); // for onScroll only
+  this.lastScrollLeft = element.scrollLeft; // for onScroll only
+  this.event.bind(this.element, 'scroll', function (e) { return this$1$1.onScroll(e); });
+  updateGeometry(this);
+};
+
+PerfectScrollbar.prototype.update = function update () {
+  if (!this.isAlive) {
+    return;
+  }
+
+  // Recalcuate negative scrollLeft adjustment
+  this.negativeScrollAdjustment = this.isNegativeScroll
+    ? this.element.scrollWidth - this.element.clientWidth
+    : 0;
+
+  // Recalculate rail margins
+  set(this.scrollbarXRail, { display: 'block' });
+  set(this.scrollbarYRail, { display: 'block' });
+  this.railXMarginWidth =
+    toInt(get$2(this.scrollbarXRail).marginLeft) +
+    toInt(get$2(this.scrollbarXRail).marginRight);
+  this.railYMarginHeight =
+    toInt(get$2(this.scrollbarYRail).marginTop) +
+    toInt(get$2(this.scrollbarYRail).marginBottom);
+
+  // Hide scrollbars not to affect scrollWidth and scrollHeight
+  set(this.scrollbarXRail, { display: 'none' });
+  set(this.scrollbarYRail, { display: 'none' });
+
+  updateGeometry(this);
+
+  processScrollDiff(this, 'top', 0, false, true);
+  processScrollDiff(this, 'left', 0, false, true);
+
+  set(this.scrollbarXRail, { display: '' });
+  set(this.scrollbarYRail, { display: '' });
+};
+
+PerfectScrollbar.prototype.onScroll = function onScroll (e) {
+  if (!this.isAlive) {
+    return;
+  }
+
+  updateGeometry(this);
+  processScrollDiff(this, 'top', this.element.scrollTop - this.lastScrollTop);
+  processScrollDiff(
+    this,
+    'left',
+    this.element.scrollLeft - this.lastScrollLeft
+  );
+
+  this.lastScrollTop = Math.floor(this.element.scrollTop);
+  this.lastScrollLeft = this.element.scrollLeft;
+};
+
+PerfectScrollbar.prototype.destroy = function destroy () {
+  if (!this.isAlive) {
+    return;
+  }
+
+  this.event.unbindAll();
+  remove(this.scrollbarX);
+  remove(this.scrollbarY);
+  remove(this.scrollbarXRail);
+  remove(this.scrollbarYRail);
+  this.removePsClasses();
+
+  // unset elements
+  this.element = null;
+  this.scrollbarX = null;
+  this.scrollbarY = null;
+  this.scrollbarXRail = null;
+  this.scrollbarYRail = null;
+
+  this.isAlive = false;
+};
+
+PerfectScrollbar.prototype.removePsClasses = function removePsClasses () {
+  this.element.className = this.element.className
+    .split(' ')
+    .filter(function (name) { return !name.match(/^ps([-_].+|)$/); })
+    .join(' ');
+};
+
+var perfectScrollbar_esm = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': PerfectScrollbar
+});
+
+var require$$2 = /*@__PURE__*/getAugmentedNamespace(perfectScrollbar_esm);
+
+(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = React__default["default"];
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = propTypes.exports;
+
+var _perfectScrollbar = require$$2;
+
+var _perfectScrollbar2 = _interopRequireDefault(_perfectScrollbar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var handlerNameByEvent = {
+  'ps-scroll-y': 'onScrollY',
+  'ps-scroll-x': 'onScrollX',
+  'ps-scroll-up': 'onScrollUp',
+  'ps-scroll-down': 'onScrollDown',
+  'ps-scroll-left': 'onScrollLeft',
+  'ps-scroll-right': 'onScrollRight',
+  'ps-y-reach-start': 'onYReachStart',
+  'ps-y-reach-end': 'onYReachEnd',
+  'ps-x-reach-start': 'onXReachStart',
+  'ps-x-reach-end': 'onXReachEnd'
+};
+Object.freeze(handlerNameByEvent);
+
+var ScrollBar = function (_Component) {
+  _inherits(ScrollBar, _Component);
+
+  function ScrollBar(props) {
+    _classCallCheck(this, ScrollBar);
+
+    var _this = _possibleConstructorReturn(this, (ScrollBar.__proto__ || Object.getPrototypeOf(ScrollBar)).call(this, props));
+
+    _this.handleRef = _this.handleRef.bind(_this);
+    _this._handlerByEvent = {};
+    return _this;
+  }
+
+  _createClass(ScrollBar, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.option) {
+        console.warn('react-perfect-scrollbar: the "option" prop has been deprecated in favor of "options"');
+      }
+
+      this._ps = new _perfectScrollbar2.default(this._container, this.props.options || this.props.option);
+      // hook up events
+      this._updateEventHook();
+      this._updateClassName();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      this._updateEventHook(prevProps);
+
+      this.updateScroll();
+
+      if (prevProps.className !== this.props.className) {
+        this._updateClassName();
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var _this2 = this;
+
+      // unhook up evens
+      Object.keys(this._handlerByEvent).forEach(function (key) {
+        var value = _this2._handlerByEvent[key];
+
+        if (value) {
+          _this2._container.removeEventListener(key, value, false);
+        }
+      });
+      this._handlerByEvent = {};
+      this._ps.destroy();
+      this._ps = null;
+    }
+  }, {
+    key: '_updateEventHook',
+    value: function _updateEventHook() {
+      var _this3 = this;
+
+      var prevProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      // hook up events
+      Object.keys(handlerNameByEvent).forEach(function (key) {
+        var callback = _this3.props[handlerNameByEvent[key]];
+        var prevCallback = prevProps[handlerNameByEvent[key]];
+        if (callback !== prevCallback) {
+          if (prevCallback) {
+            var prevHandler = _this3._handlerByEvent[key];
+            _this3._container.removeEventListener(key, prevHandler, false);
+            _this3._handlerByEvent[key] = null;
+          }
+          if (callback) {
+            var handler = function handler() {
+              return callback(_this3._container);
+            };
+            _this3._container.addEventListener(key, handler, false);
+            _this3._handlerByEvent[key] = handler;
+          }
+        }
+      });
+    }
+  }, {
+    key: '_updateClassName',
+    value: function _updateClassName() {
+      var className = this.props.className;
+
+
+      var psClassNames = this._container.className.split(' ').filter(function (name) {
+        return name.match(/^ps([-_].+|)$/);
+      }).join(' ');
+
+      if (this._container) {
+        this._container.className = 'scrollbar-container' + (className ? ' ' + className : '') + (psClassNames ? ' ' + psClassNames : '');
+      }
+    }
+  }, {
+    key: 'updateScroll',
+    value: function updateScroll() {
+      this.props.onSync(this._ps);
+    }
+  }, {
+    key: 'handleRef',
+    value: function handleRef(ref) {
+      this._container = ref;
+      this.props.containerRef(ref);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props;
+          _props.className;
+          var style = _props.style;
+          _props.option;
+          _props.options;
+          _props.containerRef;
+          _props.onScrollY;
+          _props.onScrollX;
+          _props.onScrollUp;
+          _props.onScrollDown;
+          _props.onScrollLeft;
+          _props.onScrollRight;
+          _props.onYReachStart;
+          _props.onYReachEnd;
+          _props.onXReachStart;
+          _props.onXReachEnd;
+          var component = _props.component;
+          _props.onSync;
+          var children = _props.children,
+          remainProps = _objectWithoutProperties(_props, ['className', 'style', 'option', 'options', 'containerRef', 'onScrollY', 'onScrollX', 'onScrollUp', 'onScrollDown', 'onScrollLeft', 'onScrollRight', 'onYReachStart', 'onYReachEnd', 'onXReachStart', 'onXReachEnd', 'component', 'onSync', 'children']);
+
+      var Comp = component;
+
+      return _react2.default.createElement(
+        Comp,
+        _extends({ style: style, ref: this.handleRef }, remainProps),
+        children
+      );
+    }
+  }]);
+
+  return ScrollBar;
+}(_react.Component);
+
+exports.default = ScrollBar;
+
+
+ScrollBar.defaultProps = {
+  className: '',
+  style: undefined,
+  option: undefined,
+  options: undefined,
+  containerRef: function containerRef() {},
+  onScrollY: undefined,
+  onScrollX: undefined,
+  onScrollUp: undefined,
+  onScrollDown: undefined,
+  onScrollLeft: undefined,
+  onScrollRight: undefined,
+  onYReachStart: undefined,
+  onYReachEnd: undefined,
+  onXReachStart: undefined,
+  onXReachEnd: undefined,
+  onSync: function onSync(ps) {
+    return ps.update();
+  },
+  component: 'div'
+};
+
+ScrollBar.propTypes = {
+  children: _propTypes.PropTypes.node.isRequired,
+  className: _propTypes.PropTypes.string,
+  style: _propTypes.PropTypes.object,
+  option: _propTypes.PropTypes.object,
+  options: _propTypes.PropTypes.object,
+  containerRef: _propTypes.PropTypes.func,
+  onScrollY: _propTypes.PropTypes.func,
+  onScrollX: _propTypes.PropTypes.func,
+  onScrollUp: _propTypes.PropTypes.func,
+  onScrollDown: _propTypes.PropTypes.func,
+  onScrollLeft: _propTypes.PropTypes.func,
+  onScrollRight: _propTypes.PropTypes.func,
+  onYReachStart: _propTypes.PropTypes.func,
+  onYReachEnd: _propTypes.PropTypes.func,
+  onXReachStart: _propTypes.PropTypes.func,
+  onXReachEnd: _propTypes.PropTypes.func,
+  onSync: _propTypes.PropTypes.func,
+  component: _propTypes.PropTypes.string
+};
+module.exports = exports['default'];
+}(scrollbar, scrollbar.exports));
+
+(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _scrollbar = scrollbar.exports;
+
+var _scrollbar2 = _interopRequireDefault(_scrollbar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _scrollbar2.default;
+module.exports = exports['default'];
+}(lib, lib.exports));
+
+var ScrollBar = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
+
+var css_248z$c = ".ContextMenu_menuWrapper__1BheJ{background:#25252f;border:1px solid #2f2f3b;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(32,35,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #3b3b45;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#b3b3b3;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#b3b3b3;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #3b3b45;color:#b3b3b3;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#2f2f3b}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:hsla(0,0%,100%,.3);font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:hsla(0,0%,100%,.05)}.ContextMenu_emptyText__2rcXy{color:#b3b3b3;padding:6px}";
 var styles$c = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
 styleInject(css_248z$c);
 
@@ -3147,6 +4776,7 @@ var ContextMenu = function ContextMenu(_ref) {
       emptyText = _ref.emptyText;
   var menuWrapper = React.useRef();
   var menuOptionsWrapper = React.useRef();
+  var menuOptionsScroll = React.useRef();
   var filterInput = React.useRef();
 
   var _useState = React.useState(""),
@@ -3242,6 +4872,10 @@ var ContextMenu = function ContextMenu(_ref) {
     setSelectedIndex(0);
   };
 
+  React.useLayoutEffect(function () {
+    menuOptionsScroll.current.updateScroll();
+  });
+
   var handleKeyDown = function handleKeyDown(e) {
     // Up pressed
     if (e.which === 38) {
@@ -3325,13 +4959,22 @@ var ContextMenu = function ContextMenu(_ref) {
     className: styles$c.menuFilter,
     autoFocus: true,
     ref: filterInput
-  }) : null) : null, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c.optionsWrapper,
-    role: "menu",
-    ref: menuOptionsWrapper,
+  }) : null) : null, /*#__PURE__*/React__default["default"].createElement(ScrollBar, {
+    options: {
+      suppressScrollX: true
+    },
+    ref: function ref(el) {
+      return menuOptionsScroll.current = el;
+    },
+    containerRef: function containerRef(el) {
+      return menuOptionsWrapper.current = el;
+    },
     style: {
       maxHeight: clamp_1(window.innerHeight - y - 70, 10, 300)
     }
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c.optionsWrapper,
+    role: "menu"
   }, filteredOptions.map(function (option, i) {
     return /*#__PURE__*/React__default["default"].createElement(ContextOption, {
       menuId: menuId.current,
@@ -3347,7 +4990,7 @@ var ContextMenu = function ContextMenu(_ref) {
     }, /*#__PURE__*/React__default["default"].createElement("label", null, option.label), option.description ? /*#__PURE__*/React__default["default"].createElement("p", null, option.description) : null);
   }), !options.length ? /*#__PURE__*/React__default["default"].createElement("span", {
     className: styles$c.emptyText
-  }, emptyText) : null));
+  }, emptyText) : null)));
 };
 
 var ContextOption = function ContextOption(_ref2) {
@@ -7154,7 +8797,7 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$b = ".Node_wrapper__3SmT7{\n  border-radius: 4px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  user-select: none;\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n  z-index: 1;\n  cursor: default;\n  box-sizing: border-box;\n  border: 1px solid rgba(0, 0, 0, 0.6);\n}\n\n.Node_body__3Pwq7 {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: flex-start;\n}\n\n.Node_header__3epFg {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  white-space: nowrap !important;\n}\n\n.Node_headerMeta__2Oiuo {\n  display: flex;\n  align-items: center;\n  padding: 4px;\n}\n\n.Node_headerMeta__2Oiuo > * + * {\n  margin-left: 4px;\n}\n\n.Node_title__YTBiU {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.Node_title__YTBiU > * + * {\n  margin-left: 2px;\n}\n\n.Node_title__YTBiU > img {\n  height: 10px;\n  width: 10px;\n  object-fit: contain;\n}\n\n.Node_title__YTBiU > span.Node_label__3MmhF {\n  font-size: 10px;\n  line-height: 10px;\n  font-weight: bold;\n}\n\n.Node_id__2CRrg {\n  font-size: 10px;\n  line-height: 10px;\n  font-style: italic;\n  transition: all 0.3s ease-out;\n  cursor: copy;\n\n  opacity: .5;\n\n}\n\n.Node_id__2CRrg:hover {\n  font-weight: bold;\n\n  opacity: 1;\n\n}\n\n.Node_headerActions__gTIxf {\n  display: flex;\n  align-items: center;\n  padding: 4px;\n}\n\n.Node_headerActions__gTIxf > * {\n  height: 8px;\n  width: 8px;\n  object-fit: contain;\n}\n\n.Node_description__3r_VO {\n  font-style: italic;\n  font-weight: normal;\n  font-size: 10px;\n  padding: 4px;\n  max-width: 120px;\n}\n";
+var css_248z$b = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:10px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:10px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{height:8px;object-fit:contain;width:8px}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
 var styles$b = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
 styleInject(css_248z$b);
 
@@ -7494,7 +9137,7 @@ var curveBundle = (function custom(beta) {
   return bundle;
 })(0.85);
 
-var css_248z$a = ".Connection_svg__-fKLY{\n  position: absolute;\n  left: 0;\n  top: 0;\n  pointer-events: none;\n  z-index: 0;\n  overflow: visible !important;\n}\n";
+var css_248z$a = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
 var styles$a = {"svg":"Connection_svg__-fKLY"};
 styleInject(css_248z$a);
 
@@ -7685,7 +9328,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$9 = ".TextInput_wrapper__1cN0c{\n  background: none;\n  border: none;\n  line-height: 0;\n  display: flex;\n  flex-direction: row-reverse;\n}\n\n  .TextInput_wrapper__1cN0c > * {\n    line-height: normal;\n  }\n\n.TextInput_expander__2z4-N {\n  display: none;\n  border: none;\n  padding: 0;\n  width: 10px;\n  height: 10px;\n\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' fill='white' fill-opacity='.3'%3E %3Cdefs%3E %3Cmask id='msk_pth' x='0' y='0' width='1' height='1'%3E %3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='white' stroke-linecap='round' stroke-linejoin='round'%3E %3Cpath d='M7.99997 4.22066V1.3938L5.16998 1.3938M0.925781 5.638L0.925781 8.46487H3.75577'/%3E %3Cline x1='1.17037' y1='8.25277' x2='7.53433' y2='1.88881' stroke-dasharray='3 3'/%3E %3C/svg%3E %3C/mask%3E %3C/defs%3E %3Crect x='0' y='0' width='9' height='9' mask='url(%23msk_pth)'/%3E %3C/svg%3E\");\n\n  background-position: center;\n  background-size: contain;\n  background-repeat: no-repeat;\n\n  position: absolute;\n  float: right;\n  margin: 3px 3px 0 0;\n  background-color: transparent;\n}\n\n.TextInput_expander__2z4-N:hover {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' fill='white' fill-opacity='.6'%3E %3Cdefs%3E %3Cmask id='msk_pth' x='0' y='0' width='1' height='1'%3E %3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='white' stroke-linecap='round' stroke-linejoin='round'%3E %3Cpath d='M7.99997 4.22066V1.3938L5.16998 1.3938M0.925781 5.638L0.925781 8.46487H3.75577'/%3E %3Cline x1='1.17037' y1='8.25277' x2='7.53433' y2='1.88881' stroke-dasharray='3 3'/%3E %3C/svg%3E %3C/mask%3E %3C/defs%3E %3Crect x='0' y='0' width='9' height='9' mask='url(%23msk_pth)'/%3E %3C/svg%3E\");\n  }\n\n.TextInput_input__ujVG- {\n  width: 100%;\n  height: 16px;\n  outline: none;\n  padding: 3px;\n  font-size: 10px;\n  line-height: 10px;\n\n  background-color: rgba(0, 0, 0, 0.1);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  box-sizing: border-box;\n  border-radius: 2px;\n  color: inherit;\n}\n\n.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none !important;\n    display: none !important;\n  }\n\n.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button {\n    -webkit-appearance: none !important;\n    opacity: 1 !important;\n    background: transparent !important;\n    border-width: 0;\n    margin: 0;\n    height: 16px;\n    width: 8px;\n    cursor: pointer;\n  }\n\n.TextInput_input__ujVG-::placeholder{\n    font-style: italic;\n    color: inherit;\n    opacity: .3\n  }\n\n.TextInput_input__ujVG-:focus {\n    background-color: rgba(0, 0, 0, 0.25);\n  }\n\n.TextInput_input__ujVG-[type=number]:focus, .TextInput_input__ujVG-[type=number]:active, .TextInput_input__ujVG-[type=number]:hover {\n      background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' viewBox='0 0 7 10' fill='none' stroke='white' stroke-opacity='0.3' stroke-linecap='round' stroke-linejoin='round'%3E %3Cpath d='M4.95056 2.99779L2.95167 0.998896M2.95167 0.998896V0.999414M2.95167 0.998896L0.950562 3'/%3E %3Cpath d='M0.950562 7.00221L2.94946 9.0011M2.94946 9.0011V9.00059M2.94946 9.0011L4.95056 7'/%3E %3C/svg%3E\");\n      background-position: calc(100% - 1px) center;\n      background-size: 7px;\n      background-repeat: no-repeat;\n    }\n\n.TextInput_input__ujVG-:not([type=number]):focus + button {\n        display: block;\n      }\n\n.TextInput_input__ujVG-:not([type=number]):focus{\n      padding-right: 13px;\n}\n\n.TextInput_editorWrapper__25W-8 {\n  position: fixed;\n  right: 0;\n  top: 0;\n  height: 100%;\n  width: 100%;\n  backdrop-filter: blur(1px);\n  z-index: 999;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.TextInput_editor__5v5nz {\n  height: 100%;\n  border-left: 1px solid #3B3B45;\n  width: min(max(50%, 400px), 100%);\n}\n";
+var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}.TextInput_editorWrapper__25W-8{backdrop-filter:blur(1px);display:flex;height:100%;justify-content:flex-end;position:fixed;right:0;top:0;width:100%;z-index:999}.TextInput_editor__5v5nz{border-left:1px solid #3b3b45;height:100%;width:min(max(50%,400px),100%)}";
 var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-","editorWrapper":"TextInput_editorWrapper__25W-8","editor":"TextInput_editor__5v5nz"};
 styleInject(css_248z$9);
 
@@ -7744,11 +9387,11 @@ var NumberInput = function NumberInput(_ref) {
   }));
 };
 
-var css_248z$8 = ".Control_wrapper__VZIiC {\n  width: 100%;\n  padding: 1px 2px 1px 1px;\n}\n";
+var css_248z$8 = ".Control_wrapper__VZIiC{padding:1px 2px 1px 1px;width:100%}";
 var styles$8 = {"wrapper":"Control_wrapper__VZIiC"};
 styleInject(css_248z$8);
 
-var css_248z$7 = ".Checkbox_wrapper__aSqyY {\n  font-size: 10px;\n  line-height: 10px;\n  height: 18px;\n  padding: 4px 2px 1px 0;\n  width: 60px;\n  margin: 0;\n  overflow-x: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n.Checkbox_checkbox__Qv5gn {\n  display: none;\n}\n\n.Checkbox_checkboxMark__3pZi7 {\n  display: inline-flex;\n  height: 10px;\n  width: 10px;\n  min-width: 10px;\n  background: rgba(0, 0, 0, 0.1);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  box-sizing: border-box;\n  border-radius: 2px;\n  margin-right: 2px;\n  vertical-align: top;\n  overflow: hidden;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n\n.Checkbox_checkboxMark__3pZi7 > * {\n     display: none;\n   }\n\n.Checkbox_checkbox__Qv5gn:checked + .Checkbox_checkboxMark__3pZi7 {\n  background: #4BAEFC;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n}\n\n.Checkbox_checkbox__Qv5gn:checked + .Checkbox_checkboxMark__3pZi7 > * {\n    display: block;\n  }\n";
+var css_248z$7 = ".Checkbox_wrapper__aSqyY{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__Qv5gn{display:none}.Checkbox_checkboxMark__3pZi7{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__3pZi7>*{display:none}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7>*{display:block}";
 var styles$7 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","checkboxMark":"Checkbox_checkboxMark__3pZi7"};
 styleInject(css_248z$7);
 
@@ -8963,7 +10606,7 @@ var TextInput = function TextInput(_ref) {
   }));
 };
 
-var css_248z$6 = ".Select_wrapper__eAPoQ {\n  position: relative;\n\n  width: 57px;\n  height: 16px;\n  outline: none;\n  font-size: 10px;\n  line-height: 10px;\n\n  background-color: rgba(0, 0, 0, 0.1);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  box-sizing: border-box;\n  border-radius: 2px;\n  color: inherit;\n  overflow-x: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  padding: 2px 8px 2px 2px;\n  background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6' fill='none' stroke='white' stroke-opacity='.3'%3E %3Cpath d='M1 1.50472L3.68282 4.49845M3.68282 4.49845V4.49687M3.68282 4.49845L6.67968 1.50159' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E %3C/svg%3E\");\n  background-position: calc(100% - 2px) center;\n  background-size: 7px 7px;\n  background-repeat: no-repeat;\n  display: inline-block;\n  margin-right: 3px;\n}\n\n  .Select_wrapper__eAPoQ:hover, .Select_wrapper__eAPoQ:active, .Select_wrapper__eAPoQ:focus {\n    background-color: rgba(0, 0, 0, .25);\n  }\n.Select_chipWrapper__3hK2u {\n  position: relative;\n  display: inline-block;\n  margin-right: 3px;\n\n  width: 57px;\n  height: 16px;\n  outline: none;\n  font-size: 10px;\n  line-height: 10px;\n\n  background-color: rgba(0, 0, 0, .25);\n  border: 1px solid rgba(0, 0, 0, .2);\n  box-sizing: border-box;\n  border-radius: 2px;\n  color: inherit;\n  overflow-x: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  padding: 2px 8px 2px 2px;\n}\n.Select_chipWrapper__3hK2u:nth-child(3n) {\n    margin-right: 0;\n  }\n.Select_deleteButton__1FnLK{\n  position: absolute;\n  right: 1px;\n  top: -1px;\n  height: 100%;\n  width: 8px;\n  padding: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-radius: 3px;\n  border: none;\n  font-weight: bold;\n  font-size: 8px;\n  color: rgba(255, 255, 255, .3);\n  background: none;\n}\n.Select_deleteButton__1FnLK:hover, .Select_deleteButton__1FnLK:focus, .Select_deleteButton__1FnLK:active {\n    color: inherit;\n  }\n";
+var css_248z$6 = ".Select_wrapper__eAPoQ{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u,.Select_wrapper__eAPoQ:active,.Select_wrapper__eAPoQ:focus,.Select_wrapper__eAPoQ:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__3hK2u{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u:nth-child(3n){margin-right:0}.Select_deleteButton__1FnLK{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__1FnLK:active,.Select_deleteButton__1FnLK:focus,.Select_deleteButton__1FnLK:hover{color:inherit}";
 var styles$6 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK"};
 styleInject(css_248z$6);
 
@@ -9205,7 +10848,7 @@ var Control = function Control(_ref) {
   }, getControlByType(type));
 };
 
-var css_248z$5 = ".IoPorts_wrapper__3d2hh {\n  display: flex;\n  flex-direction: column;\n}\n\n.IoPorts_outputs__3JGh- {\n  display: flex;\n  flex-direction: column;\n  border-right: 1px solid rgba(0, 0, 0, 0.6);\n  justify-content: center;\n  align-items: center;\n  padding: 8px 1px 8px 0;\n  background: rgba(0, 0, 0, 0.15);\n}\n\n.IoPorts_outputs__3JGh- > * + * {\n    margin-top: 4px\n  }\n\n.IoPorts_outputs__3JGh- > .IoPorts_transput__1wbHA {\n    width: 7px;\n    height: 16px;\n  }\n\n.IoPorts_inputs__2etkb {\n  display: flex;\n  flex-direction: column;\n  border-left: 1px solid rgba(0, 0, 0, 0.6);\n  justify-content: center;\n  align-items: center;\n  padding: 8px 0 8px 1px;\n  background: rgba(0, 0, 0, 0.15);\n}\n\n.IoPorts_inputs__2etkb > * + * {\n    margin-top: 4px\n  }\n\n.IoPorts_inputs__2etkb > .IoPorts_transput__1wbHA {\n    width: 7px;\n    height: 16px;\n  }\n\ntable.IoPorts_inner__3UgDB {\n  border: none;\n  margin: 0 0 4px;\n  padding: 0;\n  width: max-content;\n  border-spacing: 0;\n\n}\n\ntable.IoPorts_inner__3UgDB > tbody > tr > td {\n      padding: 0;\n      margin: 0;\n    }\n\ntable.IoPorts_inner__3UgDB > tbody > tr > td.IoPorts_portLabel__qOE7y {\n      padding-left: 4px;\n      font-weight: 600;\n      font-size: 10px;\n      line-height: 10px;\n      max-width: 80px;\n\n      white-space: nowrap;\n      text-overflow: ellipsis;\n      overflow: hidden;\n    }\n\ntable.IoPorts_inner__3UgDB > tbody > tr > td.IoPorts_controls__1dKFt {\n      max-width: 184px;\n      display: flex;\n      flex-wrap: wrap;\n      padding-right: 4px;\n    }\n\ntable.IoPorts_inner__3UgDB > tbody > tr > td.IoPorts_controls__1dKFt > * {\n        float: left;\n        display: inline-block;\n        width: 60px;\n        overflow-x: hidden;\n      }\n\n.IoPorts_port__1_a6J {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n\n  width: 16px;\n  height: 16px;\n\n  background: #50505C;\n  border: 1px solid rgba(0, 0, 0, 0.6);\n  box-sizing: border-box;\n  border-radius: 8px;\n}\n\n.IoPorts_port__1_a6J * {\n    pointer-events: none;\n  }\n";
+var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:rgba(0,0,0,.15);border-right:1px solid rgba(0,0,0,.6);justify-content:center;padding:8px 1px 8px 0}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:rgba(0,0,0,.15);border-left:1px solid rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border:1px solid rgba(0,0,0,.6);border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:16px;justify-content:center;width:16px}.IoPorts_port__1_a6J *{pointer-events:none}";
 var styles$5 = {"wrapper":"IoPorts_wrapper__3d2hh","outputs":"IoPorts_outputs__3JGh-","transput":"IoPorts_transput__1wbHA","inputs":"IoPorts_inputs__2etkb","inner":"IoPorts_inner__3UgDB","portLabel":"IoPorts_portLabel__qOE7y","controls":"IoPorts_controls__1dKFt","port":"IoPorts_port__1_a6J"};
 styleInject(css_248z$5);
 
@@ -9967,11 +11610,11 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
 });
 Node.displayName = "Node";
 
-var css_248z$4 = ".Comment_wrapper__1Pnbd {\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 5px;\n  background: rgba(147, 154, 158, 0.7);\n  border-radius: 4px 4px 2px 4px;\n  min-width: 80px;\n  font-size: 14px;\n  display: flex;\n  border: 1px solid rgba(99, 104, 107, 0.9);\n  user-select: none;\n}\n  .Comment_wrapper__1Pnbd[data-color=\"red\"]{\n    background: rgba(213, 84, 103, 0.65);\n    border-color: rgba(136, 50, 71, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"purple\"]{\n    background: rgba(153, 83, 196, 0.65);\n    border-color: rgba(90, 49, 131, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"blue\"]{\n    background: rgba(76, 142, 203, 0.65);\n    border-color: rgba(49, 93, 133, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"green\"]{\n    background: rgba(70, 200, 130, 0.65);\n    border-color: rgba(49, 133, 87, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"yellow\"]{\n    background: rgba(200, 167, 63, 0.65);\n    border-color: rgba(136, 128, 51, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"orange\"]{\n    background: rgba(215, 123, 64, 0.65);\n    border-color: rgba(136, 90, 51, 0.85);\n  }\n  .Comment_wrapper__1Pnbd[data-color=\"pink\"]{\n    background: rgba(255, 102, 208, 0.65);\n    border-color: rgba(129, 70, 122, 0.85);\n  }\n.Comment_text__Ie2nX{\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  white-space: pre-wrap;\n  cursor: default;\n}\n.Comment_resizeThumb__20KWn {\n  width: 10px;\n  height: 10px;\n  border-radius: 4px 0 4px 0;\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  overflow: hidden;\n  cursor: nwse-resize;\n}\n.Comment_resizeThumb__20KWn::before,\n  .Comment_resizeThumb__20KWn::after {\n    content: \"\";\n    position: absolute;\n    right: 0;\n    top: 0;\n    width: 250%;\n    height: 0;\n    border-top: 1px solid rgba(0, 0, 0, 0.7);\n    border-bottom: 2px solid rgba(255, 255, 255, 0.7);\n    transform-origin: center right;\n    transform: rotate(-45deg) scale(0.5);\n  }\n.Comment_resizeThumb__20KWn::after {\n    transform: rotate(-45deg) translateY(3px) scale(0.5);\n  }\n.Comment_textarea__2Rze3 {\n  resize: none;\n  width: calc(100% + 2px);\n  height: calc(100% + 2px);\n  border-radius: 3px;\n  background: rgba(255,255,255,.1);\n  border: none;\n  outline: none;\n  margin: -1px -2px -2px;\n  padding-top: 0;\n  font-size: 14px;\n}\n.Comment_textarea__2Rze3::placeholder{\n    color: rgba(0,0,0,.5);\n  }\n";
+var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:rgba(255,255,255,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
 var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
 styleInject(css_248z$4);
 
-var css_248z$3 = ".ColorPicker_wrapper__1M1j2{\n  position: fixed;\n  z-index: 9999;\n  background: rgba(29, 32, 34, 0.95);\n  border-radius: 5px;\n  box-shadow: 0px 6px 7px rgba(0,0,0,.3);\n  border: 1px solid rgba(0,0,0,.4);\n  color: #fff;\n  display: flex;\n  width: 102px;\n  flex-wrap: wrap;\n  padding: 2px;\n}\n@supports (backdrop-filter: blur(6px)){\n  .ColorPicker_wrapper__1M1j2{\n    backdrop-filter: blur(6px);\n    background: rgba(29, 32, 34, 0.8);\n  }\n}\n.ColorPicker_colorButtonWrapper__1ijdj{\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 2px;\n}\n.ColorPicker_colorButton__1Qcuq{\n  border-radius: 3px;\n  border: none;\n  width: 20px;\n  height: 20px;\n  background: rgba(204, 204, 204, 1);\n}\n.ColorPicker_colorButton__1Qcuq[data-color=\"red\"]{\n    background: rgba(210, 101, 111, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"purple\"]{\n    background: rgba(159, 101, 210, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"blue\"]{\n    background: rgba(101, 151, 210, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"green\"]{\n    background: rgba(101, 210, 168, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"orange\"]{\n    background: rgba(210, 137, 101, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"yellow\"]{\n    background: rgba(210, 196, 101, 1)\n  }\n.ColorPicker_colorButton__1Qcuq[data-color=\"pink\"]{\n    background: rgba(241, 124, 226, 1)\n  }\n.ColorPicker_colorButton__1Qcuq:hover{\n    opacity: .8;\n  }\n";
+var css_248z$3 = ".ColorPicker_wrapper__1M1j2{background:rgba(29,32,34,.95);border:1px solid rgba(0,0,0,.4);border-radius:5px;box-shadow:0 6px 7px rgba(0,0,0,.3);color:#fff;display:flex;flex-wrap:wrap;padding:2px;position:fixed;width:102px;z-index:9999}@supports (backdrop-filter:blur(6px)){.ColorPicker_wrapper__1M1j2{backdrop-filter:blur(6px);background:rgba(29,32,34,.8)}}.ColorPicker_colorButtonWrapper__1ijdj{align-items:center;display:flex;justify-content:center;padding:2px}.ColorPicker_colorButton__1Qcuq{background:#ccc;border:none;border-radius:3px;height:20px;width:20px}.ColorPicker_colorButton__1Qcuq[data-color=red]{background:#d2656f}.ColorPicker_colorButton__1Qcuq[data-color=purple]{background:#9f65d2}.ColorPicker_colorButton__1Qcuq[data-color=blue]{background:#6597d2}.ColorPicker_colorButton__1Qcuq[data-color=green]{background:#65d2a8}.ColorPicker_colorButton__1Qcuq[data-color=orange]{background:#d28965}.ColorPicker_colorButton__1Qcuq[data-color=yellow]{background:#d2c465}.ColorPicker_colorButton__1Qcuq[data-color=pink]{background:#f17ce2}.ColorPicker_colorButton__1Qcuq:hover{opacity:.8}";
 var styles$3 = {"wrapper":"ColorPicker_wrapper__1M1j2","colorButtonWrapper":"ColorPicker_colorButtonWrapper__1ijdj","colorButton":"ColorPicker_colorButton__1Qcuq"};
 styleInject(css_248z$3);
 
@@ -10602,7 +12245,7 @@ var Comment = (function (_ref) {
   })) : null);
 });
 
-var css_248z$2 = ".Toaster_toaster__1eC3T{\n  position: absolute;\n  left: 0px;\n  bottom: 0px;\n  width: 100%;\n  height: 1px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding-bottom: 15px;\n  box-shadow: 0px 5px 10px -2px rgba(0,0,0,.3);\n  pointer-events: none;\n}\n.Toaster_toast__3YHVS{\n  position: absolute;\n  left: calc(50% - 200px);\n  top: 0px;\n  pointer-events: all;\n  width: 400px;\n  padding: 10px;\n  padding-top: 7px;\n  padding-right: 16px;\n  border-radius: 6px;\n  background: rgba(231, 231, 231, 1);\n  border: 1px solid;\n  margin-bottom: 5px;\n  transition: transform 300ms;\n  flex: 0 0 auto;\n  animation: Toaster_fade-in__2526Y 150ms;\n  user-select: none;\n  font-size: 14px;\n  display: flex;\n  flex-direction: column;\n  will-change: transform;\n}\n.Toaster_toast__3YHVS[data-type=\"danger\"]{\n    background: rgb(255, 116, 137);\n    border-color: rgb(254, 99, 136);\n    color: rgb(66, 6, 20);\n  }\n.Toaster_toast__3YHVS[data-type=\"info\"]{\n    background: rgb(76, 193, 250);\n    border-color: rgb(103, 182, 255);\n    color: rgb(5, 36, 64);\n  }\n.Toaster_toast__3YHVS[data-type=\"success\"]{\n    background: rgb(81, 230, 150);\n    border-color: rgb(85, 227, 150);\n    color: rgb(7, 57, 30);\n  }\n.Toaster_toast__3YHVS[data-type=\"warning\"]{\n    background: rgb(245, 208, 93);\n    border-color: rgb(247, 235, 125);\n    color: rgb(83, 75, 8);\n  }\n.Toaster_toast__3YHVS[data-exiting=true]{\n    animation: Toaster_fade-out__2lM6E 150ms;\n    animation-fill-mode: forwards;\n  }\n.Toaster_toast__3YHVS p{\n  margin: 0px;\n}\n.Toaster_title__4InNr{\n  font-size: 16px;\n  font-weight: bold;\n  margin-bottom: 5px;\n}\n.Toaster_timer__3dGzF{\n  position: absolute;\n  bottom: -1px;\n  left: -1px;\n  width: calc(100% + 2px);\n  height: 3px;\n  background: rgba(0,0,0,.4);\n  transform-origin: left center;\n  animation: Toaster_timer__3dGzF 1000ms linear;\n  animation-fill-mode: forwards;\n  z-index: 9;\n}\n.Toaster_exitButton__1S_Ks{\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  width: 20px;\n  height: 20px;\n  padding: 0px;\n  background: none;\n  border: none;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  font-size: 14px;\n  color: inherit;\n  opacity: .6;\n}\n.Toaster_exitButton__1S_Ks:hover{\n  opacity: .9;\n}\n\n@keyframes Toaster_fade-in__2526Y {\n  from{\n    opacity: 0;\n  }\n  to{\n    opacity: 1;\n  }\n}\n\n@keyframes Toaster_fade-out__2lM6E {\n  from{\n    opacity: 1;\n  }\n  to{\n    opacity: 0;\n  }\n}\n\n@keyframes Toaster_timer__3dGzF {\n  from{\n    transform: scaleX(1);\n  }\n  to{\n    transform: scaleX(0);\n  }\n}\n";
+var css_248z$2 = ".Toaster_toaster__1eC3T{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__3YHVS{animation:Toaster_fade-in__2526Y .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__3YHVS[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__3YHVS[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__3YHVS[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__3YHVS[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__3YHVS[data-exiting=true]{animation:Toaster_fade-out__2lM6E .15s;animation-fill-mode:forwards}.Toaster_toast__3YHVS p{margin:0}.Toaster_title__4InNr{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__3dGzF{animation:Toaster_timer__3dGzF 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__1S_Ks{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__1S_Ks:hover{opacity:.9}@keyframes Toaster_fade-in__2526Y{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__2lM6E{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__3dGzF{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
 var styles$2 = {"toaster":"Toaster_toaster__1eC3T","toast":"Toaster_toast__3YHVS","fade-in":"Toaster_fade-in__2526Y","fade-out":"Toaster_fade-out__2lM6E","title":"Toaster_title__4InNr","timer":"Toaster_timer__3dGzF","exitButton":"Toaster_exitButton__1S_Ks"};
 styleInject(css_248z$2);
 
@@ -10721,7 +12364,7 @@ var Toast = function Toast(_ref2) {
   }, "\u2715"));
 };
 
-var css_248z$1 = ".Connections_svgWrapper__3mXcU{\n  position: absolute;\n  left: 0px;\n  height: 0px;\n}\n";
+var css_248z$1 = ".Connections_svgWrapper__3mXcU{height:0;left:0;position:absolute}";
 var styles$1 = {"svgWrapper":"Connections_svgWrapper__3mXcU"};
 styleInject(css_248z$1);
 
@@ -28603,7 +30246,7 @@ var Cache = function Cache() {
   this.connections = {};
 };
 
-var css_248z = ".styles_dragWrapper__1P7RD{\n  z-index: 9999;\n  position: absolute;\n  left: 0px;\n  top: 0px;\n}\n.styles_debugWrapper__2OSbY{\n  display: flex;\n  position: absolute;\n  left: 10px;\n  bottom: 10px;\n  gap: 15px;\n}\n";
+var css_248z = ".styles_dragWrapper__1P7RD{left:0;position:absolute;top:0;z-index:9999}.styles_debugWrapper__2OSbY{bottom:10px;display:flex;gap:15px;left:10px;position:absolute}";
 var styles = {"dragWrapper":"styles_dragWrapper__1P7RD","debugWrapper":"styles_debugWrapper__2OSbY"};
 styleInject(css_248z);
 
