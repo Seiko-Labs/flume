@@ -1,7 +1,6 @@
 import * as React from 'react';
 import React__default, { memo, useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect, createContext, forwardRef, useContext, createRef, useReducer, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
-import 'path';
 
 function _extends$4() {
   _extends$4 = Object.assign || function (target) {
@@ -10478,10 +10477,6 @@ var editorTheme = {
 	colors: colors
 };
 
-/**
- * @typedef {import("@monaco-editor/react").Monaco} Monaco
- */
-
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
       _onChange = _ref.onChange;
@@ -10492,8 +10487,6 @@ var TextInput = function TextInput(_ref) {
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
   };
-  /** @type {Monaco} */
-
 
   var monaco = useMonaco();
 
@@ -30791,7 +30784,7 @@ var tempStateReducer = function tempStateReducer(state, action) {
   }
 };
 
-var useNodeEditorController = (function (_ref) {
+var useNodeEditorController = function useNodeEditorController(_ref) {
   var _ref$initialNodesStat = _ref.initialNodesState,
       initialNodesState = _ref$initialNodesStat === void 0 ? undefined : _ref$initialNodesStat,
       _ref$initialTempState = _ref.initialTempState,
@@ -30885,7 +30878,9 @@ var useNodeEditorController = (function (_ref) {
     state: tempStateDebounced,
     dispatch: dispatchTemp
   }];
-});
+};
+
+useNodeEditorController.displayName = "useNodeEditorController";
 
 var _excluded = ["initialNodes", "action", "setNodesState", "setComments", "defaultNodes", "temp", "initialNodesState"];
 

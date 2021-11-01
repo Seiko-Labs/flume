@@ -16,7 +16,7 @@ const NodeWrapper = styled(Col)`
 `;
 
 const TestEditor = () => {
-  const editorRef = useRef(null);
+  const editorRef = useRef();
   const [ns, , , connector] = useNodeEditorController({
     defaultNodes: [
       {
@@ -26,9 +26,9 @@ const TestEditor = () => {
       },
     ],
     options: {
-      editorAreaRef: editorRef,
-      monacoPath:
-        "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
+      editorArea: editorRef.current,
+      // monacoPath:
+      //   "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
     },
   });
 

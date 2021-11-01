@@ -1,36 +1,20 @@
 {
-  "name": "flume",
-  "version": "0.15.3",
+  "author": "zdllucky",
+  "dependencies": {
+    "@monaco-editor/react": "^4.3.1",
+    "@reach/auto-id": "^0.10.5",
+    "@react-hook/debounce": "^4.0.0",
+    "d3-shape": "^3.0.1",
+    "lodash": "^4.17.15",
+    "md5": "2.3.0",
+    "monaco-editor": "^0.29.1",
+    "nanoid": "^2.1.11",
+    "react-ds": "^1.13.0",
+    "react-onclickout": "^2.0.8",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-portal": "^4.2.1"
+  },
   "description": "A node editor for React",
-  "author": "chrisjpatty",
-  "license": "MIT",
-  "private": true,
-  "homepage": "https://flume.dev",
-  "repository": "chrisjpatty/flume",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
-  "scripts": {
-    "test": "cross-env CI=1 react-scripts test --env=jsdom && npx cypress run",
-    "lint": "eslint . --cache --ext .js,.jsx",
-    "test:watch": "react-scripts test --env=jsdom",
-    "build": "rollup -c",
-    "start": "concurrently \"yarn --cwd example/ run start\" \"rollup -cw\"",
-    "start_separate": "rollup -c -w",
-    "release": "npx np",
-    "postinstall_hidden": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
-  },
-  "np": {
-    "testScript": "test"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/eslint-parser": "^7.14.9",
@@ -75,24 +59,43 @@
     "prettier": "^2.4.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "^1.1.4",
+    "react-scripts": "^4.0.3",
     "rollup": "^2.52.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.1",
     "wait-on": "^5.2.1"
   },
-  "dependencies": {
-    "@monaco-editor/react": "^4.3.1",
-    "@reach/auto-id": "^0.10.5",
-    "@react-hook/debounce": "^4.0.0",
-    "d3-shape": "^3.0.1",
-    "lodash": "^4.17.15",
-    "md5": "2.3.0",
-    "monaco-editor": "^0.29.1",
-    "nanoid": "^2.1.11",
-    "react-ds": "^1.13.0",
-    "react-onclickout": "^2.0.8",
-    "react-perfect-scrollbar": "^1.5.8",
-    "react-portal": "^4.2.1"
-  }
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "homepage": "https://flume.dev",
+  "jsnext:main": "dist/index.es.js",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "name": "flume",
+  "files": [
+    "dist"
+  ],
+  "np": {
+    "testScript": "test"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "private": true,
+  "repository": "Seiko-Labs/flume",
+  "scripts": {
+    "test": "cross-env CI=1 react-scripts test --env=jsdom && npx cypress run",
+    "lint": "eslint . --cache --ext .js,.jsx",
+    "test:watch": "react-scripts test --env=jsdom",
+    "build": "rollup -c",
+    "start": "concurrently \"yarn --cwd example/ run start\" \"rollup -cw\"",
+    "start_separate": "rollup -c -w",
+    "release": "npx np",
+    "postinstall_hidden": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
+  },
+  "version": "0.15.4"
 }

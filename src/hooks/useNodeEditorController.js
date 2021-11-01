@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useDebounce } from "@react-hook/debounce";
 
 const tempStateReducer = (state, action) => {
@@ -35,7 +35,7 @@ const tempStateReducer = (state, action) => {
   }
 };
 
-export default ({
+const useNodeEditorController = ({
   initialNodesState = undefined,
   initialTempState = {
     multiselect: false,
@@ -65,6 +65,7 @@ export default ({
     tempState,
     1000
   );
+
   const [nodesStateDebounced, setNodesStateDebounced] = useDebounce(
     tempState,
     200
@@ -101,3 +102,7 @@ export default ({
     { state: tempStateDebounced, dispatch: dispatchTemp },
   ];
 };
+
+useNodeEditorController.displayName = "useNodeEditorController";
+
+export default useNodeEditorController;

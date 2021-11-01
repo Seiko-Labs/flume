@@ -1,18 +1,13 @@
-import Editor, { useMonaco, loader } from "@monaco-editor/react";
-import { dirname } from "path";
-import React, { useContext, useEffect, useState } from "react";
+import Editor, { useMonaco } from "@monaco-editor/react";
+import React, { useContext, useEffect } from "react";
 import { PortalWithState } from "react-portal";
 import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
 import editorTheme from "./editorTheme.json";
 
-/**
- * @typedef {import("@monaco-editor/react").Monaco} Monaco
- */
-
 const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
   const preventPropagation = (e) => e.stopPropagation();
-  /** @type {Monaco} */
+
   const monaco = useMonaco();
   const { editorArea } = useContext(ControllerOptionsContext);
 
