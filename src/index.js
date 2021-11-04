@@ -1,4 +1,3 @@
-import { loader } from "@monaco-editor/react";
 import { useId } from "@reach/auto-id";
 import Stage from "./components/Stage/Stage";
 import Node from "./components/Node/Node";
@@ -64,8 +63,8 @@ export const NodeEditor = forwardRef(
         ...connector
       },
       initialStageParams: _initialStageParams,
-      hideComments = false,
-      disableComments = false,
+      hideComments = true,
+      disableComments = true,
       circularBehavior,
       debug,
     },
@@ -198,13 +197,10 @@ export const NodeEditor = forwardRef(
 
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
-      if (connector.options) {
-        const { options } = connector;
-
-        if (options.monacoPath) {
-          loader?.config?.({ paths: { vs: options.monacoPath } });
-        }
-      }
+      // if (connector.options) {
+      //   const { options } = connector;
+      //
+      // }
     }, []);
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =

@@ -29,8 +29,8 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 
-function _extends$4() {
-  _extends$4 = Object.assign || function (target) {
+function _extends$3() {
+  _extends$3 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -44,10 +44,10 @@ function _extends$4() {
     return target;
   };
 
-  return _extends$4.apply(this, arguments);
+  return _extends$3.apply(this, arguments);
 }
 
-function _defineProperty$2(obj, key, value) {
+function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -62,11 +62,11 @@ function _defineProperty$2(obj, key, value) {
   return obj;
 }
 
-function _arrayWithHoles$1(arr) {
+function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
 
-function _iterableToArrayLimit$1(arr, i) {
+function _iterableToArrayLimit(arr, i) {
   var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
 
   if (_i == null) return;
@@ -96,7 +96,7 @@ function _iterableToArrayLimit$1(arr, i) {
   return _arr;
 }
 
-function _arrayLikeToArray$4(arr, len) {
+function _arrayLikeToArray$3(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
 
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -106,21 +106,21 @@ function _arrayLikeToArray$4(arr, len) {
   return arr2;
 }
 
-function _unsupportedIterableToArray$4(o, minLen) {
+function _unsupportedIterableToArray$3(o, minLen) {
   if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray$4(o, minLen);
+  if (typeof o === "string") return _arrayLikeToArray$3(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
   if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen);
 }
 
-function _nonIterableRest$1() {
+function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-function _slicedToArray$1(arr, i) {
-  return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest$1();
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
 }
 
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -157,581 +157,6 @@ function _objectWithoutProperties(source, excluded) {
   return target;
 }
 
-function _defineProperty$1(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys$h(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2$1(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys$h(Object(source), true).forEach(function (key) {
-        _defineProperty$1(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys$h(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
-}
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _iterableToArrayLimit(arr, i) {
-  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-function _unsupportedIterableToArray$3(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray$3(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen);
-}
-
-function _arrayLikeToArray$3(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-  return arr2;
-}
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys$g(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys$g(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys$g(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-function compose$1() {
-  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
-    fns[_key] = arguments[_key];
-  }
-
-  return function (x) {
-    return fns.reduceRight(function (y, f) {
-      return f(y);
-    }, x);
-  };
-}
-
-function curry$1(fn) {
-  return function curried() {
-    var _this = this;
-
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    return args.length >= fn.length ? fn.apply(this, args) : function () {
-      for (var _len3 = arguments.length, nextArgs = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        nextArgs[_key3] = arguments[_key3];
-      }
-
-      return curried.apply(_this, [].concat(args, nextArgs));
-    };
-  };
-}
-
-function isObject$6(value) {
-  return {}.toString.call(value).includes('Object');
-}
-
-function isEmpty(obj) {
-  return !Object.keys(obj).length;
-}
-
-function isFunction$3(value) {
-  return typeof value === 'function';
-}
-
-function hasOwnProperty$a(object, property) {
-  return Object.prototype.hasOwnProperty.call(object, property);
-}
-
-function validateChanges(initial, changes) {
-  if (!isObject$6(changes)) errorHandler$1('changeType');
-  if (Object.keys(changes).some(function (field) {
-    return !hasOwnProperty$a(initial, field);
-  })) errorHandler$1('changeField');
-  return changes;
-}
-
-function validateSelector(selector) {
-  if (!isFunction$3(selector)) errorHandler$1('selectorType');
-}
-
-function validateHandler(handler) {
-  if (!(isFunction$3(handler) || isObject$6(handler))) errorHandler$1('handlerType');
-  if (isObject$6(handler) && Object.values(handler).some(function (_handler) {
-    return !isFunction$3(_handler);
-  })) errorHandler$1('handlersType');
-}
-
-function validateInitial(initial) {
-  if (!initial) errorHandler$1('initialIsRequired');
-  if (!isObject$6(initial)) errorHandler$1('initialType');
-  if (isEmpty(initial)) errorHandler$1('initialContent');
-}
-
-function throwError$1(errorMessages, type) {
-  throw new Error(errorMessages[type] || errorMessages["default"]);
-}
-
-var errorMessages$1 = {
-  initialIsRequired: 'initial state is required',
-  initialType: 'initial state should be an object',
-  initialContent: 'initial state shouldn\'t be an empty object',
-  handlerType: 'handler should be an object or a function',
-  handlersType: 'all handlers should be a functions',
-  selectorType: 'selector should be a function',
-  changeType: 'provided value of changes should be an object',
-  changeField: 'it seams you want to change a field in the state which is not specified in the "initial" state',
-  "default": 'an unknown error accured in `state-local` package'
-};
-var errorHandler$1 = curry$1(throwError$1)(errorMessages$1);
-var validators$1 = {
-  changes: validateChanges,
-  selector: validateSelector,
-  handler: validateHandler,
-  initial: validateInitial
-};
-
-function create(initial) {
-  var handler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  validators$1.initial(initial);
-  validators$1.handler(handler);
-  var state = {
-    current: initial
-  };
-  var didUpdate = curry$1(didStateUpdate)(state, handler);
-  var update = curry$1(updateState)(state);
-  var validate = curry$1(validators$1.changes)(initial);
-  var getChanges = curry$1(extractChanges)(state);
-
-  function getState() {
-    var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (state) {
-      return state;
-    };
-    validators$1.selector(selector);
-    return selector(state.current);
-  }
-
-  function setState(causedChanges) {
-    compose$1(didUpdate, update, validate, getChanges)(causedChanges);
-  }
-
-  return [getState, setState];
-}
-
-function extractChanges(state, causedChanges) {
-  return isFunction$3(causedChanges) ? causedChanges(state.current) : causedChanges;
-}
-
-function updateState(state, changes) {
-  state.current = _objectSpread2(_objectSpread2({}, state.current), changes);
-  return changes;
-}
-
-function didStateUpdate(state, handler, changes) {
-  isFunction$3(handler) ? handler(state.current) : Object.keys(changes).forEach(function (field) {
-    var _handler$field;
-
-    return (_handler$field = handler[field]) === null || _handler$field === void 0 ? void 0 : _handler$field.call(handler, state.current[field]);
-  });
-  return changes;
-}
-
-var index$1 = {
-  create: create
-};
-
-var config$1 = {
-  paths: {
-    vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.28.1/min/vs'
-  }
-};
-
-function curry(fn) {
-  return function curried() {
-    var _this = this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return args.length >= fn.length ? fn.apply(this, args) : function () {
-      for (var _len2 = arguments.length, nextArgs = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        nextArgs[_key2] = arguments[_key2];
-      }
-
-      return curried.apply(_this, [].concat(args, nextArgs));
-    };
-  };
-}
-
-function isObject$5(value) {
-  return {}.toString.call(value).includes('Object');
-}
-
-/**
- * validates the configuration object and informs about deprecation
- * @param {Object} config - the configuration object 
- * @return {Object} config - the validated configuration object
- */
-
-function validateConfig(config) {
-  if (!config) errorHandler('configIsRequired');
-  if (!isObject$5(config)) errorHandler('configType');
-
-  if (config.urls) {
-    informAboutDeprecation();
-    return {
-      paths: {
-        vs: config.urls.monacoBase
-      }
-    };
-  }
-
-  return config;
-}
-/**
- * logs deprecation message
- */
-
-
-function informAboutDeprecation() {
-  console.warn(errorMessages.deprecation);
-}
-
-function throwError(errorMessages, type) {
-  throw new Error(errorMessages[type] || errorMessages["default"]);
-}
-
-var errorMessages = {
-  configIsRequired: 'the configuration object is required',
-  configType: 'the configuration object should be an object',
-  "default": 'an unknown error accured in `@monaco-editor/loader` package',
-  deprecation: "Deprecation warning!\n    You are using deprecated way of configuration.\n\n    Instead of using\n      monaco.config({ urls: { monacoBase: '...' } })\n    use\n      monaco.config({ paths: { vs: '...' } })\n\n    For more please check the link https://github.com/suren-atoyan/monaco-loader#config\n  "
-};
-var errorHandler = curry(throwError)(errorMessages);
-var validators = {
-  config: validateConfig
-};
-
-var compose = function compose() {
-  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
-    fns[_key] = arguments[_key];
-  }
-
-  return function (x) {
-    return fns.reduceRight(function (y, f) {
-      return f(y);
-    }, x);
-  };
-};
-
-function merge(target, source) {
-  Object.keys(source).forEach(function (key) {
-    if (source[key] instanceof Object) {
-      if (target[key]) {
-        Object.assign(source[key], merge(target[key], source[key]));
-      }
-    }
-  });
-  return _objectSpread2$1(_objectSpread2$1({}, target), source);
-}
-
-// The source (has been changed) is https://github.com/facebook/react/issues/5465#issuecomment-157888325
-var CANCELATION_MESSAGE = {
-  type: 'cancelation',
-  msg: 'operation is manually canceled'
-};
-
-function makeCancelable(promise) {
-  var hasCanceled_ = false;
-  var wrappedPromise = new Promise(function (resolve, reject) {
-    promise.then(function (val) {
-      return hasCanceled_ ? reject(CANCELATION_MESSAGE) : resolve(val);
-    });
-    promise["catch"](reject);
-  });
-  return wrappedPromise.cancel = function () {
-    return hasCanceled_ = true;
-  }, wrappedPromise;
-}
-
-/** the local state of the module */
-
-var _state$create = index$1.create({
-  config: config$1,
-  isInitialized: false,
-  resolve: null,
-  reject: null,
-  monaco: null
-}),
-    _state$create2 = _slicedToArray(_state$create, 2),
-    getState = _state$create2[0],
-    setState = _state$create2[1];
-/**
- * set the loader configuration
- * @param {Object} config - the configuration object
- */
-
-
-function config(config) {
-  setState(function (state) {
-    return {
-      config: merge(state.config, validators.config(config))
-    };
-  });
-}
-/**
- * handles the initialization of the monaco-editor
- * @return {Promise} - returns an instance of monaco (with a cancelable promise)
- */
-
-
-function init() {
-  var state = getState(function (_ref) {
-    var isInitialized = _ref.isInitialized;
-    return {
-      isInitialized: isInitialized
-    };
-  });
-
-  if (!state.isInitialized) {
-    if (window.monaco && window.monaco.editor) {
-      storeMonacoInstance(window.monaco);
-      return makeCancelable(Promise.resolve(window.monaco));
-    }
-
-    compose(injectScripts, getMonacoLoaderScript)(configureLoader);
-    setState({
-      isInitialized: true
-    });
-  }
-
-  return makeCancelable(wrapperPromise);
-}
-/**
- * injects provided scripts into the document.body
- * @param {Object} script - an HTML script element
- * @return {Object} - the injected HTML script element
- */
-
-
-function injectScripts(script) {
-  return document.body.appendChild(script);
-}
-/**
- * creates an HTML script element with/without provided src
- * @param {string} [src] - the source path of the script
- * @return {Object} - the created HTML script element
- */
-
-
-function createScript(src) {
-  var script = document.createElement('script');
-  return src && (script.src = src), script;
-}
-/**
- * creates an HTML script element with the monaco loader src
- * @return {Object} - the created HTML script element
- */
-
-
-function getMonacoLoaderScript(configureLoader) {
-  var state = getState(function (_ref2) {
-    var config = _ref2.config,
-        reject = _ref2.reject;
-    return {
-      config: config,
-      reject: reject
-    };
-  });
-  var loaderScript = createScript("".concat(state.config.paths.vs, "/loader.js"));
-
-  loaderScript.onload = function () {
-    return configureLoader();
-  };
-
-  loaderScript.onerror = state.reject;
-  return loaderScript;
-}
-/**
- * configures the monaco loader
- */
-
-
-function configureLoader() {
-  var state = getState(function (_ref3) {
-    var config = _ref3.config,
-        resolve = _ref3.resolve,
-        reject = _ref3.reject;
-    return {
-      config: config,
-      resolve: resolve,
-      reject: reject
-    };
-  });
-  var require = window.require;
-
-  require.config(state.config);
-
-  require(['vs/editor/editor.main'], function (monaco) {
-    storeMonacoInstance(monaco);
-    state.resolve(monaco);
-  }, function (error) {
-    state.reject(error);
-  });
-}
-/**
- * store monaco instance in local state
- */
-
-
-function storeMonacoInstance(monaco) {
-  if (!getState().monaco) {
-    setState({
-      monaco: monaco
-    });
-  }
-}
-/**
- * internal helper function
- * extracts stored monaco instance
- * @return {Object|null} - the monaco instance
- */
-
-
-function __getMonacoInstance() {
-  return getState(function (_ref4) {
-    var monaco = _ref4.monaco;
-    return monaco;
-  });
-}
-
-var wrapperPromise = new Promise(function (resolve, reject) {
-  return setState({
-    resolve: resolve,
-    reject: reject
-  });
-});
-var loader = {
-  config: config,
-  init: init,
-  __getMonacoInstance: __getMonacoInstance
-};
-
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function getDefaultExportFromCjs (x) {
@@ -752,6 +177,216 @@ function getAugmentedNamespace(n) {
 	});
 	return a;
 }
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+process.env.NODE_ENV !== 'production';
+
+/* eslint-disable no-restricted-globals, eqeqeq  */
+/**
+ * React currently throws a warning when using useLayoutEffect on the server.
+ * To get around it, we can conditionally useEffect on the server (no-op) and
+ * useLayoutEffect in the browser. We occasionally need useLayoutEffect to
+ * ensure we don't get a render flash for certain operations, but we may also
+ * need affected components to render on the server. One example is when setting
+ * a component's descendants to retrieve their index values.
+ *
+ * Important to note that using this hook as an escape hatch will break the
+ * eslint dependency warnings unless you rename the import to `useLayoutEffect`.
+ * Use sparingly only when the effect won't effect the rendered HTML to avoid
+ * any server/client mismatch.
+ *
+ * If a useLayoutEffect is needed and the result would create a mismatch, it's
+ * likely that the component in question shouldn't be rendered on the server at
+ * all, so a better approach would be to lazily render those in a parent
+ * component after client-side hydration.
+ *
+ * TODO: We are calling useLayoutEffect in a couple of places that will likely
+ * cause some issues for SSR users, whether the warning shows or not. Audit and
+ * fix these.
+ *
+ * https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
+ * https://github.com/reduxjs/react-redux/blob/master/src/utils/useIsomorphicLayoutEffect.js
+ *
+ * @param effect
+ * @param deps
+ */
+
+var useIsomorphicLayoutEffect = /*#__PURE__*/canUseDOM$1() ? React__default["default"].useLayoutEffect : React__default["default"].useEffect;
+
+if (process.env.NODE_ENV !== "production") {
+  // In CJS files, process.env.NODE_ENV is stripped from our build, but we need
+  // it to prevent style checks from clogging up user logs while testing.
+  // This is a workaround until we can tweak the build a bit to accommodate.
+  var _ref = typeof process !== "undefined" ? process : {
+    env: {
+      NODE_ENV: "development"
+    }
+  };
+      _ref.env;
+}
+function canUseDOM$1() {
+  return !!(typeof window !== "undefined" && window.document && window.document.createElement);
+}
+
+if (process.env.NODE_ENV !== "production") ;
+
+if (process.env.NODE_ENV !== "production") ;
+
+if (process.env.NODE_ENV !== "production") ;
+
+/*
+ * Welcome to @reach/auto-id!
+
+ * Let's see if we can make sense of why this hook exists and its
+ * implementation.
+ *
+ * Some background:
+ *   1. Accessibiliy APIs rely heavily on element IDs
+ *   2. Requiring developers to put IDs on every element in Reach UI is both
+ *      cumbersome and error-prone
+ *   3. With a component model, we can generate IDs for them!
+ *
+ * Solution 1: Generate random IDs.
+ *
+ * This works great as long as you don't server render your app. When React (in
+ * the client) tries to reuse the markup from the server, the IDs won't match
+ * and React will then recreate the entire DOM tree.
+ *
+ * Solution 2: Increment an integer
+ *
+ * This sounds great. Since we're rendering the exact same tree on the server
+ * and client, we can increment a counter and get a deterministic result between
+ * client and server. Also, JS integers can go up to nine-quadrillion. I'm
+ * pretty sure the tab will be closed before an app never needs
+ * 10 quadrillion IDs!
+ *
+ * Problem solved, right?
+ *
+ * Ah, but there's a catch! React's concurrent rendering makes this approach
+ * non-deterministic. While the client and server will end up with the same
+ * elements in the end, depending on suspense boundaries (and possibly some user
+ * input during the initial render) the incrementing integers won't always match
+ * up.
+ *
+ * Solution 3: Don't use IDs at all on the server; patch after first render.
+ *
+ * What we've done here is solution 2 with some tricks. With this approach, the
+ * ID returned is an empty string on the first render. This way the server and
+ * client have the same markup no matter how wild the concurrent rendering may
+ * have gotten.
+ *
+ * After the render, we patch up the components with an incremented ID. This
+ * causes a double render on any components with `useId`. Shouldn't be a problem
+ * since the components using this hook should be small, and we're only updating
+ * the ID attribute on the DOM, nothing big is happening.
+ *
+ * It doesn't have to be an incremented number, though--we could do generate
+ * random strings instead, but incrementing a number is probably the cheapest
+ * thing we can do.
+ *
+ * Additionally, we only do this patchup on the very first client render ever.
+ * Any calls to `useId` that happen dynamically in the client will be
+ * populated immediately with a value. So, we only get the double render after
+ * server hydration and never again, SO BACK OFF ALRIGHT?
+ */
+var serverHandoffComplete = false;
+var id = 0;
+
+var genId = function genId() {
+  return ++id;
+};
+/**
+ * useId
+ *
+ * Autogenerate IDs to facilitate WAI-ARIA and server rendering.
+ *
+ * Note: The returned ID will initially be `null` and will update after a
+ * component mounts. Users may need to supply their own ID if they need
+ * consistent values for SSR.
+ *
+ * @see Docs https://reacttraining.com/reach-ui/auto-id
+ */
+
+
+var useId = function useId(idFromProps) {
+  /*
+   * If this instance isn't part of the initial render, we don't have to do the
+   * double render/patch-up dance. We can just generate the ID and return it.
+   */
+  var initialId = idFromProps || (serverHandoffComplete ? genId() : null);
+
+  var _useState = React.useState(initialId),
+      id = _useState[0],
+      setId = _useState[1];
+
+  useIsomorphicLayoutEffect(function () {
+    if (id === null) {
+      /*
+       * Patch the ID after render. We do this in `useLayoutEffect` to avoid any
+       * rendering flicker, though it'll make the first render slower (unlikely
+       * to matter, but you're welcome to measure your app and let us know if
+       * it's a problem).
+       */
+      setId(genId());
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, []);
+  React.useEffect(function () {
+    if (serverHandoffComplete === false) {
+      /*
+       * Flag all future uses of `useId` to skip the update dance. This is in
+       * `useEffect` because it goes after `useLayoutEffect`, ensuring we don't
+       * accidentally bail out of the patch-up dance prematurely.
+       */
+      serverHandoffComplete = true;
+    }
+  }, []);
+  return id != null ? String(id) : undefined;
+};
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z$d = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
+var styles$d = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
+styleInject(css_248z$d);
 
 var propTypes = {exports: {}};
 
@@ -1835,635 +1470,26 @@ if (process.env.NODE_ENV !== 'production') {
 
 var PropTypes = propTypes.exports;
 
-function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends$3.apply(this, arguments);
-}
-
-const loadingStyles = {
-  display: 'flex',
-  height: '100%',
-  width: '100%',
-  justifyContent: 'center',
-  alignItems: 'center'
-};
-
-function Loading({
-  content
-}) {
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    style: loadingStyles
-  }, content);
-}
-
-const styles$e = {
-  wrapper: {
-    display: 'flex',
-    position: 'relative',
-    textAlign: 'initial'
-  },
-  fullWidth: {
-    width: '100%'
-  },
-  hide: {
-    display: 'none'
-  }
-};
-
-// one of the reasons why we use a separate prop for passing ref instead of using forwardref
-
-function MonacoContainer$1({
-  width,
-  height,
-  isEditorReady,
-  loading,
-  _ref,
-  className,
-  wrapperProps
-}) {
-  return /*#__PURE__*/React__default["default"].createElement("section", _extends$3({
-    style: { ...styles$e.wrapper,
-      width,
-      height
-    }
-  }, wrapperProps), !isEditorReady && /*#__PURE__*/React__default["default"].createElement(Loading, {
-    content: loading
-  }), /*#__PURE__*/React__default["default"].createElement("div", {
-    ref: _ref,
-    style: { ...styles$e.fullWidth,
-      ...(!isEditorReady && styles$e.hide)
-    },
-    className: className
-  }));
-}
-
-MonacoContainer$1.propTypes = {
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  loading: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
-  isEditorReady: PropTypes.bool.isRequired,
-  className: PropTypes.string,
-  wrapperProps: PropTypes.object
-};
-
-var MonacoContainer = /*#__PURE__*/React.memo(MonacoContainer$1);
-
-function useMount(effect) {
-  React.useEffect(effect, []);
-}
-
-function useUpdate(effect, deps, applyChanges = true) {
-  const isInitialMount = React.useRef(true);
-  React.useEffect(isInitialMount.current || !applyChanges ? () => {
-    isInitialMount.current = false;
-  } : effect, deps);
-}
-
-function noop() {}
-
-function getOrCreateModel(monaco, value, language, path) {
-  return getModel(monaco, path) || createModel(monaco, value, language, path);
-}
-
-function getModel(monaco, path) {
-  return monaco.editor.getModel(createModelUri(monaco, path));
-}
-
-function createModel(monaco, value, language, path) {
-  return monaco.editor.createModel(value, language, path && createModelUri(monaco, path));
-}
-
-function createModelUri(monaco, path) {
-  return monaco.Uri.parse(path);
-}
-
-function isUndefined(input) {
-  return input === undefined;
-}
-
-({
-  original: PropTypes.string,
-  modified: PropTypes.string,
-  language: PropTypes.string,
-  originalLanguage: PropTypes.string,
-  modifiedLanguage: PropTypes.string,
-
-  /* === */
-  originalModelPath: PropTypes.string,
-  modifiedModelPath: PropTypes.string,
-  keepCurrentOriginalModel: PropTypes.bool,
-  keepCurrentModifiedModel: PropTypes.bool,
-  theme: PropTypes.string,
-  loading: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  options: PropTypes.object,
-
-  /* === */
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  className: PropTypes.string,
-  wrapperProps: PropTypes.object,
-
-  /* === */
-  beforeMount: PropTypes.func,
-  onMount: PropTypes.func
-});
-
-function useMonaco() {
-  const [monaco, setMonaco] = React.useState(loader.__getMonacoInstance());
-  useMount(() => {
-    let cancelable;
-
-    if (!monaco) {
-      cancelable = loader.init();
-      cancelable.then(monaco => {
-        setMonaco(monaco);
-      });
-    }
-
-    return () => {
-      var _cancelable;
-
-      return (_cancelable = cancelable) === null || _cancelable === void 0 ? void 0 : _cancelable.cancel();
-    };
-  });
-  return monaco;
-}
-
-function usePrevious$1(value) {
-  const ref = React.useRef();
-  React.useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
-
-const viewStates = new Map();
-
-function Editor({
-  defaultValue,
-  defaultLanguage,
-  defaultPath,
-  value,
-  language,
-  path,
-
-  /* === */
-  theme,
-  line,
-  loading,
-  options,
-  overrideServices,
-  saveViewState,
-  keepCurrentModel,
-
-  /* === */
-  width,
-  height,
-  className,
-  wrapperProps,
-
-  /* === */
-  beforeMount,
-  onMount,
-  onChange,
-  onValidate
-}) {
-  const [isEditorReady, setIsEditorReady] = React.useState(false);
-  const [isMonacoMounting, setIsMonacoMounting] = React.useState(true);
-  const monacoRef = React.useRef(null);
-  const editorRef = React.useRef(null);
-  const containerRef = React.useRef(null);
-  const onMountRef = React.useRef(onMount);
-  const beforeMountRef = React.useRef(beforeMount);
-  const subscriptionRef = React.useRef(null);
-  const valueRef = React.useRef(value);
-  const previousPath = usePrevious$1(path);
-  useMount(() => {
-    const cancelable = loader.init();
-    cancelable.then(monaco => (monacoRef.current = monaco) && setIsMonacoMounting(false)).catch(error => (error === null || error === void 0 ? void 0 : error.type) !== 'cancelation' && console.error('Monaco initialization: error:', error));
-    return () => editorRef.current ? disposeEditor() : cancelable.cancel();
-  });
-  useUpdate(() => {
-    const model = getOrCreateModel(monacoRef.current, defaultValue || value, defaultLanguage || language, path);
-
-    if (model !== editorRef.current.getModel()) {
-      saveViewState && viewStates.set(previousPath, editorRef.current.saveViewState());
-      editorRef.current.setModel(model);
-      saveViewState && editorRef.current.restoreViewState(viewStates.get(path));
-    }
-  }, [path], isEditorReady);
-  useUpdate(() => {
-    editorRef.current.updateOptions(options);
-  }, [options], isEditorReady);
-  useUpdate(() => {
-    if (editorRef.current.getOption(monacoRef.current.editor.EditorOption.readOnly)) {
-      editorRef.current.setValue(value);
-    } else {
-      if (value !== editorRef.current.getValue()) {
-        editorRef.current.executeEdits('', [{
-          range: editorRef.current.getModel().getFullModelRange(),
-          text: value,
-          forceMoveMarkers: true
-        }]);
-        editorRef.current.pushUndoStop();
-      }
-    }
-  }, [value], isEditorReady);
-  useUpdate(() => {
-    monacoRef.current.editor.setModelLanguage(editorRef.current.getModel(), language);
-  }, [language], isEditorReady);
-  useUpdate(() => {
-    // reason for undefined check: https://github.com/suren-atoyan/monaco-react/pull/188
-    if (!isUndefined(line)) {
-      editorRef.current.revealLine(line);
-    }
-  }, [line], isEditorReady);
-  useUpdate(() => {
-    monacoRef.current.editor.setTheme(theme);
-  }, [theme], isEditorReady);
-  const createEditor = React.useCallback(() => {
-    beforeMountRef.current(monacoRef.current);
-    const autoCreatedModelPath = path || defaultPath;
-    const defaultModel = getOrCreateModel(monacoRef.current, value || defaultValue, defaultLanguage || language, autoCreatedModelPath);
-    editorRef.current = monacoRef.current.editor.create(containerRef.current, {
-      model: defaultModel,
-      automaticLayout: true,
-      ...options
-    }, overrideServices);
-    saveViewState && editorRef.current.restoreViewState(viewStates.get(autoCreatedModelPath));
-    monacoRef.current.editor.setTheme(theme);
-    setIsEditorReady(true);
-  }, [defaultValue, defaultLanguage, defaultPath, value, language, path, options, overrideServices, saveViewState, theme]);
-  React.useEffect(() => {
-    if (isEditorReady) {
-      onMountRef.current(editorRef.current, monacoRef.current);
-    }
-  }, [isEditorReady]);
-  React.useEffect(() => {
-    !isMonacoMounting && !isEditorReady && createEditor();
-  }, [isMonacoMounting, isEditorReady, createEditor]); // subscription
-  // to avoid unnecessary updates (attach - dispose listener) in subscription
-
-  valueRef.current = value;
-  React.useEffect(() => {
-    if (isEditorReady && onChange) {
-      var _subscriptionRef$curr, _editorRef$current;
-
-      (_subscriptionRef$curr = subscriptionRef.current) === null || _subscriptionRef$curr === void 0 ? void 0 : _subscriptionRef$curr.dispose();
-      subscriptionRef.current = (_editorRef$current = editorRef.current) === null || _editorRef$current === void 0 ? void 0 : _editorRef$current.onDidChangeModelContent(event => {
-        const editorValue = editorRef.current.getValue();
-
-        if (valueRef.current !== editorValue) {
-          onChange(editorValue, event);
-        }
-      });
-    }
-  }, [isEditorReady, onChange]); // onValidate
-
-  React.useEffect(() => {
-    if (isEditorReady) {
-      const changeMarkersListener = monacoRef.current.editor.onDidChangeMarkers(uris => {
-        var _editorRef$current$ge;
-
-        const editorUri = (_editorRef$current$ge = editorRef.current.getModel()) === null || _editorRef$current$ge === void 0 ? void 0 : _editorRef$current$ge.uri;
-
-        if (editorUri) {
-          const currentEditorHasMarkerChanges = uris.find(uri => uri.path === editorUri.path);
-
-          if (currentEditorHasMarkerChanges) {
-            const markers = monacoRef.current.editor.getModelMarkers({
-              resource: editorUri
-            });
-            onValidate === null || onValidate === void 0 ? void 0 : onValidate(markers);
-          }
-        }
-      });
-      return () => {
-        changeMarkersListener === null || changeMarkersListener === void 0 ? void 0 : changeMarkersListener.dispose();
-      };
-    }
-  }, [isEditorReady, onValidate]);
-
-  function disposeEditor() {
-    var _subscriptionRef$curr2;
-
-    (_subscriptionRef$curr2 = subscriptionRef.current) === null || _subscriptionRef$curr2 === void 0 ? void 0 : _subscriptionRef$curr2.dispose();
-
-    if (keepCurrentModel) {
-      saveViewState && viewStates.set(path, editorRef.current.saveViewState());
-    } else {
-      var _editorRef$current$ge2;
-
-      (_editorRef$current$ge2 = editorRef.current.getModel()) === null || _editorRef$current$ge2 === void 0 ? void 0 : _editorRef$current$ge2.dispose();
-    }
-
-    editorRef.current.dispose();
-  }
-
-  return /*#__PURE__*/React__default["default"].createElement(MonacoContainer, {
-    width: width,
-    height: height,
-    isEditorReady: isEditorReady,
-    loading: loading,
-    _ref: containerRef,
-    className: className,
-    wrapperProps: wrapperProps
-  });
-}
-
-Editor.propTypes = {
-  defaultValue: PropTypes.string,
-  defaultPath: PropTypes.string,
-  defaultLanguage: PropTypes.string,
-  value: PropTypes.string,
-  language: PropTypes.string,
-  path: PropTypes.string,
-
-  /* === */
-  theme: PropTypes.string,
-  line: PropTypes.number,
-  loading: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  options: PropTypes.object,
-  overrideServices: PropTypes.object,
-  saveViewState: PropTypes.bool,
-  keepCurrentModel: PropTypes.bool,
-
-  /* === */
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  className: PropTypes.string,
-  wrapperProps: PropTypes.object,
-
-  /* === */
-  beforeMount: PropTypes.func,
-  onMount: PropTypes.func,
-  onChange: PropTypes.func,
-  onValidate: PropTypes.func
-};
-Editor.defaultProps = {
-  theme: 'light',
-  loading: 'Loading...',
-  options: {},
-  overrideServices: {},
-  saveViewState: true,
-  keepCurrentModel: false,
-
-  /* === */
-  width: '100%',
-  height: '100%',
-  wrapperProps: {},
-
-  /* === */
-  beforeMount: noop,
-  onMount: noop,
-  onValidate: noop
-};
-
-var index = /*#__PURE__*/React.memo(Editor);
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-process.env.NODE_ENV !== 'production';
-
-/* eslint-disable no-restricted-globals, eqeqeq  */
-/**
- * React currently throws a warning when using useLayoutEffect on the server.
- * To get around it, we can conditionally useEffect on the server (no-op) and
- * useLayoutEffect in the browser. We occasionally need useLayoutEffect to
- * ensure we don't get a render flash for certain operations, but we may also
- * need affected components to render on the server. One example is when setting
- * a component's descendants to retrieve their index values.
- *
- * Important to note that using this hook as an escape hatch will break the
- * eslint dependency warnings unless you rename the import to `useLayoutEffect`.
- * Use sparingly only when the effect won't effect the rendered HTML to avoid
- * any server/client mismatch.
- *
- * If a useLayoutEffect is needed and the result would create a mismatch, it's
- * likely that the component in question shouldn't be rendered on the server at
- * all, so a better approach would be to lazily render those in a parent
- * component after client-side hydration.
- *
- * TODO: We are calling useLayoutEffect in a couple of places that will likely
- * cause some issues for SSR users, whether the warning shows or not. Audit and
- * fix these.
- *
- * https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
- * https://github.com/reduxjs/react-redux/blob/master/src/utils/useIsomorphicLayoutEffect.js
- *
- * @param effect
- * @param deps
- */
-
-var useIsomorphicLayoutEffect = /*#__PURE__*/canUseDOM$1() ? React__default["default"].useLayoutEffect : React__default["default"].useEffect;
-
-if (process.env.NODE_ENV !== "production") {
-  // In CJS files, process.env.NODE_ENV is stripped from our build, but we need
-  // it to prevent style checks from clogging up user logs while testing.
-  // This is a workaround until we can tweak the build a bit to accommodate.
-  var _ref = typeof process !== "undefined" ? process : {
-    env: {
-      NODE_ENV: "development"
-    }
-  };
-      _ref.env;
-}
-function canUseDOM$1() {
-  return !!(typeof window !== "undefined" && window.document && window.document.createElement);
-}
-
-if (process.env.NODE_ENV !== "production") ;
-
-if (process.env.NODE_ENV !== "production") ;
-
-if (process.env.NODE_ENV !== "production") ;
-
-/*
- * Welcome to @reach/auto-id!
-
- * Let's see if we can make sense of why this hook exists and its
- * implementation.
- *
- * Some background:
- *   1. Accessibiliy APIs rely heavily on element IDs
- *   2. Requiring developers to put IDs on every element in Reach UI is both
- *      cumbersome and error-prone
- *   3. With a component model, we can generate IDs for them!
- *
- * Solution 1: Generate random IDs.
- *
- * This works great as long as you don't server render your app. When React (in
- * the client) tries to reuse the markup from the server, the IDs won't match
- * and React will then recreate the entire DOM tree.
- *
- * Solution 2: Increment an integer
- *
- * This sounds great. Since we're rendering the exact same tree on the server
- * and client, we can increment a counter and get a deterministic result between
- * client and server. Also, JS integers can go up to nine-quadrillion. I'm
- * pretty sure the tab will be closed before an app never needs
- * 10 quadrillion IDs!
- *
- * Problem solved, right?
- *
- * Ah, but there's a catch! React's concurrent rendering makes this approach
- * non-deterministic. While the client and server will end up with the same
- * elements in the end, depending on suspense boundaries (and possibly some user
- * input during the initial render) the incrementing integers won't always match
- * up.
- *
- * Solution 3: Don't use IDs at all on the server; patch after first render.
- *
- * What we've done here is solution 2 with some tricks. With this approach, the
- * ID returned is an empty string on the first render. This way the server and
- * client have the same markup no matter how wild the concurrent rendering may
- * have gotten.
- *
- * After the render, we patch up the components with an incremented ID. This
- * causes a double render on any components with `useId`. Shouldn't be a problem
- * since the components using this hook should be small, and we're only updating
- * the ID attribute on the DOM, nothing big is happening.
- *
- * It doesn't have to be an incremented number, though--we could do generate
- * random strings instead, but incrementing a number is probably the cheapest
- * thing we can do.
- *
- * Additionally, we only do this patchup on the very first client render ever.
- * Any calls to `useId` that happen dynamically in the client will be
- * populated immediately with a value. So, we only get the double render after
- * server hydration and never again, SO BACK OFF ALRIGHT?
- */
-var serverHandoffComplete = false;
-var id = 0;
-
-var genId = function genId() {
-  return ++id;
-};
-/**
- * useId
- *
- * Autogenerate IDs to facilitate WAI-ARIA and server rendering.
- *
- * Note: The returned ID will initially be `null` and will update after a
- * component mounts. Users may need to supply their own ID if they need
- * consistent values for SSR.
- *
- * @see Docs https://reacttraining.com/reach-ui/auto-id
- */
-
-
-var useId = function useId(idFromProps) {
-  /*
-   * If this instance isn't part of the initial render, we don't have to do the
-   * double render/patch-up dance. We can just generate the ID and return it.
-   */
-  var initialId = idFromProps || (serverHandoffComplete ? genId() : null);
-
-  var _useState = React.useState(initialId),
-      id = _useState[0],
-      setId = _useState[1];
-
-  useIsomorphicLayoutEffect(function () {
-    if (id === null) {
-      /*
-       * Patch the ID after render. We do this in `useLayoutEffect` to avoid any
-       * rendering flicker, though it'll make the first render slower (unlikely
-       * to matter, but you're welcome to measure your app and let us know if
-       * it's a problem).
-       */
-      setId(genId());
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  }, []);
-  React.useEffect(function () {
-    if (serverHandoffComplete === false) {
-      /*
-       * Flag all future uses of `useId` to skip the update dance. This is in
-       * `useEffect` because it goes after `useLayoutEffect`, ensuring we don't
-       * accidentally bail out of the patch-up dance prematurely.
-       */
-      serverHandoffComplete = true;
-    }
-  }, []);
-  return id != null ? String(id) : undefined;
-};
-
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var css_248z$d = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
-var styles$d = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
-styleInject(css_248z$d);
-
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-var _createClass$4 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass$3 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck$4(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn$4(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn$3(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits$4(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits$3(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Portal$3 = function (_React$Component) {
-  _inherits$4(Portal, _React$Component);
+  _inherits$3(Portal, _React$Component);
 
   function Portal() {
-    _classCallCheck$4(this, Portal);
+    _classCallCheck$3(this, Portal);
 
-    return _possibleConstructorReturn$4(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
+    return _possibleConstructorReturn$3(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
   }
 
-  _createClass$4(Portal, [{
+  _createClass$3(Portal, [{
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       if (this.defaultNode) {
@@ -2495,24 +1521,24 @@ Portal$3.propTypes = {
 
 var Portalv4 = Portal$3;
 
-var _createClass$3 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn$3(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn$2(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits$3(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Portal$2 = function (_React$Component) {
-  _inherits$3(Portal, _React$Component);
+  _inherits$2(Portal, _React$Component);
 
   function Portal() {
-    _classCallCheck$3(this, Portal);
+    _classCallCheck$2(this, Portal);
 
-    return _possibleConstructorReturn$3(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
+    return _possibleConstructorReturn$2(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
   }
 
-  _createClass$3(Portal, [{
+  _createClass$2(Portal, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.renderPortal();
@@ -2575,146 +1601,6 @@ if (ReactDOM__default["default"].createPortal) {
 }
 
 var Portal$1 = Portal;
-
-var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn$2(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var KEYCODES = {
-  ESCAPE: 27
-};
-
-var PortalWithState = function (_React$Component) {
-  _inherits$2(PortalWithState, _React$Component);
-
-  function PortalWithState(props) {
-    _classCallCheck$2(this, PortalWithState);
-
-    var _this = _possibleConstructorReturn$2(this, (PortalWithState.__proto__ || Object.getPrototypeOf(PortalWithState)).call(this, props));
-
-    _this.portalNode = null;
-    _this.state = { active: !!props.defaultOpen };
-    _this.openPortal = _this.openPortal.bind(_this);
-    _this.closePortal = _this.closePortal.bind(_this);
-    _this.wrapWithPortal = _this.wrapWithPortal.bind(_this);
-    _this.handleOutsideMouseClick = _this.handleOutsideMouseClick.bind(_this);
-    _this.handleKeydown = _this.handleKeydown.bind(_this);
-    return _this;
-  }
-
-  _createClass$2(PortalWithState, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      if (this.props.closeOnEsc) {
-        document.addEventListener('keydown', this.handleKeydown);
-      }
-      if (this.props.closeOnOutsideClick) {
-        document.addEventListener('click', this.handleOutsideMouseClick);
-      }
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (this.props.closeOnEsc) {
-        document.removeEventListener('keydown', this.handleKeydown);
-      }
-      if (this.props.closeOnOutsideClick) {
-        document.removeEventListener('click', this.handleOutsideMouseClick);
-      }
-    }
-  }, {
-    key: 'openPortal',
-    value: function openPortal(e) {
-      if (this.state.active) {
-        return;
-      }
-      if (e && e.nativeEvent) {
-        e.nativeEvent.stopImmediatePropagation();
-      }
-      this.setState({ active: true }, this.props.onOpen);
-    }
-  }, {
-    key: 'closePortal',
-    value: function closePortal() {
-      if (!this.state.active) {
-        return;
-      }
-      this.setState({ active: false }, this.props.onClose);
-    }
-  }, {
-    key: 'wrapWithPortal',
-    value: function wrapWithPortal(children) {
-      var _this2 = this;
-
-      if (!this.state.active) {
-        return null;
-      }
-      return React__default["default"].createElement(
-        Portal$1,
-        {
-          node: this.props.node,
-          key: 'react-portal',
-          ref: function ref(portalNode) {
-            return _this2.portalNode = portalNode;
-          }
-        },
-        children
-      );
-    }
-  }, {
-    key: 'handleOutsideMouseClick',
-    value: function handleOutsideMouseClick(e) {
-      if (!this.state.active) {
-        return;
-      }
-      var root = this.portalNode && (this.portalNode.props.node || this.portalNode.defaultNode);
-      if (!root || root.contains(e.target) || e.button && e.button !== 0) {
-        return;
-      }
-      this.closePortal();
-    }
-  }, {
-    key: 'handleKeydown',
-    value: function handleKeydown(e) {
-      if (e.keyCode === KEYCODES.ESCAPE && this.state.active) {
-        this.closePortal();
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return this.props.children({
-        openPortal: this.openPortal,
-        closePortal: this.closePortal,
-        portal: this.wrapWithPortal,
-        isOpen: this.state.active
-      });
-    }
-  }]);
-
-  return PortalWithState;
-}(React__default["default"].Component);
-
-PortalWithState.propTypes = {
-  children: PropTypes.func.isRequired,
-  defaultOpen: PropTypes.bool,
-  node: PropTypes.any,
-  closeOnEsc: PropTypes.bool,
-  closeOnOutsideClick: PropTypes.bool,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func
-};
-
-PortalWithState.defaultProps = {
-  onOpen: function onOpen() {},
-  onClose: function onClose() {}
-};
-
-var PortalWithState$1 = PortalWithState;
 
 var lib = {exports: {}};
 
@@ -4779,17 +3665,17 @@ var ContextMenu = function ContextMenu(_ref) {
   var filterInput = React.useRef();
 
   var _useState = React.useState(""),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       filter = _useState2[0],
       setFilter = _useState2[1];
 
   var _useState3 = React.useState(0),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       menuWidth = _useState4[0],
       setMenuWidth = _useState4[1];
 
   var _useState5 = React.useState(0),
-      _useState6 = _slicedToArray$1(_useState5, 2),
+      _useState6 = _slicedToArray(_useState5, 2),
       selectedIndex = _useState6[0],
       setSelectedIndex = _useState6[1];
 
@@ -5142,7 +4028,7 @@ var Draggable = (function (_ref) {
     document.addEventListener("mousemove", checkDragDelay);
   };
 
-  return /*#__PURE__*/React__default["default"].createElement("div", _extends$4({
+  return /*#__PURE__*/React__default["default"].createElement("div", _extends$3({
     onMouseDown: function onMouseDown(e) {
       if (!disabled) {
         startDragDelay(e);
@@ -8488,7 +7374,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   var scaleWrapper = React.useRef();
 
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       menuOpen = _useState2[0],
       setMenuOpen = _useState2[1];
 
@@ -8496,7 +7382,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     x: 0,
     y: 0
   }),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       menuCoordinates = _useState4[0],
       setMenuCoordinates = _useState4[1];
 
@@ -8506,7 +7392,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   });
 
   var _useState5 = React.useState(false),
-      _useState6 = _slicedToArray$1(_useState5, 2),
+      _useState6 = _slicedToArray(_useState5, 2),
       spaceIsPressed = _useState6[0],
       setSpaceIsPressed = _useState6[1];
 
@@ -8722,7 +7608,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
 Stage.displayName = "Stage";
 
 function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray$4(arr);
+  if (Array.isArray(arr)) return _arrayLikeToArray$3(arr);
 }
 
 function _iterableToArray(iter) {
@@ -8734,7 +7620,7 @@ function _nonIterableSpread() {
 }
 
 function _toConsumableArray$1(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$4(arr) || _nonIterableSpread();
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$3(arr) || _nonIterableSpread();
 }
 
 var usePrevious = function usePrevious(value) {
@@ -9276,7 +8162,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
     Object.values(nodes).forEach(function (node) {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
-          var _ref8 = _slicedToArray$1(_ref7, 2),
+          var _ref8 = _slicedToArray(_ref7, 2),
               inputName = _ref8[0],
               outputs = _ref8[1];
 
@@ -9327,8 +8213,8 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}.TextInput_editorWrapper__25W-8{backdrop-filter:blur(1px);display:flex;height:100%;justify-content:flex-end;position:fixed;right:0;top:0;width:100%;z-index:999}.TextInput_editor__5v5nz{border-left:1px solid #3b3b45;height:100%;width:min(max(50%,400px),100%)}";
-var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-","editorWrapper":"TextInput_editorWrapper__25W-8","editor":"TextInput_editor__5v5nz"};
+var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}";
+var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-"};
 styleInject(css_248z$9);
 
 var NumberInput = function NumberInput(_ref) {
@@ -9432,1078 +8318,6 @@ var Checkbox = function Checkbox(_ref) {
   }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
 };
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-var runtime = {exports: {}};
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-(function (module) {
-var runtime = (function (exports) {
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined$1; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function define(obj, key, value) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-    return obj[key];
-  }
-  try {
-    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
-    define({}, "");
-  } catch (err) {
-    define = function(obj, key, value) {
-      return obj[key] = value;
-    };
-  }
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  define(IteratorPrototype, iteratorSymbol, function () {
-    return this;
-  });
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = GeneratorFunctionPrototype;
-  define(Gp, "constructor", GeneratorFunctionPrototype);
-  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
-  GeneratorFunction.displayName = define(
-    GeneratorFunctionPrototype,
-    toStringTagSymbol,
-    "GeneratorFunction"
-  );
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      define(prototype, method, function(arg) {
-        return this._invoke(method, arg);
-      });
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      define(genFun, toStringTagSymbol, "GeneratorFunction");
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  });
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined$1) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined$1;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined$1;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  define(Gp, toStringTagSymbol, "Generator");
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  define(Gp, iteratorSymbol, function() {
-    return this;
-  });
-
-  define(Gp, "toString", function() {
-    return "[object Generator]";
-  });
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined$1;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined$1, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined$1;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined$1;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined$1;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined$1;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined$1;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-  module.exports 
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, in modern engines
-  // we can explicitly access globalThis. In older engines we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  if (typeof globalThis === "object") {
-    globalThis.regeneratorRuntime = runtime;
-  } else {
-    Function("r", "regeneratorRuntime = r")(runtime);
-  }
-}
-}(runtime));
-
-var regenerator = runtime.exports;
-
-var base = "vs-dark";
-var inherit = true;
-var rules = [
-	{
-		background: "25252F",
-		token: ""
-	},
-	{
-		foreground: "555555",
-		token: "comment"
-	},
-	{
-		foreground: "555555",
-		token: "comment.block"
-	},
-	{
-		foreground: "ad9361",
-		token: "string"
-	},
-	{
-		foreground: "cccccc",
-		token: "constant.numeric"
-	},
-	{
-		foreground: "a1a1ff",
-		token: "keyword"
-	},
-	{
-		foreground: "2f006e",
-		token: "meta.preprocessor"
-	},
-	{
-		fontStyle: "bold",
-		token: "keyword.control.import"
-	},
-	{
-		foreground: "a1a1ff",
-		token: "support.function"
-	},
-	{
-		foreground: "0000ff",
-		token: "declaration.function function-result"
-	},
-	{
-		fontStyle: "bold",
-		token: "declaration.function function-name"
-	},
-	{
-		fontStyle: "bold",
-		token: "declaration.function argument-name"
-	},
-	{
-		foreground: "0000ff",
-		token: "declaration.function function-arg-type"
-	},
-	{
-		fontStyle: "italic",
-		token: "declaration.function function-argument"
-	},
-	{
-		fontStyle: "underline",
-		token: "declaration.class class-name"
-	},
-	{
-		fontStyle: "italic underline",
-		token: "declaration.class class-inheritance"
-	},
-	{
-		foreground: "fff9f9",
-		background: "ff0000",
-		fontStyle: "bold",
-		token: "invalid"
-	},
-	{
-		background: "ffd0d0",
-		token: "invalid.deprecated.trailing-whitespace"
-	},
-	{
-		fontStyle: "italic",
-		token: "declaration.section section-name"
-	},
-	{
-		foreground: "c10006",
-		token: "string.interpolation"
-	},
-	{
-		foreground: "666666",
-		token: "string.regexp"
-	},
-	{
-		foreground: "c1c144",
-		token: "variable"
-	},
-	{
-		foreground: "6782d3",
-		token: "constant"
-	},
-	{
-		foreground: "afa472",
-		token: "constant.character"
-	},
-	{
-		foreground: "de8e30",
-		fontStyle: "bold",
-		token: "constant.language"
-	},
-	{
-		fontStyle: "underline",
-		token: "embedded"
-	},
-	{
-		foreground: "858ef4",
-		token: "keyword.markup.element-name"
-	},
-	{
-		foreground: "9b456f",
-		token: "keyword.markup.attribute-name"
-	},
-	{
-		foreground: "9b456f",
-		token: "meta.attribute-with-value"
-	},
-	{
-		foreground: "c82255",
-		fontStyle: "bold",
-		token: "keyword.exception"
-	},
-	{
-		foreground: "47b8d6",
-		token: "keyword.operator"
-	},
-	{
-		foreground: "6969fa",
-		fontStyle: "bold",
-		token: "keyword.control"
-	},
-	{
-		foreground: "68685b",
-		token: "meta.tag.preprocessor.xml"
-	},
-	{
-		foreground: "888888",
-		token: "meta.tag.sgml.doctype"
-	},
-	{
-		fontStyle: "italic",
-		token: "string.quoted.docinfo.doctype.DTD"
-	},
-	{
-		foreground: "909090",
-		token: "comment.other.server-side-include.xhtml"
-	},
-	{
-		foreground: "909090",
-		token: "comment.other.server-side-include.html"
-	},
-	{
-		foreground: "858ef4",
-		token: "text.html declaration.tag"
-	},
-	{
-		foreground: "858ef4",
-		token: "text.html meta.tag"
-	},
-	{
-		foreground: "858ef4",
-		token: "text.html entity.name.tag.xhtml"
-	},
-	{
-		foreground: "9b456f",
-		token: "keyword.markup.attribute-name"
-	},
-	{
-		foreground: "777777",
-		token: "keyword.other.phpdoc.php"
-	},
-	{
-		foreground: "c82255",
-		token: "keyword.other.include.php"
-	},
-	{
-		foreground: "de8e20",
-		fontStyle: "bold",
-		token: "support.constant.core.php"
-	},
-	{
-		foreground: "de8e10",
-		fontStyle: "bold",
-		token: "support.constant.std.php"
-	},
-	{
-		foreground: "b72e1d",
-		token: "variable.other.global.php"
-	},
-	{
-		foreground: "00ff00",
-		token: "variable.other.global.safer.php"
-	},
-	{
-		foreground: "bfa36d",
-		token: "string.quoted.single.php"
-	},
-	{
-		foreground: "6969fa",
-		token: "keyword.storage.php"
-	},
-	{
-		foreground: "ad9361",
-		token: "string.quoted.double.php"
-	},
-	{
-		foreground: "ec9e00",
-		token: "entity.other.attribute-name.id.css"
-	},
-	{
-		foreground: "b8cd06",
-		fontStyle: "bold",
-		token: "entity.name.tag.css"
-	},
-	{
-		foreground: "edca06",
-		token: "entity.other.attribute-name.class.css"
-	},
-	{
-		foreground: "2e759c",
-		token: "entity.other.attribute-name.pseudo-class.css"
-	},
-	{
-		foreground: "ffffff",
-		background: "ff0000",
-		token: "invalid.bad-comma.css"
-	},
-	{
-		foreground: "9b2e4d",
-		token: "support.constant.property-value.css"
-	},
-	{
-		foreground: "e1c96b",
-		token: "support.type.property-name.css"
-	},
-	{
-		foreground: "666633",
-		token: "constant.other.rgb-value.css"
-	},
-	{
-		foreground: "666633",
-		token: "support.constant.font-name.css"
-	},
-	{
-		foreground: "7171f3",
-		token: "support.constant.tm-language-def"
-	},
-	{
-		foreground: "7171f3",
-		token: "support.constant.name.tm-language-def"
-	},
-	{
-		foreground: "6969fa",
-		token: "keyword.other.unit.css"
-	}
-];
-var colors = {
-	"editor.foreground": "#DADADA",
-	"editor.background": "#25252F",
-	"editor.selectionBackground": "#fff5",
-	"editor.lineHighlightBackground": "#25252F",
-	"editorCursor.foreground": "#FFFFFF",
-	"editorWhitespace.foreground": "#4F4D4D"
-};
-var editorTheme = {
-	base: base,
-	inherit: inherit,
-	rules: rules,
-	colors: colors
-};
-
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
       _onChange = _ref.onChange;
@@ -10515,16 +8329,8 @@ var TextInput = function TextInput(_ref) {
     return e.stopPropagation();
   };
 
-  var monaco = useMonaco();
-
   var _useContext = React.useContext(ControllerOptionsContext),
-      editorArea = _useContext.editorArea;
-
-  React.useEffect(function () {
-    if (monaco) {
-      monaco.editor.defineTheme("custom", editorTheme);
-    }
-  }, [monaco]); // TODO: there are some cases with unfocusing, need to approve failure and fix after
+      openEditor = _useContext.openEditor;
 
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$9.wrapper
@@ -10539,67 +8345,12 @@ var TextInput = function TextInput(_ref) {
     type: "text",
     placeholder: placeholder,
     className: styles$9.input
-  }), /*#__PURE__*/React__default["default"].createElement(PortalWithState$1, {
-    closeOnEsc: true,
-    closeOnOutsideClick: true,
-    node: editorArea || document.getElementById("editorArea")
-  }, function (_ref3) {
-    var openPortal = _ref3.openPortal,
-        portal = _ref3.portal,
-        closePortal = _ref3.closePortal;
-    return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("button", {
-      className: styles$9.expander,
-      onClick: function onClick() {
-        document.activeElement.blur();
-        openPortal();
-      }
-    }), portal( /*#__PURE__*/React__default["default"].createElement("div", {
-      className: styles$9.editorWrapper,
-      onClick: closePortal
-    }, /*#__PURE__*/React__default["default"].createElement("div", {
-      className: styles$9.editor,
-      onClick: preventPropagation,
-      onDragStart: preventPropagation
-    }, /*#__PURE__*/React__default["default"].createElement(index, {
-      key: "valueEditor",
-      autoFocus: true,
-      language: "python",
-      theme: "custom",
-      defaultValue: data,
-      options: {
-        fontFamily: "monospace",
-        minimap: {
-          enabled: false
-        }
-      },
-      onChange: /*#__PURE__*/function () {
-        var _ref4 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(d) {
-          return regenerator.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _onChange(d);
-
-                case 1:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-
-        return function (_x) {
-          return _ref4.apply(this, arguments);
-        };
-      }(),
-      onMount: function onMount(editor) {
-        editor.setPosition({
-          lineNumber: 1,
-          column: 1
-        });
-        editor.focus();
-      }
-    })))));
+  }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
+    className: styles$9.expander,
+    onClick: function onClick() {
+      document.activeElement.blur();
+      openEditor(data, _onChange);
+    }
   }));
 };
 
@@ -10609,7 +8360,7 @@ styleInject(css_248z$6);
 
 function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$f(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$f(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var MAX_LABEL_LENGTH = 50;
 
 var Select = function Select(_ref) {
@@ -10622,7 +8373,7 @@ var Select = function Select(_ref) {
       allowMultiple = _ref.allowMultiple;
 
   var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray$1(_React$useState, 2),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
       drawerOpen = _React$useState2[0],
       setDrawerOpen = _React$useState2[1];
 
@@ -10630,7 +8381,7 @@ var Select = function Select(_ref) {
     x: 0,
     y: 0
   }),
-      _React$useState4 = _slicedToArray$1(_React$useState3, 2),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
       drawerCoordinates = _React$useState4[0],
       setDrawerCoordinates = _React$useState4[1];
 
@@ -10740,7 +8491,7 @@ var OptionChip = function OptionChip(_ref3) {
 
 function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var Control = function Control(_ref) {
   var type = _ref.type,
@@ -10791,31 +8542,31 @@ var Control = function Control(_ref) {
 
     switch (type) {
       case "select":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$4({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({}, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
           placeholder: placeholder
         }));
 
       case "text":
-        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$4({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
           predicate: predicate,
           placeholder: placeholder
         }));
 
       case "number":
-        return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$4({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$3({}, commonProps, {
           step: step,
           predicate: predicate,
           placeholder: placeholder
         }));
 
       case "checkbox":
-        return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$4({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$3({}, commonProps, {
           label: calculatedLabel
         }));
 
       case "multiselect":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$4({
+        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({
           allowMultiple: true
         }, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
@@ -10910,7 +8661,7 @@ var Port = function Port(_ref) {
   var inputTypes = React.useContext(PortTypesContext);
 
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       isDragging = _useState2[0],
       setIsDragging = _useState2[1];
 
@@ -10918,7 +8669,7 @@ var Port = function Port(_ref) {
     x: 0,
     y: 0
   }),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       dragStartCoordinates = _useState4[0],
       setDragStartCoordinates = _useState4[1];
 
@@ -11166,7 +8917,7 @@ var Inner = function Inner(_ref) {
   }, label || defaultLabel), /*#__PURE__*/React__default["default"].createElement("td", {
     className: styles$5.controls
   }, controls.map(function (control) {
-    return /*#__PURE__*/React__default["default"].createElement(Control, _extends$4({}, control, {
+    return /*#__PURE__*/React__default["default"].createElement(Control, _extends$3({}, control, {
       nodeId: nodeId,
       portName: name,
       triggerRecalculation: triggerRecalculation,
@@ -11271,7 +9022,7 @@ var IoPorts = function IoPorts(_ref) {
         className: styles$5.outputs,
         "data-show": show
       }, resolvedOutputs.map(function (output) {
-        return /*#__PURE__*/React__default["default"].createElement(Output, _extends$4({}, output, {
+        return /*#__PURE__*/React__default["default"].createElement(Output, _extends$3({}, output, {
           optColor: color,
           triggerRecalculation: triggerRecalculation,
           inputTypes: inputTypes,
@@ -11292,7 +9043,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref3.hidePort;
         return !hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Input, _extends$4({
+        return /*#__PURE__*/React__default["default"].createElement(Input, _extends$3({
           optColor: color
         }, input, {
           data: inputData[input.name] || {},
@@ -11316,7 +9067,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref5.hidePort;
         return hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Inner, _extends$4({}, input, {
+        return /*#__PURE__*/React__default["default"].createElement(Inner, _extends$3({}, input, {
           data: inputData[input.name] || {},
           isConnected: !!connections.inputs[input.name],
           triggerRecalculation: triggerRecalculation,
@@ -11387,7 +9138,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
       tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
 
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       menuOpen = _useState2[0],
       setMenuOpen = _useState2[1];
 
@@ -11395,12 +9146,12 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
     x: 0,
     y: 0
   }),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       menuCoordinates = _useState4[0],
       setMenuCoordinates = _useState4[1];
 
   var _useState5 = React.useState(false),
-      _useState6 = _slicedToArray$1(_useState5, 2),
+      _useState6 = _slicedToArray(_useState5, 2),
       isInputComment = _useState6[0];
       _useState6[1];
 
@@ -11416,7 +9167,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
     var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var isOutput = arguments.length > 1 ? arguments[1] : undefined;
     Object.entries(transput).forEach(function (_ref2) {
-      var _ref3 = _slicedToArray$1(_ref2, 2),
+      var _ref3 = _slicedToArray(_ref2, 2),
           portName = _ref3[0],
           outputs = _ref3[1];
 
@@ -11607,7 +9358,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
 });
 Node.displayName = "Node";
 
-var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:rgba(255,255,255,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
+var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
 var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
 styleInject(css_248z$4);
 
@@ -11729,7 +9480,7 @@ function _toPrimitive$3(input, hint) { if (_typeof(input) !== "object" || input 
 
 function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$d(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$d(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var Colors = {
   yellow: "yellow",
   orange: "orange",
@@ -12035,17 +9786,17 @@ var Comment = (function (_ref) {
   var textarea = React__default["default"].useRef();
 
   var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray$1(_React$useState, 2),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
       isEditing = _React$useState2[0],
       setIsEditing = _React$useState2[1];
 
   var _React$useState3 = React__default["default"].useState(false),
-      _React$useState4 = _slicedToArray$1(_React$useState3, 2),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
       isPickingColor = _React$useState4[0],
       setIsPickingColor = _React$useState4[1];
 
   var _React$useState5 = React__default["default"].useState(false),
-      _React$useState6 = _slicedToArray$1(_React$useState5, 2),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
       menuOpen = _React$useState6[0],
       setMenuOpen = _React$useState6[1];
 
@@ -12053,7 +9804,7 @@ var Comment = (function (_ref) {
     x: 0,
     y: 0
   }),
-      _React$useState8 = _slicedToArray$1(_React$useState7, 2),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
       menuCoordinates = _React$useState8[0],
       setMenuCoordinates = _React$useState8[1];
 
@@ -12061,7 +9812,7 @@ var Comment = (function (_ref) {
     x: 0,
     y: 0
   }),
-      _React$useState10 = _slicedToArray$1(_React$useState9, 2),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
       colorPickerCoordinates = _React$useState10[0],
       setColorPickerCoordinates = _React$useState10[1];
 
@@ -12272,7 +10023,7 @@ var Toaster = (function (_ref) {
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$2.toaster
   }, toasts.map(function (toast, i) {
-    return /*#__PURE__*/React__default["default"].createElement(Toast, _extends$4({}, toast, {
+    return /*#__PURE__*/React__default["default"].createElement(Toast, _extends$3({}, toast, {
       onHeightReceived: setHeight,
       onExitRequested: startExit,
       onRemoveRequested: removeToast,
@@ -12297,7 +10048,7 @@ var Toast = function Toast(_ref2) {
       onRemoveRequested = _ref2.onRemoveRequested;
 
   var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray$1(_React$useState, 2),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
       paused = _React$useState2[0],
       setPaused = _React$useState2[1];
 
@@ -29579,7 +27330,7 @@ var _ = lodash.exports;
 
 var getFilteredTransputs = (function (transputs, nodeId) {
   return Object.entries(transputs).reduce(function (obj, _ref) {
-    var _ref2 = _slicedToArray$1(_ref, 2),
+    var _ref2 = _slicedToArray(_ref, 2),
         portName = _ref2[0],
         transput = _ref2[1];
 
@@ -29604,7 +27355,7 @@ var removeConnections = (function (connections, nodeId) {
 
 function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$c(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$c(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _toPropertyKey$2(arg) { var key = _toPrimitive$2(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 
@@ -29627,21 +27378,21 @@ var removeNode = (function (startNodes, nodeId) {
 
 function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$b(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$b(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var addConnection = (function (nodes, input, output, portTypes) {
   var _objectSpread4;
 
-  return _objectSpread$b(_objectSpread$b({}, nodes), {}, (_objectSpread4 = {}, _defineProperty$2(_objectSpread4, input.nodeId, _objectSpread$b(_objectSpread$b({}, nodes[input.nodeId]), {}, {
+  return _objectSpread$b(_objectSpread$b({}, nodes), {}, (_objectSpread4 = {}, _defineProperty(_objectSpread4, input.nodeId, _objectSpread$b(_objectSpread$b({}, nodes[input.nodeId]), {}, {
     connections: _objectSpread$b(_objectSpread$b({}, nodes[input.nodeId].connections), {}, {
-      inputs: _objectSpread$b(_objectSpread$b({}, nodes[input.nodeId].connections.inputs), {}, _defineProperty$2({}, input.portName, [].concat(_toConsumableArray$1(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
+      inputs: _objectSpread$b(_objectSpread$b({}, nodes[input.nodeId].connections.inputs), {}, _defineProperty({}, input.portName, [].concat(_toConsumableArray$1(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
         nodeId: output.nodeId,
         portName: output.portName
       }])))
     })
-  })), _defineProperty$2(_objectSpread4, output.nodeId, _objectSpread$b(_objectSpread$b({}, nodes[output.nodeId]), {}, {
+  })), _defineProperty(_objectSpread4, output.nodeId, _objectSpread$b(_objectSpread$b({}, nodes[output.nodeId]), {}, {
     connections: _objectSpread$b(_objectSpread$b({}, nodes[output.nodeId].connections), {}, {
-      outputs: _objectSpread$b(_objectSpread$b({}, nodes[output.nodeId].connections.outputs), {}, _defineProperty$2({}, output.portName, [].concat(_toConsumableArray$1(nodes[output.nodeId].connections.outputs[output.portName] || []), [{
+      outputs: _objectSpread$b(_objectSpread$b({}, nodes[output.nodeId].connections.outputs), {}, _defineProperty({}, output.portName, [].concat(_toConsumableArray$1(nodes[output.nodeId].connections.outputs[output.portName] || []), [{
         nodeId: input.nodeId,
         portName: input.portName
       }])))
@@ -29651,7 +27402,7 @@ var addConnection = (function (nodes, input, output, portTypes) {
 
 function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$a(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$a(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _toPropertyKey$1(arg) { var key = _toPrimitive$1(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 
@@ -29680,11 +27431,11 @@ var removeConnection = (function (nodes, input, output) {
 
   var newOutputNode = _objectSpread$a(_objectSpread$a({}, outputNode), {}, {
     connections: _objectSpread$a(_objectSpread$a({}, outputNode.connections), {}, {
-      outputs: _objectSpread$a(_objectSpread$a({}, outputNode.connections.outputs), {}, _defineProperty$2({}, output.portName, filteredOutputNodes))
+      outputs: _objectSpread$a(_objectSpread$a({}, outputNode.connections.outputs), {}, _defineProperty({}, output.portName, filteredOutputNodes))
     })
   });
 
-  return _objectSpread$a(_objectSpread$a({}, nodes), {}, (_objectSpread3 = {}, _defineProperty$2(_objectSpread3, input.nodeId, newInputNode), _defineProperty$2(_objectSpread3, output.nodeId, newOutputNode), _objectSpread3));
+  return _objectSpread$a(_objectSpread$a({}, nodes), {}, (_objectSpread3 = {}, _defineProperty(_objectSpread3, input.nodeId, newInputNode), _defineProperty(_objectSpread3, output.nodeId, newOutputNode), _objectSpread3));
 });
 
 var getDefaultData = (function (_ref) {
@@ -29707,7 +27458,7 @@ var _excluded$2 = ["id", "defaultNode"];
 
 function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$9(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$9(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var copyObj = function copyObj(o) {
   return JSON.parse(JSON.stringify(o));
@@ -29802,7 +27553,7 @@ var nodesReducer = function nodesReducer(_ref) {
         if (!connections || !connections.length) return nodes;
         return connections.reduce(function (nodes, cnx) {
           var _ref3 = transputType === "input" ? [transput, cnx] : [cnx, transput],
-              _ref4 = _slicedToArray$1(_ref3, 2),
+              _ref4 = _slicedToArray(_ref3, 2),
               input = _ref4[0],
               output = _ref4[1];
 
@@ -29852,7 +27603,7 @@ var nodesReducer = function nodesReducer(_ref) {
           newNode.root = true;
         }
 
-        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty$2({}, newNodeId, newNode));
+        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, newNodeId, newNode));
       }
 
     case "COPY_NODES":
@@ -29951,13 +27702,13 @@ var nodesReducer = function nodesReducer(_ref) {
             data = action.data,
             setValue = action.setValue;
 
-        var newData = _objectSpread$9(_objectSpread$9({}, nodes[_nodeId].inputData), {}, _defineProperty$2({}, portName, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId].inputData[portName]), {}, _defineProperty$2({}, controlName, data))));
+        var newData = _objectSpread$9(_objectSpread$9({}, nodes[_nodeId].inputData), {}, _defineProperty({}, portName, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId].inputData[portName]), {}, _defineProperty({}, controlName, data))));
 
         if (setValue) {
           newData = setValue(newData, nodes[_nodeId].inputData);
         }
 
-        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty$2({}, _nodeId, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId]), {}, {
+        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, _nodeId, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId]), {}, {
           inputData: newData
         })));
       }
@@ -29966,7 +27717,7 @@ var nodesReducer = function nodesReducer(_ref) {
       {
         var comment = action.comment,
             _nodeId2 = action.nodeId;
-        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty$2({}, _nodeId2, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId2]), {}, {
+        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, _nodeId2, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId2]), {}, {
           comment: comment !== null && comment !== void 0 && comment.length ? comment : undefined
         })));
       }
@@ -29976,7 +27727,7 @@ var nodesReducer = function nodesReducer(_ref) {
         var _x = action.x,
             _y = action.y,
             _nodeId3 = action.nodeId;
-        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty$2({}, _nodeId3, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId3]), {}, {
+        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, _nodeId3, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId3]), {}, {
           x: _x,
           y: _y
         })));
@@ -29989,7 +27740,7 @@ var nodesReducer = function nodesReducer(_ref) {
           var nodeId = _ref7.nodeId,
               x = _ref7.x,
               y = _ref7.y;
-          return _defineProperty$2({}, nodeId, _objectSpread$9(_objectSpread$9({}, nodes[nodeId]), {}, {
+          return _defineProperty({}, nodeId, _objectSpread$9(_objectSpread$9({}, nodes[nodeId]), {}, {
             x: x,
             y: y
           }));
@@ -30044,7 +27795,7 @@ var nodesReducer$1 = (function () {
             doExpand = _props$2.doExpand;
         var nodes = props[0].nodesState[props[0].currentStateIndex].state;
         var newState = copyObj(props[0]);
-        newState.nodesState[newState.currentStateIndex].state = _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty$2({}, nodeId, _objectSpread$9(_objectSpread$9({}, nodes[nodeId]), {}, {
+        newState.nodesState[newState.currentStateIndex].state = _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, nodeId, _objectSpread$9(_objectSpread$9({}, nodes[nodeId]), {}, {
           expanded: doExpand ? doExpand : !nodes[nodeId].expanded
         })));
         return newState;
@@ -30082,10 +27833,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$8(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$8(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var setComment = function setComment(comments, id, merge) {
-  return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty$2({}, id, _objectSpread$8(_objectSpread$8({}, comments[id]), merge)));
+  return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty({}, id, _objectSpread$8(_objectSpread$8({}, comments[id]), merge)));
 };
 
 var commentsReducer = (function () {
@@ -30105,7 +27856,7 @@ var commentsReducer = (function () {
           color: "blue",
           isNew: true
         };
-        return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty$2({}, _comment.id, _comment));
+        return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty({}, _comment.id, _comment));
       }
 
     case "REMOVE_COMMENT_NEW":
@@ -30113,7 +27864,7 @@ var commentsReducer = (function () {
           _comments$action$id.isNew;
           var comment = _objectWithoutProperties(_comments$action$id, _excluded$1);
 
-      return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty$2({}, action.id, comment));
+      return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty({}, action.id, comment));
 
     case "SET_COMMENT_COORDINATES":
       {
@@ -30161,7 +27912,7 @@ var commentsReducer = (function () {
 
 function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$7(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$7(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var toastsReducer = (function () {
   var toasts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
@@ -30215,7 +27966,7 @@ var toastsReducer = (function () {
 
 function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$6(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$6(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var stageReducer = (function (state, incomingAction) {
   var action = typeof incomingAction === "function" ? incomingAction(state) : incomingAction;
@@ -30253,12 +28004,12 @@ Object.defineProperty(dist,"__esModule",{value:true});var _jsx=function(){var RE
 
 var useSelect = (function (nodes, previousNodes) {
   var _useState = React.useState([]),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       nodeRefs = _useState2[0],
       setNodesRef = _useState2[1];
 
   var _useState3 = React.useState([]),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       selectedNodes = _useState4[0],
       setSelectedNodes = _useState4[1];
 
@@ -30305,7 +28056,7 @@ var useSelect = (function (nodes, previousNodes) {
 
 function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$5(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$5(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
   var nodes = _objectSpread$5({}, initialNodes); // Delete extraneous nodes
 
@@ -30335,7 +28086,7 @@ var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
       context: context
     });
     var currentInputData = Object.entries(node.inputData).reduce(function (dataObj, _ref) {
-      var _ref2 = _slicedToArray$1(_ref, 2),
+      var _ref2 = _slicedToArray(_ref, 2),
           key = _ref2[0],
           data = _ref2[1];
 
@@ -30375,7 +28126,7 @@ var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
 
 function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$4(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$4(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var getInitialNodes = (function () {
   var initialNodes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var defaultNodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -30409,7 +28160,7 @@ var getInitialNodes = (function () {
 
 function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$3(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$3(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var buildControlType = function buildControlType(defaultConfig) {
   var validate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
@@ -30603,7 +28354,7 @@ function _wrapNativeSuper(Class) {
 
 function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -30627,13 +28378,13 @@ var LoopError = /*#__PURE__*/function (_Error) {
   return LoopError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
-_defineProperty$2(LoopError, "maxLoopsExceeded", 1);
+_defineProperty(LoopError, "maxLoopsExceeded", 1);
 
 var RootEngine = /*#__PURE__*/function () {
   function RootEngine(config, resolveInputControls, fireNodeFunction) {
     _classCallCheck$1(this, RootEngine);
 
-    _defineProperty$2(this, "getRootNode", function (nodes) {
+    _defineProperty(this, "getRootNode", function (nodes) {
       var roots = Object.values(nodes).filter(function (n) {
         return n.root;
       });
@@ -30671,7 +28422,7 @@ var RootEngine = /*#__PURE__*/function () {
     key: "reduceRootInputs",
     value: function reduceRootInputs(inputs, callback) {
       return Object.entries(inputs).reduce(function (obj, _ref) {
-        var _ref2 = _slicedToArray$1(_ref, 2),
+        var _ref2 = _slicedToArray(_ref, 2),
             inputName = _ref2[0],
             connection = _ref2[1];
 
@@ -30773,7 +28524,7 @@ var o=function(n,o,c){function i(){l.current&&clearTimeout(l.current),l.current=
 
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var tempStateReducer = function tempStateReducer(state, action) {
   switch (action.type) {
@@ -30834,17 +28585,17 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
       options = _ref$options === void 0 ? {} : _ref$options;
 
   var _useState = React.useState(null),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       action = _useState2[0],
       setAction = _useState2[1];
 
   var _useState3 = React.useState(initialNodesState || {}),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       nodesState = _useState4[0],
       setNodesState = _useState4[1];
 
   var _useState5 = React.useState({}),
-      _useState6 = _slicedToArray$1(_useState5, 2),
+      _useState6 = _slicedToArray(_useState5, 2),
       comments = _useState6[0],
       setComments = _useState6[1];
 
@@ -30853,17 +28604,17 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
   }, function () {
     return initialTempState;
   }),
-      _useReducer2 = _slicedToArray$1(_useReducer, 2),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
       tempState = _useReducer2[0],
       dispatchTemp = _useReducer2[1];
 
   var _useDebounce = c(tempState, 1000),
-      _useDebounce2 = _slicedToArray$1(_useDebounce, 2),
+      _useDebounce2 = _slicedToArray(_useDebounce, 2),
       tempStateDebounced = _useDebounce2[0],
       setTempStateDebounced = _useDebounce2[1];
 
   var _useDebounce3 = c(tempState, 200),
-      _useDebounce4 = _slicedToArray$1(_useDebounce3, 2),
+      _useDebounce4 = _slicedToArray(_useDebounce3, 2),
       nodesStateDebounced = _useDebounce4[0],
       setNodesStateDebounced = _useDebounce4[1];
 
@@ -30913,7 +28664,7 @@ var _excluded = ["initialNodes", "action", "setNodesState", "setComments", "defa
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var defaultContext = {};
 var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var _initialStageParams$t, _initialStageParams$t2;
@@ -30939,9 +28690,9 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       connector = _objectWithoutProperties(_ref$connector, _excluded),
       _initialStageParams = _ref.initialStageParams,
       _ref$hideComments = _ref.hideComments,
-      hideComments = _ref$hideComments === void 0 ? false : _ref$hideComments,
+      hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
-      disableComments = _ref$disableComments === void 0 ? false : _ref$disableComments,
+      disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
       circularBehavior = _ref.circularBehavior,
       debug = _ref.debug;
 
@@ -30950,19 +28701,19 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var stage = React.useRef();
 
   var _useState = React.useState(),
-      _useState2 = _slicedToArray$1(_useState, 2),
+      _useState2 = _slicedToArray(_useState, 2),
       sideEffectToasts = _useState2[0],
       setSideEffectToasts = _useState2[1];
 
   var _useReducer = React.useReducer(toastsReducer, []),
-      _useReducer2 = _slicedToArray$1(_useReducer, 2),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
       toasts = _useReducer2[0],
       dispatchToasts = _useReducer2[1];
 
   var editorRef = React.useRef();
 
   var _useState3 = React.useState(false),
-      _useState4 = _slicedToArray$1(_useState3, 2),
+      _useState4 = _slicedToArray(_useState3, 2),
       spaceIsPressed = _useState4[0],
       setSpaceIsPressed = _useState4[1];
 
@@ -30983,19 +28734,19 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       currentStateIndex: 0
     };
   }),
-      _useReducer4 = _slicedToArray$1(_useReducer3, 2),
+      _useReducer4 = _slicedToArray(_useReducer3, 2),
       _useReducer4$ = _useReducer4[0],
       nodesState = _useReducer4$.nodesState,
       currentStateIndex = _useReducer4$.currentStateIndex,
       dispatchNodes = _useReducer4[1];
 
   var _useReducer5 = React.useReducer(commentsReducer, initialComments || {}),
-      _useReducer6 = _slicedToArray$1(_useReducer5, 2),
+      _useReducer6 = _slicedToArray(_useReducer5, 2),
       comments = _useReducer6[0],
       dispatchComments = _useReducer6[1];
 
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
-      _useSelect2 = _slicedToArray$1(_useSelect, 4),
+      _useSelect2 = _slicedToArray(_useSelect, 4),
       selectedNodes = _useSelect2[0],
       nodeRefs = _useSelect2[1],
       handleSelection = _useSelect2[2],
@@ -31089,25 +28840,14 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   React.useEffect(function () {
     !currentStateIndex && dispatchNodes({
       type: "HYDRATE_DEFAULT_NODES"
-    });
-
-    if (connector.options) {
-      var options = connector.options;
-
-      if (options.monacoPath) {
-        var _loader$config;
-
-        loader === null || loader === void 0 ? void 0 : (_loader$config = loader.config) === null || _loader$config === void 0 ? void 0 : _loader$config.call(loader, {
-          paths: {
-            vs: options.monacoPath
-          }
-        });
-      }
-    }
+    }); // if (connector.options) {
+    //   const { options } = connector;
+    //
+    // }
   }, []);
 
   var _useState5 = React.useState(true),
-      _useState6 = _slicedToArray$1(_useState5, 2),
+      _useState6 = _slicedToArray(_useState5, 2),
       shouldRecalculateConnections = _useState6[0],
       setShouldRecalculateConnections = _useState6[1];
 
@@ -31120,7 +28860,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
     }
   }),
-      _useReducer8 = _slicedToArray$1(_useReducer7, 2),
+      _useReducer8 = _slicedToArray(_useReducer7, 2),
       stageState = _useReducer8[0],
       dispatchStageState = _useReducer8[1];
 
@@ -31164,7 +28904,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         type: "SET_MULTIPLE_NODES_COORDINATES",
         nodesInfo: selectedNodes.map(function (id) {
           var nodeRef = nodeRefs.find(function (_ref2) {
-            var _ref3 = _slicedToArray$1(_ref2, 1),
+            var _ref3 = _slicedToArray(_ref2, 1),
                 nId = _ref3[0].id;
 
             return nId === id;
@@ -31198,7 +28938,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         selectedNodes.forEach(function (id) {
           if (id !== excludedNodeId) {
             var nodeRef = nodeRefs.find(function (_ref4) {
-              var _ref5 = _slicedToArray$1(_ref4, 1),
+              var _ref5 = _slicedToArray(_ref4, 1),
                   nId = _ref5[0].id;
 
               return nId === id;
@@ -31317,22 +29057,22 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       dispatchToasts: dispatchToasts
     }))
   }, !hideComments && Object.values(comments).map(function (comment) {
-    return /*#__PURE__*/React__default["default"].createElement(Comment, _extends$4({}, comment, {
+    return /*#__PURE__*/React__default["default"].createElement(Comment, _extends$3({}, comment, {
       stageRect: stage,
       dispatch: dispatchComments,
       onDragStart: recalculateStageRect,
       key: comment.id
     }));
   }), Object.values(nodesState[currentStateIndex].state).map(function (node) {
-    return /*#__PURE__*/React__default["default"].createElement(Node, _extends$4({}, node, {
+    return /*#__PURE__*/React__default["default"].createElement(Node, _extends$3({}, node, {
       isSelected: selectedNodes.includes(node.id),
       ref: nodeRefs.find(function (_ref6) {
-        var _ref7 = _slicedToArray$1(_ref6, 1),
+        var _ref7 = _slicedToArray(_ref6, 1),
             n = _ref7[0];
 
         return n.id === node.id;
       }) ? nodeRefs.find(function (_ref8) {
-        var _ref9 = _slicedToArray$1(_ref8, 1),
+        var _ref9 = _slicedToArray(_ref8, 1),
             n = _ref9[0];
 
         return n.id === node.id;

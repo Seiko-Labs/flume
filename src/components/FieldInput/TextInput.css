@@ -90,21 +90,3 @@
     }
   }
 }
-
-.editorWrapper {
-  position: fixed;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  backdrop-filter: blur(1px);
-  z-index: 999;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.editor {
-  height: 100%;
-  border-left: 1px solid #3B3B45;
-  width: min(max(50%, 400px), 100%);
-}
