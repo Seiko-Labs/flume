@@ -3,7 +3,14 @@ import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
 import editorTheme from "./editorTheme.json";
 
-const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
+const TextInput = ({
+  placeholder,
+  onChange,
+  transformer,
+  predicate,
+  data,
+  nodeData,
+}) => {
   const preventPropagation = (e) => e.stopPropagation();
 
   const { openEditor } = useContext(ControllerOptionsContext);
@@ -24,7 +31,7 @@ const TextInput = ({ placeholder, onChange, transformer, predicate, data }) => {
           className={styles.expander}
           onClick={() => {
             document.activeElement.blur();
-            openEditor(data, onChange);
+            openEditor(data, onChange, nodeData);
           }}
         />
       )}

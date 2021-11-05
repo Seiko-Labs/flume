@@ -28,6 +28,7 @@ const Control = ({
   setValue,
   defaultValue,
   isMonoControl,
+  nodeData,
 }) => {
   const nodesDispatch = React.useContext(NodeDispatchContext);
   const executionContext = React.useContext(ContextContext);
@@ -70,6 +71,7 @@ const Control = ({
             {...commonProps}
             predicate={predicate}
             placeholder={placeholder}
+            nodeData={nodeData}
           />
         );
       case "number":

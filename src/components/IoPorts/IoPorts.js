@@ -14,6 +14,7 @@ const IoPorts = ({
   color,
   inputData,
   updateNodeConnections,
+  nodeData,
 }) => {
   const inputTypes = useContext(PortTypesContext);
   const triggerRecalculation = useContext(ConnectionRecalculateContext);
@@ -78,6 +79,7 @@ const IoPorts = ({
                     inputTypes={inputTypes}
                     nodeId={nodeId}
                     inputData={inputData}
+                    nodeData={nodeData}
                     key={input.name}
                   />
                 ))}

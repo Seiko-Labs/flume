@@ -16,7 +16,6 @@ const NodeWrapper = styled(Col)`
 `;
 
 const TestEditor = () => {
-  const editorRef = useRef();
   const [ns, , , connector] = useNodeEditorController({
     defaultNodes: [
       {
@@ -26,7 +25,10 @@ const TestEditor = () => {
       },
     ],
     options: {
-      editorArea: editorRef.current,
+      openEditor: (data, onChange, nodeData) => {
+        console.log(data, nodeData);
+        onChange("I do work!");
+      },
       // monacoPath:
       //   "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
     },
@@ -41,7 +43,7 @@ const TestEditor = () => {
   return (
     <Container fluid>
       <Row>
-        <NodeWrapper md={8} className="px-0" ref={editorRef}>
+        <NodeWrapper md={8} className="px-0">
           <NodeEditor
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}

@@ -16,6 +16,7 @@ const Inner = ({
   triggerRecalculation,
   updateNodeConnections,
   inputData,
+  nodeData,
 }) => {
   const { label: defaultLabel, controls: defaultControls = [] } =
     inputTypes[type] || {};
@@ -46,6 +47,7 @@ const Inner = ({
             allData={data}
             key={control.name}
             inputData={inputData}
+            nodeData={nodeData}
             isMonoControl={controls.length === 1}
           />
         ))}

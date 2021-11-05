@@ -63,7 +63,6 @@ const Node = forwardRef(
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [menuCoordinates, setMenuCoordinates] = useState({ x: 0, y: 0 });
-    const [isInputComment, setIsInputComment] = useState(false);
     const resolvedInputs = useTransputs(
       inputs,
       "input",
@@ -79,8 +78,6 @@ const Node = forwardRef(
       inputData,
       connections
     );
-
-    const commentRef = useRef();
 
     const byScale = (value) => value / stageState.scale;
 
@@ -157,14 +154,6 @@ const Node = forwardRef(
       }
     };
 
-    const stopDrag = (e, coordinates) => {
-      nodesDispatch({
-        type: "SET_NODE_COORDINATES",
-        ...coordinates,
-        nodeId: id,
-      });
-    };
-
     const handleDrag = ({ x, y }) => {
       const oldPositions = nodeWrapper.current.style.transform.match(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
@@ -182,8 +171,6 @@ const Node = forwardRef(
 
       updateNodeConnections();
     };
-
-    const startDrag = (e) => onDragStart();
 
     const handleContextMenu = (e) => {
       e.preventDefault();
@@ -210,40 +197,10 @@ const Node = forwardRef(
       }
     };
 
-    const handleFieldBlur = () => {
-      const c = commentRef.current;
-      if (c && c.innerText !== comment) {
-        nodesDispatch({
-          type: "SET_NODE_DATA",
-          nodeId: id,
-          comment: c.innerText,
-        });
-      }
-      setIsInputComment(false);
-    };
-
     const hasInner = useMemo(
       () => !!resolvedInputs?.some?.(({ hidePort }) => hidePort),
       [resolvedInputs]
     );
-
-    const handleMouseUp = () => {
-      setIsInputComment(true);
-      setTimeout(() => {
-        const el = commentRef.current;
-        if (el) {
-          commentRef.current.focus();
-          if (typeof el.selectionStart === "number") {
-            el.selectionStart = el.selectionEnd = el.value.length;
-          } else if (typeof el.createTextRange !== "undefined") {
-            el.focus();
-            const range = el.createTextRange();
-            range.collapse(false);
-            range.select();
-          }
-        }
-      }, 50);
-    };
 
     return (
       <Draggable
@@ -254,12 +211,11 @@ const Node = forwardRef(
           boxShadow: isSelected ? "0 0 0 2px rgba(75, 174, 252, 0.5)" : "none",
           transform: `translate(${x}px, ${y}px)`,
         }}
-        onDragStart={startDrag}
+        onDragStart={onDragStart}
         onDrag={handleDrag}
         onDragEnd={(e, coords) => onDragEnd(e, id, coords)}
         innerRef={nodeWrapper}
         data-node-id={id}
-        disabled={isInputComment}
         onContextMenu={handleContextMenu}
         stageState={stageState}
         stageRect={stageRect}
@@ -309,11 +265,18 @@ const Node = forwardRef(
               resolvedInputs={resolvedInputs}
               show={"innerOnly"}
               connections={connections}
+              nodeData={{
+                label,
+                id,
+                icon,
+                description,
+                tileFontColor,
+                tileBackground,
+              }}
               updateNodeConnections={updateNodeConnections}
               inputData={inputData}
             />
           ) : (
-            // TODO: Provide comment field
             description && (
               <div className={styles.description}>{description}</div>
             )

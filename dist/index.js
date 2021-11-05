@@ -8323,7 +8323,8 @@ var TextInput = function TextInput(_ref) {
       _onChange = _ref.onChange;
       _ref.transformer;
       _ref.predicate;
-      var data = _ref.data;
+      var data = _ref.data,
+      nodeData = _ref.nodeData;
 
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
@@ -8349,7 +8350,7 @@ var TextInput = function TextInput(_ref) {
     className: styles$9.expander,
     onClick: function onClick() {
       document.activeElement.blur();
-      openEditor(data, _onChange);
+      openEditor(data, _onChange, nodeData);
     }
   }));
 };
@@ -8515,7 +8516,8 @@ var Control = function Control(_ref) {
       getOptions = _ref.getOptions,
       setValue = _ref.setValue,
       defaultValue = _ref.defaultValue,
-      isMonoControl = _ref.isMonoControl;
+      isMonoControl = _ref.isMonoControl,
+      nodeData = _ref.nodeData;
   var nodesDispatch = React__default["default"].useContext(NodeDispatchContext);
   var executionContext = React__default["default"].useContext(ContextContext);
   var calculatedLabel = isMonoControl ? inputLabel : label;
@@ -8550,7 +8552,8 @@ var Control = function Control(_ref) {
       case "text":
         return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
           predicate: predicate,
-          placeholder: placeholder
+          placeholder: placeholder,
+          nodeData: nodeData
         }));
 
       case "number":
@@ -8896,7 +8899,8 @@ var Inner = function Inner(_ref) {
       noControls = _ref.noControls,
       triggerRecalculation = _ref.triggerRecalculation,
       updateNodeConnections = _ref.updateNodeConnections,
-      inputData = _ref.inputData;
+      inputData = _ref.inputData,
+      nodeData = _ref.nodeData;
 
   var _ref2 = inputTypes[type] || {},
       defaultLabel = _ref2.label,
@@ -8927,6 +8931,7 @@ var Inner = function Inner(_ref) {
       allData: data,
       key: control.name,
       inputData: inputData,
+      nodeData: nodeData,
       isMonoControl: controls.length === 1
     }));
   })));
@@ -9012,7 +9017,8 @@ var IoPorts = function IoPorts(_ref) {
       connections = _ref.connections,
       color = _ref.color,
       inputData = _ref.inputData,
-      updateNodeConnections = _ref.updateNodeConnections;
+      updateNodeConnections = _ref.updateNodeConnections,
+      nodeData = _ref.nodeData;
   var inputTypes = React.useContext(PortTypesContext);
   var triggerRecalculation = React.useContext(ConnectionRecalculateContext);
 
@@ -9075,6 +9081,7 @@ var IoPorts = function IoPorts(_ref) {
           inputTypes: inputTypes,
           nodeId: nodeId,
           inputData: inputData,
+          nodeData: nodeData,
           key: input.name
         }));
       })));
@@ -9150,14 +9157,8 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
       menuCoordinates = _useState4[0],
       setMenuCoordinates = _useState4[1];
 
-  var _useState5 = React.useState(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      isInputComment = _useState6[0];
-      _useState6[1];
-
   var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
   var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
-  React.useRef();
 
   var byScale = function byScale(value) {
     return value / stageState.scale;
@@ -9220,10 +9221,6 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
     updateNodeConnections();
   };
 
-  var startDrag = function startDrag(e) {
-    return onDragStart();
-  };
-
   var handleContextMenu = function handleContextMenu(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -9263,7 +9260,6 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
       return hidePort;
     }));
   }, [resolvedInputs]);
-
   return /*#__PURE__*/React__default["default"].createElement(Draggable, {
     className: styles$b.wrapper,
     style: {
@@ -9272,14 +9268,13 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
       boxShadow: isSelected ? "0 0 0 2px rgba(75, 174, 252, 0.5)" : "none",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
-    onDragStart: startDrag,
+    onDragStart: onDragStart,
     onDrag: handleDrag,
     onDragEnd: function onDragEnd(e, coords) {
       return _onDragEnd(e, id, coords);
     },
     innerRef: nodeWrapper,
     "data-node-id": id,
-    disabled: isInputComment,
     onContextMenu: handleContextMenu,
     stageState: stageState,
     stageRect: stageRect
@@ -9328,10 +9323,17 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
     resolvedInputs: resolvedInputs,
     show: "innerOnly",
     connections: connections,
+    nodeData: {
+      label: label,
+      id: id,
+      icon: icon,
+      description: description,
+      tileFontColor: tileFontColor,
+      tileBackground: tileBackground
+    },
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
-  }) : // TODO: Provide comment field
-  description && /*#__PURE__*/React__default["default"].createElement("div", {
+  }) : description && /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$b.description
   }, description)), /*#__PURE__*/React__default["default"].createElement(IoPorts, {
     nodeId: id,
