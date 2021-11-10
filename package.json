@@ -93,7 +93,7 @@
     "release": "npx np",
     "postinstall_hidden": "yarn install --silent --ignore-scripts --pure-lockfile && yarn build"
   },
-  "version": "0.16.0",
+  "version": "0.17.0",
   "resolutions": {
     "**/coa": "2.0.2"
   }

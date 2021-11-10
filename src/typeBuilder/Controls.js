@@ -64,6 +64,17 @@ const Controls = {
       placeholder: define(config.placeholder, undefined),
     })
   ),
+  button: buildControlType(
+    {
+      type: "button",
+      name: "button",
+      defaultValue: undefined,
+    },
+    () => {},
+    (config) => ({
+      onPress: define(config.onPress, () => {}),
+    })
+  ),
   custom: buildControlType(
     {
       type: "custom",

@@ -357,9 +357,9 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$d = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
-var styles$d = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
-styleInject(css_248z$d);
+var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
+var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
+styleInject(css_248z$e);
 
 var propTypes = {exports: {}};
 
@@ -3185,9 +3185,9 @@ module.exports = exports['default'];
 
 var ScrollBar = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
 
-var css_248z$c = ".ContextMenu_menuWrapper__1BheJ{background:#25252f;border:1px solid #2f2f3b;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(32,35,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #3b3b45;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#b3b3b3;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#b3b3b3;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #3b3b45;color:#b3b3b3;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#2f2f3b}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:hsla(0,0%,100%,.3);font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:#2f2f3b}.ContextMenu_emptyText__2rcXy{color:#b3b3b3;padding:6px}";
-var styles$c = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
-styleInject(css_248z$c);
+var css_248z$d = ".ContextMenu_menuWrapper__1BheJ{background:#25252f;border:1px solid #2f2f3b;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(32,35,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #3b3b45;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#b3b3b3;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#b3b3b3;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #3b3b45;color:#b3b3b3;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#2f2f3b}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:hsla(0,0%,100%,.3);font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:#2f2f3b}.ContextMenu_emptyText__2rcXy{color:#b3b3b3;padding:6px}";
+var styles$d = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
+styleInject(css_248z$d);
 
 /**
  * The base implementation of `_.clamp` which doesn't coerce arguments.
@@ -3791,7 +3791,7 @@ var ContextMenu = function ContextMenu(_ref) {
     }
   }, [selectedIndex]);
   return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.menuWrapper,
+    className: styles$d.menuWrapper,
     onMouseDown: function onMouseDown(e) {
       return e.stopPropagation();
     },
@@ -3806,15 +3806,15 @@ var ContextMenu = function ContextMenu(_ref) {
     role: "menu",
     "aria-activedescendant": "".concat(menuId.current, "-").concat(selectedIndex)
   }, !hideHeader && (label ? true : !!options.length) ? /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.menuHeader
+    className: styles$d.menuHeader
   }, /*#__PURE__*/React__default.createElement("label", {
-    className: styles$c.menuLabel
+    className: styles$d.menuLabel
   }, label), !hideFilter && options.length ? /*#__PURE__*/React__default.createElement("input", {
     type: "text",
     placeholder: "Filter options",
     value: filter,
     onChange: handleFilterChange,
-    className: styles$c.menuFilter,
+    className: styles$d.menuFilter,
     autoFocus: true,
     ref: filterInput
   }) : null) : null, /*#__PURE__*/React__default.createElement(ScrollBar, {
@@ -3831,7 +3831,7 @@ var ContextMenu = function ContextMenu(_ref) {
       maxHeight: clamp_1(window.innerHeight - y - 70, 10, 300)
     }
   }, /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.optionsWrapper,
+    className: styles$d.optionsWrapper,
     role: "menu"
   }, filteredOptions.map(function (option, i) {
     return /*#__PURE__*/React__default.createElement(ContextOption, {
@@ -3847,7 +3847,7 @@ var ContextMenu = function ContextMenu(_ref) {
       key: option.value + i
     }, /*#__PURE__*/React__default.createElement("label", null, option.label), option.description ? /*#__PURE__*/React__default.createElement("p", null, option.description) : null);
   }), !options.length ? /*#__PURE__*/React__default.createElement("span", {
-    className: styles$c.emptyText
+    className: styles$d.emptyText
   }, emptyText) : null)));
 };
 
@@ -3859,7 +3859,7 @@ var ContextOption = function ContextOption(_ref2) {
       selected = _ref2.selected,
       onMouseEnter = _ref2.onMouseEnter;
   return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.option,
+    className: styles$d.option,
     role: "menuitem",
     onClick: onClick,
     onMouseEnter: onMouseEnter,
@@ -7534,7 +7534,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
   }, [nodeTypes, disableComments]);
   return /*#__PURE__*/React__default.createElement(Draggable, {
     id: "".concat(STAGE_ID).concat(editorId),
-    className: styles$d.wrapper,
+    className: styles$e.wrapper,
     innerRef: wrapper,
     onContextMenu: handleContextMenu,
     onMouseEnter: handleMouseEnter,
@@ -7565,14 +7565,14 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     label: "Add Node"
   })) : null, /*#__PURE__*/React__default.createElement("div", {
     ref: scaleWrapper,
-    className: styles$d.scaleWrapper,
+    className: styles$e.scaleWrapper,
     style: {
       transformOrigin: "center",
       transform: "scale(".concat(scale, ")")
     }
   }, /*#__PURE__*/React__default.createElement("div", {
     ref: translateWrapper,
-    className: styles$d.transformWrapper,
+    className: styles$e.transformWrapper,
     style: {
       transform: "translate(".concat(-translate.x, "px, ").concat(-translate.y, "px)")
     }
@@ -7655,9 +7655,9 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$b = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:10px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:10px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{height:8px;object-fit:contain;width:8px}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
-var styles$b = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
-styleInject(css_248z$b);
+var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:10px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:10px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{height:8px;object-fit:contain;width:8px}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
+var styles$c = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
+styleInject(css_248z$c);
 
 const pi = Math.PI,
     tau = 2 * pi,
@@ -7995,9 +7995,9 @@ var curveBundle = (function custom(beta) {
   return bundle;
 })(0.85);
 
-var css_248z$a = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
-var styles$a = {"svg":"Connection_svg__-fKLY"};
-styleInject(css_248z$a);
+var css_248z$b = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
+var styles$b = {"svg":"Connection_svg__-fKLY"};
+styleInject(css_248z$b);
 
 function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
@@ -8097,7 +8097,7 @@ var createSVG = function createSVG(_ref5) {
       inputNodeId = _ref5.inputNodeId,
       inputPortName = _ref5.inputPortName;
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", styles$a.svg);
+  svg.setAttribute("class", styles$b.svg);
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   var curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
@@ -8186,16 +8186,30 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
+var css_248z$a = ".index_wrapper__3LoG0{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.index_wrapper__3LoG0>*{line-height:normal}.index_button__1mmZb{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__1mmZb:focus,.index_button__1mmZb:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__1mmZb:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
+var styles$a = {"wrapper":"index_wrapper__3LoG0","button":"index_button__1mmZb"};
+styleInject(css_248z$a);
+
+var Button = function Button(_ref) {
+  var onPress = _ref.onPress,
+      label = _ref.label;
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: styles$a.wrapper
+  }, /*#__PURE__*/React__default.createElement("button", {
+    className: styles$a.button,
+    title: label,
+    onClick: onPress
+  }, label));
+};
+
 var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}";
 var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-"};
 styleInject(css_248z$9);
 
 var NumberInput = function NumberInput(_ref) {
   var placeholder = _ref.placeholder,
-      _onChange = _ref.onChange;
-      _ref.transformer;
-      _ref.predicate;
-      var data = _ref.data,
+      _onChange = _ref.onChange,
+      data = _ref.data,
       step = _ref.step;
   var numberInput = React__default.useRef();
 
@@ -8240,7 +8254,7 @@ var NumberInput = function NumberInput(_ref) {
     type: "number",
     placeholder: placeholder,
     className: styles$9.input,
-    defaultValue: data,
+    value: data,
     ref: numberInput
   }));
 };
@@ -8293,10 +8307,8 @@ var Checkbox = function Checkbox(_ref) {
 
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
-      _onChange = _ref.onChange;
-      _ref.transformer;
-      _ref.predicate;
-      var data = _ref.data,
+      _onChange = _ref.onChange,
+      data = _ref.data,
       nodeData = _ref.nodeData;
 
   var preventPropagation = function preventPropagation(e) {
@@ -8478,9 +8490,8 @@ var Control = function Control(_ref) {
       allData = _ref.allData,
       render = _ref.render,
       predicate = _ref.predicate,
-      step = _ref.step;
-      _ref.transformer;
-      var _ref$options = _ref.options,
+      step = _ref.step,
+      _ref$options = _ref.options,
       options = _ref$options === void 0 ? [] : _ref$options,
       placeholder = _ref.placeholder,
       inputData = _ref.inputData,
@@ -8490,9 +8501,10 @@ var Control = function Control(_ref) {
       setValue = _ref.setValue,
       defaultValue = _ref.defaultValue,
       isMonoControl = _ref.isMonoControl,
-      nodeData = _ref.nodeData;
-  var nodesDispatch = React__default.useContext(NodeDispatchContext);
-  var executionContext = React__default.useContext(ContextContext);
+      nodeData = _ref.nodeData,
+      _onPress = _ref.onPress;
+  var nodesDispatch = useContext(NodeDispatchContext);
+  var executionContext = useContext(ContextContext);
   var calculatedLabel = isMonoControl ? inputLabel : label;
 
   var onChange = function onChange(data) {
@@ -8502,6 +8514,18 @@ var Control = function Control(_ref) {
       nodeId: nodeId,
       portName: portName,
       controlName: name,
+      setValue: setValue
+    });
+    triggerRecalculation();
+  };
+
+  var onPressButton = function onPressButton(data, cName, pName, nId) {
+    nodesDispatch({
+      type: "SET_PORT_DATA",
+      data: data,
+      nodeId: nId || nodeId,
+      portName: pName || portName,
+      controlName: cName || name,
       setValue: setValue
     });
     triggerRecalculation();
@@ -8550,6 +8574,14 @@ var Control = function Control(_ref) {
           label: label
         }));
 
+      case "button":
+        return /*#__PURE__*/React__default.createElement(Button, _extends$3({}, commonProps, {
+          label: label,
+          onPress: function onPress() {
+            _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
+          }
+        }));
+
       case "custom":
         return render(data, onChange, executionContext, triggerRecalculation, {
           label: label,
@@ -8587,7 +8619,7 @@ var Connection = function Connection(_ref) {
       inputPortName = _ref.inputPortName;
   var curve = calculateCurve(from, to);
   return /*#__PURE__*/React__default.createElement("svg", {
-    className: styles$a.svg
+    className: styles$b.svg
   }, /*#__PURE__*/React__default.createElement("path", {
     "data-connection-id": id,
     "data-output-node-id": outputNodeId,
@@ -9234,7 +9266,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     }));
   }, [resolvedInputs]);
   return /*#__PURE__*/React__default.createElement(Draggable, {
-    className: styles$b.wrapper,
+    className: styles$c.wrapper,
     style: {
       backgroundColor: tileBackground,
       color: tileFontColor,
@@ -9260,11 +9292,11 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.body
+    className: styles$c.body
   }, /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.header
+    className: styles$c.header
   }, /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.headerMeta
+    className: styles$c.headerMeta
   }, hasInner && /*#__PURE__*/React__default.createElement(SvgTicker, {
     onClick: function onClick() {
       nodesDispatch({
@@ -9279,18 +9311,18 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       stroke: tileFontColor
     }
   }), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.title
+    className: styles$c.title
   }, icon && /*#__PURE__*/React__default.createElement("img", {
     src: icon
   }), /*#__PURE__*/React__default.createElement("span", {
-    className: styles$b.label
+    className: styles$c.label
   }, label)), /*#__PURE__*/React__default.createElement("span", {
-    className: styles$b.id,
+    className: styles$c.id,
     onClick: function onClick() {
       return navigator.clipboard.writeText(id);
     }
   }, id)), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.headerActions
+    className: styles$c.headerActions
   })), expanded && hasInner ? /*#__PURE__*/React__default.createElement(IoPorts, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
@@ -9307,7 +9339,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }) : description && /*#__PURE__*/React__default.createElement("div", {
-    className: styles$b.description
+    className: styles$c.description
   }, description)), /*#__PURE__*/React__default.createElement(IoPorts, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
@@ -28198,6 +28230,15 @@ var Controls = {
       placeholder: define(config.placeholder, undefined)
     };
   }),
+  button: buildControlType({
+    type: "button",
+    name: "button",
+    defaultValue: undefined
+  }, function () {}, function (config) {
+    return {
+      onPress: define(config.onPress, function () {})
+    };
+  }),
   custom: buildControlType({
     type: "custom",
     name: "custom",
@@ -28793,6 +28834,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
                 doExpand: doExpand
               });
             });
+            triggerRecalculation();
             break;
           }
 

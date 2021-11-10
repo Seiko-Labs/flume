@@ -176,6 +176,7 @@ export const NodeEditor = forwardRef(
             nodeIds.forEach((id) => {
               dispatchNodes({ type: "TOGGLE_NODE_VIEW", id, doExpand });
             });
+            triggerRecalculation();
             break;
           }
           case "ADD_NODE": {

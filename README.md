@@ -4,18 +4,52 @@ Based on
 
 [![NPM](https://img.shields.io/npm/v/flume.svg)](https://www.npmjs.com/package/flume)
 
-Forked and updated by Seiko Labs
+Forked and updated by Seiko Labs team: [@zdllucky](https://github.com/zdllucky)
 
 [![github](https://img.shields.io/github/stars/Seiko-Labs)](https://github.com/Seiko-Labs/)
 
 # Flume
 
 ## Current fork changelist and features
-* Node builder `titleColor` (HEX) and `tileBackground` (HEX) are now wrapped inside `category` (json) parameter within additional `id` (number), `label` (string) and `description` (string) props representing node type category name.
 
-* Node builder now accepts and contains additional `icon` (URL string), `comment` (string) and `expanded` (boolean) parameters, that define card layout and view.
+* New `button` Control added. The API is as follows:
+```javascript
+Controls.button({
+  type: "button",
+  name: "button",
+  defaultValue: undefined,
+  label: '',
+  /**
+   * @param {Object} inputData
+   * @param {Object} nodeData
+   * @param {(newData: !Object, controlName: string, portName: string, nodeId: string) => void} changeData - changes node inputData
+   * @param {Object} context
+   * @param {() => void} redraw
+   * @void
+   */
+  onPress: (
+    inputData,
+    nodeData,
+    changeData,
+    context,
+    redraw
+  ) => {},
+})
+```
 
-* Added `NodeEditor` state init params to hook function params. It now accepts:
+* New option `openEditor`. This callback fires on `Controls.text` enlarge button click.
+
+* Big UI design update
+
+* New stage controls
+
+* New port API forces using `hidePort: true` option on every input port that accept connections
+
+* Node builder `tileFontColor` (Web Color) and `tileBackground` (Web Color) are now wrapped inside `category` (json) parameter within additional `id` (number), `label` (string) and `description` (string) props representing node type category name.
+
+* Node builder now accepts and contains additional `icon` (URL string) and `expanded` (boolean) parameters, that define card layout and view.
+
+* Added `NodeEditor` state init params to `useNodeEditorController` hook params. It now accepts:
 
 ```javascript
 {
@@ -32,32 +66,35 @@ Forked and updated by Seiko Labs
     }
   },
   initialNodes = null,       // Nodes to be placed by default (Optional)
-  defaultNodes = null        // Default nodes (Optional)
+  defaultNodes = null,       // Default nodes (Optional)
+  options = {
+    openEditor(data, onChange, nodeData) {},
+  }
 }
 ```
 
 * Reversed input and output IO pins. Was done so to let `rootNode` construct LTR
 
 * Added `useNodeEditorController` controller hook for deeper `NodeEditor`
-  management. This concept revokes direct nodes control via `NodeEditor` props 
-  in labor to action dispatching. This controller hook also has two types of 
+  management. This concept revokes direct nodes control via `NodeEditor` props
+  in labor to action dispatching. This controller hook also has two types of
   dispatch functions. See code for more explanation
-  
+
 * New features:
-  
-    * Adding new nodes. 
+
+    * Adding new nodes.
       See `"ADD_NODE"`  action of `useNodeEditorController` dispatch function
-    
-    * Nodes selection / multi selection. 
+
+    * Nodes selection / multi selection.
       See `"TOGGLE_MULTISELECT"` temp action dispatch function
-    
+
     * Copy / cut / paste actions with external API. The localstorage is used as a buffer
       See `COPY`, `CUT`, `PASTE` actions of `useNodeEditorController` `dispatch()` function
-    
-    * Undo / redo actions. 
+
+    * Undo / redo actions.
       See `UNDO`, `REDO` actions of `useNodeEditorController` dispatch function
-    
-    * Optional node ports toggling. 
+
+    * Optional node ports toggling.
       See `TOGGLE_NODES_VIEW` action of `useNodeEditorController` dispatch function
 
 ## Guides & Examples
@@ -123,7 +160,7 @@ flumeConfig
       ports.number({ name: "num1" }),
       ports.number({
         name: "num2",
-        // This parameter makes port data collapsible, 
+        // This parameter makes port data collapsible,
         // Works only with [hidePort: true]
         optional: true,
       })
@@ -166,11 +203,11 @@ const nodeEditorStateData = {
 }
 
 const App = () => {
-  // This is a controller hook that is used to 
+  // This is a controller hook that is used to
   // dispatch actions to the NodeEditor watch contents ans so on...
   //
-  // Note: There is a difference between nodes + dispatch and 
-  // temp reducers: former sends data directly to the NodeEditor root 
+  // Note: There is a difference between nodes + dispatch and
+  // temp reducers: former sends data directly to the NodeEditor root
   // state, unlike temp only contains view action type modifiers
   const [
     {
@@ -201,7 +238,7 @@ const App = () => {
           nodeIds: Object.keys(nodes),
           doExpand: true,
         })}>Expand all nodes
-        </button> 
+        </button>
         {/* Add new node */}
         <button onClick={() => dispatch('TOGGLE_NODES_VIEW', {
           nodeIds: Object.keys(nodes),
@@ -224,7 +261,7 @@ const App = () => {
                 type: 'TOGGLE_MULTISELECT',
                 doEnable: e.target.checked,
               })
-            }}/> 
+            }}/>
           Toggle multiselect
         </label>
 

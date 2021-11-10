@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import Button from "../Button";
 import NumberInput from "../FieldInput/NumberInput";
 import styles from "./Control.css";
 import Checkbox from "../Checkbox/Checkbox";
@@ -18,7 +19,6 @@ const Control = ({
   render,
   predicate,
   step,
-  transformer,
   options = [],
   placeholder,
   inputData,
@@ -29,9 +29,10 @@ const Control = ({
   defaultValue,
   isMonoControl,
   nodeData,
+  onPress,
 }) => {
-  const nodesDispatch = React.useContext(NodeDispatchContext);
-  const executionContext = React.useContext(ContextContext);
+  const nodesDispatch = useContext(NodeDispatchContext);
+  const executionContext = useContext(ContextContext);
 
   const calculatedLabel = isMonoControl ? inputLabel : label;
 
@@ -42,6 +43,18 @@ const Control = ({
       nodeId,
       portName,
       controlName: name,
+      setValue,
+    });
+    triggerRecalculation();
+  };
+
+  const onPressButton = (data, cName, pName, nId) => {
+    nodesDispatch({
+      type: "SET_PORT_DATA",
+      data,
+      nodeId: nId || nodeId,
+      portName: pName || portName,
+      controlName: cName || name,
       setValue,
     });
     triggerRecalculation();
@@ -95,6 +108,22 @@ const Control = ({
             }
             placeholder={placeholder}
             label={label}
+          />
+        );
+      case "button":
+        return (
+          <Button
+            {...commonProps}
+            label={label}
+            onPress={() => {
+              onPress(
+                inputData,
+                nodeData,
+                onPressButton,
+                executionContext,
+                triggerRecalculation
+              );
+            }}
           />
         );
       case "custom":

@@ -1,14 +1,7 @@
 import React from "react";
 import styles from "./TextInput.css";
 
-const NumberInput = ({
-  placeholder,
-  onChange,
-  transformer,
-  predicate,
-  data,
-  step,
-}) => {
+const NumberInput = ({ placeholder, onChange, data, step }) => {
   const numberInput = React.useRef();
 
   const preventPropagation = (e) => e.stopPropagation();
@@ -46,7 +39,7 @@ const NumberInput = ({
         type="number"
         placeholder={placeholder}
         className={styles.input}
-        defaultValue={data}
+        value={data}
         ref={numberInput}
       />
     </div>

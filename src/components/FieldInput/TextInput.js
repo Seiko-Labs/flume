@@ -1,16 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
-import editorTheme from "./editorTheme.json";
 
-const TextInput = ({
-  placeholder,
-  onChange,
-  transformer,
-  predicate,
-  data,
-  nodeData,
-}) => {
+const TextInput = ({ placeholder, onChange, data, nodeData }) => {
   const preventPropagation = (e) => e.stopPropagation();
 
   const { openEditor } = useContext(ControllerOptionsContext);

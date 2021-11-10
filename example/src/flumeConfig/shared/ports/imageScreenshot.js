@@ -11,40 +11,25 @@ export const imageScreenshot = {
       name: "image",
       label: "Image (Base64)",
     }),
+    Controls.button({
+      name: "testButton",
+      label: "Super extra long button what you do wit it?",
+      onPress: (
+        inputData,
+        nodeData,
+        onPressButton,
+        executionContext,
+        triggerRecalculation
+      ) => {
+        console.log(inputData);
+        onPressButton(["other"], "select", "buttonPort");
+      },
+    }),
     Controls.text({
       name: "image1",
       label: "Image (Base64)",
     }),
-    Controls.custom({
-      name: "imageRender",
-      render: (...props) => <Img props={props} />,
-    }),
   ],
-};
-
-const Img = ({ props: [data, onChange, , redraw, , inputData] }) => {
-  const [isValid, setValid] = useState(false);
-
-  useEffect(() => {
-    isBase64UrlImage(inputData.image).then(setValid);
-    setTimeout(redraw, 50);
-  }, [inputData]);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {data}
-      <button onClick={() => onChange(35)} />
-      {isValid && (
-        <img style={{ width: "100%" }} src={inputData.image} alt="" />
-      )}
-    </div>
-  );
 };
 
 /*
