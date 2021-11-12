@@ -15,11 +15,18 @@ const buildControlType =
   };
 
 const Controls = {
-  text: buildControlType({
-    type: "text",
-    name: "text",
-    defaultValue: "",
-  }),
+  text: buildControlType(
+    {
+      type: "text",
+      name: "text",
+      defaultValue: "",
+    },
+    () => {},
+    (config) => ({
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, () => true),
+    })
+  ),
   select: buildControlType(
     {
       type: "select",
@@ -38,11 +45,15 @@ const Controls = {
     {
       type: "number",
       name: "number",
-      defaultValue: 0,
+      defaultValue: null,
     },
     () => {},
     (config) => ({
       step: define(config.step, undefined),
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, (n) =>
+        RegExp(/^[0-9]*(,|.)*[0-9]*$/g).test(n)
+      ),
     })
   ),
   checkbox: buildControlType({

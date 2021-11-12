@@ -8235,13 +8235,31 @@ styleInject(css_248z$9);
 
 var NumberInput = function NumberInput(_ref) {
   var placeholder = _ref.placeholder,
-      _onChange = _ref.onChange,
+      onChange = _ref.onChange,
       data = _ref.data,
-      step = _ref.step;
-  var numberInput = React__default["default"].useRef();
+      step = _ref.step,
+      validate = _ref.validate;
+  var numberInput = React.useRef();
 
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
+  };
+
+  var parseNumber = function parseNumber(_ref2) {
+    var target = _ref2.target,
+        type = _ref2.type;
+
+    if (validate(target.value)) {
+      var inputValue = target.value.replace(",", ".").replace(/[^0-9.]+/g, "");
+      if (!inputValue) return onChange(null);
+      var value = parseFloat(inputValue, 10);
+
+      if (Number.isNaN(value)) {
+        if (type === "blur") numberInput.current.value = data;
+      } else {
+        onChange(numberInput.current.value = value);
+      }
+    } else if (type === "blur") numberInput.current.value = data;
   };
 
   return /*#__PURE__*/React__default["default"].createElement("div", {
@@ -8253,35 +8271,15 @@ var NumberInput = function NumberInput(_ref) {
         return false;
       }
     },
-    onChange: function onChange(e) {
-      var inputValue = e.target.value.replace(/[^0-9.]+/g, "");
-
-      if (inputValue) {
-        var value = parseFloat(inputValue, 10);
-
-        if (Number.isNaN(value)) {
-          _onChange(0);
-        } else {
-          _onChange(value);
-
-          numberInput.current.value = value;
-        }
-      }
-    },
-    onBlur: function onBlur(e) {
-      if (!e.target.value) {
-        _onChange(0);
-
-        numberInput.current.value = 0;
-      }
-    },
+    onChange: parseNumber,
+    onBlur: parseNumber,
     step: step || "1",
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
     type: "number",
     placeholder: placeholder,
     className: styles$9.input,
-    value: data,
+    value: data || "",
     ref: numberInput
   }));
 };
@@ -8336,7 +8334,8 @@ var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
       _onChange = _ref.onChange,
       data = _ref.data,
-      nodeData = _ref.nodeData;
+      nodeData = _ref.nodeData,
+      validate = _ref.validate;
 
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
@@ -8350,7 +8349,7 @@ var TextInput = function TextInput(_ref) {
   }, /*#__PURE__*/React__default["default"].createElement("input", {
     onChange: function onChange(_ref2) {
       var target = _ref2.target;
-      return _onChange(target.value);
+      if (validate(target.value)) _onChange(target.value);else target.value = data;
     },
     value: data,
     onDragStart: preventPropagation,
@@ -8521,6 +8520,7 @@ var Control = function Control(_ref) {
       _ref$options = _ref.options,
       options = _ref$options === void 0 ? [] : _ref$options,
       placeholder = _ref.placeholder,
+      validate = _ref.validate,
       inputData = _ref.inputData,
       triggerRecalculation = _ref.triggerRecalculation,
       updateNodeConnections = _ref.updateNodeConnections,
@@ -8577,6 +8577,7 @@ var Control = function Control(_ref) {
         return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
           predicate: predicate,
           placeholder: placeholder,
+          validate: validate,
           nodeData: nodeData
         }));
 
@@ -8584,6 +8585,7 @@ var Control = function Control(_ref) {
         return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$3({}, commonProps, {
           step: step,
           predicate: predicate,
+          validate: validate,
           placeholder: placeholder
         }));
 
@@ -28218,6 +28220,13 @@ var Controls = {
     type: "text",
     name: "text",
     defaultValue: ""
+  }, function () {}, function (config) {
+    return {
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, function () {
+        return true;
+      })
+    };
   }),
   select: buildControlType({
     type: "select",
@@ -28234,10 +28243,14 @@ var Controls = {
   number: buildControlType({
     type: "number",
     name: "number",
-    defaultValue: 0
+    defaultValue: null
   }, function () {}, function (config) {
     return {
-      step: define(config.step, undefined)
+      step: define(config.step, undefined),
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, function (n) {
+        return RegExp(/^[0-9]*(,|.)*[0-9]*$/g).test(n);
+      })
     };
   }),
   checkbox: buildControlType({
@@ -28656,7 +28669,7 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
       tempStateDebounced = _useDebounce2[0],
       setTempStateDebounced = _useDebounce2[1];
 
-  var _useDebounce3 = c(tempState, 200),
+  var _useDebounce3 = c(nodesState, 200),
       _useDebounce4 = _slicedToArray(_useDebounce3, 2),
       nodesStateDebounced = _useDebounce4[0],
       setNodesStateDebounced = _useDebounce4[1];
@@ -28908,7 +28921,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       stageState = _useReducer8[0],
       dispatchStageState = _useReducer8[1];
 
-  React.useCallback(function () {
+  React.useEffect(function () {
     if (!_.isEqual(stageState, tempState.stage)) {
       var _stageState$translate = stageState.translate,
           x = _stageState$translate.x,

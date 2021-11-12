@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { useDebounce } from "@react-hook/debounce";
 
 const tempStateReducer = (state, action) => {
@@ -67,7 +67,7 @@ const useNodeEditorController = ({
   );
 
   const [nodesStateDebounced, setNodesStateDebounced] = useDebounce(
-    tempState,
+    nodesState,
     200
   );
 

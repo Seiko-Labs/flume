@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Controls } from "node-editor";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
@@ -15,6 +16,11 @@ export const breakLoopNode = {
         name: "condition",
         label: "Condition",
         hidePort: true,
+        controls: [
+          Controls.text({
+            validate: (text) => text !== "lol",
+          }),
+        ],
       }),
       ports.actionPort({
         color: "#5ED28E",

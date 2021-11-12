@@ -30,7 +30,14 @@ export const clickNode = {
       ports.number({
         name: "x",
         label: "X axis",
+        placeholder: "lol kek",
         hidePort: true,
+        controls: [
+          Controls.number({
+            placeholder: "lol kek",
+            validate: (d) => d > 5 || !d,
+          }),
+        ],
       }),
       ports.number({
         name: "y",

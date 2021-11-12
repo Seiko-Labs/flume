@@ -226,7 +226,7 @@ export const NodeEditor = forwardRef(
       },
     });
 
-    useCallback(() => {
+    useEffect(() => {
       if (!_.isEqual(stageState, tempState.stage)) {
         const {
           translate: { x, y },

@@ -12,6 +12,8 @@ Forked and updated by Seiko Labs team: [@zdllucky](https://github.com/zdllucky)
 
 ## Current fork changelist and features
 
+* New `validate: (v) => boolean` option for text and number controls validation
+
 * New `button` Control added. The API is as follows:
 ```javascript
 Controls.button({

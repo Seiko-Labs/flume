@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import "normalize.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import ReactJson from "react-json-view";
@@ -15,8 +15,20 @@ const NodeWrapper = styled(Col)`
   width: 100vw;
 `;
 
+const ControlsBlock = styled.div`
+  position: fixed;
+  display: inline-block;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+
+  & > * {
+    margin-right: 10px;
+  }
+`;
+
 const TestEditor = () => {
-  const [ns, , , connector] = useNodeEditorController({
+  const [ns, , dispatch, connector, temp] = useNodeEditorController({
     defaultNodes: [
       {
         type: "start",
@@ -40,10 +52,68 @@ const TestEditor = () => {
     { schema: ns.nodesState ? ns.nodesState[ns.currentStateIndex].state : {} }
   );
 
+  useEffect(() => {
+    console.log(temp);
+  }, [temp.state]);
+
   return (
     <Container fluid>
       <Row>
         <NodeWrapper md={8} className="px-0">
+          <ControlsBlock>
+            <button onClick={() => dispatch("UNDO")}>Undo</button>
+            <button onClick={() => dispatch("REDO")}>Redo</button>
+            <button onClick={() => dispatch("COPY")}>Copy</button>
+            <button onClick={() => dispatch("CUT")}>Cut</button>
+            <button onClick={() => dispatch("PASTE")}>Paste</button>
+            <button
+              onClick={() =>
+                dispatch("TOGGLE_NODES_VIEW", {
+                  nodeIds: Object.keys(
+                    ns.nodesState[ns.currentStateIndex].state
+                  ),
+                  doExpand: true,
+                })
+              }
+            >
+              Expand all nodes
+            </button>
+            <button
+              onClick={() =>
+                dispatch("ADD_NODE", {
+                  type: "click",
+                  x: 100,
+                  y: 200,
+                })
+              }
+            >
+              Add "click" node
+            </button>
+            <button
+              onClick={() =>
+                dispatch("TOGGLE_NODES_VIEW", {
+                  nodeIds: Object.keys(
+                    ns.nodesState[ns.currentStateIndex].state
+                  ),
+                  doExpand: false,
+                })
+              }
+            >
+              Collapse all nodes
+            </button>
+            <label style={{ color: "white" }}>
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  temp.dispatch({
+                    type: "TOGGLE_MULTISELECT",
+                    doEnable: e.target.checked,
+                  });
+                }}
+              />
+              Toggle multiselect
+            </label>
+          </ControlsBlock>
           <NodeEditor
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}

@@ -21,6 +21,7 @@ const Control = ({
   step,
   options = [],
   placeholder,
+  validate,
   inputData,
   triggerRecalculation,
   updateNodeConnections,
@@ -84,6 +85,7 @@ const Control = ({
             {...commonProps}
             predicate={predicate}
             placeholder={placeholder}
+            validate={validate}
             nodeData={nodeData}
           />
         );
@@ -93,6 +95,7 @@ const Control = ({
             {...commonProps}
             step={step}
             predicate={predicate}
+            validate={validate}
             placeholder={placeholder}
           />
         );
