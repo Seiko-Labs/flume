@@ -47,6 +47,7 @@ table.inner {
   padding: 0;
   width: max-content;
   border-spacing: 0;
+  color: inherit;
 
   & > tbody > tr {
     & > td {
