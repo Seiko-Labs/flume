@@ -271,18 +271,25 @@ export const NodeEditor = forwardRef(
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
-          nodesInfo: selectedNodes.map((id) => {
-            const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
-            const newPositions = nodeRef.current.style.transform.match(
-              /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-            );
+          nodesInfo: selectedNodes
+            .map((id) => {
+              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
 
-            return {
-              nodeId: id,
-              x: newPositions[1],
-              y: newPositions[2],
-            };
-          }),
+              if (nodeRef.current) {
+                const newPositions = nodeRef.current.style.transform.match(
+                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+                );
+
+                return {
+                  nodeId: id,
+                  x: newPositions[1],
+                  y: newPositions[2],
+                };
+              }
+
+              return undefined;
+            })
+            .filter((res) => !!res),
         });
       } else {
         dispatchNodes({

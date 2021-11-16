@@ -28939,12 +28939,19 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
 
             return nId === id;
           })[1];
-          var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-          return {
-            nodeId: id,
-            x: newPositions[1],
-            y: newPositions[2]
-          };
+
+          if (nodeRef.current) {
+            var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+            return {
+              nodeId: id,
+              x: newPositions[1],
+              y: newPositions[2]
+            };
+          }
+
+          return undefined;
+        }).filter(function (res) {
+          return !!res;
         })
       });
     } else {
