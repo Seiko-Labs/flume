@@ -73,8 +73,7 @@ export default class FlumeConfig {
     node.category = {};
     const { category } = config;
 
-    node.category.id =
-      category?.id && typeof config.id === "number" ? category.id : -1;
+    node.category.id = category?.id || -1;
 
     node.category.label =
       category?.label && typeof config.label === "string"

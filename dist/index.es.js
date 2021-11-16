@@ -9555,7 +9555,7 @@ var FlumeConfig = /*#__PURE__*/function () {
 
       node.category = {};
       var category = config.category;
-      node.category.id = category !== null && category !== void 0 && category.id && typeof config.id === "number" ? category.id : -1;
+      node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
       node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
       node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
 
