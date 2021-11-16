@@ -304,14 +304,16 @@ export const NodeEditor = forwardRef(
           selectedNodes.forEach((id) => {
             if (id !== excludedNodeId) {
               const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
-              const oldPositions = nodeRef.current.style.transform.match(
-                /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-              );
+              if (nodeRef.current) {
+                const oldPositions = nodeRef.current.style.transform.match(
+                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+                );
 
-              if (oldPositions.length === 3) {
-                nodeRef.current.style.transform = `translate(${
-                  Number(oldPositions[1]) + deltaX
-                }px,${Number(oldPositions[2]) + deltaY}px)`;
+                if (oldPositions.length === 3) {
+                  nodeRef.current.style.transform = `translate(${
+                    Number(oldPositions[1]) + deltaX
+                  }px,${Number(oldPositions[2]) + deltaY}px)`;
+                }
               }
             }
           });

@@ -28973,10 +28973,13 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
 
               return nId === id;
             })[1];
-            var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
 
-            if (oldPositions.length === 3) {
-              nodeRef.current.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+            if (nodeRef.current) {
+              var oldPositions = nodeRef.current.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+
+              if (oldPositions.length === 3) {
+                nodeRef.current.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+              }
             }
           }
         });
