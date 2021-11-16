@@ -9220,7 +9220,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
         y = _ref4.y;
     var oldPositions = nodeWrapper.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
 
-    if (oldPositions.length === 3) {
+    if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
       onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
     }
 

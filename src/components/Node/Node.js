@@ -159,7 +159,7 @@ const Node = forwardRef(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
 
-      if (oldPositions.length === 3) {
+      if (oldPositions?.length === 3) {
         onDragHandle(
           nodeWrapper.current.dataset.nodeId,
           x - Number(oldPositions[1]),
