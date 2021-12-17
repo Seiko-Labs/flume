@@ -1,16 +1,21 @@
 import _ from "lodash";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { clearConnections } from "../connectionCalculator";
 
 const useConnectorActions = ({
   dispatchNodes,
   connector: {
     action: connectorAction,
+    setNodesState,
     temp: { state: tempState, dispatch: dispatchTemp },
   },
   triggerRecalculation,
   selectedNodes,
   stageState,
+  dispatchStageState,
+  nodesState,
+  currentStateIndex,
+  setSelectedNodes,
 }) => {
   useEffect(() => {
     if (connectorAction) {
@@ -74,6 +79,22 @@ const useConnectorActions = ({
           });
           break;
         }
+        case "HIGHLIGHT_NODE":
+          const {
+            node: { x, y, id },
+          } = data;
+
+          dispatchStageState({ type: "SET_SCALE", scale: 1.2 });
+          dispatchStageState({
+            type: "SET_TRANSLATE",
+            translate: {
+              x: x + 150,
+              y: y + 75,
+            },
+          });
+          setSelectedNodes([id]);
+
+          break;
         default:
           break;
       }
@@ -100,7 +121,17 @@ const useConnectorActions = ({
     selectedNodes,
   ]);
 
+  useMemo(() => {
+    nodesState[Math.max(currentStateIndex - 1, 0)].state &&
+      nodesState[currentStateIndex].state !==
+        nodesState[Math.max(currentStateIndex - 1, 0)].state &&
+      setNodesState &&
+      setNodesState({ nodesState, currentStateIndex });
+  }, [nodesState, currentStateIndex, setNodesState]);
+
   return null;
 };
+
+useConnectorActions.displayName = "useConnectorActions";
 
 export default useConnectorActions;

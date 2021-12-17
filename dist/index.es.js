@@ -27341,12 +27341,17 @@ var useConnectorActions = function useConnectorActions(_ref) {
   var dispatchNodes = _ref.dispatchNodes,
       _ref$connector = _ref.connector,
       connectorAction = _ref$connector.action,
+      setNodesState = _ref$connector.setNodesState,
       _ref$connector$temp = _ref$connector.temp,
       tempState = _ref$connector$temp.state,
       dispatchTemp = _ref$connector$temp.dispatch,
       triggerRecalculation = _ref.triggerRecalculation,
       selectedNodes = _ref.selectedNodes,
-      stageState = _ref.stageState;
+      stageState = _ref.stageState,
+      dispatchStageState = _ref.dispatchStageState,
+      nodesState = _ref.nodesState,
+      currentStateIndex = _ref.currentStateIndex,
+      setSelectedNodes = _ref.setSelectedNodes;
   useEffect(function () {
     if (connectorAction) {
       var _connectorAction = connectorAction(),
@@ -27411,17 +27416,36 @@ var useConnectorActions = function useConnectorActions(_ref) {
 
         case "ADD_NODE":
           {
-            var x = data.x,
-                y = data.y,
+            var _x = data.x,
+                _y = data.y,
                 _type = data.type;
             dispatchNodes({
               type: "ADD_NODE",
-              x: x,
-              y: y,
+              x: _x,
+              y: _y,
               nodeType: _type
             });
             break;
           }
+
+        case "HIGHLIGHT_NODE":
+          var _data$node = data.node,
+              x = _data$node.x,
+              y = _data$node.y,
+              id = _data$node.id;
+          dispatchStageState({
+            type: "SET_SCALE",
+            scale: 1.2
+          });
+          dispatchStageState({
+            type: "SET_TRANSLATE",
+            translate: {
+              x: x + 150,
+              y: y + 75
+            }
+          });
+          setSelectedNodes([id]);
+          break;
       }
     }
   }, [connectorAction, selectedNodes]);
@@ -27446,8 +27470,16 @@ var useConnectorActions = function useConnectorActions(_ref) {
       });
     }
   }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes]);
+  useMemo(function () {
+    nodesState[Math.max(currentStateIndex - 1, 0)].state && nodesState[currentStateIndex].state !== nodesState[Math.max(currentStateIndex - 1, 0)].state && setNodesState && setNodesState({
+      nodesState: nodesState,
+      currentStateIndex: currentStateIndex
+    });
+  }, [nodesState, currentStateIndex, setNodesState]);
   return null;
 };
+
+useConnectorActions.displayName = "useConnectorActions";
 
 var getFilteredTransputs = (function (transputs, nodeId) {
   return Object.entries(transputs).reduce(function (obj, _ref) {
@@ -28172,7 +28204,7 @@ var useSelect = (function (nodes, previousNodes) {
       }) && clearSelection();
     }
   }, [nodes, previousNodes]);
-  return [selectedNodes, nodeRefs, handleSelection, clearSelection];
+  return [selectedNodes, setSelectedNodes, nodeRefs, handleSelection, clearSelection];
 });
 
 function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
@@ -28826,7 +28858,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
       initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
-      setNodesState = connector.setNodesState,
       setComments = connector.setComments,
       defaultNodes = connector.defaultNodes,
       tempState = connector.temp.state,
@@ -28880,11 +28911,12 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       dispatchComments = _useReducer6[1];
 
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
-      _useSelect2 = _slicedToArray(_useSelect, 4),
+      _useSelect2 = _slicedToArray(_useSelect, 5),
       selectedNodes = _useSelect2[0],
-      nodeRefs = _useSelect2[1],
-      handleSelection = _useSelect2[2],
-      clearSelection = _useSelect2[3];
+      setSelectedNodes = _useSelect2[1],
+      nodeRefs = _useSelect2[2],
+      handleSelection = _useSelect2[3],
+      clearSelection = _useSelect2[4];
 
   useEffect(function () {
     !currentStateIndex && dispatchNodes({
@@ -28920,7 +28952,11 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     connector: connector,
     triggerRecalculation: triggerRecalculation,
     selectedNodes: selectedNodes,
-    stageState: stageState
+    stageState: stageState,
+    dispatchStageState: dispatchStageState,
+    nodesState: nodesState,
+    currentStateIndex: currentStateIndex,
+    setSelectedNodes: setSelectedNodes
   });
   var recalculateConnections = useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
@@ -29010,12 +29046,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       }
     };
   });
-  useMemo(function () {
-    nodesState[Math.max(currentStateIndex - 1, 0)].state && nodesState[currentStateIndex].state !== nodesState[Math.max(currentStateIndex - 1, 0)].state && setNodesState && setNodesState({
-      nodesState: nodesState,
-      currentStateIndex: currentStateIndex
-    });
-  }, [nodesState, currentStateIndex, setNodesState]);
   var previousComments = usePrevious(comments);
   useEffect(function () {
     previousComments && comments !== previousComments && setComments && setComments(comments);

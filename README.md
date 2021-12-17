@@ -84,8 +84,11 @@ Controls.button({
 
 * New features:
 
+    * Highlighting nodes.
+      See `"HIGHLIGHT_NODE"` action of `useNodeEditorController` `dispatch()` function
+
     * Adding new nodes.
-      See `"ADD_NODE"`  action of `useNodeEditorController` dispatch function
+      See `"ADD_NODE"`  action of `useNodeEditorController` `dispatch()` function
 
     * Nodes selection / multi selection.
       See `"TOGGLE_MULTISELECT"` temp action dispatch function

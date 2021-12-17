@@ -11,7 +11,6 @@ import React, {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
-  useMemo,
   useReducer,
   useRef,
   useState,
@@ -64,7 +63,6 @@ export const NodeEditor = forwardRef(
     const editorId = useId();
     const {
       initialNodes = {},
-      setNodesState,
       setComments,
       defaultNodes,
       temp: { state: tempState },
@@ -113,12 +111,17 @@ export const NodeEditor = forwardRef(
       initialComments || {}
     );
 
-    const [selectedNodes, nodeRefs, handleSelection, clearSelection] =
-      useSelect(
-        nodesState[currentStateIndex].state ||
-          initialNodesState.nodesState[initialNodesState.currentStateIndex],
-        nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
-      );
+    const [
+      selectedNodes,
+      setSelectedNodes,
+      nodeRefs,
+      handleSelection,
+      clearSelection,
+    ] = useSelect(
+      nodesState[currentStateIndex].state ||
+        initialNodesState.nodesState[initialNodesState.currentStateIndex],
+      nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
+    );
 
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
@@ -157,6 +160,10 @@ export const NodeEditor = forwardRef(
       triggerRecalculation,
       selectedNodes,
       stageState,
+      dispatchStageState,
+      nodesState,
+      currentStateIndex,
+      setSelectedNodes,
     });
 
     const recalculateConnections = useCallback(() => {
@@ -248,14 +255,6 @@ export const NodeEditor = forwardRef(
         return comments;
       },
     }));
-
-    useMemo(() => {
-      nodesState[Math.max(currentStateIndex - 1, 0)].state &&
-        nodesState[currentStateIndex].state !==
-          nodesState[Math.max(currentStateIndex - 1, 0)].state &&
-        setNodesState &&
-        setNodesState({ nodesState, currentStateIndex });
-    }, [nodesState, currentStateIndex, setNodesState]);
 
     const previousComments = usePrevious(comments);
 

@@ -1,3 +1,4 @@
+import { sample } from "lodash/collection";
 import React, { useEffect } from "react";
 import "normalize.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -24,6 +25,7 @@ const ControlsBlock = styled.div`
 
   & > * {
     margin-right: 10px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -41,8 +43,6 @@ const TestEditor = () => {
         console.log(data, nodeData);
         onChange("I do work!");
       },
-      // monacoPath:
-      //   "file:///Z:/projects/electron/studio/src/node_modules/monaco-editor/min/vs",
     },
   });
 
@@ -56,6 +56,10 @@ const TestEditor = () => {
     console.log(temp);
   }, [temp.state]);
 
+  useEffect(() => {
+    console.log("Node state updated");
+  }, [ns]);
+
   return (
     <Container fluid>
       <Row>
@@ -66,6 +70,7 @@ const TestEditor = () => {
             <button onClick={() => dispatch("COPY")}>Copy</button>
             <button onClick={() => dispatch("CUT")}>Cut</button>
             <button onClick={() => dispatch("PASTE")}>Paste</button>
+            <br />
             <button
               onClick={() =>
                 dispatch("TOGGLE_NODES_VIEW", {
@@ -76,18 +81,7 @@ const TestEditor = () => {
                 })
               }
             >
-              Expand all nodes
-            </button>
-            <button
-              onClick={() =>
-                dispatch("ADD_NODE", {
-                  type: "click",
-                  x: 100,
-                  y: 200,
-                })
-              }
-            >
-              Add "click" node
+              Expand nodes
             </button>
             <button
               onClick={() =>
@@ -99,7 +93,7 @@ const TestEditor = () => {
                 })
               }
             >
-              Collapse all nodes
+              Collapse nodes
             </button>
             <label style={{ color: "white" }}>
               <input
@@ -113,6 +107,31 @@ const TestEditor = () => {
               />
               Toggle multiselect
             </label>
+            <br />
+            <button
+              onClick={() => {
+                const node = sample(
+                  Object.values(ns.nodesState[ns.currentStateIndex].state)
+                );
+
+                dispatch("HIGHLIGHT_NODE", {
+                  node,
+                });
+              }}
+            >
+              Highlight random node
+            </button>
+            <button
+              onClick={() =>
+                dispatch("ADD_NODE", {
+                  type: "click",
+                  x: 100,
+                  y: 200,
+                })
+              }
+            >
+              Add "click" node
+            </button>
           </ControlsBlock>
           <NodeEditor
             portTypes={flumeBaseConfig.portTypes}
