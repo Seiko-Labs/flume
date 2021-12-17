@@ -208,7 +208,9 @@ const Node = forwardRef(
         style={{
           backgroundColor: tileBackground,
           color: tileFontColor,
-          boxShadow: isSelected ? "0 0 0 2px rgba(75, 174, 252, 0.5)" : "none",
+          boxShadow: isSelected
+            ? `0 0 0 ${2 / stageState.scale}px rgba(75, 174, 252, 0.5)`
+            : "none",
           transform: `translate(${x}px, ${y}px)`,
         }}
         onDragStart={onDragStart}

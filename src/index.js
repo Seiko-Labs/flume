@@ -4,7 +4,6 @@ import Node from "./components/Node/Node";
 import Comment from "./components/Comment/Comment";
 import Toaster from "./components/Toaster/Toaster";
 import Connections from "./components/Connections/Connections";
-import _ from "lodash";
 import React, {
   createRef,
   forwardRef,
@@ -29,7 +28,8 @@ import {
   RecalculateStageRectContext,
   StageContext,
 } from "./context";
-import { clearConnections, createConnections } from "./connectionCalculator";
+import { createConnections } from "./connectionCalculator";
+import useConnectorActions from "./hooks/useConnectorActions";
 import nodesReducer, { connectNodesReducer } from "./reducers/nodes";
 import commentsReducer from "./reducers/commentsReducer";
 import toastsReducer from "./reducers/toastsReducer";
@@ -52,16 +52,7 @@ export const NodeEditor = forwardRef(
       nodeTypes = {},
       portTypes = {},
       context = defaultContext,
-      connector: {
-        initialNodes = {},
-        action: connectorAction,
-        setNodesState,
-        setComments,
-        defaultNodes,
-        temp: { state: tempState, dispatch: dispatchTemp },
-        initialNodesState,
-        ...connector
-      },
+      connector,
       initialStageParams: _initialStageParams,
       hideComments = true,
       disableComments = true,
@@ -71,6 +62,14 @@ export const NodeEditor = forwardRef(
     ref
   ) => {
     const editorId = useId();
+    const {
+      initialNodes = {},
+      setNodesState,
+      setComments,
+      defaultNodes,
+      temp: { state: tempState },
+      initialNodesState,
+    } = connector;
 
     const cache = useRef(new Cache());
     const stage = useRef();
@@ -121,87 +120,9 @@ export const NodeEditor = forwardRef(
         nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
       );
 
-    const undoChanges = () => {
-      dispatchNodes({
-        type: "UNDO_CHANGES",
-      });
-
-      clearConnections();
-      triggerRecalculation();
-    };
-    const redoChanges = () => {
-      dispatchNodes({
-        type: "REDO_CHANGES",
-      });
-
-      clearConnections();
-      triggerRecalculation();
-    };
-
-    useEffect(() => {
-      if (connectorAction) {
-        const { type, data } = connectorAction();
-
-        switch (type) {
-          case "UNDO":
-            undoChanges();
-            break;
-          case "REDO":
-            redoChanges();
-            break;
-          case "COPY":
-            dispatchNodes({
-              type: "COPY_NODES",
-              selectedNodeIds: selectedNodes,
-            });
-            break;
-          case "CUT":
-            dispatchNodes({
-              type: "CUT_NODES",
-              selectedNodeIds: selectedNodes,
-            });
-
-            clearConnections();
-            triggerRecalculation();
-            break;
-          case "PASTE":
-            dispatchNodes({ type: "PASTE_NODES" });
-
-            clearConnections();
-            triggerRecalculation();
-            break;
-          case "TOGGLE_NODES_VIEW": {
-            const { nodeIds, doExpand } = data;
-
-            nodeIds.forEach((id) => {
-              dispatchNodes({ type: "TOGGLE_NODE_VIEW", id, doExpand });
-            });
-            triggerRecalculation();
-            break;
-          }
-          case "ADD_NODE": {
-            const { x, y, type } = data;
-
-            dispatchNodes({
-              type: "ADD_NODE",
-              x,
-              y,
-              nodeType: type,
-            });
-            break;
-          }
-          default:
-            break;
-        }
-      }
-    }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
-
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
-      // if (connector.options) {
-      //   const { options } = connector;
-      //
-      // }
+      recalculateConnections();
     }, []);
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =
@@ -226,25 +147,17 @@ export const NodeEditor = forwardRef(
       },
     });
 
-    useEffect(() => {
-      if (!_.isEqual(stageState, tempState.stage)) {
-        const {
-          translate: { x, y },
-          scale,
-        } = stageState;
+    const triggerRecalculation = () => {
+      setShouldRecalculateConnections(true);
+    };
 
-        dispatchTemp({ type: "SET_STAGE", scale, x, y });
-      }
-      if (!_.isEqual(selectedNodes, tempState.selectedNodes)) {
-        dispatchTemp({ type: "SELECT_NODES", selectedNodes });
-      }
-    }, [
-      stageState,
-      tempState.stage,
-      tempState.selectedNodes,
-      dispatchTemp,
+    useConnectorActions({
+      dispatchNodes,
+      connector,
+      triggerRecalculation,
       selectedNodes,
-    ]);
+      stageState,
+    });
 
     const recalculateConnections = useCallback(() => {
       createConnections(
@@ -299,10 +212,6 @@ export const NodeEditor = forwardRef(
         });
       }
       triggerRecalculation();
-    };
-
-    const triggerRecalculation = () => {
-      setShouldRecalculateConnections(true);
     };
 
     const dragSelectedNodes = (excludedNodeId, deltaX, deltaY) => {
@@ -391,6 +300,7 @@ export const NodeEditor = forwardRef(
                                 top: 0,
                                 left: 0,
                               }}
+                              zoom={stageState.scale}
                               ignoreTargets={[
                                 'div[class^="Node_wrapper__"]',
                                 'div[class^="Node_wrapper__"] *',
@@ -422,44 +332,10 @@ export const NodeEditor = forwardRef(
                                 .length
                             }
                             outerStageChildren={
-                              <>
-                                {debug && (
-                                  <div className={styles.debugWrapper}>
-                                    <button
-                                      className={styles.debugButton}
-                                      onClick={() =>
-                                        console.log(
-                                          nodesState[currentStateIndex].state
-                                        )
-                                      }
-                                    >
-                                      Log Nodes
-                                    </button>
-                                    <button
-                                      className={styles.debugButton}
-                                      onClick={() =>
-                                        console.log(
-                                          JSON.stringify(
-                                            nodesState[currentStateIndex].state
-                                          )
-                                        )
-                                      }
-                                    >
-                                      Export Nodes
-                                    </button>
-                                    <button
-                                      className={styles.debugButton}
-                                      onClick={() => console.log(comments)}
-                                    >
-                                      Log Comments
-                                    </button>
-                                  </div>
-                                )}
-                                <Toaster
-                                  toasts={toasts}
-                                  dispatchToasts={dispatchToasts}
-                                />
-                              </>
+                              <Toaster
+                                toasts={toasts}
+                                dispatchToasts={dispatchToasts}
+                              />
                             }
                           >
                             {!hideComments &&

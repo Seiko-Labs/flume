@@ -1,10 +1,15 @@
 export const startRootNode = {
   type: "start",
   label: "Start",
-  initialWidth: 90,
+  category: {
+    id: "start",
+    label: "Start",
+    description: "First node, all actions start form here",
+    tileBackground: "#328655",
+    tileFontColor: "#fefefe",
+  },
   inputs: (ports) => [
     ports.actionPort({
-      color: "#5ED28E",
       label: "Next action",
     }),
   ],

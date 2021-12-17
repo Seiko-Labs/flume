@@ -96,40 +96,6 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
 }
 
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function getDefaultExportFromCjs (x) {
@@ -3879,7 +3845,41 @@ var RecalculateStageRectContext = /*#__PURE__*/createContext();
 var EditorIdContext = /*#__PURE__*/createContext();
 var ControllerOptionsContext = /*#__PURE__*/createContext();
 
-var _excluded$3 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
 var Draggable = (function (_ref) {
   var children = _ref.children,
       stageState = _ref.stageState,
@@ -3894,7 +3894,7 @@ var Draggable = (function (_ref) {
       _ref$delay = _ref.delay,
       delay = _ref$delay === void 0 ? 6 : _ref$delay,
       innerRef = _ref.innerRef,
-      rest = _objectWithoutProperties(_ref, _excluded$3);
+      rest = _objectWithoutProperties(_ref, _excluded$2);
 
   var startCoordinates = React__default.useRef(null);
   var offset = React__default.useRef();
@@ -9272,7 +9272,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     style: {
       backgroundColor: tileBackground,
       color: tileFontColor,
-      boxShadow: isSelected ? "0 0 0 2px rgba(75, 174, 252, 0.5)" : "none",
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : "none",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
     onDragStart: onDragStart,
@@ -27337,6 +27337,118 @@ var lodash = {exports: {}};
 
 var _ = lodash.exports;
 
+var useConnectorActions = function useConnectorActions(_ref) {
+  var dispatchNodes = _ref.dispatchNodes,
+      _ref$connector = _ref.connector,
+      connectorAction = _ref$connector.action,
+      _ref$connector$temp = _ref$connector.temp,
+      tempState = _ref$connector$temp.state,
+      dispatchTemp = _ref$connector$temp.dispatch,
+      triggerRecalculation = _ref.triggerRecalculation,
+      selectedNodes = _ref.selectedNodes,
+      stageState = _ref.stageState;
+  useEffect(function () {
+    if (connectorAction) {
+      var _connectorAction = connectorAction(),
+          type = _connectorAction.type,
+          data = _connectorAction.data;
+
+      switch (type) {
+        case "UNDO":
+          dispatchNodes({
+            type: "UNDO_CHANGES"
+          });
+          clearConnections();
+          triggerRecalculation();
+          break;
+
+        case "REDO":
+          dispatchNodes({
+            type: "REDO_CHANGES"
+          });
+          clearConnections();
+          triggerRecalculation();
+          break;
+
+        case "COPY":
+          dispatchNodes({
+            type: "COPY_NODES",
+            selectedNodeIds: selectedNodes
+          });
+          break;
+
+        case "CUT":
+          dispatchNodes({
+            type: "CUT_NODES",
+            selectedNodeIds: selectedNodes
+          });
+          clearConnections();
+          triggerRecalculation();
+          break;
+
+        case "PASTE":
+          dispatchNodes({
+            type: "PASTE_NODES"
+          });
+          clearConnections();
+          triggerRecalculation();
+          break;
+
+        case "TOGGLE_NODES_VIEW":
+          {
+            var nodeIds = data.nodeIds,
+                doExpand = data.doExpand;
+            nodeIds.forEach(function (id) {
+              dispatchNodes({
+                type: "TOGGLE_NODE_VIEW",
+                id: id,
+                doExpand: doExpand
+              });
+            });
+            triggerRecalculation();
+            break;
+          }
+
+        case "ADD_NODE":
+          {
+            var x = data.x,
+                y = data.y,
+                _type = data.type;
+            dispatchNodes({
+              type: "ADD_NODE",
+              x: x,
+              y: y,
+              nodeType: _type
+            });
+            break;
+          }
+      }
+    }
+  }, [connectorAction, selectedNodes]);
+  useEffect(function () {
+    if (!_.isEqual(stageState, tempState.stage)) {
+      var _stageState$translate = stageState.translate,
+          x = _stageState$translate.x,
+          y = _stageState$translate.y,
+          scale = stageState.scale;
+      dispatchTemp({
+        type: "SET_STAGE",
+        scale: scale,
+        x: x,
+        y: y
+      });
+    }
+
+    if (!_.isEqual(selectedNodes, tempState.selectedNodes)) {
+      dispatchTemp({
+        type: "SELECT_NODES",
+        selectedNodes: selectedNodes
+      });
+    }
+  }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes]);
+  return null;
+};
+
 var getFilteredTransputs = (function (transputs, nodeId) {
   return Object.entries(transputs).reduce(function (obj, _ref) {
     var _ref2 = _slicedToArray(_ref, 2),
@@ -27463,7 +27575,7 @@ var getDefaultData = (function (_ref) {
   }, {});
 });
 
-var _excluded$2 = ["id", "defaultNode"];
+var _excluded$1 = ["id", "defaultNode"];
 
 function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -27691,7 +27803,7 @@ var nodesReducer = function nodesReducer(_ref) {
             var _newNodes2$key = _newNodes2[key];
                 _newNodes2$key.id;
                 _newNodes2$key.defaultNode;
-                var node = _objectWithoutProperties(_newNodes2$key, _excluded$2);
+                var node = _objectWithoutProperties(_newNodes2$key, _excluded$1);
 
             _newNodes2[_newNodeId] = _objectSpread$9(_objectSpread$9({}, node), {}, {
               id: _newNodeId
@@ -27834,7 +27946,7 @@ var nodesReducer$1 = (function () {
   }
 });
 
-var _excluded$1 = ["isNew"];
+var _excluded = ["isNew"];
 
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 
@@ -27871,7 +27983,7 @@ var commentsReducer = (function () {
     case "REMOVE_COMMENT_NEW":
       var _comments$action$id = comments[action.id];
           _comments$action$id.isNew;
-          var comment = _objectWithoutProperties(_comments$action$id, _excluded$1);
+          var comment = _objectWithoutProperties(_comments$action$id, _excluded);
 
       return _objectSpread$8(_objectSpread$8({}, comments), {}, _defineProperty({}, action.id, comment));
 
@@ -28689,8 +28801,6 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
 
 useNodeEditorController.displayName = "useNodeEditorController";
 
-var _excluded = ["initialNodes", "action", "setNodesState", "setComments", "defaultNodes", "temp", "initialNodesState"];
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -28705,27 +28815,22 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       portTypes = _ref$portTypes === void 0 ? {} : _ref$portTypes,
       _ref$context = _ref.context,
       context = _ref$context === void 0 ? defaultContext : _ref$context,
-      _ref$connector = _ref.connector,
-      _ref$connector$initia = _ref$connector.initialNodes,
-      initialNodes = _ref$connector$initia === void 0 ? {} : _ref$connector$initia,
-      connectorAction = _ref$connector.action,
-      setNodesState = _ref$connector.setNodesState,
-      setComments = _ref$connector.setComments,
-      defaultNodes = _ref$connector.defaultNodes,
-      _ref$connector$temp = _ref$connector.temp,
-      tempState = _ref$connector$temp.state,
-      dispatchTemp = _ref$connector$temp.dispatch,
-      initialNodesState = _ref$connector.initialNodesState,
-      connector = _objectWithoutProperties(_ref$connector, _excluded),
+      connector = _ref.connector,
       _initialStageParams = _ref.initialStageParams,
       _ref$hideComments = _ref.hideComments,
       hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
       disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
-      circularBehavior = _ref.circularBehavior,
-      debug = _ref.debug;
-
+      circularBehavior = _ref.circularBehavior;
+      _ref.debug;
   var editorId = useId();
+  var _connector$initialNod = connector.initialNodes,
+      initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
+      setNodesState = connector.setNodesState,
+      setComments = connector.setComments,
+      defaultNodes = connector.defaultNodes,
+      tempState = connector.temp.state,
+      initialNodesState = connector.initialNodesState;
   var cache = useRef(new Cache());
   var stage = useRef();
 
@@ -28781,99 +28886,11 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       handleSelection = _useSelect2[2],
       clearSelection = _useSelect2[3];
 
-  var undoChanges = function undoChanges() {
-    dispatchNodes({
-      type: "UNDO_CHANGES"
-    });
-    clearConnections();
-    triggerRecalculation();
-  };
-
-  var redoChanges = function redoChanges() {
-    dispatchNodes({
-      type: "REDO_CHANGES"
-    });
-    clearConnections();
-    triggerRecalculation();
-  };
-
-  useEffect(function () {
-    if (connectorAction) {
-      var _connectorAction = connectorAction(),
-          type = _connectorAction.type,
-          data = _connectorAction.data;
-
-      switch (type) {
-        case "UNDO":
-          undoChanges();
-          break;
-
-        case "REDO":
-          redoChanges();
-          break;
-
-        case "COPY":
-          dispatchNodes({
-            type: "COPY_NODES",
-            selectedNodeIds: selectedNodes
-          });
-          break;
-
-        case "CUT":
-          dispatchNodes({
-            type: "CUT_NODES",
-            selectedNodeIds: selectedNodes
-          });
-          clearConnections();
-          triggerRecalculation();
-          break;
-
-        case "PASTE":
-          dispatchNodes({
-            type: "PASTE_NODES"
-          });
-          clearConnections();
-          triggerRecalculation();
-          break;
-
-        case "TOGGLE_NODES_VIEW":
-          {
-            var nodeIds = data.nodeIds,
-                doExpand = data.doExpand;
-            nodeIds.forEach(function (id) {
-              dispatchNodes({
-                type: "TOGGLE_NODE_VIEW",
-                id: id,
-                doExpand: doExpand
-              });
-            });
-            triggerRecalculation();
-            break;
-          }
-
-        case "ADD_NODE":
-          {
-            var x = data.x,
-                y = data.y,
-                _type = data.type;
-            dispatchNodes({
-              type: "ADD_NODE",
-              x: x,
-              y: y,
-              nodeType: _type
-            });
-            break;
-          }
-      }
-    }
-  }, [connectorAction, redoChanges, selectedNodes, undoChanges]);
   useEffect(function () {
     !currentStateIndex && dispatchNodes({
       type: "HYDRATE_DEFAULT_NODES"
-    }); // if (connector.options) {
-    //   const { options } = connector;
-    //
-    // }
+    });
+    recalculateConnections();
   }, []);
 
   var _useState5 = useState(true),
@@ -28894,27 +28911,17 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       stageState = _useReducer8[0],
       dispatchStageState = _useReducer8[1];
 
-  useEffect(function () {
-    if (!_.isEqual(stageState, tempState.stage)) {
-      var _stageState$translate = stageState.translate,
-          x = _stageState$translate.x,
-          y = _stageState$translate.y,
-          scale = stageState.scale;
-      dispatchTemp({
-        type: "SET_STAGE",
-        scale: scale,
-        x: x,
-        y: y
-      });
-    }
+  var triggerRecalculation = function triggerRecalculation() {
+    setShouldRecalculateConnections(true);
+  };
 
-    if (!_.isEqual(selectedNodes, tempState.selectedNodes)) {
-      dispatchTemp({
-        type: "SELECT_NODES",
-        selectedNodes: selectedNodes
-      });
-    }
-  }, [stageState, tempState.stage, tempState.selectedNodes, dispatchTemp, selectedNodes]);
+  useConnectorActions({
+    dispatchNodes: dispatchNodes,
+    connector: connector,
+    triggerRecalculation: triggerRecalculation,
+    selectedNodes: selectedNodes,
+    stageState: stageState
+  });
   var recalculateConnections = useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);
@@ -28963,10 +28970,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     }
 
     triggerRecalculation();
-  };
-
-  var triggerRecalculation = function triggerRecalculation() {
-    setShouldRecalculateConnections(true);
   };
 
   var dragSelectedNodes = function dragSelectedNodes(excludedNodeId, deltaX, deltaY) {
@@ -29055,6 +29058,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       top: 0,
       left: 0
     },
+    zoom: stageState.scale,
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: spaceIsPressed ? {
       display: "none"
@@ -29075,27 +29079,10 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     disableComments: disableComments || hideComments,
     stageRef: stage,
     numNodes: Object.keys(nodesState[currentStateIndex].state).length,
-    outerStageChildren: /*#__PURE__*/React__default.createElement(React__default.Fragment, null, debug && /*#__PURE__*/React__default.createElement("div", {
-      className: styles.debugWrapper
-    }, /*#__PURE__*/React__default.createElement("button", {
-      className: styles.debugButton,
-      onClick: function onClick() {
-        return console.log(nodesState[currentStateIndex].state);
-      }
-    }, "Log Nodes"), /*#__PURE__*/React__default.createElement("button", {
-      className: styles.debugButton,
-      onClick: function onClick() {
-        return console.log(JSON.stringify(nodesState[currentStateIndex].state));
-      }
-    }, "Export Nodes"), /*#__PURE__*/React__default.createElement("button", {
-      className: styles.debugButton,
-      onClick: function onClick() {
-        return console.log(comments);
-      }
-    }, "Log Comments")), /*#__PURE__*/React__default.createElement(Toaster, {
+    outerStageChildren: /*#__PURE__*/React__default.createElement(Toaster, {
       toasts: toasts,
       dispatchToasts: dispatchToasts
-    }))
+    })
   }, !hideComments && Object.values(comments).map(function (comment) {
     return /*#__PURE__*/React__default.createElement(Comment, _extends$3({}, comment, {
       stageRect: stage,

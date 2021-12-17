@@ -136,7 +136,7 @@ const TestEditor = () => {
               <Card.Title className="mb-0">RootEngine result</Card.Title>
             </Card.Header>
             <Card.Body>
-              <ReactJson src={res.actionPort || res} name={null} />
+              <ReactJson src={res} name={null} />
               {/*{JSON.stringify(res)}*/}
             </Card.Body>
           </Card>

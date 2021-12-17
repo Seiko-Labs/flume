@@ -2,7 +2,7 @@ import {
   applyPythonRPAConfig,
   resolvePythonRPANodes,
 } from "./pyPythonRPA.Robot.pythonRPA";
-import { applyLogicNodesConfig } from "./logicNodes";
+import { applyLogicNodesConfig, resolveLogicNodes } from "./logicNodes";
 
 export const applyBaseConfig = (config) => {
   applyLogicNodesConfig(config);
@@ -11,4 +11,5 @@ export const applyBaseConfig = (config) => {
 
 export const resolveBaseNodes = {
   ...resolvePythonRPANodes,
+  ...resolveLogicNodes,
 };
