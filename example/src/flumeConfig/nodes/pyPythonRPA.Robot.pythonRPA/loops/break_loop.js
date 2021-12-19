@@ -1,15 +1,54 @@
+import React from "react";
 import _ from "lodash";
 import { Controls } from "node-editor";
+import styled from "styled-components";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
 } from "../../../shared/presets/errorBlockPreset";
+
+const Button = styled.div`
+  height: 20px;
+  width: 20px;
+  background-color: green;
+`;
+
+const Breakpoint = styled.button`
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: 2px solid #f23d63;
+  background: ${({ active }) => (active ? "#f23d63" : "transparent")};
+`;
 
 export const breakLoopNode = {
   type: "break_loop",
   name: "break_loop",
   label: "BREAK LOOP",
   description: "Any kind of an action",
+  actions: {
+    buttons: [
+      (
+        actionsData,
+        actionsDispatch,
+        inputData,
+        connections,
+        nodeData,
+        nodesDispatch
+      ) => (
+        <Breakpoint
+          active={actionsData.breakpoint}
+          onClick={() =>
+            actionsDispatch((data) => ({
+              ...data,
+              breakpoint: !data.breakpoint,
+            }))
+          }
+        />
+      ),
+    ],
+  },
   inputs: (ports) => (_, connections) =>
     [
       ports.string({

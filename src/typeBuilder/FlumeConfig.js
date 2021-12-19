@@ -1,3 +1,5 @@
+import { isArray } from "lodash";
+import { isValidElement } from "react";
 import { checkColor, define } from "../utilities";
 import { getPortBuilders } from "./Ports";
 
@@ -110,6 +112,17 @@ export default class FlumeConfig {
     if (config.initialWidth) node.initialWidth = config.initialWidth;
 
     if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
+
+    if (config.actions) {
+      node.actions = config.actions;
+      node.actions.data = config.actions.data || {};
+      node.actions.buttons =
+        config.actions.buttons && isArray(config.actions.buttons)
+          ? config.actions.buttons.filter(
+              (button) => typeof button === "function"
+            )
+          : [];
+    } else node.actions = { data: {}, buttons: [] };
 
     if (typeof config.inputs === "function") {
       const inputs = config.inputs(getPortBuilders(this.portTypes));

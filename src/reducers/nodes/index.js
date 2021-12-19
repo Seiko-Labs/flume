@@ -122,12 +122,10 @@ export const nodesReducer = (
         portTypes,
         context,
       });
-      if (defaultNode) {
-        newNode.defaultNode = true;
-      }
-      if (nodeTypes[nodeType].root) {
-        newNode.root = true;
-      }
+      newNode.defaultNode = !!defaultNode || undefined;
+      newNode.root = !!nodeTypes[nodeType].root || undefined;
+      newNode.actions = nodeTypes[nodeType].actions || undefined;
+
       return {
         ...nodes,
         [newNodeId]: newNode,
@@ -277,6 +275,21 @@ export const nodesReducer = (
             },
           }))
         ),
+      };
+    }
+
+    case "UPDATE_NODE_ACTION_DATA": {
+      const { data, nodeId } = action;
+
+      return {
+        ...nodes,
+        [nodeId]: {
+          ...nodes[nodeId],
+          actions: {
+            ...nodes[nodeId].actions,
+            data,
+          },
+        },
       };
     }
 

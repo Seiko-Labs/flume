@@ -26,6 +26,7 @@
   justify-content: space-between;
   align-items: center;
   white-space: nowrap !important;
+  width: 100%;
 }
 
 .headerMeta {
@@ -56,13 +57,13 @@
 
 .title > span.label {
   font-size: 10px;
-  line-height: 10px;
+  line-height: 16px;
   font-weight: bold;
 }
 
 .id {
   font-size: 10px;
-  line-height: 10px;
+  line-height: 16px;
   font-style: italic;
   transition: all 0.3s ease-out;
   cursor: copy;
@@ -85,8 +86,8 @@
 }
 
 .headerActions > * {
-  height: 8px;
-  width: 8px;
+  max-height: 16px;
+  max-width: 16px;
   object-fit: contain;
 }
 

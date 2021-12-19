@@ -12,6 +12,41 @@ Forked and updated by Seiko Labs team: [@zdllucky](https://github.com/zdllucky)
 
 ## Current fork changelist and features
 
+* Added context action buttons for cards (Top right corner). See example:
+
+```js
+const exampleNodeConfig = {
+	// Other node config
+  actions: {
+		// Additional node data
+		data: {
+			breakpoint: false
+    },
+    // Node upper actions
+    buttons: [
+      (
+        actionsData,      // Node editable data
+        actionsDispatch,  // Data update method, e.g. actionsDispatch(actionsData => {...actionsData})
+        inputData,        // Node ports data
+        connections,      // Node connections
+        nodeData,         // Node data, including actions data
+        nodesDispatch     // Basic node dispatch, still unstable
+      ) => (
+        <Breakpoint
+          active={actionsData.breakpoint}
+          onClick={() =>
+            actionsDispatch((data) => ({
+              ...data,
+              breakpoint: !data.breakpoint,
+            }))
+          }
+        />
+      ),
+    ],
+  },
+}
+```
+
 * New `validate: (v) => boolean` option for text and number controls validation
 
 * New `button` Control added. The API is as follows:

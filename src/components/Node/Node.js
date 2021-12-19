@@ -1,10 +1,4 @@
-import React, {
-  forwardRef,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useContext, useMemo, useState } from "react";
 import useTransputs from "../../hooks/useTransputs";
 import styles from "./Node.css";
 import {
@@ -40,6 +34,10 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       onDrag,
+      actions = {
+        data: {},
+        buttons: [],
+      },
     },
     nodeWrapper
   ) => {
@@ -78,6 +76,15 @@ const Node = forwardRef(
       inputData,
       connections
     );
+
+    const nodeData = {
+      label,
+      id,
+      icon,
+      description,
+      tileFontColor,
+      tileBackground,
+    };
 
     const byScale = (value) => value / stageState.scale;
 
@@ -258,8 +265,23 @@ const Node = forwardRef(
                 {id}
               </span>
             </div>
-            {/* TODO: Provide quick actions feature functional implementation */}
-            <div className={styles.headerActions}>{}</div>
+            <div className={styles.headerActions}>
+              {actions.buttons.map((action) =>
+                action(
+                  actions.data,
+                  (getState) =>
+                    nodesDispatch({
+                      type: "UPDATE_NODE_ACTION_DATA",
+                      data: getState(actions.data),
+                      nodeId: id,
+                    }),
+                  inputData,
+                  connections,
+                  nodeData,
+                  nodesDispatch
+                )
+              )}
+            </div>
           </div>
           {expanded && hasInner ? (
             <IoPorts
@@ -267,14 +289,7 @@ const Node = forwardRef(
               resolvedInputs={resolvedInputs}
               show={"innerOnly"}
               connections={connections}
-              nodeData={{
-                label,
-                id,
-                icon,
-                description,
-                tileFontColor,
-                tileBackground,
-              }}
+              nodeData={nodeData}
               updateNodeConnections={updateNodeConnections}
               inputData={inputData}
             />

@@ -7655,7 +7655,7 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:10px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:10px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{height:8px;object-fit:contain;width:8px}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
+var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
 var styles$c = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
 styleInject(css_248z$c);
 
@@ -9131,6 +9131,11 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       _onDragEnd = _ref.onDragEnd,
       onDragHandle = _ref.onDragHandle;
       _ref.onDrag;
+      var _ref$actions = _ref.actions,
+      actions = _ref$actions === void 0 ? {
+    data: {},
+    buttons: []
+  } : _ref$actions;
   // const cache = useContext(CacheContext);
   var nodeTypes = useContext(NodeTypesContext);
   var nodesDispatch = useContext(NodeDispatchContext);
@@ -9166,6 +9171,14 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
 
   var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
   var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
+  var nodeData = {
+    label: label,
+    id: id,
+    icon: icon,
+    description: description,
+    tileFontColor: tileFontColor,
+    tileBackground: tileBackground
+  };
 
   var byScale = function byScale(value) {
     return value / stageState.scale;
@@ -9325,19 +9338,20 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     }
   }, id)), /*#__PURE__*/React__default.createElement("div", {
     className: styles$c.headerActions
-  })), expanded && hasInner ? /*#__PURE__*/React__default.createElement(IoPorts, {
+  }, actions.buttons.map(function (action) {
+    return action(actions.data, function (getState) {
+      return nodesDispatch({
+        type: "UPDATE_NODE_ACTION_DATA",
+        data: getState(actions.data),
+        nodeId: id
+      });
+    }, inputData, connections, nodeData, nodesDispatch);
+  }))), expanded && hasInner ? /*#__PURE__*/React__default.createElement(IoPorts, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
     show: "innerOnly",
     connections: connections,
-    nodeData: {
-      label: label,
-      id: id,
-      icon: icon,
-      description: description,
-      tileFontColor: tileFontColor,
-      tileBackground: tileBackground
-    },
+    nodeData: nodeData,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }) : description && /*#__PURE__*/React__default.createElement("div", {
@@ -9412,727 +9426,6 @@ function _createClass$1(Constructor, protoProps, staticProps) {
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
 }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
-  var isCircular = false;
-
-  var walk = function walk(nodeId) {
-    var outputs = Object.values(nodes[nodeId].connections.outputs);
-
-    for (var _i = 0, _outputs = outputs; _i < _outputs.length; _i++) {
-      var outputConnections = _outputs[_i];
-
-      if (isCircular) {
-        break;
-      }
-
-      var _iterator = _createForOfIteratorHelper(outputConnections),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var connectedTo = _step.value;
-
-          if (connectedTo.nodeId === startNodeId) {
-            isCircular = true;
-            break;
-          } else {
-            walk(connectedTo.nodeId);
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    }
-  };
-
-  walk(startNodeId);
-  return isCircular;
-};
-var checkColor = function checkColor(color) {
-  return RegExp(/(#(?:[0-9a-f]{2}){2,4}$|(#[0-9a-f]{3}$)|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\)$|black$|silver$|gray$|whitesmoke$|maroon$|red$|purple$|fuchsia$|green$|lime$|olivedrab$|yellow$|navy$|blue$|teal$|aquamarine$|orange$|aliceblue$|antiquewhite$|aqua$|azure$|beige$|bisque$|blanchedalmond$|blueviolet$|brown$|burlywood$|cadetblue$|chartreuse$|chocolate$|coral$|cornflowerblue$|cornsilk$|crimson$|currentcolor$|darkblue$|darkcyan$|darkgoldenrod$|darkgray$|darkgreen$|darkgrey$|darkkhaki$|darkmagenta$|darkolivegreen$|darkorange$|darkorchid$|darkred$|darksalmon$|darkseagreen$|darkslateblue$|darkslategray$|darkslategrey$|darkturquoise$|darkviolet$|deeppink$|deepskyblue$|dimgray$|dimgrey$|dodgerblue$|firebrick$|floralwhite$|forestgreen$|gainsboro$|ghostwhite$|goldenrod$|gold$|greenyellow$|grey$|honeydew$|hotpink$|indianred$|indigo$|ivory$|khaki$|lavenderblush$|lavender$|lawngreen$|lemonchiffon$|lightblue$|lightcoral$|lightcyan$|lightgoldenrodyellow$|lightgray$|lightgreen$|lightgrey$|lightpink$|lightsalmon$|lightseagreen$|lightskyblue$|lightslategray$|lightslategrey$|lightsteelblue$|lightyellow$|limegreen$|linen$|mediumaquamarine$|mediumblue$|mediumorchid$|mediumpurple$|mediumseagreen$|mediumslateblue$|mediumspringgreen$|mediumturquoise$|mediumvioletred$|midnightblue$|mintcream$|mistyrose$|moccasin$|navajowhite$|oldlace$|olive$|orangered$|orchid$|palegoldenrod$|palegreen$|paleturquoise$|palevioletred$|papayawhip$|peachpuff$|peru$|pink$|plum$|powderblue$|rosybrown$|royalblue$|saddlebrown$|salmon$|sandybrown$|seagreen$|seashell$|sienna$|skyblue$|slateblue$|slategray$|slategrey$|snow$|springgreen$|steelblue$|tan$|thistle$|tomato$|transparent$|turquoise$|violet$|wheat$|white$|yellowgreen$|rebeccapurple$)/i).test(color);
-};
-var define = function define(value, defaultValue) {
-  return value !== undefined ? value : defaultValue;
-};
-
-var getPortBuilders = function getPortBuilders(ports) {
-  return Object.values(ports).reduce(function (obj, port) {
-    obj[port.type] = function () {
-      var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return {
-        type: port.type,
-        name: config.name || port.name,
-        label: config.label || port.label,
-        noControls: define(config.noControls, false),
-        color: port.color || config.color,
-        hidePort: define(config.hidePort, port.hidePort),
-        controls: define(config.controls, port.controls)
-      };
-    };
-
-    return obj;
-  }, {});
-};
-
-function _toPropertyKey$3(arg) { var key = _toPrimitive$3(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-
-function _toPrimitive$3(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
-function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$d(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var Colors = {
-  yellow: "yellow",
-  orange: "orange",
-  red: "red",
-  pink: "pink",
-  purple: "purple",
-  blue: "blue",
-  green: "green",
-  grey: "grey"
-};
-
-var FlumeConfig = /*#__PURE__*/function () {
-  function FlumeConfig(config) {
-    _classCallCheck$1(this, FlumeConfig);
-
-    if (config) {
-      this.nodeTypes = _objectSpread$d({}, config.nodeTypes);
-      this.portTypes = _objectSpread$d({}, config.portTypes);
-    } else {
-      this.nodeTypes = {};
-      this.portTypes = {};
-    }
-  }
-
-  _createClass$1(FlumeConfig, [{
-    key: "addRootNodeType",
-    value: function addRootNodeType(config) {
-      this.addNodeType(_objectSpread$d(_objectSpread$d({}, config), {}, {
-        root: true,
-        addable: false,
-        deletable: false
-      }));
-      return this;
-    }
-  }, {
-    key: "addNodeType",
-    value: function addNodeType(config) {
-      if (_typeof(config) !== "object" && config !== null) {
-        throw new Error("You must provide a configuration object when calling addNodeType.");
-      } // noinspection JSObjectNullOrUndefined
-
-
-      if (typeof config.type !== "string") {
-        throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
-      }
-
-      if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
-        throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
-      }
-
-      if (this.nodeTypes[config.type] !== undefined) {
-        throw new Error("A node with type \"".concat(config.type, "\" has already been declared."));
-      }
-
-      var node = {
-        type: config.type,
-        label: define(config.label, ""),
-        description: define(config.description, ""),
-        addable: define(config.addable, true),
-        deletable: define(config.deletable, true)
-      }; // Validating category data of flume action that is used to render action
-      // header and label info
-
-      node.category = {};
-      var category = config.category;
-      node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
-      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
-      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
-
-      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
-
-      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
-      if (typeof config.icon === "string") node.icon = config.icon;
-      if (typeof config.comment === "string") node.comment = config.comment;
-      node.expanded = config.expanded || true;
-      if (config.initialWidth) node.initialWidth = config.initialWidth;
-      if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
-
-      if (typeof config.inputs === "function") {
-        var inputs = config.inputs(getPortBuilders(this.portTypes));
-        if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
-        node.inputs = inputs;
-      } else if (config.inputs === undefined) {
-        node.inputs = [];
-      } else if (!Array.isArray(config.inputs)) {
-        throw new Error("Optional key, \"inputs\" must be an array.");
-      } else {
-        node.inputs = config.inputs;
-      }
-
-      if (typeof config.outputs === "function") {
-        var outputs = config.outputs(getPortBuilders(this.portTypes));
-
-        if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
-          throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
-        }
-
-        node.outputs = outputs;
-      } else if (config.outputs === undefined) {
-        node.outputs = [];
-      } else if (!Array.isArray(config.outputs)) {
-        throw new Error("Optional key, \"outputs\" must be an array.");
-      } else {
-        node.outputs = config.outputs;
-      }
-
-      if (config.root !== undefined) {
-        if (typeof config.root !== "boolean") {
-          throw new Error("Optional key, \"root\" must be a boolean.");
-        } else {
-          node.root = config.root;
-        }
-      }
-
-      this.nodeTypes[config.type] = node;
-      return this;
-    }
-  }, {
-    key: "removeNodeType",
-    value: function removeNodeType(type) {
-      if (!this.nodeTypes[type]) {
-        console.error("Non-existent node type \"".concat(type, "\" cannot be removed."));
-      } else {
-        var _this$nodeTypes = this.nodeTypes;
-            _this$nodeTypes[type];
-            var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$3));
-
-        this.nodeTypes = nodeTypes;
-      }
-
-      return this;
-    }
-  }, {
-    key: "addPortType",
-    value: function addPortType(config) {
-      if (_typeof(config) !== "object" && config !== null) {
-        throw new Error("You must provide a configuration object when calling addPortType");
-      } // noinspection JSObjectNullOrUndefined
-
-
-      if (typeof config.type !== "string") {
-        throw new Error("Required key, \"type\" must be a string when calling addPortType.");
-      }
-
-      if (this.portTypes[config.type] !== undefined) {
-        throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
-      }
-
-      if (typeof config.name !== "string") {
-        throw new Error("Required key, \"name\" must be a string when calling addPortType.");
-      }
-
-      var port = {
-        type: config.type,
-        name: config.name,
-        label: define(config.label, ""),
-        hidePort: define(config.hidePort, true)
-      };
-
-      if (config.acceptTypes === undefined) {
-        port.acceptTypes = [config.type];
-      } else if (!Array.isArray(config.acceptTypes)) {
-        throw new Error("Optional key, \"acceptTypes\" must be an array.");
-      } else {
-        port.acceptTypes = config.acceptTypes;
-      }
-
-      if (config.controls === undefined) {
-        port.controls = [];
-      } else if (!Array.isArray(config.controls)) {
-        throw new Error("Optional key, \"controls\" must be an array.");
-      } else {
-        port.controls = config.controls;
-      }
-
-      if (!port.color && config.color && typeof config.color === "string" && checkColor(config.color)) port.color = config.color;
-      this.portTypes[config.type] = port;
-      return this;
-    }
-  }, {
-    key: "removePortType",
-    value: function removePortType(type) {
-      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref$skipDynamicNodes = _ref.skipDynamicNodesCheck,
-          skipDynamicNodesCheck = _ref$skipDynamicNodes === void 0 ? false : _ref$skipDynamicNodes;
-
-      if (!this.portTypes[type]) {
-        console.error("Non-existent port type \"".concat(type, "\" cannot be removed."));
-      } else {
-        if (!skipDynamicNodesCheck) {
-          var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
-            return typeof node.inputs === "function" || typeof node.outputs === "function";
-          });
-
-          if (dynamicNodes.length) {
-            console.warn("We've detected that one or more of your nodes is using dynamic inputs/outputs. This is a potentially dangerous operation as we are unable to detect if this portType is being used in one of those nodes. You can quiet this message by passing { skipDynamicNodesCheck: true } in as the second argument.");
-          }
-        }
-
-        var affectedNodes = Object.values(this.nodeTypes).filter(function (node) {
-          return Array.isArray(node.inputs) && node.inputs.find(function (p) {
-            return p.type === type;
-          }) || Array.isArray(node.outputs) && node.outputs.find(function (p) {
-            return p.type === type;
-          });
-        });
-
-        if (affectedNodes.length) {
-          throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
-            return "".concat(n.type);
-          }).join(", "), "]"));
-        } else {
-          var _this$portTypes = this.portTypes;
-              _this$portTypes[type];
-              var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$3));
-
-          this.portTypes = portTypes;
-        }
-      }
-
-      return this;
-    }
-  }]);
-
-  return FlumeConfig;
-}();
-
-var ColorPicker = (function (_ref) {
-  var x = _ref.x,
-      y = _ref.y,
-      onColorPicked = _ref.onColorPicked,
-      onRequestClose = _ref.onRequestClose;
-  var wrapper = React__default.useRef();
-  var testClickOutside = React__default.useCallback(function (e) {
-    if (wrapper.current && !wrapper.current.contains(e.target)) {
-      onRequestClose();
-      document.removeEventListener("click", testClickOutside);
-      document.removeEventListener("contextmenu", testClickOutside);
-    }
-  }, [wrapper, onRequestClose]);
-  var testEscape = React__default.useCallback(function (e) {
-    if (e.keyCode === 27) {
-      onRequestClose();
-      document.removeEventListener("keydown", testEscape);
-    }
-  }, [onRequestClose]);
-  React__default.useEffect(function () {
-    document.addEventListener("keydown", testEscape);
-    document.addEventListener("click", testClickOutside);
-    document.addEventListener("contextmenu", testClickOutside);
-    return function () {
-      document.removeEventListener("click", testClickOutside);
-      document.removeEventListener("contextmenu", testClickOutside);
-      document.removeEventListener("keydown", testEscape);
-    };
-  }, [testClickOutside, testEscape]);
-  return /*#__PURE__*/React__default.createElement("div", {
-    ref: wrapper,
-    className: styles$3.wrapper,
-    style: {
-      left: x,
-      top: y
-    }
-  }, Object.values(Colors).map(function (color) {
-    return /*#__PURE__*/React__default.createElement(ColorButton, {
-      onSelected: function onSelected() {
-        onColorPicked(color);
-        onRequestClose();
-      },
-      color: color,
-      key: color
-    });
-  }));
-});
-
-var ColorButton = function ColorButton(_ref2) {
-  var color = _ref2.color,
-      onSelected = _ref2.onSelected;
-  return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$3.colorButtonWrapper
-  }, /*#__PURE__*/React__default.createElement("button", {
-    className: styles$3.colorButton,
-    onClick: onSelected,
-    "data-color": color,
-    "aria-label": color
-  }));
-};
-
-var Comment = (function (_ref) {
-  var dispatch = _ref.dispatch,
-      id = _ref.id,
-      x = _ref.x,
-      y = _ref.y,
-      width = _ref.width,
-      height = _ref.height,
-      color = _ref.color,
-      text = _ref.text,
-      stageRect = _ref.stageRect,
-      onDragStart = _ref.onDragStart,
-      isNew = _ref.isNew;
-  var stageState = React__default.useContext(StageContext);
-  var wrapper = React__default.useRef();
-  var textarea = React__default.useRef();
-
-  var _React$useState = React__default.useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      isEditing = _React$useState2[0],
-      setIsEditing = _React$useState2[1];
-
-  var _React$useState3 = React__default.useState(false),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      isPickingColor = _React$useState4[0],
-      setIsPickingColor = _React$useState4[1];
-
-  var _React$useState5 = React__default.useState(false),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      menuOpen = _React$useState6[0],
-      setMenuOpen = _React$useState6[1];
-
-  var _React$useState7 = React__default.useState({
-    x: 0,
-    y: 0
-  }),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      menuCoordinates = _React$useState8[0],
-      setMenuCoordinates = _React$useState8[1];
-
-  var _React$useState9 = React__default.useState({
-    x: 0,
-    y: 0
-  }),
-      _React$useState10 = _slicedToArray(_React$useState9, 2),
-      colorPickerCoordinates = _React$useState10[0],
-      setColorPickerCoordinates = _React$useState10[1];
-
-  var handleContextMenu = function handleContextMenu(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuCoordinates({
-      x: e.clientX,
-      y: e.clientY
-    });
-    setMenuOpen(true);
-    return false;
-  };
-
-  var closeContextMenu = function closeContextMenu() {
-    return setMenuOpen(false);
-  };
-
-  var startDrag = function startDrag(e) {
-    onDragStart();
-  };
-
-  var handleDrag = function handleDrag(_ref2) {
-    var x = _ref2.x,
-        y = _ref2.y;
-    wrapper.current.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
-  };
-
-  var handleDragEnd = function handleDragEnd(_, _ref3) {
-    var x = _ref3.x,
-        y = _ref3.y;
-    dispatch({
-      type: "SET_COMMENT_COORDINATES",
-      id: id,
-      x: x,
-      y: y
-    });
-  };
-
-  var handleResize = function handleResize(coordinates) {
-    var width = clamp_1(coordinates.x - x + 10, 80, 10000);
-    var height = clamp_1(coordinates.y - y + 10, 30, 10000);
-    wrapper.current.style.width = "".concat(width, "px");
-    wrapper.current.style.height = "".concat(height, "px");
-  };
-
-  var handleResizeEnd = function handleResizeEnd(_, coordinates) {
-    var width = clamp_1(coordinates.x - x + 10, 80, 10000);
-    var height = clamp_1(coordinates.y - y + 10, 30, 10000);
-    dispatch({
-      type: "SET_COMMENT_DIMENSIONS",
-      id: id,
-      width: width,
-      height: height
-    });
-  };
-
-  var handleMenuOption = function handleMenuOption(option, e) {
-    switch (option.value) {
-      case "edit":
-        startTextEdit();
-        break;
-
-      case "color":
-        setColorPickerCoordinates(menuCoordinates);
-        setIsPickingColor(true);
-        break;
-
-      case "delete":
-        dispatch({
-          type: "DELETE_COMMENT",
-          id: id
-        });
-        break;
-    }
-  };
-
-  var startTextEdit = function startTextEdit() {
-    setIsEditing(true);
-  };
-
-  var endTextEdit = function endTextEdit() {
-    setIsEditing(false);
-  };
-
-  var handleTextChange = function handleTextChange(e) {
-    dispatch({
-      type: "SET_COMMENT_TEXT",
-      id: id,
-      text: e.target.value
-    });
-  };
-
-  var handleColorPicked = function handleColorPicked(color) {
-    dispatch({
-      type: "SET_COMMENT_COLOR",
-      id: id,
-      color: color
-    });
-  };
-
-  React__default.useEffect(function () {
-    if (isNew) {
-      setIsEditing(true);
-      dispatch({
-        type: "REMOVE_COMMENT_NEW",
-        id: id
-      });
-    }
-  }, [isNew, dispatch, id]);
-  return /*#__PURE__*/React__default.createElement(Draggable, {
-    innerRef: wrapper,
-    className: styles$4.wrapper,
-    style: {
-      transform: "translate(".concat(x, "px,").concat(y, "px)"),
-      width: width,
-      height: height,
-      zIndex: isEditing ? 999 : ""
-    },
-    stageState: stageState,
-    stageRect: stageRect,
-    onDragStart: startDrag,
-    onDrag: handleDrag,
-    onDragEnd: handleDragEnd,
-    onContextMenu: handleContextMenu,
-    onDoubleClick: startTextEdit,
-    onWheel: function onWheel(e) {
-      return e.stopPropagation();
-    },
-    "data-color": color
-  }, isEditing ? /*#__PURE__*/React__default.createElement("textarea", {
-    className: styles$4.textarea,
-    onChange: handleTextChange,
-    onMouseDown: function onMouseDown(e) {
-      return e.stopPropagation();
-    },
-    onBlur: endTextEdit,
-    placeholder: "Text of the comment...",
-    autoFocus: true,
-    value: text,
-    ref: textarea
-  }) : /*#__PURE__*/React__default.createElement("div", {
-    "data-comment": true,
-    className: styles$4.text
-  }, text), /*#__PURE__*/React__default.createElement(Draggable, {
-    className: styles$4.resizeThumb,
-    stageState: stageState,
-    stageRect: stageRect,
-    onDrag: handleResize,
-    onDragEnd: handleResizeEnd
-  }), menuOpen ? /*#__PURE__*/React__default.createElement(Portal$1, null, /*#__PURE__*/React__default.createElement(ContextMenu, {
-    hideFilter: true,
-    label: "Comment Options",
-    x: menuCoordinates.x,
-    y: menuCoordinates.y,
-    options: [{
-      value: "edit",
-      label: "Edit Comment",
-      description: "Edit the text of the comment"
-    }, {
-      value: "color",
-      label: "Change Color",
-      description: "Change the color of the comment"
-    }, {
-      value: "delete",
-      label: "Delete Comment",
-      description: "Delete the comment"
-    }],
-    onRequestClose: closeContextMenu,
-    onOptionSelected: handleMenuOption
-  })) : null, isPickingColor ? /*#__PURE__*/React__default.createElement(Portal$1, null, /*#__PURE__*/React__default.createElement(ColorPicker, {
-    x: colorPickerCoordinates.x,
-    y: colorPickerCoordinates.y,
-    onRequestClose: function onRequestClose() {
-      return setIsPickingColor(false);
-    },
-    onColorPicked: handleColorPicked
-  })) : null);
-});
-
-var css_248z$2 = ".Toaster_toaster__1eC3T{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__3YHVS{animation:Toaster_fade-in__2526Y .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__3YHVS[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__3YHVS[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__3YHVS[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__3YHVS[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__3YHVS[data-exiting=true]{animation:Toaster_fade-out__2lM6E .15s;animation-fill-mode:forwards}.Toaster_toast__3YHVS p{margin:0}.Toaster_title__4InNr{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__3dGzF{animation:Toaster_timer__3dGzF 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__1S_Ks{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__1S_Ks:hover{opacity:.9}@keyframes Toaster_fade-in__2526Y{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__2lM6E{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__3dGzF{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
-var styles$2 = {"toaster":"Toaster_toaster__1eC3T","toast":"Toaster_toast__3YHVS","fade-in":"Toaster_fade-in__2526Y","fade-out":"Toaster_fade-out__2lM6E","title":"Toaster_title__4InNr","timer":"Toaster_timer__3dGzF","exitButton":"Toaster_exitButton__1S_Ks"};
-styleInject(css_248z$2);
-
-var Toaster = (function (_ref) {
-  var _ref$toasts = _ref.toasts,
-      toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
-      dispatchToasts = _ref.dispatchToasts;
-  var setHeight = React__default.useCallback(function (id, height) {
-    dispatchToasts({
-      type: "SET_HEIGHT",
-      id: id,
-      height: height
-    });
-  }, [dispatchToasts]);
-  var startExit = React__default.useCallback(function (id) {
-    dispatchToasts({
-      type: "SET_EXITING",
-      id: id
-    });
-  }, [dispatchToasts]);
-  var removeToast = React__default.useCallback(function (id) {
-    dispatchToasts({
-      type: "REMOVE_TOAST",
-      id: id
-    });
-  }, [dispatchToasts]);
-  return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$2.toaster
-  }, toasts.map(function (toast, i) {
-    return /*#__PURE__*/React__default.createElement(Toast, _extends$3({}, toast, {
-      onHeightReceived: setHeight,
-      onExitRequested: startExit,
-      onRemoveRequested: removeToast,
-      y: toasts.slice(0, i + 1).reduce(function (y, t) {
-        return t.height + y + 5;
-      }, 0),
-      key: toast.id
-    }));
-  }));
-});
-
-var Toast = function Toast(_ref2) {
-  var id = _ref2.id,
-      title = _ref2.title,
-      message = _ref2.message,
-      duration = _ref2.duration,
-      type = _ref2.type,
-      exiting = _ref2.exiting,
-      y = _ref2.y,
-      onHeightReceived = _ref2.onHeightReceived,
-      onExitRequested = _ref2.onExitRequested,
-      onRemoveRequested = _ref2.onRemoveRequested;
-
-  var _React$useState = React__default.useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      paused = _React$useState2[0],
-      setPaused = _React$useState2[1];
-
-  var wrapper = React__default.useRef();
-  var timer = React__default.useRef();
-  var stopTimer = React__default.useCallback(function () {
-    setPaused(true);
-    clearTimeout(timer.current);
-  }, []);
-  var resumeTimer = React__default.useCallback(function () {
-    setPaused(false);
-    timer.current = setTimeout(function () {
-      return onExitRequested(id);
-    }, duration);
-  }, [id, duration, onExitRequested]);
-  React__default.useLayoutEffect(function () {
-    var _wrapper$current$getB = wrapper.current.getBoundingClientRect(),
-        height = _wrapper$current$getB.height;
-
-    onHeightReceived(id, height);
-  }, [onHeightReceived, id]);
-  React__default.useEffect(function () {
-    resumeTimer();
-    return stopTimer;
-  }, [resumeTimer, stopTimer]);
-
-  var handleAnimationEnd = function handleAnimationEnd() {
-    if (exiting) {
-      onRemoveRequested(id);
-    }
-  };
-
-  return /*#__PURE__*/React__default.createElement("div", {
-    ref: wrapper,
-    className: styles$2.toast,
-    "data-type": type,
-    style: {
-      transform: "translateY(-".concat(y, "px)")
-    },
-    "data-exiting": exiting,
-    onAnimationEnd: handleAnimationEnd,
-    onMouseEnter: stopTimer,
-    onMouseLeave: resumeTimer,
-    role: "alert"
-  }, title ? /*#__PURE__*/React__default.createElement("span", {
-    className: styles$2.title
-  }, title) : null, /*#__PURE__*/React__default.createElement("p", null, message), !paused && /*#__PURE__*/React__default.createElement("div", {
-    className: styles$2.timer,
-    style: {
-      animationDuration: "".concat(duration, "ms")
-    },
-    onAnimationEnd: function onAnimationEnd(e) {
-      return e.stopPropagation();
-    }
-  }), /*#__PURE__*/React__default.createElement("button", {
-    className: styles$2.exitButton,
-    onClick: function onClick() {
-      stopTimer();
-      onExitRequested(id);
-    }
-  }, "\u2715"));
-};
-
-var css_248z$1 = ".Connections_svgWrapper__3mXcU{height:0;left:0;position:absolute}";
-var styles$1 = {"svgWrapper":"Connections_svgWrapper__3mXcU"};
-styleInject(css_248z$1);
-
-var Connections = function Connections(_ref) {
-  _ref.nodes;
-      var editorId = _ref.editorId;
-  return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$1.svgWrapper,
-    id: "".concat(CONNECTIONS_ID).concat(editorId)
-  });
-};
 
 var lodash = {exports: {}};
 
@@ -27337,6 +26630,738 @@ var lodash = {exports: {}};
 
 var _ = lodash.exports;
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
+  var isCircular = false;
+
+  var walk = function walk(nodeId) {
+    var outputs = Object.values(nodes[nodeId].connections.outputs);
+
+    for (var _i = 0, _outputs = outputs; _i < _outputs.length; _i++) {
+      var outputConnections = _outputs[_i];
+
+      if (isCircular) {
+        break;
+      }
+
+      var _iterator = _createForOfIteratorHelper(outputConnections),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var connectedTo = _step.value;
+
+          if (connectedTo.nodeId === startNodeId) {
+            isCircular = true;
+            break;
+          } else {
+            walk(connectedTo.nodeId);
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  };
+
+  walk(startNodeId);
+  return isCircular;
+};
+var checkColor = function checkColor(color) {
+  return RegExp(/(#(?:[0-9a-f]{2}){2,4}$|(#[0-9a-f]{3}$)|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\)$|black$|silver$|gray$|whitesmoke$|maroon$|red$|purple$|fuchsia$|green$|lime$|olivedrab$|yellow$|navy$|blue$|teal$|aquamarine$|orange$|aliceblue$|antiquewhite$|aqua$|azure$|beige$|bisque$|blanchedalmond$|blueviolet$|brown$|burlywood$|cadetblue$|chartreuse$|chocolate$|coral$|cornflowerblue$|cornsilk$|crimson$|currentcolor$|darkblue$|darkcyan$|darkgoldenrod$|darkgray$|darkgreen$|darkgrey$|darkkhaki$|darkmagenta$|darkolivegreen$|darkorange$|darkorchid$|darkred$|darksalmon$|darkseagreen$|darkslateblue$|darkslategray$|darkslategrey$|darkturquoise$|darkviolet$|deeppink$|deepskyblue$|dimgray$|dimgrey$|dodgerblue$|firebrick$|floralwhite$|forestgreen$|gainsboro$|ghostwhite$|goldenrod$|gold$|greenyellow$|grey$|honeydew$|hotpink$|indianred$|indigo$|ivory$|khaki$|lavenderblush$|lavender$|lawngreen$|lemonchiffon$|lightblue$|lightcoral$|lightcyan$|lightgoldenrodyellow$|lightgray$|lightgreen$|lightgrey$|lightpink$|lightsalmon$|lightseagreen$|lightskyblue$|lightslategray$|lightslategrey$|lightsteelblue$|lightyellow$|limegreen$|linen$|mediumaquamarine$|mediumblue$|mediumorchid$|mediumpurple$|mediumseagreen$|mediumslateblue$|mediumspringgreen$|mediumturquoise$|mediumvioletred$|midnightblue$|mintcream$|mistyrose$|moccasin$|navajowhite$|oldlace$|olive$|orangered$|orchid$|palegoldenrod$|palegreen$|paleturquoise$|palevioletred$|papayawhip$|peachpuff$|peru$|pink$|plum$|powderblue$|rosybrown$|royalblue$|saddlebrown$|salmon$|sandybrown$|seagreen$|seashell$|sienna$|skyblue$|slateblue$|slategray$|slategrey$|snow$|springgreen$|steelblue$|tan$|thistle$|tomato$|transparent$|turquoise$|violet$|wheat$|white$|yellowgreen$|rebeccapurple$)/i).test(color);
+};
+var define = function define(value, defaultValue) {
+  return value !== undefined ? value : defaultValue;
+};
+
+var getPortBuilders = function getPortBuilders(ports) {
+  return Object.values(ports).reduce(function (obj, port) {
+    obj[port.type] = function () {
+      var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return {
+        type: port.type,
+        name: config.name || port.name,
+        label: config.label || port.label,
+        noControls: define(config.noControls, false),
+        color: port.color || config.color,
+        hidePort: define(config.hidePort, port.hidePort),
+        controls: define(config.controls, port.controls)
+      };
+    };
+
+    return obj;
+  }, {});
+};
+
+function _toPropertyKey$3(arg) { var key = _toPrimitive$3(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+
+function _toPrimitive$3(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$d(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+var Colors = {
+  yellow: "yellow",
+  orange: "orange",
+  red: "red",
+  pink: "pink",
+  purple: "purple",
+  blue: "blue",
+  green: "green",
+  grey: "grey"
+};
+
+var FlumeConfig = /*#__PURE__*/function () {
+  function FlumeConfig(config) {
+    _classCallCheck$1(this, FlumeConfig);
+
+    if (config) {
+      this.nodeTypes = _objectSpread$d({}, config.nodeTypes);
+      this.portTypes = _objectSpread$d({}, config.portTypes);
+    } else {
+      this.nodeTypes = {};
+      this.portTypes = {};
+    }
+  }
+
+  _createClass$1(FlumeConfig, [{
+    key: "addRootNodeType",
+    value: function addRootNodeType(config) {
+      this.addNodeType(_objectSpread$d(_objectSpread$d({}, config), {}, {
+        root: true,
+        addable: false,
+        deletable: false
+      }));
+      return this;
+    }
+  }, {
+    key: "addNodeType",
+    value: function addNodeType(config) {
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addNodeType.");
+      } // noinspection JSObjectNullOrUndefined
+
+
+      if (typeof config.type !== "string") {
+        throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
+      }
+
+      if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
+        throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
+      }
+
+      if (this.nodeTypes[config.type] !== undefined) {
+        throw new Error("A node with type \"".concat(config.type, "\" has already been declared."));
+      }
+
+      var node = {
+        type: config.type,
+        label: define(config.label, ""),
+        description: define(config.description, ""),
+        addable: define(config.addable, true),
+        deletable: define(config.deletable, true)
+      }; // Validating category data of flume action that is used to render action
+      // header and label info
+
+      node.category = {};
+      var category = config.category;
+      node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
+      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
+
+      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
+
+      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
+      if (typeof config.icon === "string") node.icon = config.icon;
+      if (typeof config.comment === "string") node.comment = config.comment;
+      node.expanded = config.expanded || true;
+      if (config.initialWidth) node.initialWidth = config.initialWidth;
+      if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
+
+      if (config.actions) {
+        node.actions = config.actions;
+        node.actions.data = config.actions.data || {};
+        node.actions.buttons = config.actions.buttons && lodash.exports.isArray(config.actions.buttons) ? config.actions.buttons.filter(function (button) {
+          return typeof button === "function";
+        }) : [];
+      } else node.actions = {
+        data: {},
+        buttons: []
+      };
+
+      if (typeof config.inputs === "function") {
+        var inputs = config.inputs(getPortBuilders(this.portTypes));
+        if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
+        node.inputs = inputs;
+      } else if (config.inputs === undefined) {
+        node.inputs = [];
+      } else if (!Array.isArray(config.inputs)) {
+        throw new Error("Optional key, \"inputs\" must be an array.");
+      } else {
+        node.inputs = config.inputs;
+      }
+
+      if (typeof config.outputs === "function") {
+        var outputs = config.outputs(getPortBuilders(this.portTypes));
+
+        if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
+          throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
+        }
+
+        node.outputs = outputs;
+      } else if (config.outputs === undefined) {
+        node.outputs = [];
+      } else if (!Array.isArray(config.outputs)) {
+        throw new Error("Optional key, \"outputs\" must be an array.");
+      } else {
+        node.outputs = config.outputs;
+      }
+
+      if (config.root !== undefined) {
+        if (typeof config.root !== "boolean") {
+          throw new Error("Optional key, \"root\" must be a boolean.");
+        } else {
+          node.root = config.root;
+        }
+      }
+
+      this.nodeTypes[config.type] = node;
+      return this;
+    }
+  }, {
+    key: "removeNodeType",
+    value: function removeNodeType(type) {
+      if (!this.nodeTypes[type]) {
+        console.error("Non-existent node type \"".concat(type, "\" cannot be removed."));
+      } else {
+        var _this$nodeTypes = this.nodeTypes;
+            _this$nodeTypes[type];
+            var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$3));
+
+        this.nodeTypes = nodeTypes;
+      }
+
+      return this;
+    }
+  }, {
+    key: "addPortType",
+    value: function addPortType(config) {
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addPortType");
+      } // noinspection JSObjectNullOrUndefined
+
+
+      if (typeof config.type !== "string") {
+        throw new Error("Required key, \"type\" must be a string when calling addPortType.");
+      }
+
+      if (this.portTypes[config.type] !== undefined) {
+        throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
+      }
+
+      if (typeof config.name !== "string") {
+        throw new Error("Required key, \"name\" must be a string when calling addPortType.");
+      }
+
+      var port = {
+        type: config.type,
+        name: config.name,
+        label: define(config.label, ""),
+        hidePort: define(config.hidePort, true)
+      };
+
+      if (config.acceptTypes === undefined) {
+        port.acceptTypes = [config.type];
+      } else if (!Array.isArray(config.acceptTypes)) {
+        throw new Error("Optional key, \"acceptTypes\" must be an array.");
+      } else {
+        port.acceptTypes = config.acceptTypes;
+      }
+
+      if (config.controls === undefined) {
+        port.controls = [];
+      } else if (!Array.isArray(config.controls)) {
+        throw new Error("Optional key, \"controls\" must be an array.");
+      } else {
+        port.controls = config.controls;
+      }
+
+      if (!port.color && config.color && typeof config.color === "string" && checkColor(config.color)) port.color = config.color;
+      this.portTypes[config.type] = port;
+      return this;
+    }
+  }, {
+    key: "removePortType",
+    value: function removePortType(type) {
+      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref$skipDynamicNodes = _ref.skipDynamicNodesCheck,
+          skipDynamicNodesCheck = _ref$skipDynamicNodes === void 0 ? false : _ref$skipDynamicNodes;
+
+      if (!this.portTypes[type]) {
+        console.error("Non-existent port type \"".concat(type, "\" cannot be removed."));
+      } else {
+        if (!skipDynamicNodesCheck) {
+          var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
+            return typeof node.inputs === "function" || typeof node.outputs === "function";
+          });
+
+          if (dynamicNodes.length) {
+            console.warn("We've detected that one or more of your nodes is using dynamic inputs/outputs. This is a potentially dangerous operation as we are unable to detect if this portType is being used in one of those nodes. You can quiet this message by passing { skipDynamicNodesCheck: true } in as the second argument.");
+          }
+        }
+
+        var affectedNodes = Object.values(this.nodeTypes).filter(function (node) {
+          return Array.isArray(node.inputs) && node.inputs.find(function (p) {
+            return p.type === type;
+          }) || Array.isArray(node.outputs) && node.outputs.find(function (p) {
+            return p.type === type;
+          });
+        });
+
+        if (affectedNodes.length) {
+          throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
+            return "".concat(n.type);
+          }).join(", "), "]"));
+        } else {
+          var _this$portTypes = this.portTypes;
+              _this$portTypes[type];
+              var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$3));
+
+          this.portTypes = portTypes;
+        }
+      }
+
+      return this;
+    }
+  }]);
+
+  return FlumeConfig;
+}();
+
+var ColorPicker = (function (_ref) {
+  var x = _ref.x,
+      y = _ref.y,
+      onColorPicked = _ref.onColorPicked,
+      onRequestClose = _ref.onRequestClose;
+  var wrapper = React__default.useRef();
+  var testClickOutside = React__default.useCallback(function (e) {
+    if (wrapper.current && !wrapper.current.contains(e.target)) {
+      onRequestClose();
+      document.removeEventListener("click", testClickOutside);
+      document.removeEventListener("contextmenu", testClickOutside);
+    }
+  }, [wrapper, onRequestClose]);
+  var testEscape = React__default.useCallback(function (e) {
+    if (e.keyCode === 27) {
+      onRequestClose();
+      document.removeEventListener("keydown", testEscape);
+    }
+  }, [onRequestClose]);
+  React__default.useEffect(function () {
+    document.addEventListener("keydown", testEscape);
+    document.addEventListener("click", testClickOutside);
+    document.addEventListener("contextmenu", testClickOutside);
+    return function () {
+      document.removeEventListener("click", testClickOutside);
+      document.removeEventListener("contextmenu", testClickOutside);
+      document.removeEventListener("keydown", testEscape);
+    };
+  }, [testClickOutside, testEscape]);
+  return /*#__PURE__*/React__default.createElement("div", {
+    ref: wrapper,
+    className: styles$3.wrapper,
+    style: {
+      left: x,
+      top: y
+    }
+  }, Object.values(Colors).map(function (color) {
+    return /*#__PURE__*/React__default.createElement(ColorButton, {
+      onSelected: function onSelected() {
+        onColorPicked(color);
+        onRequestClose();
+      },
+      color: color,
+      key: color
+    });
+  }));
+});
+
+var ColorButton = function ColorButton(_ref2) {
+  var color = _ref2.color,
+      onSelected = _ref2.onSelected;
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: styles$3.colorButtonWrapper
+  }, /*#__PURE__*/React__default.createElement("button", {
+    className: styles$3.colorButton,
+    onClick: onSelected,
+    "data-color": color,
+    "aria-label": color
+  }));
+};
+
+var Comment = (function (_ref) {
+  var dispatch = _ref.dispatch,
+      id = _ref.id,
+      x = _ref.x,
+      y = _ref.y,
+      width = _ref.width,
+      height = _ref.height,
+      color = _ref.color,
+      text = _ref.text,
+      stageRect = _ref.stageRect,
+      onDragStart = _ref.onDragStart,
+      isNew = _ref.isNew;
+  var stageState = React__default.useContext(StageContext);
+  var wrapper = React__default.useRef();
+  var textarea = React__default.useRef();
+
+  var _React$useState = React__default.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      isEditing = _React$useState2[0],
+      setIsEditing = _React$useState2[1];
+
+  var _React$useState3 = React__default.useState(false),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      isPickingColor = _React$useState4[0],
+      setIsPickingColor = _React$useState4[1];
+
+  var _React$useState5 = React__default.useState(false),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      menuOpen = _React$useState6[0],
+      setMenuOpen = _React$useState6[1];
+
+  var _React$useState7 = React__default.useState({
+    x: 0,
+    y: 0
+  }),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      menuCoordinates = _React$useState8[0],
+      setMenuCoordinates = _React$useState8[1];
+
+  var _React$useState9 = React__default.useState({
+    x: 0,
+    y: 0
+  }),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      colorPickerCoordinates = _React$useState10[0],
+      setColorPickerCoordinates = _React$useState10[1];
+
+  var handleContextMenu = function handleContextMenu(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setMenuCoordinates({
+      x: e.clientX,
+      y: e.clientY
+    });
+    setMenuOpen(true);
+    return false;
+  };
+
+  var closeContextMenu = function closeContextMenu() {
+    return setMenuOpen(false);
+  };
+
+  var startDrag = function startDrag(e) {
+    onDragStart();
+  };
+
+  var handleDrag = function handleDrag(_ref2) {
+    var x = _ref2.x,
+        y = _ref2.y;
+    wrapper.current.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
+  };
+
+  var handleDragEnd = function handleDragEnd(_, _ref3) {
+    var x = _ref3.x,
+        y = _ref3.y;
+    dispatch({
+      type: "SET_COMMENT_COORDINATES",
+      id: id,
+      x: x,
+      y: y
+    });
+  };
+
+  var handleResize = function handleResize(coordinates) {
+    var width = clamp_1(coordinates.x - x + 10, 80, 10000);
+    var height = clamp_1(coordinates.y - y + 10, 30, 10000);
+    wrapper.current.style.width = "".concat(width, "px");
+    wrapper.current.style.height = "".concat(height, "px");
+  };
+
+  var handleResizeEnd = function handleResizeEnd(_, coordinates) {
+    var width = clamp_1(coordinates.x - x + 10, 80, 10000);
+    var height = clamp_1(coordinates.y - y + 10, 30, 10000);
+    dispatch({
+      type: "SET_COMMENT_DIMENSIONS",
+      id: id,
+      width: width,
+      height: height
+    });
+  };
+
+  var handleMenuOption = function handleMenuOption(option, e) {
+    switch (option.value) {
+      case "edit":
+        startTextEdit();
+        break;
+
+      case "color":
+        setColorPickerCoordinates(menuCoordinates);
+        setIsPickingColor(true);
+        break;
+
+      case "delete":
+        dispatch({
+          type: "DELETE_COMMENT",
+          id: id
+        });
+        break;
+    }
+  };
+
+  var startTextEdit = function startTextEdit() {
+    setIsEditing(true);
+  };
+
+  var endTextEdit = function endTextEdit() {
+    setIsEditing(false);
+  };
+
+  var handleTextChange = function handleTextChange(e) {
+    dispatch({
+      type: "SET_COMMENT_TEXT",
+      id: id,
+      text: e.target.value
+    });
+  };
+
+  var handleColorPicked = function handleColorPicked(color) {
+    dispatch({
+      type: "SET_COMMENT_COLOR",
+      id: id,
+      color: color
+    });
+  };
+
+  React__default.useEffect(function () {
+    if (isNew) {
+      setIsEditing(true);
+      dispatch({
+        type: "REMOVE_COMMENT_NEW",
+        id: id
+      });
+    }
+  }, [isNew, dispatch, id]);
+  return /*#__PURE__*/React__default.createElement(Draggable, {
+    innerRef: wrapper,
+    className: styles$4.wrapper,
+    style: {
+      transform: "translate(".concat(x, "px,").concat(y, "px)"),
+      width: width,
+      height: height,
+      zIndex: isEditing ? 999 : ""
+    },
+    stageState: stageState,
+    stageRect: stageRect,
+    onDragStart: startDrag,
+    onDrag: handleDrag,
+    onDragEnd: handleDragEnd,
+    onContextMenu: handleContextMenu,
+    onDoubleClick: startTextEdit,
+    onWheel: function onWheel(e) {
+      return e.stopPropagation();
+    },
+    "data-color": color
+  }, isEditing ? /*#__PURE__*/React__default.createElement("textarea", {
+    className: styles$4.textarea,
+    onChange: handleTextChange,
+    onMouseDown: function onMouseDown(e) {
+      return e.stopPropagation();
+    },
+    onBlur: endTextEdit,
+    placeholder: "Text of the comment...",
+    autoFocus: true,
+    value: text,
+    ref: textarea
+  }) : /*#__PURE__*/React__default.createElement("div", {
+    "data-comment": true,
+    className: styles$4.text
+  }, text), /*#__PURE__*/React__default.createElement(Draggable, {
+    className: styles$4.resizeThumb,
+    stageState: stageState,
+    stageRect: stageRect,
+    onDrag: handleResize,
+    onDragEnd: handleResizeEnd
+  }), menuOpen ? /*#__PURE__*/React__default.createElement(Portal$1, null, /*#__PURE__*/React__default.createElement(ContextMenu, {
+    hideFilter: true,
+    label: "Comment Options",
+    x: menuCoordinates.x,
+    y: menuCoordinates.y,
+    options: [{
+      value: "edit",
+      label: "Edit Comment",
+      description: "Edit the text of the comment"
+    }, {
+      value: "color",
+      label: "Change Color",
+      description: "Change the color of the comment"
+    }, {
+      value: "delete",
+      label: "Delete Comment",
+      description: "Delete the comment"
+    }],
+    onRequestClose: closeContextMenu,
+    onOptionSelected: handleMenuOption
+  })) : null, isPickingColor ? /*#__PURE__*/React__default.createElement(Portal$1, null, /*#__PURE__*/React__default.createElement(ColorPicker, {
+    x: colorPickerCoordinates.x,
+    y: colorPickerCoordinates.y,
+    onRequestClose: function onRequestClose() {
+      return setIsPickingColor(false);
+    },
+    onColorPicked: handleColorPicked
+  })) : null);
+});
+
+var css_248z$2 = ".Toaster_toaster__1eC3T{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__3YHVS{animation:Toaster_fade-in__2526Y .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__3YHVS[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__3YHVS[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__3YHVS[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__3YHVS[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__3YHVS[data-exiting=true]{animation:Toaster_fade-out__2lM6E .15s;animation-fill-mode:forwards}.Toaster_toast__3YHVS p{margin:0}.Toaster_title__4InNr{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__3dGzF{animation:Toaster_timer__3dGzF 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__1S_Ks{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__1S_Ks:hover{opacity:.9}@keyframes Toaster_fade-in__2526Y{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__2lM6E{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__3dGzF{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
+var styles$2 = {"toaster":"Toaster_toaster__1eC3T","toast":"Toaster_toast__3YHVS","fade-in":"Toaster_fade-in__2526Y","fade-out":"Toaster_fade-out__2lM6E","title":"Toaster_title__4InNr","timer":"Toaster_timer__3dGzF","exitButton":"Toaster_exitButton__1S_Ks"};
+styleInject(css_248z$2);
+
+var Toaster = (function (_ref) {
+  var _ref$toasts = _ref.toasts,
+      toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
+      dispatchToasts = _ref.dispatchToasts;
+  var setHeight = React__default.useCallback(function (id, height) {
+    dispatchToasts({
+      type: "SET_HEIGHT",
+      id: id,
+      height: height
+    });
+  }, [dispatchToasts]);
+  var startExit = React__default.useCallback(function (id) {
+    dispatchToasts({
+      type: "SET_EXITING",
+      id: id
+    });
+  }, [dispatchToasts]);
+  var removeToast = React__default.useCallback(function (id) {
+    dispatchToasts({
+      type: "REMOVE_TOAST",
+      id: id
+    });
+  }, [dispatchToasts]);
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: styles$2.toaster
+  }, toasts.map(function (toast, i) {
+    return /*#__PURE__*/React__default.createElement(Toast, _extends$3({}, toast, {
+      onHeightReceived: setHeight,
+      onExitRequested: startExit,
+      onRemoveRequested: removeToast,
+      y: toasts.slice(0, i + 1).reduce(function (y, t) {
+        return t.height + y + 5;
+      }, 0),
+      key: toast.id
+    }));
+  }));
+});
+
+var Toast = function Toast(_ref2) {
+  var id = _ref2.id,
+      title = _ref2.title,
+      message = _ref2.message,
+      duration = _ref2.duration,
+      type = _ref2.type,
+      exiting = _ref2.exiting,
+      y = _ref2.y,
+      onHeightReceived = _ref2.onHeightReceived,
+      onExitRequested = _ref2.onExitRequested,
+      onRemoveRequested = _ref2.onRemoveRequested;
+
+  var _React$useState = React__default.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      paused = _React$useState2[0],
+      setPaused = _React$useState2[1];
+
+  var wrapper = React__default.useRef();
+  var timer = React__default.useRef();
+  var stopTimer = React__default.useCallback(function () {
+    setPaused(true);
+    clearTimeout(timer.current);
+  }, []);
+  var resumeTimer = React__default.useCallback(function () {
+    setPaused(false);
+    timer.current = setTimeout(function () {
+      return onExitRequested(id);
+    }, duration);
+  }, [id, duration, onExitRequested]);
+  React__default.useLayoutEffect(function () {
+    var _wrapper$current$getB = wrapper.current.getBoundingClientRect(),
+        height = _wrapper$current$getB.height;
+
+    onHeightReceived(id, height);
+  }, [onHeightReceived, id]);
+  React__default.useEffect(function () {
+    resumeTimer();
+    return stopTimer;
+  }, [resumeTimer, stopTimer]);
+
+  var handleAnimationEnd = function handleAnimationEnd() {
+    if (exiting) {
+      onRemoveRequested(id);
+    }
+  };
+
+  return /*#__PURE__*/React__default.createElement("div", {
+    ref: wrapper,
+    className: styles$2.toast,
+    "data-type": type,
+    style: {
+      transform: "translateY(-".concat(y, "px)")
+    },
+    "data-exiting": exiting,
+    onAnimationEnd: handleAnimationEnd,
+    onMouseEnter: stopTimer,
+    onMouseLeave: resumeTimer,
+    role: "alert"
+  }, title ? /*#__PURE__*/React__default.createElement("span", {
+    className: styles$2.title
+  }, title) : null, /*#__PURE__*/React__default.createElement("p", null, message), !paused && /*#__PURE__*/React__default.createElement("div", {
+    className: styles$2.timer,
+    style: {
+      animationDuration: "".concat(duration, "ms")
+    },
+    onAnimationEnd: function onAnimationEnd(e) {
+      return e.stopPropagation();
+    }
+  }), /*#__PURE__*/React__default.createElement("button", {
+    className: styles$2.exitButton,
+    onClick: function onClick() {
+      stopTimer();
+      onExitRequested(id);
+    }
+  }, "\u2715"));
+};
+
+var css_248z$1 = ".Connections_svgWrapper__3mXcU{height:0;left:0;position:absolute}";
+var styles$1 = {"svgWrapper":"Connections_svgWrapper__3mXcU"};
+styleInject(css_248z$1);
+
+var Connections = function Connections(_ref) {
+  _ref.nodes;
+      var editorId = _ref.editorId;
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: styles$1.svgWrapper,
+    id: "".concat(CONNECTIONS_ID).concat(editorId)
+  });
+};
+
 var useConnectorActions = function useConnectorActions(_ref) {
   var dispatchNodes = _ref.dispatchNodes,
       _ref$connector = _ref.connector,
@@ -27747,15 +27772,9 @@ var nodesReducer = function nodesReducer(_ref) {
           portTypes: portTypes,
           context: context
         });
-
-        if (defaultNode) {
-          newNode.defaultNode = true;
-        }
-
-        if (nodeTypes[nodeType].root) {
-          newNode.root = true;
-        }
-
+        newNode.defaultNode = !!defaultNode || undefined;
+        newNode.root = !!nodeTypes[nodeType].root || undefined;
+        newNode.actions = nodeTypes[nodeType].actions || undefined;
         return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, newNodeId, newNode));
       }
 
@@ -27898,6 +27917,17 @@ var nodesReducer = function nodesReducer(_ref) {
             y: y
           }));
         })))));
+      }
+
+    case "UPDATE_NODE_ACTION_DATA":
+      {
+        var _data = action.data,
+            _nodeId4 = action.nodeId;
+        return _objectSpread$9(_objectSpread$9({}, nodes), {}, _defineProperty({}, _nodeId4, _objectSpread$9(_objectSpread$9({}, nodes[_nodeId4]), {}, {
+          actions: _objectSpread$9(_objectSpread$9({}, nodes[_nodeId4].actions), {}, {
+            data: _data
+          })
+        })));
       }
 
     default:
