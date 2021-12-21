@@ -12,7 +12,7 @@ Forked and updated by Seiko Labs team: [@zdllucky](https://github.com/zdllucky)
 
 ## Current fork changelist and features
 
-* Added context action buttons for cards (Top right corner). See example:
+* Added context action buttons for cards (Top right corner). Data to resolve can be accessed through `node.actions.data` object. See node config example:
 
 ```js
 const exampleNodeConfig = {
@@ -45,6 +45,11 @@ const exampleNodeConfig = {
     ],
   },
 }
+
+const resolveExampleNodeConfig = (node, inputValues, ...other) => ({
+  ...inputValues,
+  breakpoint: node.actions.data.breakpoint,
+})
 ```
 
 * New `validate: (v) => boolean` option for text and number controls validation

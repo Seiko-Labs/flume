@@ -7,12 +7,6 @@ import {
   resolveErrorBlockPreset,
 } from "../../../shared/presets/errorBlockPreset";
 
-const Button = styled.div`
-  height: 20px;
-  width: 20px;
-  background-color: green;
-`;
-
 const Breakpoint = styled.button`
   height: 20px;
   width: 20px;
@@ -38,6 +32,7 @@ export const breakLoopNode = {
         nodesDispatch
       ) => (
         <Breakpoint
+          key={1}
           active={actionsData.breakpoint}
           onClick={() =>
             actionsDispatch((data) => ({
@@ -102,7 +97,7 @@ export const resolveBreakLoopNode = (node, inputValues, nodeType, context) => {
         node.connections.inputs?.falseCaseAction?.length &&
         node.connections.inputs?.falseCaseAction[0]?.nodeId,
     },
-    breakpoint: false,
+    breakpoint: node.actions.data.breakpoint,
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: "condition",
   };

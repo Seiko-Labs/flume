@@ -34,10 +34,7 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       onDrag,
-      actions = {
-        data: {},
-        buttons: [],
-      },
+      actions: { data: actionsData } = {},
     },
     nodeWrapper
   ) => {
@@ -53,6 +50,7 @@ const Node = forwardRef(
       outputs = [],
       icon,
       description,
+      actions: { buttons },
       category: {
         tileFontColor = "#B3B3B3",
         tileBackground = "rgba(89, 89, 102, 0.9)",
@@ -266,13 +264,13 @@ const Node = forwardRef(
               </span>
             </div>
             <div className={styles.headerActions}>
-              {actions.buttons.map((action) =>
+              {buttons.map((action) =>
                 action(
-                  actions.data,
+                  actionsData,
                   (getState) =>
                     nodesDispatch({
                       type: "UPDATE_NODE_ACTION_DATA",
-                      data: getState(actions.data),
+                      data: getState(actionsData),
                       nodeId: id,
                     }),
                   inputData,

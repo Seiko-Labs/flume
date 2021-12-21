@@ -1,3 +1,4 @@
+import { omit } from "lodash/object";
 import { deleteConnection } from "../../connectionCalculator";
 import { checkForCircularNodes } from "../../utilities";
 import nanoid from "nanoid/non-secure/index";
@@ -124,7 +125,7 @@ export const nodesReducer = (
       });
       newNode.defaultNode = !!defaultNode || undefined;
       newNode.root = !!nodeTypes[nodeType].root || undefined;
-      newNode.actions = nodeTypes[nodeType].actions || undefined;
+      newNode.actions = omit(nodeTypes[nodeType].actions || {}, ["buttons"]);
 
       return {
         ...nodes,
