@@ -1,5 +1,5 @@
-import { startRootNode } from "./start";
-import { resolveSelectorNode, selectorNode, selectorPort } from "./selector";
+import { startRootNode } from './start';
+import { resolveSelectorNode, selectorNode, selectorPort } from './selector';
 
 export const applyLogicNodesConfig = (config) => {
   config.addPortType(selectorPort);

@@ -5,40 +5,40 @@ const designerReducer = (state, action) => {
         ...state,
         wizardId: action.wizardId,
         wizardLogic: action.wizardLogic,
-        title: action.title
-      }
+        title: action.title,
+      };
 
     case 'SET_SELECTED_FIELD_ID': {
-      const { fieldId } = action
+      const { fieldId } = action;
       return {
         ...state,
         selectedFieldId: fieldId,
-        editingWizard: false
-      }
+        editingWizard: false,
+      };
     }
 
     case 'START_WIZARD_EDIT':
       return {
         ...state,
         selectedFieldId: null,
-        editingWizard: true
-      }
+        editingWizard: true,
+      };
 
     case 'SET_TITLE':
       return {
         ...state,
-        title: action.title
-      }
+        title: action.title,
+      };
 
     case 'SET_LOGIC':
       return {
         ...state,
-        wizardLogic: action.logic
-      }
+        wizardLogic: action.logic,
+      };
 
     default:
       return state;
   }
-}
+};
 
-export default designerReducer
+export default designerReducer;

@@ -18,7 +18,7 @@
 .form-wrapper {
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 .form-sidebar {
   background: #fff;
@@ -70,10 +70,10 @@ form.form-body {
 .field-wrapper:hover {
   background: var(--selected-hover-color);
 }
-.field-wrapper[data-selected="true"] {
+.field-wrapper[data-selected='true'] {
   background: var(--selected-color);
 }
-.field-wrapper[data-selected="true"][data-visible="false"] {
+.field-wrapper[data-selected='true'][data-visible='false'] {
   background: rgb(212, 207, 167);
 }
 .field-wrapper:first-child {
@@ -87,8 +87,8 @@ form.form-body {
   font-size: 16px;
   font-weight: 500;
 }
-.field-wrapper[data-required="true"] label:not(.checkbox-box)::after {
-  content: "*";
+.field-wrapper[data-required='true'] label:not(.checkbox-box)::after {
+  content: '*';
   margin-left: 5px;
   color: red;
 }
@@ -103,7 +103,7 @@ form.form-body {
   display: flex;
   flex-direction: row;
 }
-.flex-wrap{
+.flex-wrap {
   flex-wrap: wrap;
 }
 .align-center {
@@ -129,7 +129,7 @@ form.form-body {
   padding-right: 20px;
 }
 .dummy-select::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 8px;
   top: 15px;
@@ -168,13 +168,13 @@ form.form-body {
   cursor: default;
   border-radius: 5px;
 }
-.form-body h2:hover{
+.form-body h2:hover {
   background: var(--selected-hover-color);
   margin: -5px;
   margin-bottom: 10px;
   padding: 5px;
 }
-.form-body h2[data-editing="true"]{
+.form-body h2[data-editing='true'] {
   background: var(--selected-color);
   margin: -5px;
   margin-bottom: 10px;
@@ -231,9 +231,9 @@ form.form-body {
   text-align: center;
   padding-left: 4px;
 }
-.checkbox-wrapper input[value="true"] + .checkbox-box::after,
-.real-checkbox-wrapper input[value="true"] + .checkbox-box::after {
-  content: "✔️";
+.checkbox-wrapper input[value='true'] + .checkbox-box::after,
+.real-checkbox-wrapper input[value='true'] + .checkbox-box::after {
+  content: '✔️';
   font-size: 18px;
 }
 .real-checkbox-wrapper .checkbox-box {
@@ -241,23 +241,23 @@ form.form-body {
   padding-left: 4px;
   padding-right: 0px;
 }
-.field-wrapper [data-disabled="true"],
+.field-wrapper [data-disabled='true'],
 .field-wrapper [disabled],
 .field-wrapper [disabled] + .checkbox-box {
   background: var(--input-background-disabled);
 }
-.field-wrapper[data-visible="false"] {
+.field-wrapper[data-visible='false'] {
   background: rgb(222, 222, 222);
   position: relative;
 }
-.field-wrapper[data-visible="false"]::after {
-  content: "👁";
+.field-wrapper[data-visible='false']::after {
+  content: '👁';
   position: absolute;
   right: 7px;
   top: 7px;
   font-size: 18px;
 }
-.field-wrapper label{
+.field-wrapper label {
   user-select: none;
 }
 .modal-wrapper {
@@ -299,13 +299,13 @@ button.attribute-button {
   color: #fff;
   text-transform: uppercase;
   font-weight: 500;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   outline: none;
 }
 button.attribute-button:hover {
   background: linear-gradient(to bottom, rgb(82, 133, 255), rgb(48, 99, 219));
 }
-button.attribute-button:active{
+button.attribute-button:active {
   background: linear-gradient(to top, rgb(55, 114, 255), rgb(39, 88, 204));
 }
 button.attribute-button.secondary {
@@ -324,33 +324,17 @@ button.attribute-button.secondary:hover {
   );
 }
 button.attribute-button.secondary:active {
-  background: linear-gradient(
-    to top,
-    rgb(235, 235, 235),
-    rgb(215, 215, 215)
-  );
+  background: linear-gradient(to top, rgb(235, 235, 235), rgb(215, 215, 215));
 }
 button.attribute-button.danger {
-  background: linear-gradient(
-    to bottom,
-    rgb(231, 45, 45),
-    rgb(184, 21, 21)
-  );
+  background: linear-gradient(to bottom, rgb(231, 45, 45), rgb(184, 21, 21));
   color: #fff;
 }
 button.attribute-button.danger:hover {
-  background: linear-gradient(
-    to bottom,
-    rgb(242, 64, 64),
-    rgb(201, 26, 26)
-  );
+  background: linear-gradient(to bottom, rgb(242, 64, 64), rgb(201, 26, 26));
 }
 button.attribute-button.danger:active {
-  background: linear-gradient(
-    to top,
-    rgb(212, 35, 35),
-    rgb(199, 32, 32)
-  );
+  background: linear-gradient(to top, rgb(212, 35, 35), rgb(199, 32, 32));
 }
 button.attribute-button.small {
   font-size: 14px;
@@ -375,7 +359,7 @@ button.attribute-button.small {
   font-size: 16px;
   font-weight: 500;
   border: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 .options-editor .add-button:hover {
   background: rgb(240, 237, 237);
@@ -389,47 +373,47 @@ button.attribute-button.small {
 .options-editor .option-row:last-of-type {
   margin-bottom: 0px;
 }
-.form-sidebar[data-previewing="true"] {
+.form-sidebar[data-previewing='true'] {
   opacity: 0.4;
   pointer-events: none;
 }
-.header-wrapper{
+.header-wrapper {
   display: flex;
   justify-content: center;
   margin-top: -45px;
   margin-bottom: 30px;
 }
-.header-wrapper header{
+.header-wrapper header {
   width: 100%;
   padding: 10px 10px;
-  opacity: .4;
+  opacity: 0.4;
   transition: opacity 400ms;
 }
-.header-wrapper header:hover{
+.header-wrapper header:hover {
   opacity: 1;
 }
-button.header-button{
+button.header-button {
   padding: 8px 15px;
   border: none;
-  background: rgba(255,255,255,.3);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 5px;
   margin: 0px 5px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 14px;
   color: rgb(58, 69, 89);
 }
-button.header-button:hover{
-  background: rgba(255,255,255,.6);
+button.header-button:hover {
+  background: rgba(255, 255, 255, 0.6);
 }
-button.header-button:last-child{
+button.header-button:last-child {
   margin-right: 0px;
 }
-.page-wrapper{
+.page-wrapper {
   width: 100%;
 }
-.floating-nav{
+.floating-nav {
   position: fixed;
   right: 30px;
   bottom: 30px;
@@ -442,7 +426,7 @@ button.header-button:last-child{
   z-index: 9;
   overflow: hidden;
 }
-.floating-nav-menu{
+.floating-nav-menu {
   position: absolute;
   left: 0px;
   bottom: 40px;
@@ -453,18 +437,18 @@ button.header-button:last-child{
   justify-content: center;
   align-items: center;
 }
-.floating-nav-menu a{
+.floating-nav-menu a {
   width: 60px;
   height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.floating-nav-menu a svg{
+.floating-nav-menu a svg {
   width: 30px;
   height: 30px;
 }
-.floating-nav-exit{
+.floating-nav-exit {
   position: fixed;
   width: 200px;
   height: 360px;
@@ -472,7 +456,7 @@ button.header-button:last-child{
   bottom: 0px;
   z-index: 8;
 }
-.nav-icon-wrapper{
+.nav-icon-wrapper {
   display: flex;
   flex-direction: column;
   width: 60px;
@@ -486,37 +470,37 @@ button.header-button:last-child{
   pointer-events: none;
   transition: transform 300ms;
 }
-.floating-nav-menu a:hover svg{
+.floating-nav-menu a:hover svg {
   fill: rgb(55, 83, 131);
 }
-.nav-icon-wrapper .bar{
+.nav-icon-wrapper .bar {
   width: 100%;
   border-radius: 4px;
   height: 3px;
   background: #000;
   transition: transform 300ms, opacity 300ms, width 300ms;
 }
-.nav-icon-wrapper .bar:first-child{
+.nav-icon-wrapper .bar:first-child {
   transform-origin: left center;
 }
-.nav-icon-wrapper .bar:last-child{
+.nav-icon-wrapper .bar:last-child {
   transform-origin: left center;
 }
-.nav-icon-wrapper[data-menu-open="true"]{
-  transform: scaleX(.85);
+.nav-icon-wrapper[data-menu-open='true'] {
+  transform: scaleX(0.85);
 }
-.nav-icon-wrapper[data-menu-open="true"] .bar:first-child{
+.nav-icon-wrapper[data-menu-open='true'] .bar:first-child {
   transform: rotate(37deg);
   width: calc(100% + 7px);
 }
-.nav-icon-wrapper[data-menu-open="true"] .bar:nth-child(2){
+.nav-icon-wrapper[data-menu-open='true'] .bar:nth-child(2) {
   opacity: 0;
 }
-.nav-icon-wrapper[data-menu-open="true"] .bar:last-child{
+.nav-icon-wrapper[data-menu-open='true'] .bar:last-child {
   transform: rotate(-37deg);
   width: calc(100% + 7px);
 }
-.hover-label{
+.hover-label {
   position: fixed;
   right: 100px;
   bottom: 0px;
@@ -524,11 +508,11 @@ button.header-button:last-child{
   box-shadow: 0px 15px 32px -4px rgba(0, 0, 0, 0.3);
   padding: 7px 15px;
   border-radius: 100px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   opacity: 0;
   transition: opacity 300ms, transform 300ms;
 }
-.hover-label[data-show-label="true"]{
+.hover-label[data-show-label='true'] {
   opacity: 1;
   transform: translateX(-10px);
 }

@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import App from "./App";
-import TestEditor from "./TestRoutes/TestEditor";
-import "./index.css";
-import "react-perfect-scrollbar/dist/css/styles.min.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import App from './App';
+import TestEditor from './TestRoutes/TestEditor';
+import './index.css';
+import 'react-perfect-scrollbar/dist/css/styles.min.css';
 
 ReactDOM.render(
   <Router>
@@ -51,8 +51,8 @@ ReactDOM.render(
       {/*  )} */}
       {/* /> */}
       <Route exact path="/test" render={() => <TestEditor />} />
-      <Route exact path="/other" render={() => "Hello"} />
+      <Route exact path="/other" render={() => 'Hello'} />
     </Switch>
   </Router>,
-  document.getElementById("root")
+  document.getElementById('root')
 );

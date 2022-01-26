@@ -1,16 +1,16 @@
-import React from "react";
-import axios from "axios";
-import Sidebar from "./Sidebar";
-import Body from "./Body";
-import FloatingNavigation from '../../components/FloatingNavigation'
-import Attributes from "./Attributes";
-import fieldsReducer from "./fieldsReducer";
-import designerReducer from "./designerReducer";
-import previewFieldsReducer from "./previewFieldsReducer";
-import { useParams, useHistory, useLocation } from "react-router-dom";
-import decodeQuery from 'decode-query-string'
-import ls from "local-storage";
-import "./Form.css";
+import React from 'react';
+import axios from 'axios';
+import Sidebar from './Sidebar';
+import Body from './Body';
+import FloatingNavigation from '../../components/FloatingNavigation';
+import Attributes from './Attributes';
+import fieldsReducer from './fieldsReducer';
+import designerReducer from './designerReducer';
+import previewFieldsReducer from './previewFieldsReducer';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
+import decodeQuery from 'decode-query-string';
+import ls from 'local-storage';
+import './Form.css';
 
 export const FieldsContext = React.createContext();
 export const FieldsDispatchContext = React.createContext();
@@ -19,22 +19,22 @@ export const DesignerDispatchContext = React.createContext();
 export const PreviewFieldsContext = React.createContext();
 export const PreviewFieldsDispatchContext = React.createContext();
 
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = 'http://localhost:8000';
 
 export const previewState = {
-  getFields: () => {}
+  getFields: () => {},
 };
 
 export const designerStore = {
-  getFields: () => {}
+  getFields: () => {},
 };
 
 const initialDesignerState = {
   selectedFieldId: null,
   editingWizard: false,
-  title: "",
+  title: '',
   wizardId: 0,
-  wizardLogic: {}
+  wizardLogic: {},
 };
 
 export default () => {
@@ -45,7 +45,7 @@ export default () => {
     fieldsReducer,
     {
       fields: {},
-      fieldsOrder: []
+      fieldsOrder: [],
     }
   );
   const [designerState, dispatchDesignerState] = React.useReducer(
@@ -55,18 +55,21 @@ export default () => {
   const [{ previewFields }, dispatchPreviewFields] = React.useReducer(
     previewFieldsReducer,
     {
-      previewFields: fields
+      previewFields: fields,
     }
   );
   const [previewing, setPreviewing] = React.useState(false);
-  const [isFiling, setIsFiling] = React.useState(false)
-  const [wizardLoading, setWizardLoading] = React.useState(true)
-  const { file: triggerFile } = React.useMemo(() => decodeQuery(location.search || "?"), [location])
+  const [isFiling, setIsFiling] = React.useState(false);
+  const [wizardLoading, setWizardLoading] = React.useState(true);
+  const { file: triggerFile } = React.useMemo(
+    () => decodeQuery(location.search || '?'),
+    [location]
+  );
   const clearForm = () => {
-    ls.remove("FIELDS");
-    ls.remove("FIELDS_ORDER");
+    ls.remove('FIELDS');
+    ls.remove('FIELDS_ORDER');
     dispatchFields({
-      type: "CLEAR_FORM"
+      type: 'CLEAR_FORM',
     });
   };
 
@@ -77,8 +80,8 @@ export default () => {
           fields,
           fieldsOrder,
           title: designerState.title,
-          logic: designerState.wizardLogic
-        }
+          logic: designerState.wizardLogic,
+        },
       });
     } else {
       axios
@@ -87,10 +90,10 @@ export default () => {
             fields,
             fieldsOrder,
             title: designerState.title,
-            logic: designerState.wizardLogic
-          }
+            logic: designerState.wizardLogic,
+          },
         })
-        .then(res => {
+        .then((res) => {
           history.replace(`/form/${res.data.id}`);
         });
     }
@@ -101,8 +104,8 @@ export default () => {
       setPreviewing(false);
     } else {
       dispatchPreviewFields({
-        type: "POPULATE_FIELDS",
-        fields
+        type: 'POPULATE_FIELDS',
+        fields,
       });
       setPreviewing(true);
     }
@@ -116,33 +119,33 @@ export default () => {
 
   React.useEffect(() => {
     if (formId) {
-      setIsFiling(!!triggerFile)
-      axios.get(`${BASE_URL}/forms/${formId}`).then(res => {
+      setIsFiling(!!triggerFile);
+      axios.get(`${BASE_URL}/forms/${formId}`).then((res) => {
         if (res.data) {
           dispatchFields({
-            type: "POPULATE_FIELDS",
-            ...res.data.definition
+            type: 'POPULATE_FIELDS',
+            ...res.data.definition,
           });
           dispatchDesignerState({
-            type: "POPULATE_STATE",
+            type: 'POPULATE_STATE',
             title: res.data.definition.title,
             wizardId: res.data.id,
-            wizardLogic: res.data.definition.logic
-          })
-          if(triggerFile){
+            wizardLogic: res.data.definition.logic,
+          });
+          if (triggerFile) {
             dispatchPreviewFields({
-              type: "POPULATE_FIELDS",
-              fields: res.data.definition.fields
+              type: 'POPULATE_FIELDS',
+              fields: res.data.definition.fields,
             });
-            setPreviewing(true)
+            setPreviewing(true);
           }
-          setWizardLoading(false)
-        }else{
-          setWizardLoading(false)
+          setWizardLoading(false);
+        } else {
+          setWizardLoading(false);
         }
       });
-    }else{
-      setWizardLoading(false)
+    } else {
+      setWizardLoading(false);
     }
   }, [formId, location]);
 
@@ -152,10 +155,7 @@ export default () => {
         <DesignerStateContext.Provider value={designerState}>
           <DesignerDispatchContext.Provider value={dispatchDesignerState}>
             <div className="form-wrapper">
-              {
-                !isFiling &&
-                <Sidebar previewing={previewing} />
-              }
+              {!isFiling && <Sidebar previewing={previewing} />}
               <PreviewFieldsContext.Provider value={previewFields}>
                 <PreviewFieldsDispatchContext.Provider
                   value={dispatchPreviewFields}
@@ -174,10 +174,12 @@ export default () => {
                   />
                 </PreviewFieldsDispatchContext.Provider>
               </PreviewFieldsContext.Provider>
-              {
-                !isFiling &&
-                <Attributes previewing={previewing} editingWizard={designerState.editingWizard} />
-              }
+              {!isFiling && (
+                <Attributes
+                  previewing={previewing}
+                  editingWizard={designerState.editingWizard}
+                />
+              )}
               <FloatingNavigation />
             </div>
           </DesignerDispatchContext.Provider>

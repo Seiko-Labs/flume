@@ -1,5 +1,5 @@
-import { ifElseNode, resolveIfElseNode } from "./if_else";
-import { resolveSwitchCaseNode, switchCaseNode } from "./switch_case";
+import { ifElseNode, resolveIfElseNode } from './if_else';
+import { resolveSwitchCaseNode, switchCaseNode } from './switch_case';
 
 export const applyConditionsConfig = (config) => {
   config.addNodeType(ifElseNode);

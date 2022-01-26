@@ -1,11 +1,11 @@
-import React from "react";
-import _ from "lodash";
-import { Controls } from "node-editor";
-import styled from "styled-components";
+import React from 'react';
+import _ from 'lodash';
+import { Controls } from 'node-editor';
+import styled from 'styled-components';
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from "../../../shared/presets/errorBlockPreset";
+} from '../../../shared/presets/errorBlockPreset';
 
 const Breakpoint = styled.button`
   height: 20px;
@@ -13,14 +13,14 @@ const Breakpoint = styled.button`
   border-radius: 10px;
   box-sizing: border-box;
   border: 2px solid #f23d63;
-  background: ${({ active }) => (active ? "#f23d63" : "transparent")};
+  background: ${({ active }) => (active ? '#f23d63' : 'transparent')};
 `;
 
 export const breakLoopNode = {
-  type: "break_loop",
-  name: "break_loop",
-  label: "BREAK LOOP",
-  description: "Any kind of an action",
+  type: 'break_loop',
+  name: 'break_loop',
+  label: 'BREAK LOOP',
+  description: 'Any kind of an action',
   actions: {
     buttons: [
       (
@@ -47,25 +47,25 @@ export const breakLoopNode = {
   inputs: (ports) => (_, connections) =>
     [
       ports.string({
-        name: "condition",
-        label: "Condition",
+        name: 'condition',
+        label: 'Condition',
         hidePort: true,
         controls: [
           Controls.text({
-            validate: (text) => text !== "lol",
+            validate: (text) => text !== 'lol',
           }),
         ],
       }),
       ports.actionPort({
-        color: "#5ED28E",
-        name: "elseCaseAction",
-        label: "False case action",
+        color: '#5ED28E',
+        name: 'elseCaseAction',
+        label: 'False case action',
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: "Previous action",
+      label: 'Previous action',
     }),
   ],
 };
@@ -87,9 +87,9 @@ export const resolveBreakLoopNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: "pyPythonRPA.Robot.pythonRPA",
-    class: "loops",
-    function: "break_loop",
+    module: 'pyPythonRPA.Robot.pythonRPA',
+    class: 'loops',
+    function: 'break_loop',
     class_params: {},
     func_params: {
       condition: inputValues.condition.text,
@@ -99,7 +99,7 @@ export const resolveBreakLoopNode = (node, inputValues, nodeType, context) => {
     },
     breakpoint: node.actions.data.breakpoint,
     ...resolveErrorBlockPreset(node, inputValues),
-    next_id: "condition",
+    next_id: 'condition',
   };
 
   return { actionPort: actionList };

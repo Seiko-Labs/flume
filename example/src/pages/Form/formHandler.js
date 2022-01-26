@@ -1,14 +1,13 @@
-import resolveLogic from './resolveLogic'
+import resolveLogic from './resolveLogic';
 
-export const getFieldValues = (fields, fieldsOrder) => (
+export const getFieldValues = (fields, fieldsOrder) =>
   fieldsOrder.reduce((values, fieldId) => {
-    const field = fields[fieldId]
+    const field = fields[fieldId];
     const { name, value, visible } = resolveLogic(field, fields) || {};
     values[name] = {
       value,
       name,
-      visible
-    }
-    return values
-  }, {})
-)
+      visible,
+    };
+    return values;
+  }, {});

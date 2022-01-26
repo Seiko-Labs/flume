@@ -1,6 +1,6 @@
-import React from "react";
-import fieldTypes from "./fieldTypes";
-import { DesignerStateContext, DesignerDispatchContext } from "./Form";
+import React from 'react';
+import fieldTypes from './fieldTypes';
+import { DesignerStateContext, DesignerDispatchContext } from './Form';
 
 export default ({ field }) => {
   const designerState = React.useContext(DesignerStateContext);
@@ -8,11 +8,11 @@ export default ({ field }) => {
 
   const getFieldByType = () => {
     switch (field.type) {
-      case "text":
+      case 'text':
         return <TextInput {...field} />;
-      case "select":
+      case 'select':
         return <Select {...field} />;
-      case "checkbox":
+      case 'checkbox':
         return <Checkbox {...field} />;
       default:
         return <div>Field</div>;
@@ -42,14 +42,14 @@ const FieldWrapper = ({
   required,
   hideLabel,
   fieldId,
-  isSelected
+  isSelected,
 }) => {
   const designerDispatch = React.useContext(DesignerDispatchContext);
 
   const selectField = () => {
     designerDispatch({
-      type: "SET_SELECTED_FIELD_ID",
-      fieldId
+      type: 'SET_SELECTED_FIELD_ID',
+      fieldId,
     });
   };
 

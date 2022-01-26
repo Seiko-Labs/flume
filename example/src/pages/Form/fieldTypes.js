@@ -1,69 +1,69 @@
-import defaultNodes from './defaultNodes'
+import defaultNodes from './defaultNodes';
 
 const commonAttributes = [
   {
-    name: "label",
-    label: "Label",
-    defaultValue: "New Field",
-    type: "text"
+    name: 'label',
+    label: 'Label',
+    defaultValue: 'New Field',
+    type: 'text',
   },
   {
-    name: "name",
-    label: "Name",
-    defaultValue: "FIELD_NAME",
-    type: "text"
+    name: 'name',
+    label: 'Name',
+    defaultValue: 'FIELD_NAME',
+    type: 'text',
   },
   {
-    name: "visible",
-    label: "Visible",
+    name: 'visible',
+    label: 'Visible',
     defaultValue: true,
-    type: "checkbox"
+    type: 'checkbox',
   },
   {
-    name: "disabled",
-    label: "Disabled",
+    name: 'disabled',
+    label: 'Disabled',
     defaultValue: false,
-    type: "checkbox"
+    type: 'checkbox',
   },
   {
-    name: "required",
-    label: "Required",
+    name: 'required',
+    label: 'Required',
     defaultValue: false,
-    type: "checkbox"
+    type: 'checkbox',
   },
   {
-    name: "logic",
-    label: "Logic",
+    name: 'logic',
+    label: 'Logic',
     defaultValue: defaultNodes,
-    type: "logic"
-  }
+    type: 'logic',
+  },
 ];
 
 const optionsAttribute = {
-  name: "options",
-  label: "Options",
-  defaultValue: [{ value: "", label: "[Pick an Option]" }],
-  type: "options"
+  name: 'options',
+  label: 'Options',
+  defaultValue: [{ value: '', label: '[Pick an Option]' }],
+  type: 'options',
 };
 
 export default {
   text: {
-    type: "text",
-    label: "Text Input",
-    defaultValue: "",
-    attributes: [...commonAttributes]
+    type: 'text',
+    label: 'Text Input',
+    defaultValue: '',
+    attributes: [...commonAttributes],
   },
   checkbox: {
-    type: "checkbox",
-    label: "Checkbox",
+    type: 'checkbox',
+    label: 'Checkbox',
     defaultValue: false,
     ownsLabel: true,
-    attributes: [...commonAttributes]
+    attributes: [...commonAttributes],
   },
   select: {
-    type: "select",
-    label: "Dropdown",
-    defaultValue: "",
-    attributes: [...commonAttributes, optionsAttribute]
-  }
+    type: 'select',
+    label: 'Dropdown',
+    defaultValue: '',
+    attributes: [...commonAttributes, optionsAttribute],
+  },
 };

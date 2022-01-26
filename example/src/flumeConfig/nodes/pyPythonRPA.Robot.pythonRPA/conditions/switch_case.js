@@ -1,17 +1,17 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from "../../../shared/presets/errorBlockPreset";
+} from '../../../shared/presets/errorBlockPreset';
 
 export const switchCaseNode = {
-  type: "switch_case",
-  name: "switch_case",
-  label: "SWITCH..CASE",
-  description: "Any kind of an action",
+  type: 'switch_case',
+  name: 'switch_case',
+  label: 'SWITCH..CASE',
+  description: 'Any kind of an action',
   inputs: (ports) => (data, connections) => {
     const conditions = _.entries(data).filter(
-      ([k, v]) => k.indexOf("condition") >= 0 && v.text
+      ([k, v]) => k.indexOf('condition') >= 0 && v.text
     );
 
     return [
@@ -26,7 +26,7 @@ export const switchCaseNode = {
         name: `condition${
           Number(
             conditions.length &&
-              conditions[conditions.length - 1][0].replace(/\D+/g, "")
+              conditions[conditions.length - 1][0].replace(/\D+/g, '')
           ) + 1
         }`,
         label: `Condition ${conditions.length + 1}`,
@@ -34,22 +34,22 @@ export const switchCaseNode = {
       }),
       ...conditions.map(([k], ind) =>
         ports.actionPort({
-          color: "#5ED28E",
+          color: '#5ED28E',
           name: `${k}_action`,
           label: `Condition ${ind + 1} case action`,
         })
       ),
       ports.actionPort({
-        color: "#5ED28E",
-        name: "elseCaseAction",
-        label: "Default case action",
+        color: '#5ED28E',
+        name: 'elseCaseAction',
+        label: 'Default case action',
       }),
       ...configErrorBlockPreset(ports, connections),
     ];
   },
   outputs: (ports) => [
     ports.actionPort({
-      label: "Previous action",
+      label: 'Previous action',
     }),
   ],
 };
@@ -71,13 +71,13 @@ export const resolveSwitchCaseNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: "pyPythonRPA.Robot.pythonRPA",
-    class: "conditions",
-    function: "switch_case",
+    module: 'pyPythonRPA.Robot.pythonRPA',
+    class: 'conditions',
+    function: 'switch_case',
     class_params: {},
     func_params: {
       conditions_and_cases: _.entries(node.connections.inputs)
-        .filter(([k]) => k.indexOf("condition") !== -1)
+        .filter(([k]) => k.indexOf('condition') !== -1)
         .reduce(
           (acc, [k, v]) => ({
             ...acc,
@@ -91,7 +91,7 @@ export const resolveSwitchCaseNode = (node, inputValues, nodeType, context) => {
     },
     breakpoint: false,
     ...resolveErrorBlockPreset(node, inputValues),
-    next_id: "condition",
+    next_id: 'condition',
   };
 
   return { actionPort: actionList };

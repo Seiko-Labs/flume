@@ -1,10 +1,10 @@
-import { Controls } from "node-editor";
-import _ from "lodash";
+import { Controls } from 'node-editor';
+import _ from 'lodash';
 
 export const selectorPort = {
-  type: "selector",
-  name: "selector",
-  label: "Selector",
+  type: 'selector',
+  name: 'selector',
+  label: 'Selector',
 };
 
 const selectorPreset = (ports, data) =>
@@ -13,20 +13,20 @@ const selectorPreset = (ports, data) =>
         ports.selector({
           controls: [
             Controls.button({
-              type: "button1",
-              name: "data",
+              type: 'button1',
+              name: 'data',
               defaultValue: undefined,
               label: `Edit...`,
               onPress: (inputData, nodeData, changeData) => {
-                changeData({ test: "ok" });
+                changeData({ test: 'ok' });
               },
             }),
             Controls.button({
-              name: "reset",
+              name: 'reset',
               defaultValue: undefined,
-              label: "Reset",
+              label: 'Reset',
               onPress: (inputData, nodeData, changeData) => {
-                changeData(undefined, "data");
+                changeData(undefined, 'data');
               },
             }),
           ],
@@ -36,12 +36,12 @@ const selectorPreset = (ports, data) =>
         ports.selector({
           controls: [
             Controls.button({
-              type: "button1",
-              name: "data",
+              type: 'button1',
+              name: 'data',
               defaultValue: undefined,
               label: `Browse...`,
               onPress: (inputData, nodeData, changeData) => {
-                changeData({ test: "ok" });
+                changeData({ test: 'ok' });
               },
             }),
           ],
@@ -49,8 +49,8 @@ const selectorPreset = (ports, data) =>
       ];
 
 export const selectorNode = {
-  type: "selector",
-  label: "Selector",
+  type: 'selector',
+  label: 'Selector',
   inputs: (ports) => (data) =>
     [...selectorPreset(ports, data), ports.actionPort()],
   outputs: (ports) => [ports.actionPort()],

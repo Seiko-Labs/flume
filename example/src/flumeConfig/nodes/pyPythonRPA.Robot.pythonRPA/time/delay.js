@@ -1,35 +1,35 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from "../../../shared/presets/errorBlockPreset";
+} from '../../../shared/presets/errorBlockPreset';
 
 export const delayNode = {
-  type: "delay",
-  name: "delay",
-  label: "DELAY",
+  type: 'delay',
+  name: 'delay',
+  label: 'DELAY',
   category: {
-    tileBackground: "rgba(27, 119, 64, 0.9)",
-    tileFontColor: "white",
+    tileBackground: 'rgba(27, 119, 64, 0.9)',
+    tileFontColor: 'white',
   },
-  description: "Any kind of an action",
+  description: 'Any kind of an action',
   inputs: (ports) => (_, connections) =>
     [
       ports.decimal({
-        name: "duration",
-        label: "Duration (in seconds)",
+        name: 'duration',
+        label: 'Duration (in seconds)',
         hidePort: true,
       }),
       ports.actionPort({
-        color: "#5ED28E",
-        name: "nextAction",
-        label: "Next action",
+        color: '#5ED28E',
+        name: 'nextAction',
+        label: 'Next action',
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: "Previous action",
+      label: 'Previous action',
     }),
   ],
 };
@@ -51,9 +51,9 @@ export const resolveDelayNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: "pyPythonRPA.Robot.pythonRPA",
-    class: "time",
-    function: "delay",
+    module: 'pyPythonRPA.Robot.pythonRPA',
+    class: 'time',
+    function: 'delay',
     class_params: {},
     func_params: {
       sec: inputValues.duration.number,
@@ -62,7 +62,7 @@ export const resolveDelayNode = (node, inputValues, nodeType, context) => {
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : "finish",
+      : 'finish',
   };
 
   return { actionPort: actionList };

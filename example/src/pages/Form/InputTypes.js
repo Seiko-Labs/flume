@@ -1,84 +1,84 @@
 const InputTypes = {
   string: {
-    type: "string",
+    type: 'string',
     label: 'Text',
-    acceptTypes: ["string"],
-    color: "green",
+    acceptTypes: ['string'],
+    color: 'green',
     controls: [
       {
-        type: "text",
-        name: "text",
-        label: "Text",
-        defaultValue: ""
-      }
-    ]
+        type: 'text',
+        name: 'text',
+        label: 'Text',
+        defaultValue: '',
+      },
+    ],
   },
   boolean: {
-    type: "boolean",
+    type: 'boolean',
     label: 'True/False',
-    acceptTypes: ["boolean"],
+    acceptTypes: ['boolean'],
     controls: [
       {
-        type: "checkbox",
-        name: "boolean",
-        label: "True/False",
-        defaultValue: false
-      }
-    ]
+        type: 'checkbox',
+        name: 'boolean',
+        label: 'True/False',
+        defaultValue: false,
+      },
+    ],
   },
   number: {
-    type: "number",
+    type: 'number',
     label: 'Number',
-    acceptTypes: ["number"],
-    color: "red",
+    acceptTypes: ['number'],
+    color: 'red',
     controls: [
       {
-        type: "number",
-        name: "number",
-        label: "Number",
-        defaultValue: 0
-      }
-    ]
+        type: 'number',
+        name: 'number',
+        label: 'Number',
+        defaultValue: 0,
+      },
+    ],
   },
   value: {
-    type: "value",
+    type: 'value',
     label: 'Value',
-    acceptTypes: ["value", "number", "string", "boolean"],
-    color: "yellow"
+    acceptTypes: ['value', 'number', 'string', 'boolean'],
+    color: 'yellow',
   },
   fieldId: {
-    type: "fieldId",
-    label: "Field",
-    acceptTypes: ["string", "fieldId"],
-    color: "blue",
+    type: 'fieldId',
+    label: 'Field',
+    acceptTypes: ['string', 'fieldId'],
+    color: 'blue',
     controls: [
       {
-        type: "select",
-        name: "selectedFieldId",
-        label: "Field",
-        defaultValue: "",
-        placeholder: "[Select a Field]",
-        options: []
-      }
-    ]
+        type: 'select',
+        name: 'selectedFieldId',
+        label: 'Field',
+        defaultValue: '',
+        placeholder: '[Select a Field]',
+        options: [],
+      },
+    ],
   },
   options: {
-    type: "options",
-    label: "Options",
-    acceptTypes: ["options"],
-    color: "pink"
+    type: 'options',
+    label: 'Options',
+    acceptTypes: ['options'],
+    color: 'pink',
   },
   stringArray: {
-    type: "stringArray",
-    label: "Array of strings",
-    acceptTypes: ["stringArray"],
-    color: "gray"
-  }
-}
+    type: 'stringArray',
+    label: 'Array of strings',
+    acceptTypes: ['stringArray'],
+    color: 'gray',
+  },
+};
 
-export default InputTypes
+export default InputTypes;
 
-export const getInputTypes = fields => {
+export const getInputTypes = (fields) => {
   return {
     ...InputTypes,
     fieldId: {
@@ -86,13 +86,13 @@ export const getInputTypes = fields => {
       controls: [
         {
           ...InputTypes.fieldId.controls[0],
-          options: Object.values(fields).map(f => ({
+          options: Object.values(fields).map((f) => ({
             value: f.id,
             label: f.label,
-            description: f.type
-          }))
-        }
-      ]
-    }
+            description: f.type,
+          })),
+        },
+      ],
+    },
   };
 };

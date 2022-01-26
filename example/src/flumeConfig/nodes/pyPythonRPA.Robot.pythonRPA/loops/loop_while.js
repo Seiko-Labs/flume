@@ -1,36 +1,36 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from "../../../shared/presets/errorBlockPreset";
+} from '../../../shared/presets/errorBlockPreset';
 
 export const loopWhileNode = {
-  type: "loop_while",
-  name: "loop_while",
-  label: "WHILE",
-  description: "Any kind of an action",
+  type: 'loop_while',
+  name: 'loop_while',
+  label: 'WHILE',
+  description: 'Any kind of an action',
   inputs: (ports) => (_, connections) =>
     [
       ports.string({
-        name: "image_path",
-        label: "Image",
+        name: 'image_path',
+        label: 'Image',
         hidePort: true,
       }),
       ports.actionPort({
-        color: "#4BAEFC",
-        name: "trueCaseAction",
-        label: "Loop actions",
+        color: '#4BAEFC',
+        name: 'trueCaseAction',
+        label: 'Loop actions',
       }),
       ports.actionPort({
-        color: "#5ED28E",
-        name: "falseCaseAction",
-        label: "After loop actions",
+        color: '#5ED28E',
+        name: 'falseCaseAction',
+        label: 'After loop actions',
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: "Previous action",
+      label: 'Previous action',
     }),
   ],
 };
@@ -52,9 +52,9 @@ export const resolveLoopWhileNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: "pyPythonRPA.Robot.pythonRPA",
-    class: "loops",
-    function: "loop_while",
+    module: 'pyPythonRPA.Robot.pythonRPA',
+    class: 'loops',
+    function: 'loop_while',
     class_params: {},
     func_params: {
       condition: inputValues.condition.text,
@@ -67,7 +67,7 @@ export const resolveLoopWhileNode = (node, inputValues, nodeType, context) => {
     },
     breakpoint: false,
     ...resolveErrorBlockPreset(node, inputValues),
-    next_id: "condition",
+    next_id: 'condition',
   };
 
   return { actionPort: actionList };

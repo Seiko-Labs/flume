@@ -1,12 +1,12 @@
-import { Controls } from "node-editor";
+import { Controls } from 'node-editor';
 
 export const string = {
-  type: "string",
-  name: "string",
-  label: "Text",
+  type: 'string',
+  name: 'string',
+  label: 'Text',
   controls: [
     Controls.text({
-      label: "Text",
+      label: 'Text',
     }),
   ],
 };

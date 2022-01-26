@@ -1,4 +1,4 @@
-*{
+* {
   box-sizing: border-box;
 }
 body {
@@ -7,17 +7,17 @@ body {
   font-family: sans-serif;
   background: rgb(17, 18, 19);
 }
-.wrapper{
+.wrapper {
   width: 1600px;
   height: 900px;
 }
-#root{
+#root {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding-top: 0;
 }
-.website-wrapper{
+.website-wrapper {
   color: #fff;
 }

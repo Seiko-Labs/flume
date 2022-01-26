@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import BoxIcon from "../icons/BoxIcon";
-import FormIcon from "../icons/FormIcon";
-import GearIcon from "../icons/GearIcon";
-import { Portal } from "react-portal";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import BoxIcon from '../icons/BoxIcon';
+import FormIcon from '../icons/FormIcon';
+import GearIcon from '../icons/GearIcon';
+import { Portal } from 'react-portal';
 
 export default () => {
   const [menuOpen, setMenuOpen] = React.useState();
@@ -21,7 +21,7 @@ export default () => {
       <div
         className="floating-nav"
         onMouseEnter={openMenu}
-        style={{ height: menuOpen ? 240 : "" }}
+        style={{ height: menuOpen ? 240 : '' }}
       >
         <div className="floating-nav-menu">
           <HoverLink to="/forms" label="Forms" style={{ bottom: 215 }}>

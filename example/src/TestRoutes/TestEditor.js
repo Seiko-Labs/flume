@@ -1,15 +1,15 @@
-import { sample } from "lodash/collection";
-import React, { useEffect } from "react";
-import "normalize.css";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import ReactJson from "react-json-view";
-import styled from "styled-components";
+import { sample } from 'lodash/collection';
+import React, { useEffect } from 'react';
+import 'normalize.css';
+import { Card, Col, Container, Row } from 'react-bootstrap';
+import ReactJson from 'react-json-view';
+import styled from 'styled-components';
 import {
   NodeEditor,
   useNodeEditorController,
   useRootEngine,
-} from "node-editor";
-import { engine, flumeBaseConfig } from "../flumeConfig";
+} from 'node-editor';
+import { engine, flumeBaseConfig } from '../flumeConfig';
 
 const NodeWrapper = styled(Col)`
   height: 100vh;
@@ -33,7 +33,7 @@ const TestEditor = () => {
   const [ns, , dispatch, connector, temp] = useNodeEditorController({
     defaultNodes: [
       {
-        type: "start",
+        type: 'start',
         x: 0,
         y: 0,
       },
@@ -41,7 +41,7 @@ const TestEditor = () => {
     options: {
       openEditor: (data, onChange, nodeData) => {
         console.log(data, nodeData);
-        onChange("I do work!");
+        onChange('I do work!');
       },
     },
   });
@@ -57,7 +57,7 @@ const TestEditor = () => {
   }, [temp.state]);
 
   useEffect(() => {
-    console.log("Node state updated");
+    console.log('Node state updated');
   }, [ns]);
 
   return (
@@ -65,15 +65,15 @@ const TestEditor = () => {
       <Row>
         <NodeWrapper md={8} className="px-0">
           <ControlsBlock>
-            <button onClick={() => dispatch("UNDO")}>Undo</button>
-            <button onClick={() => dispatch("REDO")}>Redo</button>
-            <button onClick={() => dispatch("COPY")}>Copy</button>
-            <button onClick={() => dispatch("CUT")}>Cut</button>
-            <button onClick={() => dispatch("PASTE")}>Paste</button>
+            <button onClick={() => dispatch('UNDO')}>Undo</button>
+            <button onClick={() => dispatch('REDO')}>Redo</button>
+            <button onClick={() => dispatch('COPY')}>Copy</button>
+            <button onClick={() => dispatch('CUT')}>Cut</button>
+            <button onClick={() => dispatch('PASTE')}>Paste</button>
             <br />
             <button
               onClick={() =>
-                dispatch("TOGGLE_NODES_VIEW", {
+                dispatch('TOGGLE_NODES_VIEW', {
                   nodeIds: Object.keys(
                     ns.nodesState[ns.currentStateIndex].state
                   ),
@@ -85,7 +85,7 @@ const TestEditor = () => {
             </button>
             <button
               onClick={() =>
-                dispatch("TOGGLE_NODES_VIEW", {
+                dispatch('TOGGLE_NODES_VIEW', {
                   nodeIds: Object.keys(
                     ns.nodesState[ns.currentStateIndex].state
                   ),
@@ -95,12 +95,12 @@ const TestEditor = () => {
             >
               Collapse nodes
             </button>
-            <label style={{ color: "white" }}>
+            <label style={{ color: 'white' }}>
               <input
                 type="checkbox"
                 onChange={(e) => {
                   temp.dispatch({
-                    type: "TOGGLE_MULTISELECT",
+                    type: 'TOGGLE_MULTISELECT',
                     doEnable: e.target.checked,
                   });
                 }}
@@ -114,7 +114,7 @@ const TestEditor = () => {
                   Object.values(ns.nodesState[ns.currentStateIndex].state)
                 );
 
-                dispatch("HIGHLIGHT_NODE", {
+                dispatch('HIGHLIGHT_NODE', {
                   node,
                 });
               }}
@@ -123,8 +123,8 @@ const TestEditor = () => {
             </button>
             <button
               onClick={() =>
-                dispatch("ADD_NODE", {
-                  type: "click",
+                dispatch('ADD_NODE', {
+                  type: 'click',
                   x: 100,
                   y: 200,
                 })
@@ -143,9 +143,9 @@ const TestEditor = () => {
           md={4}
           className="py-5 bg-light"
           style={{
-            overflowY: "scroll",
-            maxHeight: "100vh",
-            filter: "invert(.85)",
+            overflowY: 'scroll',
+            maxHeight: '100vh',
+            filter: 'invert(.85)',
           }}
         >
           <h2>Testing workflow</h2>

@@ -1,23 +1,24 @@
-import React from "react";
-import { PreviewFieldsDispatchContext } from "./Form";
-import resolveLogic from './resolveLogic'
-import nanoid from "nanoid/non-secure/index";
+import React from 'react';
+import { PreviewFieldsDispatchContext } from './Form';
+import resolveLogic from './resolveLogic';
+import nanoid from 'nanoid/non-secure/index';
 
 export default ({ field, fields }) => {
-  const { label, value, disabled, visible, required } = resolveLogic(field, fields) || {};
+  const { label, value, disabled, visible, required } =
+    resolveLogic(field, fields) || {};
   const dispatchPreviewFields = React.useContext(PreviewFieldsDispatchContext);
 
-  const handleChange = value => {
+  const handleChange = (value) => {
     dispatchPreviewFields({
-      type: "SET_FIELD_VALUE",
+      type: 'SET_FIELD_VALUE',
       fieldId: field.id,
-      value
+      value,
     });
   };
 
   const getFieldByType = () => {
     switch (field.type) {
-      case "text":
+      case 'text':
         return (
           <input
             className="dummy-input"
@@ -25,10 +26,10 @@ export default ({ field, fields }) => {
             value={value}
             required={required}
             disabled={disabled}
-            onChange={e => handleChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           />
         );
-      case "checkbox":
+      case 'checkbox':
         return (
           <Checkbox
             label={label}
@@ -38,7 +39,7 @@ export default ({ field, fields }) => {
             onChange={handleChange}
           />
         );
-      case "select":
+      case 'select':
         return (
           <Select
             value={value}
@@ -53,18 +54,16 @@ export default ({ field, fields }) => {
     }
   };
 
-  return (
-    visible ?
+  return visible ? (
     <FieldWrapper
       disabled={disabled}
       required={required}
-      hideLabel={field.type === "checkbox"}
+      hideLabel={field.type === 'checkbox'}
       label={label}
     >
       {getFieldByType()}
     </FieldWrapper>
-    : null
-  );
+  ) : null;
 };
 
 const FieldWrapper = ({ children, label, hideLabel, disabled, required }) => (
@@ -90,7 +89,7 @@ const Checkbox = ({ value, label, onChange, disabled, required }) => {
         checked={value}
         disabled={disabled}
         required={required}
-        onChange={e => onChange(e.target.checked)}
+        onChange={(e) => onChange(e.target.checked)}
       />
       <label htmlFor={id.current} className="checkbox-box"></label>
       <label htmlFor={id.current} className="checkbox-label">
@@ -106,7 +105,7 @@ const Select = ({ value, disabled, onChange, options, required }) => (
     value={value}
     disabled={disabled}
     required={required}
-    onChange={e => onChange(e.target.value)}
+    onChange={(e) => onChange(e.target.value)}
   >
     {options.map((option, i) => (
       <option value={option.value} key={`${option.name}${i}`}>

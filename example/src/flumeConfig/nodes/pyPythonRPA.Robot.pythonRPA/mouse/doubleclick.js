@@ -1,49 +1,49 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from "../../../shared/presets/errorBlockPreset";
+} from '../../../shared/presets/errorBlockPreset';
 
 export const doubleClickNode = {
-  type: "double_click",
-  name: "double_click",
-  label: "DOUBLE CLICK",
-  description: "Any kind of an action",
+  type: 'double_click',
+  name: 'double_click',
+  label: 'DOUBLE CLICK',
+  description: 'Any kind of an action',
   inputs: (ports) => (_, connections) =>
     [
       ports.number({
-        name: "x",
-        label: "X axis",
+        name: 'x',
+        label: 'X axis',
         hidePort: true,
       }),
       ports.number({
-        name: "y",
-        label: "Y axis",
+        name: 'y',
+        label: 'Y axis',
         hidePort: true,
       }),
       ports.number({
-        name: "interval",
-        label: "Click interval",
+        name: 'interval',
+        label: 'Click interval',
         hidePort: true,
       }),
       ports.buttonPort({
         hidePort: true,
       }),
       ports.decimal({
-        name: "duration",
-        label: "Duration (in seconds)",
+        name: 'duration',
+        label: 'Duration (in seconds)',
         hidePort: true,
       }),
       ports.actionPort({
-        color: "#5ED28E",
-        name: "nextAction",
-        label: "Next action",
+        color: '#5ED28E',
+        name: 'nextAction',
+        label: 'Next action',
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: "Previous action",
+      label: 'Previous action',
     }),
   ],
 };
@@ -70,9 +70,9 @@ export const resolveDoubleClickNode = (
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: "pyPythonRPA.Robot.pythonRPA",
-    class: "double_click",
-    function: "click",
+    module: 'pyPythonRPA.Robot.pythonRPA',
+    class: 'double_click',
+    function: 'click',
     class_params: {},
     func_params: {
       x: inputValues.x.number,
@@ -85,7 +85,7 @@ export const resolveDoubleClickNode = (
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : "finish",
+      : 'finish',
   };
 
   return { actionPort: actionList };

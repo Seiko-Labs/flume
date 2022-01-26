@@ -1,89 +1,89 @@
 export const exampleNodes = {
-  "5nCLb85WDw": {
-    id: "5nCLb85WDw",
+  '5nCLb85WDw': {
+    id: '5nCLb85WDw',
     x: 134.5,
     y: -90,
-    type: "addNumbers",
+    type: 'addNumbers',
     width: 150,
     connections: {
       inputs: {
         num1: [],
-        num2: []
+        num2: [],
       },
-      outputs: {}
+      outputs: {},
     },
-    inputData: { num1: { number: 0 }, num2: { number: 0 } }
+    inputData: { num1: { number: 0 }, num2: { number: 0 } },
   },
   vRPQ06k4nT: {
-    id: "vRPQ06k4nT",
+    id: 'vRPQ06k4nT',
     x: -182.5,
     y: -176,
-    type: "number",
+    type: 'number',
     width: 150,
     connections: {
       inputs: {},
-      outputs: { number: [] }
+      outputs: { number: [] },
     },
-    inputData: { number: { number: 0 } }
+    inputData: { number: { number: 0 } },
   },
   BDhQ98lTfw: {
-    id: "BDhQ98lTfw",
+    id: 'BDhQ98lTfw',
     x: -181.5,
     y: -42,
-    type: "number",
+    type: 'number',
     width: 150,
     connections: {
       inputs: {},
-      outputs: { number: [] }
+      outputs: { number: [] },
     },
-    inputData: { number: { number: 0 } }
-  }
+    inputData: { number: { number: 0 } },
+  },
 };
 
 export const portTypes = {
   number: {
-    label: "Number",
-    name: "number",
-    acceptTypes: ["number"],
-    color: "red",
+    label: 'Number',
+    name: 'number',
+    acceptTypes: ['number'],
+    color: 'red',
     controls: [
       {
-        type: "number",
-        name: "number",
-        label: "Number",
-        defaultValue: 0
-      }
-    ]
-  }
+        type: 'number',
+        name: 'number',
+        label: 'Number',
+        defaultValue: 0,
+      },
+    ],
+  },
 };
 
 export const nodeTypes = {
   number: {
-    type: "number",
-    label: "Number",
+    type: 'number',
+    label: 'Number',
     initialWidth: 150,
-    inputs: [{ type: "number", name: "number" }],
+    inputs: [{ type: 'number', name: 'number' }],
     outputs: [
       {
-        type: "number",
-        name: "number"
-      }
-    ]
+        type: 'number',
+        name: 'number',
+      },
+    ],
   },
   addNumbers: {
-    type: "addNumbers",
-    label: "Add Numbers",
+    type: 'addNumbers',
+    label: 'Add Numbers',
     initialWidth: 150,
     inputs: [
       {
-        type: "number",
-        name: "num1"
+        type: 'number',
+        name: 'num1',
       },
       {
-        type: "number",
-        name: "num2"
-      }
+        type: 'number',
+        name: 'num2',
+      },
     ],
-    outputs: [{ type: "number", name: "result" }]
-  }
+    outputs: [{ type: 'number', name: 'result' }],
+  },
 };

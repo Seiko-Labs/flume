@@ -1,6 +1,6 @@
-import { FlumeConfig, RootEngine } from "node-editor";
-import { addSharedPorts, resolveSharedPorts } from "./shared/ports";
-import { applyBaseConfig, resolveBaseNodes } from "./nodes";
+import { FlumeConfig, RootEngine } from 'node-editor';
+import { addSharedPorts, resolveSharedPorts } from './shared/ports';
+import { applyBaseConfig, resolveBaseNodes } from './nodes';
 
 export const flumeBaseConfig = new FlumeConfig();
 

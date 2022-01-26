@@ -1,13 +1,13 @@
-import { Colors } from "node-editor";
+import { Colors } from 'node-editor';
 
 export const configErrorBlockPreset = (ports, connections) => [
   ports.errorPort({
     optional: true,
   }),
   ports.actionPort({
-    name: "errorAction",
-    label: "Error action",
-    color: "#F16969",
+    name: 'errorAction',
+    label: 'Error action',
+    color: '#F16969',
   }),
 ];
 

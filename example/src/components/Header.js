@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 
 export default () => {
-
   return (
     <div className="header-wrapper">
       <header className="flex-row">
@@ -12,5 +11,5 @@ export default () => {
         </div>
       </header>
     </div>
-  )
-}
+  );
+};

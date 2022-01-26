@@ -1,14 +1,14 @@
-import React from "react";
-import axios from "axios";
-import { useHistory } from "react-router";
-import Field from "./Field";
-import PreviewField from "./PreviewField";
+import React from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router';
+import Field from './Field';
+import PreviewField from './PreviewField';
 import {
   DesignerDispatchContext,
   DesignerStateContext,
   BASE_URL,
-} from "./Form";
-import { getFieldValues } from "./formHandler";
+} from './Form';
+import { getFieldValues } from './formHandler';
 
 export default ({
   previewFields,
@@ -28,7 +28,7 @@ export default ({
 
   const startWizardEdit = () => {
     designerDispatch({
-      type: "START_WIZARD_EDIT",
+      type: 'START_WIZARD_EDIT',
     });
   };
 
@@ -41,7 +41,7 @@ export default ({
         values,
       })
       .then((res) => {
-        history.push("/records");
+        history.push('/records');
       });
   };
 
@@ -49,7 +49,7 @@ export default ({
     <form className="form-body" onSubmit={handleSubmit}>
       <div className="flex-row align-center">
         <h2 onClick={startWizardEdit} data-editing={editingWizard}>
-          {filing ? designerState.title : "Form Preview"}
+          {filing ? designerState.title : 'Form Preview'}
         </h2>
         <div className="flex-row align-right" style={{ marginTop: -15 }}>
           {!filing && (
@@ -59,7 +59,7 @@ export default ({
               onClick={togglePreview}
               type="button"
             >
-              {previewing ? "Return to Editing" : "Preview"}
+              {previewing ? 'Return to Editing' : 'Preview'}
             </button>
           )}
           {!previewing && !filing && (
@@ -99,7 +99,7 @@ export default ({
         </>
       )}
       {filing && (
-        <div className="footer-toolbar flex-row" style={{ marginTop: "auto" }}>
+        <div className="footer-toolbar flex-row" style={{ marginTop: 'auto' }}>
           <button className="attribute-button align-right">Submit</button>
         </div>
       )}

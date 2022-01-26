@@ -1,6 +1,6 @@
-import React from "react";
-import Modal from "./Modal";
-import { NodeEditor } from "node-editor";
+import React from 'react';
+import Modal from './Modal';
+import { NodeEditor } from 'node-editor';
 
 export default ({
   isOpen,
@@ -10,14 +10,14 @@ export default ({
   defaultNodes,
   nodes,
   onChange,
-  context = {}
+  context = {},
 }) => {
   const nodeEditor = React.useRef();
 
   const saveNodes = () => {
     const nodes = nodeEditor.current.getNodes();
     onChange(nodes);
-    onCloseRequested()
+    onCloseRequested();
   };
 
   return isOpen ? (
