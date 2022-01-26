@@ -11,8 +11,10 @@ const Select = ({
   placeholder = "[Select an option]",
   onChange,
   data,
+  defaultValue,
   allowMultiple,
 }) => {
+  React.useEffect(() => { handleOptionSelected(defaultValue) }, [defaultValue]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [drawerCoordinates, setDrawerCoordinates] = React.useState({
     x: 0,
