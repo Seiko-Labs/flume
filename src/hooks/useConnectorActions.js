@@ -53,6 +53,15 @@ const useConnectorActions = ({
           clearConnections();
           triggerRecalculation();
           break;
+        case "DEL":
+          dispatchNodes({
+            type: "DEL_NODES",
+            selectedNodeIds: selectedNodes,
+          });
+
+          clearConnections();
+          triggerRecalculation();
+          break;
         case "PASTE":
           dispatchNodes({ type: "PASTE_NODES" });
 
