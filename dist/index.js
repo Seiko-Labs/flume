@@ -28258,6 +28258,15 @@ var useConnectorActions = function useConnectorActions(_ref) {
           triggerRecalculation();
           break;
 
+        case "DEL":
+          dispatchNodes({
+            type: "DEL_NODES",
+            selectedNodeIds: selectedNodes
+          });
+          clearConnections();
+          triggerRecalculation();
+          break;
+
         case "PASTE":
           dispatchNodes({
             type: "PASTE_NODES"
@@ -32419,6 +32428,20 @@ var nodesReducer = function nodesReducer(_ref) {
           return removeNode(stayNodes, id);
         }, nodes);
       }
+
+    case "DEL_NODES":
+    {
+      var _selectedNodeIds = _.difference(action.selectedNodeIds, _.keys(_.pickBy(nodes, function (_ref6) {
+        var root = _ref6.root;
+        return root;
+      })));
+
+      if (!_selectedNodeIds.length) return nodes;
+
+      return _selectedNodeIds.reduce(function (stayNodes, id) {
+        return removeNode(stayNodes, id);
+      }, nodes);
+    }
 
     case "PASTE_NODES":
       {
