@@ -161,6 +161,20 @@ export const nodesReducer = (
       );
     }
 
+    case "DEL_NODES": {
+      const selectedNodeIds = _.difference(
+        action.selectedNodeIds,
+        _.keys(_.pickBy(nodes, ({ root }) => root))
+      );
+
+      if (!selectedNodeIds.length) return nodes;
+
+      return selectedNodeIds.reduce(
+        (stayNodes, id) => removeNode(stayNodes, id),
+        nodes
+      );
+    }
+
     case "PASTE_NODES": {
       const JSONString = localStorage.getItem("clipboard");
       const { application, nodes: newNodes } = JSON.parse(JSONString);
