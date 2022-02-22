@@ -1,6 +1,8 @@
 import * as React from 'react';
 import React__default, { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect, createContext, forwardRef, useContext, createRef, useReducer, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
+import { readFileSync } from 'fs';
+import jsonStorage from 'electron-json-storage';
 
 function _extends$3() {
   _extends$3 = Object.assign || function (target) {
@@ -9135,6 +9137,18 @@ var TextInput = function TextInput(_ref) {
     value: data,
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
+    onClick: function onClick(e) {
+      e.stopPropagation(); //Check if rightbar is opened for rightbar card editor in studio
+
+      var stateStorage = JSON.parse(readFileSync("".concat(jsonStorage.getDefaultDataPath(), "\\stateStorageFile.json"), {
+        encoding: 'utf8',
+        flag: 'r'
+      }) || '{}');
+
+      if (stateStorage.additional.isRightBarOpened) {
+        openEditor(data, _onChange, nodeData);
+      }
+    },
     type: "text",
     placeholder: placeholder,
     className: styles$9.input
