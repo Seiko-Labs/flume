@@ -4,8 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var fs = require('fs');
-var jsonStorage = require('electron-json-storage');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -30,7 +28,6 @@ function _interopNamespace(e) {
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
-var jsonStorage__default = /*#__PURE__*/_interopDefaultLegacy(jsonStorage);
 
 function _extends$3() {
   _extends$3 = Object.assign || function (target) {
@@ -9165,18 +9162,6 @@ var TextInput = function TextInput(_ref) {
     value: data,
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
-    onClick: function onClick(e) {
-      e.stopPropagation(); //Check if rightbar is opened for rightbar card editor in studio
-
-      var stateStorage = JSON.parse(fs.readFileSync("".concat(jsonStorage__default["default"].getDefaultDataPath(), "\\stateStorageFile.json"), {
-        encoding: 'utf8',
-        flag: 'r'
-      }) || '{}');
-
-      if (stateStorage.additional.isRightBarOpened) {
-        openEditor(data, _onChange, nodeData);
-      }
-    },
     type: "text",
     placeholder: placeholder,
     className: styles$9.input
