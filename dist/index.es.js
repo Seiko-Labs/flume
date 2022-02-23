@@ -9135,6 +9135,14 @@ var TextInput = function TextInput(_ref) {
     value: data,
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      var stateStorage = JSON.parse(localStorage.getItem('storage'));
+
+      if (stateStorage.additional.isRightBarOpened) {
+        openEditor(data, _onChange, nodeData);
+      }
+    },
     type: "text",
     placeholder: placeholder,
     className: styles$9.input

@@ -1,12 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
 
 const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
   const preventPropagation = (e) => e.stopPropagation();
-
   const { openEditor } = useContext(ControllerOptionsContext);
-
   return (
     <div className={styles.wrapper}>
       <input
@@ -17,6 +15,15 @@ const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
         value={data}
         onDragStart={preventPropagation}
         onMouseDown={preventPropagation}
+        onClick={(e) => {
+          e.stopPropagation();
+          const stateStorage = JSON.parse(
+            localStorage.getItem('storage')
+          );
+          if (stateStorage.additional.isRightBarOpened) {
+            openEditor(data, onChange, nodeData);
+          }
+        }}
         type="text"
         placeholder={placeholder}
         className={styles.input}
