@@ -4,7 +4,7 @@ import styles from "./TextInput.css";
 
 const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
   const preventPropagation = (e) => e.stopPropagation();
-  const { openEditor } = useContext(ControllerOptionsContext);
+  const { openEditor, isRightBarOpened } = useContext(ControllerOptionsContext);
   return (
     <div className={styles.wrapper}>
       <input
@@ -17,10 +17,7 @@ const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
         onMouseDown={preventPropagation}
         onClick={(e) => {
           e.stopPropagation();
-          const stateStorage = JSON.parse(
-            localStorage.getItem('storage')
-          );
-          if (stateStorage.additional.isRightBarOpened) {
+          if (isRightBarOpened()) {
             openEditor(data, onChange, nodeData);
           }
         }}
