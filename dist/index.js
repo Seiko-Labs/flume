@@ -9150,7 +9150,8 @@ var TextInput = function TextInput(_ref) {
   };
 
   var _useContext = React.useContext(ControllerOptionsContext),
-      openEditor = _useContext.openEditor;
+      openEditor = _useContext.openEditor,
+      isRightBarOpened = _useContext.isRightBarOpened;
 
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$9.wrapper
@@ -9164,9 +9165,8 @@ var TextInput = function TextInput(_ref) {
     onMouseDown: preventPropagation,
     onClick: function onClick(e) {
       e.stopPropagation();
-      var stateStorage = JSON.parse(localStorage.getItem('storage'));
 
-      if (stateStorage.additional.isRightBarOpened) {
+      if (isRightBarOpened()) {
         openEditor(data, _onChange, nodeData);
       }
     },
