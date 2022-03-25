@@ -23,7 +23,7 @@ export class RootEngine {
   checkLoops() {
     if (this.maxLoops >= 0 && this.loops > this.maxLoops) {
       throw new LoopError(
-        "Max loop count exceeded.",
+        'Max loop count exceeded.',
         LoopError.maxLoopsExceeded
       );
     } else {
@@ -35,7 +35,7 @@ export class RootEngine {
     const roots = Object.values(nodes).filter((n) => n.root);
     if (roots.length > 1) {
       throw new Error(
-        "The root engine must not be called with more than one root node."
+        'The root engine must not be called with more than one root node.'
       );
     }
     return roots[0];
@@ -51,7 +51,7 @@ export class RootEngine {
 
   resolveInputValues(node, nodeType, nodes, context) {
     let inputs = nodeType.inputs;
-    if (typeof inputs === "function") {
+    if (typeof inputs === 'function') {
       inputs = inputs(node.inputData, node.connections, context);
     }
     return inputs.reduce((obj, input) => {
@@ -97,7 +97,7 @@ export class RootEngine {
       : this.getRootNode(nodes);
     if (rootNode) {
       let inputs = this.config.nodeTypes[rootNode.type].inputs;
-      if (typeof inputs === "function") {
+      if (typeof inputs === 'function') {
         inputs = inputs(
           rootNode.inputData,
           rootNode.connections,
@@ -145,7 +145,7 @@ export class RootEngine {
       }
     } else {
       console.error(
-        "A root node was not found. The Root Engine requires that exactly one node be marked as the root node."
+        'A root node was not found. The Root Engine requires that exactly one node be marked as the root node.'
       );
       return {};
     }

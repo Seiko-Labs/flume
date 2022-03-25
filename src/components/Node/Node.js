@@ -1,18 +1,18 @@
-import React, { forwardRef, useContext, useMemo, useState } from "react";
-import useTransputs from "../../hooks/useTransputs";
-import styles from "./Node.css";
+import React, { forwardRef, useContext, useMemo, useState } from 'react';
+import useTransputs from '../../hooks/useTransputs';
+import styles from './Node.css';
 import {
   ConnectionRecalculateContext,
   NodeDispatchContext,
   NodeTypesContext,
   StageContext,
-} from "../../context";
-import { calculateCurve, getPortRect } from "../../connectionCalculator";
-import { Portal } from "react-portal";
-import ContextMenu from "../ContextMenu/ContextMenu";
-import IoPorts from "../IoPorts/IoPorts";
-import Draggable from "../Draggable/Draggable";
-import { ReactComponent as Ticker } from "../../img/ticker.svg";
+} from '../../context';
+import { calculateCurve, getPortRect } from '../../connectionCalculator';
+import { Portal } from 'react-portal';
+import ContextMenu from '../ContextMenu/ContextMenu';
+import IoPorts from '../IoPorts/IoPorts';
+import Draggable from '../Draggable/Draggable';
+import { ReactComponent as Ticker } from '../../img/ticker.svg';
 
 const Node = forwardRef(
   (
@@ -52,8 +52,8 @@ const Node = forwardRef(
       description,
       actions: { buttons },
       category: {
-        tileFontColor = "#B3B3B3",
-        tileBackground = "rgba(89, 89, 102, 0.9)",
+        tileFontColor = '#B3B3B3',
+        tileBackground = 'rgba(89, 89, 102, 0.9)',
       },
     } = nodeTypes[type];
 
@@ -61,7 +61,7 @@ const Node = forwardRef(
     const [menuCoordinates, setMenuCoordinates] = useState({ x: 0, y: 0 });
     const resolvedInputs = useTransputs(
       inputs,
-      "input",
+      'input',
       id,
       inputData,
       connections
@@ -69,7 +69,7 @@ const Node = forwardRef(
 
     const resolvedOutputs = useTransputs(
       outputs,
-      "output",
+      'output',
       id,
       inputData,
       connections
@@ -92,13 +92,13 @@ const Node = forwardRef(
           const toRect = getPortRect(
             id,
             portName,
-            isOutput ? "output" : "input"
+            isOutput ? 'output' : 'input'
             // cache
           );
           const fromRect = getPortRect(
             output.nodeId,
             output.portName,
-            isOutput ? "input" : "output"
+            isOutput ? 'input' : 'output'
             // cache
           );
           const portHalf = fromRect.width / 2;
@@ -145,7 +145,7 @@ const Node = forwardRef(
               ) + stageState.translate.y,
           };
           cnx.setAttribute(
-            "d",
+            'd',
             calculateCurve(...(isOutput ? [to, from] : [from, to]))
           );
         });
@@ -191,9 +191,9 @@ const Node = forwardRef(
 
     const handleMenuOption = ({ value }) => {
       switch (value) {
-        case "deleteNode":
+        case 'deleteNode':
           nodesDispatch({
-            type: "REMOVE_NODE",
+            type: 'REMOVE_NODE',
             nodeId: id,
           });
           break;
@@ -215,7 +215,7 @@ const Node = forwardRef(
           color: tileFontColor,
           boxShadow: isSelected
             ? `0 0 0 ${2 / stageState.scale}px rgba(75, 174, 252, 0.5)`
-            : "none",
+            : 'none',
           transform: `translate(${x}px, ${y}px)`,
         }}
         onDragStart={onDragStart}
@@ -242,12 +242,12 @@ const Node = forwardRef(
               {hasInner && (
                 <Ticker
                   onClick={() => {
-                    nodesDispatch({ type: "TOGGLE_NODE_VIEW", id });
+                    nodesDispatch({ type: 'TOGGLE_NODE_VIEW', id });
                     recalculateConnections();
                   }}
                   style={{
-                    transform: expanded ? "none" : "rotate(-90deg)",
-                    cursor: "pointer",
+                    transform: expanded ? 'none' : 'rotate(-90deg)',
+                    cursor: 'pointer',
                     stroke: tileFontColor,
                   }}
                 />
@@ -269,7 +269,7 @@ const Node = forwardRef(
                   actionsData,
                   (getState) =>
                     nodesDispatch({
-                      type: "UPDATE_NODE_ACTION_DATA",
+                      type: 'UPDATE_NODE_ACTION_DATA',
                       data: getState(actionsData),
                       nodeId: id,
                     }),
@@ -285,7 +285,7 @@ const Node = forwardRef(
             <IoPorts
               nodeId={id}
               resolvedInputs={resolvedInputs}
-              show={"innerOnly"}
+              show={'innerOnly'}
               connections={connections}
               nodeData={nodeData}
               updateNodeConnections={updateNodeConnections}
@@ -300,7 +300,7 @@ const Node = forwardRef(
         <IoPorts
           nodeId={id}
           resolvedInputs={resolvedInputs}
-          show={"inputsOnly"}
+          show={'inputsOnly'}
           color={tileBackground}
           connections={connections}
           updateNodeConnections={updateNodeConnections}
@@ -315,10 +315,10 @@ const Node = forwardRef(
                 ...(deletable !== false
                   ? [
                       {
-                        label: "Delete Node",
-                        value: "deleteNode",
+                        label: 'Delete Node',
+                        value: 'deleteNode',
                         description:
-                          "Deletes a node and all of its connections.",
+                          'Deletes a node and all of its connections.',
                       },
                     ]
                   : []),
@@ -336,6 +336,6 @@ const Node = forwardRef(
   }
 );
 
-Node.displayName = "Node";
+Node.displayName = 'Node';
 
 export default Node;

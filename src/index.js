@@ -1,9 +1,9 @@
-import { useId } from '@reach/auto-id';
-import Stage from './components/Stage/Stage';
-import Node from './components/Node/Node';
-import Comment from './components/Comment/Comment';
-import Toaster from './components/Toaster/Toaster';
-import Connections from './components/Connections/Connections';
+import { useId } from "@reach/auto-id";
+import Stage from "./components/Stage/Stage";
+import Node from "./components/Node/Node";
+import Comment from "./components/Comment/Comment";
+import Toaster from "./components/Toaster/Toaster";
+import Connections from "./components/Connections/Connections";
 import React, {
   createRef,
   forwardRef,
@@ -14,7 +14,7 @@ import React, {
   useReducer,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import {
   CacheContext,
   ConnectionRecalculateContext,
@@ -26,21 +26,21 @@ import {
   PortTypesContext,
   RecalculateStageRectContext,
   StageContext,
-} from './context';
-import { createConnections } from './connectionCalculator';
-import useConnectorActions from './hooks/useConnectorActions';
-import nodesReducer, { connectNodesReducer } from './reducers/nodes';
-import commentsReducer from './reducers/commentsReducer';
-import toastsReducer from './reducers/toastsReducer';
-import stageReducer from './reducers/stageReducer';
-import usePrevious from './hooks/usePrevious';
-import clamp from 'lodash/clamp';
-import Cache from './Cache';
-import { DRAG_CONNECTION_ID, STAGE_ID } from './constants';
-import styles from './styles.css';
-import Selection from 'react-ds/dist';
-import useSelect from './hooks/useSelect';
-import getInitialNodes from './reducers/nodes/getInitialNodes';
+} from "./context";
+import { createConnections } from "./connectionCalculator";
+import useConnectorActions from "./hooks/useConnectorActions";
+import nodesReducer, { connectNodesReducer } from "./reducers/nodes";
+import commentsReducer from "./reducers/commentsReducer";
+import toastsReducer from "./reducers/toastsReducer";
+import stageReducer from "./reducers/stageReducer";
+import usePrevious from "./hooks/usePrevious";
+import clamp from "lodash/clamp";
+import Cache from "./Cache";
+import { DRAG_CONNECTION_ID, STAGE_ID } from "./constants";
+import styles from "./styles.css";
+import Selection from "react-ds/dist";
+import useSelect from "./hooks/useSelect";
+import getInitialNodes from "./reducers/nodes/getInitialNodes";
 
 const defaultContext = {};
 
@@ -100,7 +100,7 @@ export const NodeEditor = forwardRef(
                 portTypes,
                 context
               ),
-              action: { type: 'INITIAL' },
+              action: { type: "INITIAL" },
             },
           ],
           currentStateIndex: 0,
@@ -124,7 +124,7 @@ export const NodeEditor = forwardRef(
     );
 
     useEffect(() => {
-      !currentStateIndex && dispatchNodes({ type: 'HYDRATE_DEFAULT_NODES' });
+      !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
       recalculateConnections();
     }, []);
 
@@ -135,16 +135,16 @@ export const NodeEditor = forwardRef(
 
     const [stageState, dispatchStageState] = useReducer(stageReducer, {
       scale:
-        typeof initialStageParams?.scale === 'number'
+        typeof initialStageParams?.scale === "number"
           ? clamp(initialStageParams?.scale, 0.1, 7)
           : 1,
       translate: {
         x:
-          typeof initialStageParams?.translate?.x === 'number'
+          typeof initialStageParams?.translate?.x === "number"
             ? initialStageParams.translate.x
             : 0,
         y:
-          typeof initialStageParams?.translate?.y === 'number'
+          typeof initialStageParams?.translate?.y === "number"
             ? initialStageParams.translate.y
             : 0,
       },
@@ -190,7 +190,7 @@ export const NodeEditor = forwardRef(
     const handleDragEnd = (e, id, coordinates) => {
       if (selectedNodes.length > 0) {
         dispatchNodes({
-          type: 'SET_MULTIPLE_NODES_COORDINATES',
+          type: "SET_MULTIPLE_NODES_COORDINATES",
           nodesInfo: selectedNodes
             .map((id) => {
               const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
@@ -213,7 +213,7 @@ export const NodeEditor = forwardRef(
         });
       } else {
         dispatchNodes({
-          type: 'SET_NODE_COORDINATES',
+          type: "SET_NODE_COORDINATES",
           ...coordinates,
           nodeId: id,
         });
@@ -299,7 +299,6 @@ export const NodeEditor = forwardRef(
                                 top: 0,
                                 left: 0,
                               }}
-                              zoom={stageState.scale}
                               ignoreTargets={[
                                 'div[class^="Node_wrapper__"]',
                                 'div[class^="Node_wrapper__"] *',
@@ -308,8 +307,8 @@ export const NodeEditor = forwardRef(
                               ]}
                               style={
                                 spaceIsPressed
-                                  ? { display: 'none' }
-                                  : { zIndex: 100 }
+                                  ? { display: "none" }
+                                  : { zIndex: 100, cursor: "inherit" }
                               }
                             />
                           )}
@@ -391,12 +390,12 @@ export const NodeEditor = forwardRef(
   }
 );
 
-NodeEditor.displayName = 'NodeEditor';
+NodeEditor.displayName = "NodeEditor";
 
-export FlumeConfig, { Colors } from './typeBuilder/FlumeConfig';
-export Controls from './typeBuilder/Controls';
-export { RootEngine } from './RootEngine';
-export useNodeEditorController from './hooks/useNodeEditorController';
+export FlumeConfig, { Colors } from "./typeBuilder/FlumeConfig";
+export Controls from "./typeBuilder/Controls";
+export { RootEngine } from "./RootEngine";
+export useNodeEditorController from "./hooks/useNodeEditorController";
 export const useRootEngine = (nodes, engine, context) =>
   Object.keys(nodes).length > 0
     ? engine.resolveRootNode(nodes, { context })

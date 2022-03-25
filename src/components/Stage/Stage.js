@@ -6,15 +6,15 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react";
-import styles from "./Stage.css";
-import { Portal } from "react-portal";
-import ContextMenu from "../ContextMenu/ContextMenu";
-import { NodeTypesContext, NodeDispatchContext } from "../../context";
-import Draggable from "../Draggable/Draggable";
-import orderBy from "lodash/orderBy";
-import clamp from "lodash/clamp";
-import { STAGE_ID } from "../../constants";
+} from 'react';
+import styles from './Stage.css';
+import { Portal } from 'react-portal';
+import ContextMenu from '../ContextMenu/ContextMenu';
+import { NodeTypesContext, NodeDispatchContext } from '../../context';
+import Draggable from '../Draggable/Draggable';
+import orderBy from 'lodash/orderBy';
+import clamp from 'lodash/clamp';
+import { STAGE_ID } from '../../constants';
 
 const Stage = forwardRef(
   (
@@ -54,22 +54,22 @@ const Stage = forwardRef(
 
     useEffect(() => {
       stageRef.current = wrapper.current.getBoundingClientRect();
-      window.addEventListener("resize", setStageRect);
+      window.addEventListener('resize', setStageRect);
       return () => {
-        window.removeEventListener("resize", setStageRect);
+        window.removeEventListener('resize', setStageRect);
       };
     }, [stageRef, setStageRect]);
 
     const handleWheel = useCallback(
       (e) => {
-        if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
+        if (e.target.nodeName === 'TEXTAREA' || e.target.dataset.comment) {
           if (e.target.clientHeight < e.target.scrollHeight) return;
         }
         e.preventDefault();
         if (numNodes > 0) {
           const delta = e.deltaY;
           dispatchStageState(({ scale }) => ({
-            type: "SET_SCALE",
+            type: 'SET_SCALE',
             scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 2),
           }));
         }
@@ -110,7 +110,7 @@ const Stage = forwardRef(
       dragData.current.x = e.clientX;
       dragData.current.y = e.clientY;
       dispatchStageState(({ translate: tran }) => ({
-        type: "SET_TRANSLATE",
+        type: 'SET_TRANSLATE',
         translate: {
           x: tran.x + xDistance,
           y: tran.y + yDistance,
@@ -139,15 +139,15 @@ const Stage = forwardRef(
       const y =
         byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) +
         translate.y;
-      if (internalType === "comment") {
+      if (internalType === 'comment') {
         dispatchComments({
-          type: "ADD_COMMENT",
+          type: 'ADD_COMMENT',
           x,
           y,
         });
       } else {
         dispatchNodes({
-          type: "ADD_NODE",
+          type: 'ADD_NODE',
           x,
           y,
           nodeType: node.type,
@@ -159,7 +159,7 @@ const Stage = forwardRef(
       if (e.which === 32) {
         setSpaceIsPressed(false);
         parentSetSpaceIsPressed(false);
-        document.removeEventListener("keyup", handleDocumentKeyUp);
+        document.removeEventListener('keyup', handleDocumentKeyUp);
       }
     };
 
@@ -169,7 +169,7 @@ const Stage = forwardRef(
         e.stopPropagation();
         parentSetSpaceIsPressed(true);
         setSpaceIsPressed(true);
-        document.addEventListener("keyup", handleDocumentKeyUp);
+        document.addEventListener('keyup', handleDocumentKeyUp);
       }
     };
 
@@ -182,9 +182,9 @@ const Stage = forwardRef(
     useEffect(() => {
       if (!disableZoom) {
         let stageWrapper = wrapper.current;
-        stageWrapper.addEventListener("wheel", handleWheel);
+        stageWrapper.addEventListener('wheel', handleWheel);
         return () => {
-          stageWrapper.removeEventListener("wheel", handleWheel);
+          stageWrapper.removeEventListener('wheel', handleWheel);
         };
       }
     }, [handleWheel, disableZoom]);
@@ -200,14 +200,14 @@ const Stage = forwardRef(
             sortIndex: node.sortIndex,
             node,
           })),
-        ["sortIndex", "label"]
+        ['sortIndex', 'label']
       );
       if (!disableComments) {
         options.push({
-          value: "comment",
-          label: "Comment",
-          description: "A comment for documenting nodes",
-          internalType: "comment",
+          value: 'comment',
+          label: 'Comment',
+          description: 'A comment for documenting nodes',
+          internalType: 'comment',
         });
       }
       return options;
@@ -228,9 +228,9 @@ const Stage = forwardRef(
         tabIndex={-1}
         stageState={{ scale, translate }}
         style={{
-          cursor: spaceIsPressed && spaceToPan ? "grab" : "",
+          cursor: spaceIsPressed && spaceToPan ? 'grab' : '',
           backgroundSize: 10 * scale,
-          backgroundOrigin: "center",
+          backgroundOrigin: 'center',
           backgroundPosition: `calc(50% + ${
             -(translate.x * scale) % (10 * scale)
           }px) calc(50% + ${-(translate.y * scale) % (10 * scale)}px) `,
@@ -254,7 +254,7 @@ const Stage = forwardRef(
           ref={scaleWrapper}
           className={styles.scaleWrapper}
           style={{
-            transformOrigin: "center",
+            transformOrigin: 'center',
             transform: `scale(${scale})`,
           }}
         >
@@ -274,6 +274,6 @@ const Stage = forwardRef(
   }
 );
 
-Stage.displayName = "Stage";
+Stage.displayName = 'Stage';
 
 export default Stage;
