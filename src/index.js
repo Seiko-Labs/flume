@@ -38,7 +38,7 @@ import clamp from "lodash/clamp";
 import Cache from "./Cache";
 import { DRAG_CONNECTION_ID, STAGE_ID } from "./constants";
 import styles from "./styles.css";
-import Selection from "react-ds/dist";
+import Selection from "./selection";
 import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 
@@ -299,6 +299,7 @@ export const NodeEditor = forwardRef(
                                 top: 0,
                                 left: 0,
                               }}
+                              zoom={stageState.scale}
                               ignoreTargets={[
                                 'div[class^="Node_wrapper__"]',
                                 'div[class^="Node_wrapper__"] *',
