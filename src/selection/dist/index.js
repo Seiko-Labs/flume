@@ -3,7 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var _jsxFileName = "src\\index.js";
+
+var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -24,26 +25,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var babelPluginFlowReactPropTypes_proptype_Point = {
-	x: require("prop-types").number.isRequired,
-	y: require("prop-types").number.isRequired
-};
-if (typeof exports !== "undefined") Object.defineProperty(exports, "babelPluginFlowReactPropTypes_proptype_Point", {
-	value: babelPluginFlowReactPropTypes_proptype_Point,
-	configurable: true
-});
-var babelPluginFlowReactPropTypes_proptype_Box = {
-	left: require("prop-types").number.isRequired,
-	top: require("prop-types").number.isRequired,
-	width: require("prop-types").number.isRequired,
-	height: require("prop-types").number.isRequired
-};
-if (typeof exports !== "undefined") Object.defineProperty(exports, "babelPluginFlowReactPropTypes_proptype_Box", {
-	value: babelPluginFlowReactPropTypes_proptype_Box,
-	configurable: true
-});
-
 
 function getOffset(props) {
 	var offset = {
@@ -378,10 +359,9 @@ var Selection = function (_React$PureComponent) {
 			if (!this.state.mouseDown) {
 				return null;
 			}
-			return _react2.default.createElement("div", { className: "react-ds-border", style: style, __source: {
-					fileName: _jsxFileName,
-					lineNumber: 373
-				}
+			return _jsx("div", {
+				className: "react-ds-border",
+				style: style
 			});
 		}
 	}], [{
@@ -396,37 +376,4 @@ var Selection = function (_React$PureComponent) {
 	return Selection;
 }(_react2.default.PureComponent);
 
-Selection.propTypes = {
-	disabled: require("prop-types").bool,
-	target: typeof HTMLElement === "function" ? require("prop-types").instanceOf(HTMLElement).isRequired : require("prop-types").any.isRequired,
-	onSelectionChange: require("prop-types").func,
-	onHighlightChange: require("prop-types").func,
-	elements: require("prop-types").arrayOf(typeof HTMLElement === "function" ? require("prop-types").instanceOf(HTMLElement) : require("prop-types").any).isRequired,
-
-	// eslint-disable-next-line react/no-unused-prop-types
-	offset: require("prop-types").shape({
-		// eslint-disable-next-line react/no-unused-prop-types
-		top: require("prop-types").number.isRequired,
-
-		// eslint-disable-next-line react/no-unused-prop-types
-		left: require("prop-types").number.isRequired
-	}),
-	style: require("prop-types").any,
-	zoom: require("prop-types").number,
-	ignoreTargets: require("prop-types").arrayOf(require("prop-types").string)
-};
 exports.default = Selection;
-
-
-Selection.propTypes = {
-	target: _propTypes2.default.object,
-	disabled: _propTypes2.default.bool,
-	onSelectionChange: _propTypes2.default.func.isRequired,
-	onHighlightChange: _propTypes2.default.func,
-	elements: _propTypes2.default.array.isRequired,
-	// eslint-disable-next-line react/no-unused-prop-types
-	offset: _propTypes2.default.object,
-	zoom: _propTypes2.default.number,
-	style: _propTypes2.default.object,
-	ignoreTargets: _propTypes2.default.array
-};
