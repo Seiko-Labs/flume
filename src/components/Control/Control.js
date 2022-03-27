@@ -79,6 +79,7 @@ const Control = ({
             }
             defaultValue={defaultValue}
             placeholder={placeholder}
+            value={data}
           />
         );
       case 'text':

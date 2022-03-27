@@ -43,10 +43,11 @@ const Select = ({
       onChange(option.value);
     }
   };
-  React.useEffect(() => {
-    console.log(defaultValue);
-    onChange(defaultValue);
-  }, [defaultValue]);
+
+  // React.useEffect(() => {
+  //   console.log(defaultValue);
+  //   onChange(defaultValue);
+  // }, [defaultValue]);
 
   const handleOptionDeleted = (optionIndex) => {
     onChange([...data.slice(0, optionIndex), ...data.slice(optionIndex + 1)]);
