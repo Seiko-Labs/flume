@@ -108,8 +108,8 @@ export default class Selection extends React.PureComponent {
 
     nextState.mouseDown = true;
     nextState.startPoint = {
-      x: (x - this.state.offset.left) / this.state.zoom,
-      y: (y - this.state.offset.top) / this.state.zoom,
+      x: (x - this.state.offset.left) / this.props.zoom,
+      y: (y - this.state.offset.top) / this.props.zoom,
     };
     nextState.startWithoutZoom = {
       x: x - this.state.offset.left,
@@ -191,8 +191,8 @@ export default class Selection extends React.PureComponent {
     e.preventDefault();
     if (this.state.mouseDown) {
       const endPoint = {
-        x: (e.pageX - this.state.offset.left) / this.state.zoom,
-        y: (e.pageY - this.state.offset.top) / this.state.zoom,
+        x: (e.pageX - this.state.offset.left) / this.props.zoom,
+        y: (e.pageY - this.state.offset.top) / this.props.zoom,
       };
 
       this.setState({
@@ -216,8 +216,8 @@ export default class Selection extends React.PureComponent {
     e.preventDefault();
     if (this.state.mouseDown) {
       const endPoint = {
-        x: (e.touches[0].pageX - this.state.offset.left) / this.state.zoom,
-        y: (e.touches[0].pageY - this.state.offset.top) / this.state.zoom,
+        x: (e.touches[0].pageX - this.state.offset.left) / this.props.zoom,
+        y: (e.touches[0].pageY - this.state.offset.top) / this.props.zoom,
       };
 
       this.setState({
@@ -283,10 +283,10 @@ export default class Selection extends React.PureComponent {
           const tmpBox = {
             top:
               (refBox.top - this.state.offset.top + window.scrollY) /
-              this.state.zoom,
+              this.props.zoom,
             left:
               (refBox.left - this.state.offset.left + window.scrollX) /
-              this.state.zoom,
+              this.props.zoom,
             width: ref.clientWidth,
             height: ref.clientHeight,
           };
