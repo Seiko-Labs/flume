@@ -289,7 +289,7 @@ export const NodeEditor = forwardRef(
                         >
                           {editorRef.current && (
                             <Selection
-                              target={editorRef.current}
+                              target={document.getElementById("root")}
                               elements={nodeRefs.map((n) => n[1].current)}
                               onSelectionChange={(i) =>
                                 spaceIsPressed ||
