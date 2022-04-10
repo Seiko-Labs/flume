@@ -78,7 +78,7 @@ const Control = ({
               getOptions ? getOptions(inputData, executionContext) : options
             }
             placeholder={placeholder}
-            value={data}
+            defaultValue={defaultValue}
           />
         );
       case 'text':
