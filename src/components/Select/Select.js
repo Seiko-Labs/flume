@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import selectStyles from '../Select/Select.css';
 import { Portal } from 'react-portal';
 import ContextMenu from '../ContextMenu/ContextMenu';
@@ -43,7 +43,7 @@ const Select = ({
     }
   };
 
-  React.useMemo(() => {
+  useMemo(() => {
     onChange(data);
   }, [data]);
 
