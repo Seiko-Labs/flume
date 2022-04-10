@@ -213,6 +213,7 @@ const Node = forwardRef(
         style={{
           backgroundColor: tileBackground,
           color: tileFontColor,
+          zIndex: isSelected && 1000,
           boxShadow: isSelected
             ? `0 0 0 ${2 / stageState.scale}px rgba(75, 174, 252, 0.5)`
             : 'none',

@@ -77,7 +77,6 @@ const Control = ({
             options={
               getOptions ? getOptions(inputData, executionContext) : options
             }
-            defaultValue={defaultValue}
             placeholder={placeholder}
             value={data}
           />

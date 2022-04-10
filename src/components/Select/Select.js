@@ -11,7 +11,6 @@ const Select = ({
   placeholder = '[Select an option]',
   onChange,
   data,
-  defaultValue,
   allowMultiple,
 }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -44,10 +43,9 @@ const Select = ({
     }
   };
 
-  // React.useEffect(() => {
-  //   console.log(defaultValue);
-  //   onChange(defaultValue);
-  // }, [defaultValue]);
+  React.useMemo(() => {
+    onChange(data);
+  }, [data]);
 
   const handleOptionDeleted = (optionIndex) => {
     onChange([...data.slice(0, optionIndex), ...data.slice(optionIndex + 1)]);

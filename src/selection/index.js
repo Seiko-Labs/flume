@@ -137,6 +137,8 @@ export default class Selection extends React.PureComponent {
     if (this.init(e, e.pageX, e.pageY)) {
       window.document.addEventListener('mousemove', this.onMouseMove);
       window.document.addEventListener('mouseup', this.onMouseUp);
+
+      this.onMouseMove(e);
     }
   };
 

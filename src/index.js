@@ -75,6 +75,7 @@ export const NodeEditor = forwardRef(
     const [toasts, dispatchToasts] = useReducer(toastsReducer, []);
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
+    const [nodesSorted, setNodesSorted] = useState([]);
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(
@@ -289,7 +290,7 @@ export const NodeEditor = forwardRef(
                         >
                           {editorRef.current && (
                             <Selection
-                              target={document.getElementById("root")}
+                              target={editorRef.current}
                               elements={nodeRefs.map((n) => n[1].current)}
                               onSelectionChange={(i) =>
                                 spaceIsPressed ||
