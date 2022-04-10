@@ -1,0 +1,45 @@
+.wrapper {
+  font-size: 10px;
+  line-height: 10px;
+  height: 18px;
+  padding: 4px 2px 1px 0;
+  width: 60px;
+  margin: 0;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkboxMark {
+  display: inline-flex;
+  height: 10px;
+  width: 10px;
+  min-width: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  border-radius: 2px;
+  margin-right: 2px;
+  vertical-align: top;
+  overflow: hidden;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+   & > * {
+     display: none;
+   }
+}
+
+.checkbox:checked + .checkboxMark {
+  background: #4BAEFC;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+  & > * {
+    display: block;
+  }
+}

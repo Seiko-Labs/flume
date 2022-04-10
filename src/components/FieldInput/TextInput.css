@@ -1,0 +1,93 @@
+.wrapper{
+  background: none;
+  border: none;
+  line-height: 0;
+  display: flex;
+  flex-direction: row-reverse;
+
+  & > * {
+    line-height: normal;
+  }
+}
+
+.expander {
+  display: none;
+  border: none;
+  padding: 0;
+  width: 10px;
+  height: 10px;
+
+  background-image: svg-load('../../img/resize.svg', fill=white);
+
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  position: absolute;
+  float: right;
+  margin: 3px 3px 0 0;
+  background-color: transparent;
+
+  &:hover {
+    background-image: svg-load('../../img/resize.svg', fill=white, fill-opacity=.6);
+  }
+}
+
+.input {
+  width: 100%;
+  height: 16px;
+  outline: none;
+  padding: 3px;
+  font-size: 10px;
+  line-height: 10px;
+
+
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  border-radius: 2px;
+  color: inherit;
+
+  &[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    display: none !important;
+  }
+
+  &[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    opacity: 1 !important;
+    background: transparent !important;
+    border-width: 0;
+    margin: 0;
+    height: 16px;
+    width: 8px;
+    cursor: pointer;
+  }
+
+  &::placeholder{
+    font-style: italic;
+    color: inherit;
+    opacity: .3
+  }
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  &[type=number] {
+    &:focus, &:active, &:hover {
+      background-image: svg-load('../../img/stepper.svg', stroke=white);
+      background-position: calc(100% - 1px) center;
+      background-size: 7px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &:not([type=number]) {
+    &:focus {
+      & + button {
+        display: block;
+      }
+      padding-right: 13px;
+    }
+  }
+}

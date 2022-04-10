@@ -1,0 +1,75 @@
+.wrapper {
+  position: relative;
+
+  width: 57px;
+  height: 16px;
+  outline: none;
+  font-size: 10px;
+  line-height: 10px;
+
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  border-radius: 2px;
+  color: inherit;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 2px 8px 2px 2px;
+  background-image: svg-load('../../img/ticker.svg', stroke=white, stroke-opacity=.3);
+  background-position: calc(100% - 2px) center;
+  background-size: 7px 7px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  margin-right: 3px;
+
+  &:hover, &:active, &:focus {
+    background-color: rgba(0, 0, 0, .25);
+  }
+}
+.chipWrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 3px;
+
+  width: 57px;
+  height: 16px;
+  outline: none;
+  font-size: 10px;
+  line-height: 10px;
+
+  background-color: rgba(0, 0, 0, .25);
+  border: 1px solid rgba(0, 0, 0, .2);
+  box-sizing: border-box;
+  border-radius: 2px;
+  color: inherit;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 2px 8px 2px 2px;
+
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+}
+.deleteButton{
+  position: absolute;
+  right: 1px;
+  top: -1px;
+  height: 100%;
+  width: 8px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  border: none;
+  font-weight: bold;
+  font-size: 8px;
+  color: rgba(255, 255, 255, .3);
+  background: none;
+
+  &:hover, &:focus, &:active {
+    color: inherit;
+  }
+}

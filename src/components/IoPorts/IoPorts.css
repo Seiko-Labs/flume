@@ -1,0 +1,104 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.outputs {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  padding: 8px 1px 8px 0;
+  background: rgba(0, 0, 0, 0.15);
+
+  & > * + * {
+    margin-top: 4px
+  }
+
+  & > .transput {
+    width: 7px;
+    height: 16px;
+  }
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 8px 1px;
+  background: rgba(0, 0, 0, 0.15);
+
+  & > * + * {
+    margin-top: 4px
+  }
+
+  & > .transput {
+    width: 7px;
+    height: 16px;
+  }
+}
+
+table.inner {
+  border: none;
+  margin: 0 0 4px;
+  padding: 0;
+  width: max-content;
+  border-spacing: 0;
+  color: inherit;
+
+  & > tbody > tr {
+    & > td {
+      padding: 0;
+      margin: 0;
+    }
+
+    & > td.portLabel {
+      padding-left: 4px;
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 10px;
+      max-width: 80px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    & > td.controls {
+      max-width: 184px;
+      display: flex;
+      flex-wrap: wrap;
+      padding-right: 4px;
+
+      & > * {
+        float: left;
+        display: inline-block;
+        width: 60px;
+        overflow-x: hidden;
+      }
+    }
+  }
+
+}
+
+.port {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 16px;
+  height: 16px;
+
+  background: #50505C;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  & * {
+    pointer-events: none;
+  }
+}

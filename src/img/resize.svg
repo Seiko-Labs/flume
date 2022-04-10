@@ -1,0 +1,12 @@
+<svg width="9" height="9" viewBox="0 0 9 9" fill="white" fill-opacity=".3" >
+  <defs>
+    <mask id="msk_pth" x="0" y="0" width="1" height="1">
+      <svg width="9" height="9" viewBox="0 0 9 9" stroke="white"  stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7.99997 4.22066V1.3938L5.16998 1.3938M0.925781 5.638L0.925781 8.46487H3.75577"/>
+        <line x1="1.17037" y1="8.25277" x2="7.53433" y2="1.88881" stroke-dasharray="3 3" />
+      </svg>
+    </mask>
+  </defs>
+
+  <rect x="0" y="0" width="9" height="9" mask="url(#msk_pth)"/>
+</svg>

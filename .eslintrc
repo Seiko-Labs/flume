@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "globals": {
+    "cy": true,
+    "Cypress": true
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "max-params": "off"
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "requireConfigFile": false,
+    "sourceType": "module",
+    "babelOptions": {
+      "rootMode": "upward"
+    },
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
+}
