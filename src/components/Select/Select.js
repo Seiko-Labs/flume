@@ -47,7 +47,7 @@ const Select = ({
   };
 
   React.useEffect(() => {
-    if (data === defaultValue) onChange(defaultValue);
+    if (!data) onChange(defaultValue);
   }, [defaultValue]);
 
   const handleOptionDeleted = (optionIndex) => {
