@@ -15,7 +15,6 @@ const Select = ({
   allowMultiple,
 }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [def, setDef] = React.useState(true);
   const [drawerCoordinates, setDrawerCoordinates] = React.useState({
     x: 0,
     y: 0,
@@ -42,7 +41,6 @@ const Select = ({
       onChange([...data, option.value]);
     } else {
       onChange(option.value);
-      setDef(false);
     }
   };
 
@@ -74,7 +72,7 @@ const Select = ({
 
   return (
     <>
-      {(allowMultiple || !data) && (
+      {(allowMultiple || !selectedOption) && (
         <div
           className={selectStyles.wrapper}
           ref={wrapper}
@@ -98,7 +96,7 @@ const Select = ({
             </OptionChip>
           );
         })
-      ) : data ? (
+      ) : selectedOption ? (
         <SelectedOption
           wrapperRef={wrapper}
           option={selectedOption}
