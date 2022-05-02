@@ -8212,8 +8212,10 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   React.useEffect(function () {
     stageRef.current = wrapper.current.getBoundingClientRect();
     window.addEventListener('resize', setStageRect);
+    window.addEventListener('keydown', handleKeyDown);
     return function () {
       window.removeEventListener('resize', setStageRect);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [stageRef, setStageRect]);
   var handleWheel = React.useCallback(function (e) {
@@ -8321,7 +8323,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   };
 
   var handleKeyDown = function handleKeyDown(e) {
-    if (e.which === 32 && document.activeElement === wrapper.current) {
+    if (e.which === 32) {
       e.preventDefault();
       e.stopPropagation();
       parentSetSpaceIsPressed(true);
@@ -8379,7 +8381,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     onDragStart: handleDragStart,
     onDrag: handleMouseDrag,
     onDragEnd: handleDragEnd,
-    onKeyDown: handleKeyDown,
     tabIndex: -1,
     stageState: {
       scale: scale,
@@ -34102,7 +34103,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     value: connector.options || {}
   }, /*#__PURE__*/React__default["default"].createElement(RecalculateStageRectContext.Provider, {
     value: recalculateStageRect
-  }, editorRef.current && /*#__PURE__*/React__default["default"].createElement(Selection, {
+  }, editorRef.current && !spaceIsPressed && /*#__PURE__*/React__default["default"].createElement(Selection, {
     target: editorRef.current,
     elements: nodeRefs.map(function (n) {
       return n[1].current;
@@ -34117,9 +34118,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     },
     zoom: stageState.scale,
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
-    style: spaceIsPressed ? {
-      display: 'none'
-    } : {
+    style: {
       zIndex: 100,
       cursor: 'inherit'
     }

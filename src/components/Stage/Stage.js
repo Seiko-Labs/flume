@@ -55,8 +55,10 @@ const Stage = forwardRef(
     useEffect(() => {
       stageRef.current = wrapper.current.getBoundingClientRect();
       window.addEventListener('resize', setStageRect);
+      window.addEventListener('keydown', handleKeyDown);
       return () => {
         window.removeEventListener('resize', setStageRect);
+        window.removeEventListener('keydown', handleKeyDown);
       };
     }, [stageRef, setStageRect]);
 
@@ -164,7 +166,7 @@ const Stage = forwardRef(
     };
 
     const handleKeyDown = (e) => {
-      if (e.which === 32 && document.activeElement === wrapper.current) {
+      if (e.which === 32) {
         e.preventDefault();
         e.stopPropagation();
         parentSetSpaceIsPressed(true);
@@ -224,7 +226,6 @@ const Stage = forwardRef(
         onDragStart={handleDragStart}
         onDrag={handleMouseDrag}
         onDragEnd={handleDragEnd}
-        onKeyDown={handleKeyDown}
         tabIndex={-1}
         stageState={{ scale, translate }}
         style={{
