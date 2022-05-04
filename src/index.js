@@ -293,7 +293,6 @@ export const NodeEditor = forwardRef(
                               target={editorRef.current}
                               elements={nodeRefs.map((n) => n[1].current)}
                               onSelectionChange={(i) => {
-                                document.activeElement.blur();
                                 spaceIsPressed ||
                                   handleSelection(i, tempState.multiselect);
                               }}
