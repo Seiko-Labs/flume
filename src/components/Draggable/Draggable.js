@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default ({
   children,
@@ -51,8 +51,8 @@ export default ({
     if (onDragEnd) {
       onDragEnd(e, coordinates);
     }
-    window.removeEventListener('mouseup', stopDrag);
-    window.removeEventListener('mousemove', updateCoordinates);
+    window.removeEventListener("mouseup", stopDrag);
+    window.removeEventListener("mousemove", updateCoordinates);
   };
 
   const startDrag = (e) => {
@@ -64,14 +64,14 @@ export default ({
       x: startCoordinates.current.x - nodeRect.left,
       y: startCoordinates.current.y - nodeRect.top,
     };
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('mousemove', updateCoordinates);
+    window.addEventListener("mouseup", stopDrag);
+    window.addEventListener("mousemove", updateCoordinates);
   };
 
   const checkDragDelay = (e) => {
     let x;
     let y;
-    if ('ontouchstart' in window && e.touches) {
+    if ("ontouchstart" in window && e.touches) {
       x = e.touches[0].clientX;
       y = e.touches[0].clientY;
     } else {
@@ -89,8 +89,8 @@ export default ({
   };
 
   const endDragDelay = () => {
-    document.removeEventListener('mouseup', endDragDelay);
-    document.removeEventListener('mousemove', checkDragDelay);
+    document.removeEventListener("mouseup", endDragDelay);
+    document.removeEventListener("mousemove", checkDragDelay);
     startCoordinates.current = null;
   };
 
@@ -101,7 +101,7 @@ export default ({
     e.stopPropagation();
     let x;
     let y;
-    if ('ontouchstart' in window && e.touches) {
+    if ("ontouchstart" in window && e.touches) {
       x = e.touches[0].clientX;
       y = e.touches[0].clientY;
     } else {
@@ -110,14 +110,14 @@ export default ({
       y = e.clientY;
     }
     startCoordinates.current = { x, y };
-    document.addEventListener('mouseup', endDragDelay);
-    document.addEventListener('mousemove', checkDragDelay);
+    document.addEventListener("mouseup", endDragDelay);
+    document.addEventListener("mousemove", checkDragDelay);
   };
 
   return (
     <div
       onMouseDown={(e) => {
-        if (!disabled) {
+        if (!disabled || e.button === 1) {
           startDragDelay(e);
         }
         if (onMouseDown) {

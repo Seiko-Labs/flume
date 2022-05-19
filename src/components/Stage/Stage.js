@@ -223,6 +223,18 @@ const Stage = forwardRef(
         onDrag={handleMouseDrag}
         onDragEnd={handleDragEnd}
         onKeyDown={handleKeyDown}
+        onMouseDown={(e) => {
+          if (e.button === 1) {
+            parentSetSpaceIsPressed(true);
+            setSpaceIsPressed(true);
+          }
+        }}
+        onMouseUp={(e) => {
+          if (e.button === 1) {
+            setSpaceIsPressed(false);
+            parentSetSpaceIsPressed(false);
+          }
+        }}
         tabIndex={-1}
         stageState={{ scale, translate }}
         style={{
