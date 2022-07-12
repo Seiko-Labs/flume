@@ -4474,14 +4474,14 @@ var ContextMenu = function ContextMenu(_ref) {
     document.addEventListener("keydown", testEscape, {
       capture: true
     });
-    document.addEventListener("click", testClickOutside, {
+    document.addEventListener("mousedown", testClickOutside, {
       capture: true
     });
     document.addEventListener("contextmenu", testClickOutside, {
       capture: true
     });
     return function () {
-      document.removeEventListener("click", testClickOutside, {
+      document.removeEventListener("mousedown", testClickOutside, {
         capture: true
       });
       document.removeEventListener("contextmenu", testClickOutside, {
@@ -8245,7 +8245,6 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
   };
 
   var handleContextMenu = function handleContextMenu(e) {
-    e.preventDefault();
     setMenuCoordinates({
       x: e.clientX,
       y: e.clientY
@@ -8295,8 +8294,6 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
 
   var handleKeyDown = function handleKeyDown(e) {
     if (e.which === 32) {
-      e.preventDefault();
-      e.stopPropagation();
       parentSetSpaceIsPressed(true);
       setSpaceIsPressed(true);
       document.addEventListener("keyup", handleDocumentKeyUp);
@@ -9986,9 +9983,9 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       buttons = _nodeTypes$type.actions.buttons,
       _nodeTypes$type$categ = _nodeTypes$type.category,
       _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
-      tileFontColor = _nodeTypes$type$categ2 === void 0 ? '#B3B3B3' : _nodeTypes$type$categ2,
+      tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
       _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
-      tileBackground = _nodeTypes$type$categ3 === void 0 ? 'rgba(89, 89, 102, 0.9)' : _nodeTypes$type$categ3;
+      tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
 
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -10003,8 +10000,8 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       menuCoordinates = _useState4[0],
       setMenuCoordinates = _useState4[1];
 
-  var resolvedInputs = useTransputs(inputs, 'input', id, inputData, connections);
-  var resolvedOutputs = useTransputs(outputs, 'output', id, inputData, connections);
+  var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
+  var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
   var nodeData = {
     label: label,
     id: id,
@@ -10027,9 +10024,9 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
           outputs = _ref3[1];
 
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? 'output' : 'input' // cache
+        var toRect = getPortRect(id, portName, isOutput ? "output" : "input" // cache
         );
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? 'input' : 'output' // cache
+        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
         );
         var portHalf = fromRect.width / 2;
         var combined;
@@ -10050,7 +10047,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
           x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
           y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
         };
-        cnx.setAttribute('d', calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
+        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
       });
     });
   };
@@ -10094,9 +10091,9 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     var value = _ref5.value;
 
     switch (value) {
-      case 'deleteNode':
+      case "deleteNode":
         nodesDispatch({
-          type: 'REMOVE_NODE',
+          type: "REMOVE_NODE",
           nodeId: id
         });
         break;
@@ -10115,12 +10112,12 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     }));
   }, [resolvedInputs]);
   return /*#__PURE__*/React__default.createElement(Draggable, {
-    className: styles$c.wrapper,
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.wrapper,
     style: {
       backgroundColor: tileBackground,
       color: tileFontColor,
       zIndex: isSelected && 1000,
-      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : 'none',
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : "none",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
     onDragStart: onDragStart,
@@ -10142,41 +10139,41 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.body
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.body
   }, /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.header
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.header
   }, /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.headerMeta
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerMeta
   }, hasInner && /*#__PURE__*/React__default.createElement(SvgTicker, {
     onClick: function onClick() {
       nodesDispatch({
-        type: 'TOGGLE_NODE_VIEW',
+        type: "TOGGLE_NODE_VIEW",
         id: id
       });
       recalculateConnections();
     },
     style: {
-      transform: expanded ? 'none' : 'rotate(-90deg)',
-      cursor: 'pointer',
+      transform: expanded ? "none" : "rotate(-90deg)",
+      cursor: "pointer",
       stroke: tileFontColor
     }
   }), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.title
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.title
   }, icon && /*#__PURE__*/React__default.createElement("img", {
     src: icon
   }), /*#__PURE__*/React__default.createElement("span", {
-    className: styles$c.label
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.label
   }, label)), /*#__PURE__*/React__default.createElement("span", {
-    className: styles$c.id,
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.id,
     onClick: function onClick() {
       return navigator.clipboard.writeText(id);
     }
   }, id)), /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.headerActions
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerActions
   }, buttons.map(function (action) {
     return action(actionsData, function (getState) {
       return nodesDispatch({
-        type: 'UPDATE_NODE_ACTION_DATA',
+        type: "UPDATE_NODE_ACTION_DATA",
         data: getState(actionsData),
         nodeId: id
       });
@@ -10184,17 +10181,17 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
   }))), expanded && hasInner ? /*#__PURE__*/React__default.createElement(IoPorts, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
-    show: 'innerOnly',
+    show: "innerOnly",
     connections: connections,
     nodeData: nodeData,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }) : description && /*#__PURE__*/React__default.createElement("div", {
-    className: styles$c.description
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.description
   }, description)), /*#__PURE__*/React__default.createElement(IoPorts, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
-    show: 'inputsOnly',
+    show: "inputsOnly",
     color: tileBackground,
     connections: connections,
     updateNodeConnections: updateNodeConnections,
@@ -10203,9 +10200,9 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: _toConsumableArray(deletable !== false ? [{
-      label: 'Delete Node',
-      value: 'deleteNode',
-      description: 'Deletes a node and all of its connections.'
+      label: "Delete Node",
+      value: "deleteNode",
+      description: "Deletes a node and all of its connections."
     }] : []),
     onRequestClose: closeContextMenu,
     onOptionSelected: handleMenuOption,
@@ -10214,7 +10211,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     emptyText: "This node has no options."
   })) : null);
 });
-Node.displayName = 'Node';
+Node.displayName = "Node";
 
 var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
 var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
@@ -27543,14 +27540,14 @@ function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if 
 
 function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var Colors = {
-  yellow: "yellow",
-  orange: "orange",
-  red: "red",
-  pink: "pink",
-  purple: "purple",
-  blue: "blue",
-  green: "green",
-  grey: "grey"
+  yellow: 'yellow',
+  orange: 'orange',
+  red: 'red',
+  pink: 'pink',
+  purple: 'purple',
+  blue: 'blue',
+  green: 'green',
+  grey: 'grey'
 };
 
 var FlumeConfig = /*#__PURE__*/function () {
@@ -27579,16 +27576,16 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addNodeType",
     value: function addNodeType(config) {
-      if (_typeof(config) !== "object" && config !== null) {
-        throw new Error("You must provide a configuration object when calling addNodeType.");
+      if (_typeof(config) !== 'object' && config !== null) {
+        throw new Error('You must provide a configuration object when calling addNodeType.');
       } // noinspection JSObjectNullOrUndefined
 
 
-      if (typeof config.type !== "string") {
+      if (typeof config.type !== 'string') {
         throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
       }
 
-      if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
+      if (typeof config.initialWidth !== 'undefined' && typeof config.initialWidth !== 'number') {
         throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
       }
 
@@ -27598,8 +27595,8 @@ var FlumeConfig = /*#__PURE__*/function () {
 
       var node = {
         type: config.type,
-        label: define(config.label, ""),
-        description: define(config.description, ""),
+        label: define(config.label, ''),
+        description: define(config.description, ''),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
       }; // Validating category data of flume action that is used to render action
@@ -27608,14 +27605,14 @@ var FlumeConfig = /*#__PURE__*/function () {
       node.category = {};
       var category = config.category;
       node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
-      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
-      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
+      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === 'string' ? category.label : 'Other';
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
 
-      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
+      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === 'string' && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
 
-      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
-      if (typeof config.icon === "string") node.icon = config.icon;
-      if (typeof config.comment === "string") node.comment = config.comment;
+      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === 'string' && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
+      if (typeof config.icon === 'string') node.icon = config.icon;
+      if (typeof config.comment === 'string') node.comment = config.comment;
       node.expanded = config.expanded || true;
       if (config.initialWidth) node.initialWidth = config.initialWidth;
       if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
@@ -27624,16 +27621,16 @@ var FlumeConfig = /*#__PURE__*/function () {
         node.actions = config.actions;
         node.actions.data = config.actions.data || {};
         node.actions.buttons = config.actions.buttons && lodash.exports.isArray(config.actions.buttons) ? config.actions.buttons.filter(function (button) {
-          return typeof button === "function";
+          return typeof button === 'function';
         }) : [];
       } else node.actions = {
         data: {},
         buttons: []
       };
 
-      if (typeof config.inputs === "function") {
+      if (typeof config.inputs === 'function') {
         var inputs = config.inputs(getPortBuilders(this.portTypes));
-        if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
+        if (!Array.isArray(inputs) && typeof config.inputs !== 'function') throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
         node.inputs = inputs;
       } else if (config.inputs === undefined) {
         node.inputs = [];
@@ -27643,10 +27640,10 @@ var FlumeConfig = /*#__PURE__*/function () {
         node.inputs = config.inputs;
       }
 
-      if (typeof config.outputs === "function") {
+      if (typeof config.outputs === 'function') {
         var outputs = config.outputs(getPortBuilders(this.portTypes));
 
-        if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
+        if (!Array.isArray(outputs) && typeof config.outputs !== 'function') {
           throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
         }
 
@@ -27660,7 +27657,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       }
 
       if (config.root !== undefined) {
-        if (typeof config.root !== "boolean") {
+        if (typeof config.root !== 'boolean') {
           throw new Error("Optional key, \"root\" must be a boolean.");
         } else {
           node.root = config.root;
@@ -27688,12 +27685,12 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addPortType",
     value: function addPortType(config) {
-      if (_typeof(config) !== "object" && config !== null) {
-        throw new Error("You must provide a configuration object when calling addPortType");
+      if (_typeof(config) !== 'object' && config !== null) {
+        throw new Error('You must provide a configuration object when calling addPortType');
       } // noinspection JSObjectNullOrUndefined
 
 
-      if (typeof config.type !== "string") {
+      if (typeof config.type !== 'string') {
         throw new Error("Required key, \"type\" must be a string when calling addPortType.");
       }
 
@@ -27701,14 +27698,14 @@ var FlumeConfig = /*#__PURE__*/function () {
         throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
       }
 
-      if (typeof config.name !== "string") {
+      if (typeof config.name !== 'string') {
         throw new Error("Required key, \"name\" must be a string when calling addPortType.");
       }
 
       var port = {
         type: config.type,
         name: config.name,
-        label: define(config.label, ""),
+        label: define(config.label, ''),
         hidePort: define(config.hidePort, true)
       };
 
@@ -27728,7 +27725,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         port.controls = config.controls;
       }
 
-      if (!port.color && config.color && typeof config.color === "string" && checkColor(config.color)) port.color = config.color;
+      if (!port.color && config.color && typeof config.color === 'string' && checkColor(config.color)) port.color = config.color;
       this.portTypes[config.type] = port;
       return this;
     }
@@ -27744,7 +27741,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         if (!skipDynamicNodesCheck) {
           var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
-            return typeof node.inputs === "function" || typeof node.outputs === "function";
+            return typeof node.inputs === 'function' || typeof node.outputs === 'function';
           });
 
           if (dynamicNodes.length) {
@@ -27763,7 +27760,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         if (affectedNodes.length) {
           throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
             return "".concat(n.type);
-          }).join(", "), "]"));
+          }).join(', '), "]"));
         } else {
           var _this$portTypes = this.portTypes;
               _this$portTypes[type];
@@ -33567,7 +33564,7 @@ var RootEngine = /*#__PURE__*/function () {
       });
 
       if (roots.length > 1) {
-        throw new Error('The root engine must not be called with more than one root node.');
+        throw new Error("The root engine must not be called with more than one root node.");
       }
 
       return roots[0];
@@ -33590,10 +33587,17 @@ var RootEngine = /*#__PURE__*/function () {
     key: "checkLoops",
     value: function checkLoops() {
       if (this.maxLoops >= 0 && this.loops > this.maxLoops) {
-        throw new LoopError('Max loop count exceeded.', LoopError.maxLoopsExceeded);
+        throw new LoopError("Max loop count exceeded.", LoopError.maxLoopsExceeded);
       } else {
         this.loops++;
       }
+    }
+  }, {
+    key: "setFireFunction",
+    value: function setFireFunction(resolveNodes) {
+      this.fireNodeFunction = function (node, inputValues, nodeType, context) {
+        return resolveNodes[node.type] ? resolveNodes[node.type](node, inputValues, nodeType, context) : inputValues;
+      };
     }
   }, {
     key: "reduceRootInputs",
@@ -33615,7 +33619,7 @@ var RootEngine = /*#__PURE__*/function () {
 
       var inputs = nodeType.inputs;
 
-      if (typeof inputs === 'function') {
+      if (typeof inputs === "function") {
         inputs = inputs(node.inputData, node.connections, context);
       }
 
@@ -33651,7 +33655,7 @@ var RootEngine = /*#__PURE__*/function () {
       if (rootNode) {
         var inputs = this.config.nodeTypes[rootNode.type].inputs;
 
-        if (typeof inputs === 'function') {
+        if (typeof inputs === "function") {
           inputs = inputs(rootNode.inputData, rootNode.connections, options.context);
         }
 
@@ -33686,7 +33690,7 @@ var RootEngine = /*#__PURE__*/function () {
           return _objectSpread$2(_objectSpread$2({}, controlValues), inputValues);
         }
       } else {
-        console.error('A root node was not found. The Root Engine requires that exactly one node be marked as the root node.');
+        console.error("A root node was not found. The Root Engine requires that exactly one node be marked as the root node.");
         return {};
       }
     }
@@ -33886,11 +33890,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       spaceIsPressed = _useState4[0],
       setSpaceIsPressed = _useState4[1];
 
-  var _useState5 = useState([]),
-      _useState6 = _slicedToArray(_useState5, 2);
-      _useState6[0];
-      _useState6[1];
-
   var _useReducer3 = useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
     portTypes: portTypes,
@@ -33902,7 +33901,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       nodesState: [{
         state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
         action: {
-          type: "INITIAL"
+          type: 'INITIAL'
         }
       }],
       currentStateIndex: 0
@@ -33929,23 +33928,23 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
 
   useEffect(function () {
     !currentStateIndex && dispatchNodes({
-      type: "HYDRATE_DEFAULT_NODES"
+      type: 'HYDRATE_DEFAULT_NODES'
     });
     recalculateConnections();
   }, []);
 
-  var _useState7 = useState(true),
-      _useState8 = _slicedToArray(_useState7, 2),
-      shouldRecalculateConnections = _useState8[0],
-      setShouldRecalculateConnections = _useState8[1];
+  var _useState5 = useState(true),
+      _useState6 = _slicedToArray(_useState5, 2),
+      shouldRecalculateConnections = _useState6[0],
+      setShouldRecalculateConnections = _useState6[1];
 
   var initialStageParams = _initialStageParams || tempState.stage;
 
   var _useReducer7 = useReducer(stageReducer, {
-    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
+    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === 'number' ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
     translate: {
-      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
-      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
+      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === 'number' ? initialStageParams.translate.x : 0,
+      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === 'number' ? initialStageParams.translate.y : 0
     }
   }),
       _useReducer8 = _slicedToArray(_useReducer7, 2),
@@ -33983,7 +33982,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   var handleDragEnd = function handleDragEnd(e, id, coordinates) {
     if (selectedNodes.length > 0) {
       dispatchNodes({
-        type: "SET_MULTIPLE_NODES_COORDINATES",
+        type: 'SET_MULTIPLE_NODES_COORDINATES',
         nodesInfo: selectedNodes.map(function (id) {
           var nodeRef = nodeRefs.find(function (_ref2) {
             var _ref3 = _slicedToArray(_ref2, 1),
@@ -34008,7 +34007,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       });
     } else {
       dispatchNodes(_objectSpread(_objectSpread({
-        type: "SET_NODE_COORDINATES"
+        type: 'SET_NODE_COORDINATES'
       }, coordinates), {}, {
         nodeId: id
       }));
@@ -34101,7 +34100,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: {
       zIndex: 100,
-      cursor: "inherit"
+      cursor: 'inherit'
     }
   }), /*#__PURE__*/React__default.createElement(Stage, {
     ref: editorRef,
@@ -34110,8 +34109,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     scale: stageState.scale,
     translate: stageState.translate,
     spaceToPan: true,
-    disablePan: false,
-    disableZoom: false,
     dispatchStageState: dispatchStageState,
     dispatchComments: dispatchComments,
     disableComments: disableComments || hideComments,
@@ -34156,7 +34153,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     id: "".concat(DRAG_CONNECTION_ID).concat(editorId)
   }))))))))))));
 });
-NodeEditor.displayName = "NodeEditor";
+NodeEditor.displayName = 'NodeEditor';
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length > 0 ? engine.resolveRootNode(nodes, {
     context: context

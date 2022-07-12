@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
   border-radius: 4px;
   position: absolute;
   left: 0;
@@ -68,15 +68,13 @@
   transition: all 0.3s ease-out;
   cursor: copy;
 
-  opacity: .5;
-
+  opacity: 0.5;
 }
 
 .id:hover {
   font-weight: bold;
 
   opacity: 1;
-
 }
 
 .headerActions {

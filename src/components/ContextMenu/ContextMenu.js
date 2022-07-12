@@ -80,12 +80,12 @@ const ContextMenu = ({
     }
     setMenuWidth(menuWrapper.current.getBoundingClientRect().width);
     document.addEventListener("keydown", testEscape, { capture: true });
-    document.addEventListener("click", testClickOutside, { capture: true });
+    document.addEventListener("mousedown", testClickOutside, { capture: true });
     document.addEventListener("contextmenu", testClickOutside, {
       capture: true,
     });
     return () => {
-      document.removeEventListener("click", testClickOutside, {
+      document.removeEventListener("mousedown", testClickOutside, {
         capture: true,
       });
       document.removeEventListener("contextmenu", testClickOutside, {

@@ -119,7 +119,6 @@ const Stage = forwardRef(
     };
 
     const handleContextMenu = (e) => {
-      e.preventDefault();
       setMenuCoordinates({ x: e.clientX, y: e.clientY });
       setMenuOpen(true);
       return false;
@@ -165,8 +164,6 @@ const Stage = forwardRef(
 
     const handleKeyDown = (e) => {
       if (e.which === 32) {
-        e.preventDefault();
-        e.stopPropagation();
         parentSetSpaceIsPressed(true);
         setSpaceIsPressed(true);
         document.addEventListener("keyup", handleDocumentKeyUp);

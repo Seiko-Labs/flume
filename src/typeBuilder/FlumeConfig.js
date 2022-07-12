@@ -1,17 +1,17 @@
-import { isArray } from "lodash";
-import { isValidElement } from "react";
-import { checkColor, define } from "../utilities";
-import { getPortBuilders } from "./Ports";
+import { isArray } from 'lodash';
+import { isValidElement } from 'react';
+import { checkColor, define } from '../utilities';
+import { getPortBuilders } from './Ports';
 
 export const Colors = {
-  yellow: "yellow",
-  orange: "orange",
-  red: "red",
-  pink: "pink",
-  purple: "purple",
-  blue: "blue",
-  green: "green",
-  grey: "grey",
+  yellow: 'yellow',
+  orange: 'orange',
+  red: 'red',
+  pink: 'pink',
+  purple: 'purple',
+  blue: 'blue',
+  green: 'green',
+  grey: 'grey',
 };
 
 export default class FlumeConfig {
@@ -36,21 +36,21 @@ export default class FlumeConfig {
   }
 
   addNodeType(config) {
-    if (typeof config !== "object" && config !== null) {
+    if (typeof config !== 'object' && config !== null) {
       throw new Error(
-        "You must provide a configuration object when calling addNodeType."
+        'You must provide a configuration object when calling addNodeType.'
       );
     }
 
     // noinspection JSObjectNullOrUndefined
-    if (typeof config.type !== "string") {
+    if (typeof config.type !== 'string') {
       throw new Error(
         `Required key, "type" must be a string when calling addNodeType.`
       );
     }
     if (
-      typeof config.initialWidth !== "undefined" &&
-      typeof config.initialWidth !== "number"
+      typeof config.initialWidth !== 'undefined' &&
+      typeof config.initialWidth !== 'number'
     ) {
       throw new Error(
         `Optional key, "initialWidth" must be a number when calling addNodeType.`
@@ -64,8 +64,8 @@ export default class FlumeConfig {
 
     const node = {
       type: config.type,
-      label: define(config.label, ""),
-      description: define(config.description, ""),
+      label: define(config.label, ''),
+      description: define(config.description, ''),
       addable: define(config.addable, true),
       deletable: define(config.deletable, true),
     };
@@ -78,19 +78,19 @@ export default class FlumeConfig {
     node.category.id = category?.id || -1;
 
     node.category.label =
-      category?.label && typeof config.label === "string"
+      category?.label && typeof config.label === 'string'
         ? category.label
-        : "Other";
+        : 'Other';
 
     node.category.description =
-      category?.description && typeof config.description === "string"
+      category?.description && typeof config.description === 'string'
         ? category.description
-        : "Ungrouped actions are stored here";
+        : 'Ungrouped actions are stored here';
 
     // Optionally supplying action header color
     if (
       category?.tileFontColor &&
-      typeof category.tileFontColor === "string" &&
+      typeof category.tileFontColor === 'string' &&
       checkColor(category.tileFontColor)
     )
       node.category.tileFontColor = category.tileFontColor;
@@ -98,14 +98,14 @@ export default class FlumeConfig {
     // Optionally supplying action header color
     if (
       category?.tileBackground &&
-      typeof category.tileBackground === "string" &&
+      typeof category.tileBackground === 'string' &&
       checkColor(category.tileBackground)
     )
       node.category.tileBackground = category.tileBackground;
 
-    if (typeof config.icon === "string") node.icon = config.icon;
+    if (typeof config.icon === 'string') node.icon = config.icon;
 
-    if (typeof config.comment === "string") node.comment = config.comment;
+    if (typeof config.comment === 'string') node.comment = config.comment;
 
     node.expanded = config.expanded || true;
 
@@ -119,14 +119,14 @@ export default class FlumeConfig {
       node.actions.buttons =
         config.actions.buttons && isArray(config.actions.buttons)
           ? config.actions.buttons.filter(
-              (button) => typeof button === "function"
+              (button) => typeof button === 'function'
             )
           : [];
     } else node.actions = { data: {}, buttons: [] };
 
-    if (typeof config.inputs === "function") {
+    if (typeof config.inputs === 'function') {
       const inputs = config.inputs(getPortBuilders(this.portTypes));
-      if (!Array.isArray(inputs) && typeof config.inputs !== "function")
+      if (!Array.isArray(inputs) && typeof config.inputs !== 'function')
         throw new Error(
           `When providing a function to the "inputs" key, you must return either an array or a function.`
         );
@@ -139,9 +139,9 @@ export default class FlumeConfig {
       node.inputs = config.inputs;
     }
 
-    if (typeof config.outputs === "function") {
+    if (typeof config.outputs === 'function') {
       const outputs = config.outputs(getPortBuilders(this.portTypes));
-      if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
+      if (!Array.isArray(outputs) && typeof config.outputs !== 'function') {
         throw new Error(
           `When providing a function to the "outputs" key, you must return either an array or a function.`
         );
@@ -156,7 +156,7 @@ export default class FlumeConfig {
     }
 
     if (config.root !== undefined) {
-      if (typeof config.root !== "boolean") {
+      if (typeof config.root !== 'boolean') {
         throw new Error(`Optional key, "root" must be a boolean.`);
       } else {
         node.root = config.root;
@@ -178,14 +178,14 @@ export default class FlumeConfig {
   }
 
   addPortType(config) {
-    if (typeof config !== "object" && config !== null) {
+    if (typeof config !== 'object' && config !== null) {
       throw new Error(
-        "You must provide a configuration object when calling addPortType"
+        'You must provide a configuration object when calling addPortType'
       );
     }
 
     // noinspection JSObjectNullOrUndefined
-    if (typeof config.type !== "string") {
+    if (typeof config.type !== 'string') {
       throw new Error(
         `Required key, "type" must be a string when calling addPortType.`
       );
@@ -195,7 +195,7 @@ export default class FlumeConfig {
         `A port with type "${config.type}" has already been declared.`
       );
     }
-    if (typeof config.name !== "string") {
+    if (typeof config.name !== 'string') {
       throw new Error(
         `Required key, "name" must be a string when calling addPortType.`
       );
@@ -204,7 +204,7 @@ export default class FlumeConfig {
     const port = {
       type: config.type,
       name: config.name,
-      label: define(config.label, ""),
+      label: define(config.label, ''),
       hidePort: define(config.hidePort, true),
     };
 
@@ -227,7 +227,7 @@ export default class FlumeConfig {
     if (
       !port.color &&
       config.color &&
-      typeof config.color === "string" &&
+      typeof config.color === 'string' &&
       checkColor(config.color)
     )
       port.color = config.color;
@@ -243,8 +243,8 @@ export default class FlumeConfig {
       if (!skipDynamicNodesCheck) {
         const dynamicNodes = Object.values(this.nodeTypes).filter(
           (node) =>
-            typeof node.inputs === "function" ||
-            typeof node.outputs === "function"
+            typeof node.inputs === 'function' ||
+            typeof node.outputs === 'function'
         );
         if (dynamicNodes.length) {
           console.warn(
@@ -263,7 +263,7 @@ export default class FlumeConfig {
         throw new Error(
           `Cannot delete port type "${type}" without first deleting all node types using these ports: [${affectedNodes
             .map((n) => `${n.type}`)
-            .join(", ")}]`
+            .join(', ')}]`
         );
       } else {
         const { [type]: deleted, ...portTypes } = this.portTypes;
