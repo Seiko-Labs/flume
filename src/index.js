@@ -330,6 +330,8 @@ export const NodeEditor = forwardRef(
                                 dispatchToasts={dispatchToasts}
                               />
                             }
+                            DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
+                            draggableCanvasSet={context.draggableCanvasSet}
                           >
                             {!hideComments &&
                               Object.values(comments).map((comment) => (

@@ -8150,7 +8150,9 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       dispatchComments = _ref.dispatchComments,
       disableComments = _ref.disableComments,
       disablePan = _ref.disablePan,
-      disableZoom = _ref.disableZoom;
+      disableZoom = _ref.disableZoom,
+      DRAGGABLE_CANVAS = _ref.DRAGGABLE_CANVAS,
+      draggableCanvasSet = _ref.draggableCanvasSet;
   var nodeTypes = useContext(NodeTypesContext);
   var dispatchNodes = useContext(NodeDispatchContext);
   var translateWrapper = useRef();
@@ -8189,6 +8191,15 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       window.removeEventListener("resize", setStageRect);
     };
   }, [stageRef, setStageRect]);
+  useEffect(function () {
+    if (DRAGGABLE_CANVAS) {
+      parentSetSpaceIsPressed(true);
+      setSpaceIsPressed(true);
+    } else {
+      parentSetSpaceIsPressed(false);
+      setSpaceIsPressed(false);
+    }
+  }, [DRAGGABLE_CANVAS]);
   var handleWheel = useCallback(function (e) {
     if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
       if (e.target.clientHeight < e.target.scrollHeight) return;
@@ -8350,15 +8361,17 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     onKeyDown: handleKeyDown,
     onMouseDown: function onMouseDown(e) {
       if (e.button === 1) {
-        parentSetSpaceIsPressed(true);
-        setSpaceIsPressed(true);
+        if (!DRAGGABLE_CANVAS) {
+          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(true);
+        } else {
+          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(false);
+        }
       }
     },
-    onMouseUp: function onMouseUp(e) {
-      if (e.button === 1) {
-        setSpaceIsPressed(false);
-        parentSetSpaceIsPressed(false);
-      }
+    onMouseUp: function onMouseUp(e) {// if (e.button === 1) {
+      //   setSpaceIsPressed(false);
+      //   parentSetSpaceIsPressed(false);
+      // }
     },
     tabIndex: -1,
     stageState: {
@@ -34117,7 +34130,9 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     outerStageChildren: /*#__PURE__*/React__default.createElement(Toaster, {
       toasts: toasts,
       dispatchToasts: dispatchToasts
-    })
+    }),
+    DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
+    draggableCanvasSet: context.draggableCanvasSet
   }, !hideComments && Object.values(comments).map(function (comment) {
     return /*#__PURE__*/React__default.createElement(Comment, _extends$3({}, comment, {
       stageRect: stage,

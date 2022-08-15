@@ -33,6 +33,8 @@ const Stage = forwardRef(
       disableComments,
       disablePan,
       disableZoom,
+      DRAGGABLE_CANVAS,
+      draggableCanvasSet,
     },
     wrapper
   ) => {
@@ -59,6 +61,16 @@ const Stage = forwardRef(
         window.removeEventListener("resize", setStageRect);
       };
     }, [stageRef, setStageRect]);
+
+    useEffect(() => {
+      if (DRAGGABLE_CANVAS) {
+        parentSetSpaceIsPressed(true);
+        setSpaceIsPressed(true);
+      } else {
+        parentSetSpaceIsPressed(false);
+        setSpaceIsPressed(false);
+      }
+    }, [DRAGGABLE_CANVAS]);
 
     const handleWheel = useCallback(
       (e) => {
@@ -222,15 +234,18 @@ const Stage = forwardRef(
         onKeyDown={handleKeyDown}
         onMouseDown={(e) => {
           if (e.button === 1) {
-            parentSetSpaceIsPressed(true);
-            setSpaceIsPressed(true);
+            if (!DRAGGABLE_CANVAS) {
+              draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(true);
+            } else {
+              draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(false);
+            }
           }
         }}
         onMouseUp={(e) => {
-          if (e.button === 1) {
-            setSpaceIsPressed(false);
-            parentSetSpaceIsPressed(false);
-          }
+          // if (e.button === 1) {
+          //   setSpaceIsPressed(false);
+          //   parentSetSpaceIsPressed(false);
+          // }
         }}
         tabIndex={-1}
         stageState={{ scale, translate }}
