@@ -255,7 +255,9 @@ const Node = forwardRef(
               )}
               <div className={styles?.title}>
                 {icon && <img src={icon} />}
-                <span className={styles?.label}>{label}</span>
+                <span className={styles?.label} style={{ color: "#fff" }}>
+                  {label}
+                </span>
               </div>
               <span
                 className={styles?.id}

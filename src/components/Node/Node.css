@@ -18,6 +18,9 @@
   justify-content: center;
   align-items: flex-start;
   width: max-content;
+  * {
+    color: #c5cee0;
+  }
 }
 
 .header {
