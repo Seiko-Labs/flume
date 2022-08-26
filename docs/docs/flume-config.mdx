@@ -7,13 +7,13 @@ The `FlumeConfig` class is a helper class for configuring the `nodeTypes` and `p
 ## Importing
 
 ```js
-import { FlumeConfig } from 'flume'
+import { FlumeConfig } from "flume";
 ```
 
 ## Creating a new config
 
 ```js
-const config = new FlumeConfig()
+const config = new FlumeConfig();
 ```
 
 ### Editing an existing config
@@ -21,7 +21,7 @@ const config = new FlumeConfig()
 In some cases you may have JSON representing an existing config that you'd like to edit. In these cases, FlumeConfig will accept an existing config as the first parameter of the constructor like this:
 
 ```js
-const config = new FlumeConfig(existingConfig)
+const config = new FlumeConfig(existingConfig);
 ```
 
 ## `addPortType` : method(portType)
@@ -31,19 +31,18 @@ This method allows you to add a new port type to your config.
 ### Example
 
 ```js
-config
-  .addPortType({
-    type: "string",
-    name: "string",
-    label: "Text",
-    color: Colors.green,
-    controls: [
-      Controls.text({
-        name: "string",
-        label: "Text"
-      })
-    ]
-  })
+config.addPortType({
+  type: "string",
+  name: "string",
+  label: "Text",
+  color: Colors.green,
+  controls: [
+    Controls.text({
+      name: "string",
+      label: "Text",
+    }),
+  ],
+});
 ```
 
 ### `type` : string
@@ -97,19 +96,14 @@ This method allows you to add a new node type to your config.
 ### Example
 
 ```js
-config
-  .addNodeType({
-    type: "string",
-    label: "Text",
-    description: "Outputs a string of text",
-    initialWidth: 160,
-    inputs: ports => [
-      ports.string()
-    ],
-    outputs: ports => [
-      ports.string()
-    ]
-  })
+config.addNodeType({
+  type: "string",
+  label: "Text",
+  description: "Outputs a string of text",
+  initialWidth: 160,
+  inputs: (ports) => [ports.string()],
+  outputs: (ports) => [ports.string()],
+});
 ```
 
 ### `type` : string
@@ -159,15 +153,13 @@ config
     type: "calculateTotal",
     label: "Calculate Total",
     description: "Calculates the total price of the checkout",
-    inputs: ports => [
-      ports.number({ name: "subtotal", label: "Subtotal"}),
-      ports.number({ name: "taxRate", label: "Tax Rate"}),
-      ports.boolean({ name: "isTaxExempt", label: "Is Tax-Exempt"})
+    inputs: (ports) => [
+      ports.number({ name: "subtotal", label: "Subtotal" }),
+      ports.number({ name: "taxRate", label: "Tax Rate" }),
+      ports.boolean({ name: "isTaxExempt", label: "Is Tax-Exempt" }),
     ],
-    outputs: ports => [
-      ports.number({ name: "total", label: "Total"})
-    ]
-  })
+    outputs: (ports) => [ports.number({ name: "total", label: "Total" })],
+  });
 ```
 
 In this example we've added 3 inputs for the subtotal, the tax rate, and whether or not the tax should be applied. Because we've already defined the number and boolean ports, the inputs function will provide those port types for us to use. We call each port type as a function and optionally give it a name and a label. In this case, this is required to make sure that each port has a unique name, and to add a user-friendly label to each port.
@@ -195,15 +187,13 @@ config
     type: "string",
     label: "Text",
     description: "Outputs a string of text",
-    inputs: ports => [
-      ports.string()
-    ],
-    outputs: ports => [
+    inputs: (ports) => [ports.string()],
+    outputs: (ports) => [
       ports.string(),
-      ports.number({ name: "charCount", label: "Character Count"}),
-      ports.number({ name: "wordCount", label: "Word Count"}),
-    ]
-  })
+      ports.number({ name: "charCount", label: "Character Count" }),
+      ports.number({ name: "wordCount", label: "Word Count" }),
+    ],
+  });
 ```
 
 In this example we've created 3 outputs, one with the text of the input, one with the character count, and one with the word count. Because we've already defined the string and number ports, the outputs function will provide these port types for us to use. We call each port type as a function and optionally give it a name and a label. In this case, this is required to make sure that each port has a unique name, and to add a user-friendly label to each port.

@@ -1,8 +1,8 @@
-import { Colors } from 'node-editor';
+import { Colors } from "node-editor";
 
 export const actionPort = {
-  type: 'actionPort',
-  name: 'actionPort',
-  label: 'Action',
+  type: "actionPort",
+  name: "actionPort",
+  label: "Action",
   hidePort: false,
 };

@@ -11,7 +11,7 @@ By default, the node editor can be zoomed in and out using the scroll wheel, and
 ## Importing
 
 ```js
-import { NodeEditor } from 'flume'
+import { NodeEditor } from "flume";
 ```
 
 ## Props
@@ -37,10 +37,10 @@ Optional. An object of comments previously generated through the node editor.
 Optional. For many logic graphs, it's helpful to have the editor start with a set of default nodes. To define these nodes, pass an array of objects with the type of the node, and an x and y position relative to the center of the editor.
 
 | Key  | Type         | Default | Required | Description                                                                                                                   |
-|------|--------------|---------|----------|-------------------------------------------------------------------------------------------------------------------------------|
+| ---- | ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | type | string       | ""      | Required | The type key of the node you want to add as a default. This type must have been previously defined in the `nodeTypes` object. |
-| x    | int \| float | 0       | Optional | The **horizontal** starting position of the node, relative to the center of the node editor.                                       |
-| y    | int \| float | 0       | Optional | The **vertical** starting position of the node, relative to the center of the node editor.                                         |
+| x    | int \| float | 0       | Optional | The **horizontal** starting position of the node, relative to the center of the node editor.                                  |
+| y    | int \| float | 0       | Optional | The **vertical** starting position of the node, relative to the center of the node editor.                                    |
 
 ### `onChange` : function
 

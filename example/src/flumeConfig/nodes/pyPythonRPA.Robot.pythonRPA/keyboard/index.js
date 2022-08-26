@@ -1,5 +1,5 @@
-import { resolveWriteNode, writeNode } from './write';
-import { pressNode, resolvePressNode } from './press';
+import { resolveWriteNode, writeNode } from "./write";
+import { pressNode, resolvePressNode } from "./press";
 
 export const applyKeyboardConfig = (config) => {
   config.addNodeType(writeNode);

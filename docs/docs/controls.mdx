@@ -8,7 +8,7 @@ import {
   BooleanGraph,
   SelectGraph,
   MultiselectGraph,
-  RandomPhotoGraph
+  RandomPhotoGraph,
 } from "../components/ControlExamples";
 
 Flume exports a set of utility functions for adding controls to port types. There are five built-in controls; text, number, checkbox, select, and multiselect. However, if you need a specific control, Flume allows you to render any custom React code as a control.
@@ -16,7 +16,7 @@ Flume exports a set of utility functions for adding controls to port types. Ther
 ## Importing
 
 ```js
-import { Controls } from 'flume'
+import { Controls } from "flume";
 ```
 
 ## Common Props
@@ -53,11 +53,11 @@ config
           ...newData,
           uppercaseText: {
             ...newData[uppercaseText],
-            uppercaseText: newData.uppercaseText.uppercaseText.toUpperCase()
-          }
-        })
-      })
-    ]
+            uppercaseText: newData.uppercaseText.uppercaseText.toUpperCase(),
+          },
+        }),
+      }),
+    ],
   });
 ```
 
@@ -291,16 +291,7 @@ In this example, we've created a new port with a custom control. In our custom c
 Required. The render key accepts a function that returns a React component. This component will be rendered in place of the control for this port. The render function takes in several parameters described below in order.
 
 ```jsx
-(
-  data,
-  onChange,
-  context,
-  redraw,
-  portProps,
-  inputData
-) => (
-  <ReactComponent />
-)
+(data, onChange, context, redraw, portProps, inputData) => <ReactComponent />;
 ```
 
 #### render : `data` : any

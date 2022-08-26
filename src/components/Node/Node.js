@@ -211,7 +211,7 @@ const Node = forwardRef(
       <Draggable
         className={styles?.wrapper}
         style={{
-          backgroundColor: tileBackground,
+          background: "rgba(46, 58, 89, 0.8)",
           color: tileFontColor,
           zIndex: isSelected && 1000,
           boxShadow: isSelected
@@ -261,7 +261,7 @@ const Node = forwardRef(
                 className={styles?.id}
                 onClick={() => navigator.clipboard.writeText(id)}
               >
-                {id}
+                ID: {id}
               </span>
             </div>
             <div className={styles?.headerActions}>

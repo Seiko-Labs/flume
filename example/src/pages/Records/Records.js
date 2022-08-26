@@ -1,10 +1,10 @@
-import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { BASE_URL } from '../Form/Form';
-import { statusOptions } from '../Form/wizardLogic/logicTypes';
-import FloatingNavigation from '../../components/FloatingNavigation';
-import './Records.css';
+import React from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { BASE_URL } from "../Form/Form";
+import { statusOptions } from "../Form/wizardLogic/logicTypes";
+import FloatingNavigation from "../../components/FloatingNavigation";
+import "./Records.css";
 
 export default () => {
   const [records, setRecords] = React.useState([]);
@@ -42,7 +42,7 @@ export default () => {
   );
 };
 
-const RecordBlock = ({ title, status = 'approved', fee = 0 }) => (
+const RecordBlock = ({ title, status = "approved", fee = 0 }) => (
   <div className="record-block">
     <h2>{title}</h2>
     <div className="record-attributes">

@@ -10,12 +10,12 @@ Now that we've created a simple node editor with some useful nodes, we need a wa
 To get started, let's create a new file called `engine.js` where we'll import `RootEngine` from `flume`, and our config file from `config.js`
 
 ```js
-import { RootEngine } from 'flume'
-import config from './config'
+import { RootEngine } from "flume";
+import config from "./config";
 
-const engine = new RootEngine(config)
+const engine = new RootEngine(config);
 
-export default engine
+export default engine;
 ```
 
 Like before, we create a new instance of the RootEngine and set it to a variable that we'll export below. We also imported our config file and provided it to the root engine as the first parameter. In order for the engine to work though, we need to provide it with 2 helper functions: `resolvePorts`, and `resolveNodes`.
@@ -25,23 +25,23 @@ Like before, we create a new instance of the RootEngine and set it to a variable
 The first thing we need to do is tell the root engine how to handle the controls for each of our ports. To keep things organized, let's create a new function above our root engine.
 
 ```js
-import { RootEngine } from 'flume'
-import config from './config'
+import { RootEngine } from "flume";
+import config from "./config";
 
 const resolvePorts = (portType, data) => {
   switch (portType) {
-    case 'string':
-      return data.string
-    case 'boolean':
-      return data.boolean
-    case 'number':
-      return data.number
+    case "string":
+      return data.string;
+    case "boolean":
+      return data.boolean;
+    case "number":
+      return data.number;
     default:
-      return data
+      return data;
   }
-}
+};
 
-const engine = new RootEngine(config, resolvePorts)
+const engine = new RootEngine(config, resolvePorts);
 ```
 
 Let's break this down. `resolvePorts` is a function that takes in the type of the port currently being processed, and all of the data from its controls. Then we open a switch statement with the port type, and return the port data for each port type. Because we only have 3 port types, we only have 3 entries in our switch statement. In our case, each of our ports only has one control, and we gave each control the same name as the port, so we can fill this function our pretty easily. In advanced use-cases, ports may have any number of controls, so this function will need to resolve each control, but this work for now.
@@ -55,31 +55,31 @@ This might seem a little unintuitive or redundant at first, but keep in mind tha
 The last function we need is `resolveNodes`. This function tells each node how it should transform its inputs into its outputs. Let's create this function above the engine.
 
 ```js
-import { RootEngine } from 'flume'
-import config from './config'
+import { RootEngine } from "flume";
+import config from "./config";
 
 /* ... */
 
 const resolveNodes = (node, inputValues, nodeType, context) => {
   switch (node.type) {
-    case 'string':
-      return { string: inputValues.string }
-    case 'boolean':
-      return { boolean: inputValues.boolean }
-    case 'number':
-      return { number: inputValues.number }
-    case 'user':
-      return context.user
-    case 'joinText':
-      return { joinedText: inputValues.string1 + inputValues.string2 }
+    case "string":
+      return { string: inputValues.string };
+    case "boolean":
+      return { boolean: inputValues.boolean };
+    case "number":
+      return { number: inputValues.number };
+    case "user":
+      return context.user;
+    case "joinText":
+      return { joinedText: inputValues.string1 + inputValues.string2 };
     case "reverseBoolean":
-      return { boolean: !inputValues.boolean }
+      return { boolean: !inputValues.boolean };
     default:
-      return inputValues
+      return inputValues;
   }
-}
+};
 
-const engine = new RootEngine(config, resolvePorts, resolveNodes)
+const engine = new RootEngine(config, resolvePorts, resolveNodes);
 ```
 
 This function looks similar to `resolvePorts` but has some key differences. `resolveNodes` takes in the current node, the resolved input values, the nodeType (which we're not using in this example), and an object called `context`. We create a switch statement using the node type, and return an object representing all of the outputs of that node. You may also notice that we didn't create a function for the `homepage` node. Because we marked this node as the "root" node, the root engine will take care of resolving and returning the values of its inputs for us.

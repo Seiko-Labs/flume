@@ -1,6 +1,6 @@
 const designerReducer = (state, action) => {
   switch (action.type) {
-    case 'POPULATE_STATE':
+    case "POPULATE_STATE":
       return {
         ...state,
         wizardId: action.wizardId,
@@ -8,7 +8,7 @@ const designerReducer = (state, action) => {
         title: action.title,
       };
 
-    case 'SET_SELECTED_FIELD_ID': {
+    case "SET_SELECTED_FIELD_ID": {
       const { fieldId } = action;
       return {
         ...state,
@@ -17,20 +17,20 @@ const designerReducer = (state, action) => {
       };
     }
 
-    case 'START_WIZARD_EDIT':
+    case "START_WIZARD_EDIT":
       return {
         ...state,
         selectedFieldId: null,
         editingWizard: true,
       };
 
-    case 'SET_TITLE':
+    case "SET_TITLE":
       return {
         ...state,
         title: action.title,
       };
 
-    case 'SET_LOGIC':
+    case "SET_LOGIC":
       return {
         ...state,
         wizardLogic: action.logic,

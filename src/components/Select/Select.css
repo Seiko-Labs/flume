@@ -16,15 +16,21 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 2px 8px 2px 2px;
-  background-image: svg-load('../../img/ticker.svg', stroke=white, stroke-opacity=.3);
+  background-image: svg-load(
+    "../../img/ticker.svg",
+    stroke=white,
+    stroke-opacity=.3
+  );
   background-position: calc(100% - 2px) center;
   background-size: 7px 7px;
   background-repeat: no-repeat;
   display: inline-block;
   margin-right: 3px;
 
-  &:hover, &:active, &:focus {
-    background-color: rgba(0, 0, 0, .25);
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.25);
   }
 }
 .chipWrapper {
@@ -38,8 +44,8 @@
   font-size: 10px;
   line-height: 10px;
 
-  background-color: rgba(0, 0, 0, .25);
-  border: 1px solid rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   border-radius: 2px;
   color: inherit;
@@ -52,7 +58,7 @@
     margin-right: 0;
   }
 }
-.deleteButton{
+.deleteButton {
   position: absolute;
   right: 1px;
   top: -1px;
@@ -66,10 +72,12 @@
   border: none;
   font-weight: bold;
   font-size: 8px;
-  color: rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, 0.3);
   background: none;
 
-  &:hover, &:focus, &:active {
+  &:hover,
+  &:focus,
+  &:active {
     color: inherit;
   }
 }

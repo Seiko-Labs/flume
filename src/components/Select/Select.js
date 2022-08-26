@@ -1,14 +1,14 @@
-import React from 'react';
-import selectStyles from '../Select/Select.css';
-import { Portal } from 'react-portal';
-import ContextMenu from '../ContextMenu/ContextMenu';
-import styles from './Select.css';
+import React from "react";
+import selectStyles from "../Select/Select.css";
+import { Portal } from "react-portal";
+import ContextMenu from "../ContextMenu/ContextMenu";
+import styles from "./Select.css";
 
 const MAX_LABEL_LENGTH = 50;
 
 const Select = ({
   options = [],
-  placeholder = '[Select an option]',
+  placeholder = "[Select an option]",
   onChange,
   defaultValue,
   data,
@@ -64,7 +64,7 @@ const Select = ({
         ...option,
         label:
           option.label.length > MAX_LABEL_LENGTH
-            ? option.label.slice(0, MAX_LABEL_LENGTH) + '...'
+            ? option.label.slice(0, MAX_LABEL_LENGTH) + "..."
             : option.label,
       };
     }
@@ -86,7 +86,7 @@ const Select = ({
         !!data.length &&
         data.map((val, i) => {
           const optLabel =
-            (options.find((opt) => opt.value === val) || {}).label || '';
+            (options.find((opt) => opt.value === val) || {}).label || "";
           return (
             <OptionChip
               onRequestDelete={() => handleOptionDeleted(i)}

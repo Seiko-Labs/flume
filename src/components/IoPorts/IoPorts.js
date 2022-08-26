@@ -23,7 +23,11 @@ const IoPorts = ({
     case "outputsOnly":
       return (
         (resolvedOutputs.length || null) && (
-          <div className={styles.outputs} data-show={show}>
+          <div
+            className={styles.outputs}
+            style={{ backgroundColor: color }}
+            data-show={show}
+          >
             {resolvedOutputs.map((output) => (
               <Output
                 {...output}

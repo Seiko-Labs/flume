@@ -1,36 +1,36 @@
-import _ from 'lodash';
+import _ from "lodash";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
+} from "../../../shared/presets/errorBlockPreset";
 
 export const ifElseNode = {
-  type: 'if_else',
-  name: 'if_else',
-  label: 'IF..ELSE',
-  description: 'Any kind of an action',
+  type: "if_else",
+  name: "if_else",
+  label: "IF..ELSE",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.string({
-        name: 'condition',
-        label: 'Condition',
+        name: "condition",
+        label: "Condition",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'trueCaseAction',
-        label: 'True case action',
+        color: "#5ED28E",
+        name: "trueCaseAction",
+        label: "True case action",
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'falseCaseAction',
-        label: 'False case action',
+        color: "#5ED28E",
+        name: "falseCaseAction",
+        label: "False case action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -52,9 +52,9 @@ export const resolveIfElseNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'conditions',
-    function: 'if_else',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "conditions",
+    function: "if_else",
     class_params: {},
     func_params: {
       condition: inputValues.condition.text,
@@ -67,7 +67,7 @@ export const resolveIfElseNode = (node, inputValues, nodeType, context) => {
     },
     breakpoint: false,
     ...resolveErrorBlockPreset(node, inputValues),
-    next_id: 'condition',
+    next_id: "condition",
   };
 
   return { actionPort: actionList };

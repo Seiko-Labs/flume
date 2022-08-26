@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 import {
   DesignerStateContext,
   DesignerDispatchContext,
   FieldsContext,
   FieldsDispatchContext,
-} from './Form';
-import fieldTypes from './fieldTypes';
-import Checkbox from '../../components/Checkbox';
-import OptionsEditor from '../../components/OptionsEditor';
-import LogicEditor from '../../components/LogicEditor';
-import NodeTypes from './NodeTypes';
-import { getInputTypes } from './InputTypes';
+} from "./Form";
+import fieldTypes from "./fieldTypes";
+import Checkbox from "../../components/Checkbox";
+import OptionsEditor from "../../components/OptionsEditor";
+import LogicEditor from "../../components/LogicEditor";
+import NodeTypes from "./NodeTypes";
+import { getInputTypes } from "./InputTypes";
 import {
   NodeTypes as WizardNodeTypes,
   InputTypes as WizardInputTypes,
-} from './wizardLogic/logicTypes';
+} from "./wizardLogic/logicTypes";
 
 export default ({ previewing, editingWizard }) => {
   const designerState = React.useContext(DesignerStateContext);
@@ -29,19 +29,19 @@ export default ({ previewing, editingWizard }) => {
     const fieldId = designerState.selectedFieldId;
 
     designerDispatch({
-      type: 'SET_SELECTED_FIELD_ID',
+      type: "SET_SELECTED_FIELD_ID",
       fieldId: null,
     });
 
     fieldsDispatch({
-      type: 'REMOVE_FIELD',
+      type: "REMOVE_FIELD",
       fieldId,
     });
   };
 
   const setWizardTitle = (title) => {
     designerDispatch({
-      type: 'SET_TITLE',
+      type: "SET_TITLE",
       title,
     });
   };
@@ -49,7 +49,7 @@ export default ({ previewing, editingWizard }) => {
   const setWizardLogic = (logic) => {
     console.log(logic);
     designerDispatch({
-      type: 'SET_LOGIC',
+      type: "SET_LOGIC",
       logic,
     });
   };
@@ -113,7 +113,7 @@ const Attributes = ({ attributes = [], currentField }) => {
   ));
 };
 
-const hiddenLabelTypes = ['checkbox', 'options', 'logic'];
+const hiddenLabelTypes = ["checkbox", "options", "logic"];
 
 const WizardLogic = ({ logic, fields, onChange }) => {
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -135,7 +135,7 @@ const WizardLogic = ({ logic, fields, onChange }) => {
         inputTypes={WizardInputTypes}
         defaultNodes={[
           {
-            type: 'output',
+            type: "output",
             x: 900,
             y: 330,
           },
@@ -152,7 +152,7 @@ const Attribute = ({ field, label, name, type, value }) => {
 
   const setAttribute = (value) => {
     fieldsDispatch({
-      type: 'SET_ATTRIBUTE_VALUE',
+      type: "SET_ATTRIBUTE_VALUE",
       fieldId: field.id,
       name,
       value,
@@ -163,9 +163,9 @@ const Attribute = ({ field, label, name, type, value }) => {
 
   const getAttributeField = () => {
     switch (type) {
-      case 'checkbox':
+      case "checkbox":
         return <Checkbox label={label} value={value} onChange={setAttribute} />;
-      case 'options':
+      case "options":
         return (
           <>
             <AttributeButton onClick={() => setModalOpen(true)}>
@@ -179,7 +179,7 @@ const Attribute = ({ field, label, name, type, value }) => {
             />
           </>
         );
-      case 'logic':
+      case "logic":
         return (
           <>
             <AttributeButton onClick={() => setModalOpen(true)}>
@@ -195,7 +195,7 @@ const Attribute = ({ field, label, name, type, value }) => {
             />
           </>
         );
-      case 'text':
+      case "text":
       default:
         return (
           <input
@@ -223,7 +223,7 @@ const AttributeWrapper = ({ label, children, hideLabel }) => (
 
 const AttributeButton = ({ children, onClick, danger }) => (
   <button
-    className={`attribute-button ${danger ? 'danger' : ''}`}
+    className={`attribute-button ${danger ? "danger" : ""}`}
     onClick={onClick}
   >
     {children}

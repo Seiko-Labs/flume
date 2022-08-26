@@ -1,8 +1,8 @@
-import { clickNode, clickNodeButtonPort, resolveClickNode } from './click';
-import { doubleClickNode, resolveDoubleClickNode } from './doubleclick';
-import { dragNode, resolveDragNode } from './drag';
-import { moveToNode, resolveMoveToNode } from './move_to';
-import { resolveScrollNode, scrollNode } from './scroll';
+import { clickNode, clickNodeButtonPort, resolveClickNode } from "./click";
+import { doubleClickNode, resolveDoubleClickNode } from "./doubleclick";
+import { dragNode, resolveDragNode } from "./drag";
+import { moveToNode, resolveMoveToNode } from "./move_to";
+import { resolveScrollNode, scrollNode } from "./scroll";
 
 export const applyMouseConfig = (config) => {
   config.addPortType(clickNodeButtonPort);

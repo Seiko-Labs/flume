@@ -1,7 +1,7 @@
-class Cache{
-  constructor(){
+class Cache {
+  constructor() {
     this.ports = {};
     this.connections = {};
   }
 }
-export default Cache
+export default Cache;

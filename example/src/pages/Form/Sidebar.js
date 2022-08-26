@@ -1,6 +1,6 @@
-import React from 'react';
-import fieldTypes from './fieldTypes';
-import { FieldsDispatchContext } from './Form';
+import React from "react";
+import fieldTypes from "./fieldTypes";
+import { FieldsDispatchContext } from "./Form";
 
 export default ({ previewing }) => {
   return (
@@ -20,7 +20,7 @@ const FieldButton = ({ label, type }) => {
 
   const addField = () => {
     fieldsDispatch({
-      type: 'ADD_FIELD',
+      type: "ADD_FIELD",
       fieldType: fieldTypes[type],
     });
   };

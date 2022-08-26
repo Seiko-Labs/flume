@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "plugin:prettier/recommended",
-    "prettier"
-  ],
+  "extends": ["plugin:prettier/recommended", "prettier"],
   "globals": {
     "cy": true,
     "Cypress": true

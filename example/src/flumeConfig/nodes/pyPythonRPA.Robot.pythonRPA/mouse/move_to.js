@@ -1,36 +1,36 @@
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
-import _ from 'lodash';
+} from "../../../shared/presets/errorBlockPreset";
+import _ from "lodash";
 
 export const moveToNode = {
-  type: 'move_to',
-  name: 'move_to',
-  label: 'MOVE TO',
-  description: 'Any kind of an action',
+  type: "move_to",
+  name: "move_to",
+  label: "MOVE TO",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.number({
-        name: 'x',
-        label: 'X axis',
+        name: "x",
+        label: "X axis",
         hidePort: true,
       }),
       ports.number({
-        name: 'y',
-        label: 'Y axis',
+        name: "y",
+        label: "Y axis",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'nextAction',
-        label: 'Next action',
+        color: "#5ED28E",
+        name: "nextAction",
+        label: "Next action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -52,9 +52,9 @@ export const resolveMoveToNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'mouse',
-    function: 'click',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "mouse",
+    function: "click",
     class_params: {},
     func_params: {
       x: inputValues.x.number,
@@ -64,7 +64,7 @@ export const resolveMoveToNode = (node, inputValues, nodeType, context) => {
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : 'finish',
+      : "finish",
   };
 
   return { actionPort: actionList };

@@ -1,14 +1,14 @@
-import { Colors, Controls } from 'node-editor';
+import { Colors, Controls } from "node-editor";
 
 export const errorPort = {
-  type: 'errorPort',
-  name: 'errorPort',
-  label: 'Error action',
+  type: "errorPort",
+  name: "errorPort",
+  label: "Error action",
   hidePort: true,
   controls: [
     Controls.number({
-      name: 'repeat',
-      label: 'Repeats',
+      name: "repeat",
+      label: "Repeats",
       setValue: (nd) => ({
         ...nd,
         errorPort: {
@@ -18,8 +18,8 @@ export const errorPort = {
       }),
     }),
     Controls.number({
-      name: 'delay',
-      label: 'Delay (sec)',
+      name: "delay",
+      label: "Delay (sec)",
       step: 0.001,
       setValue: (nd) => ({
         ...nd,

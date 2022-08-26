@@ -1,6 +1,6 @@
 const previewFieldsReducer = (state, action) => {
   switch (action.type) {
-    case 'POPULATE_FIELDS': {
+    case "POPULATE_FIELDS": {
       const { fields } = action;
 
       return {
@@ -9,7 +9,7 @@ const previewFieldsReducer = (state, action) => {
       };
     }
 
-    case 'SET_FIELD_VALUE': {
+    case "SET_FIELD_VALUE": {
       const { fieldId, value } = action;
       return {
         ...state,

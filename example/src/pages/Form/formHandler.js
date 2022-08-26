@@ -1,4 +1,4 @@
-import resolveLogic from './resolveLogic';
+import resolveLogic from "./resolveLogic";
 
 export const getFieldValues = (fields, fieldsOrder) =>
   fieldsOrder.reduce((values, fieldId) => {

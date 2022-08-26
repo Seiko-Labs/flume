@@ -17,14 +17,14 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
-  --blue-color: #2F6AEC;
+  --blue-color: #2f6aec;
   --blue-light-color: #3c76f6;
-  --green-color: #30D673;
+  --green-color: #30d673;
   --green-light-color: #44e886;
-  --red-color: #F23D63;
+  --red-color: #f23d63;
   --red-light-color: #fc5175;
   --primary-font: "Paralucent", sans-serif;
-  --background-dark: #1C1C1C;
+  --background-dark: #1c1c1c;
   --background-light: #262626;
   --background-extra-light: #2e2e2e;
 }
@@ -36,9 +36,9 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-.navbar__logo{
+.navbar__logo {
   height: 50%;
 }
-.docusaurus-highlight-code-line{
+.docusaurus-highlight-code-line {
   background-color: rgb(29, 32, 37);
 }

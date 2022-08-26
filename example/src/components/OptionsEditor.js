@@ -1,5 +1,5 @@
-import React from 'react';
-import Modal from './Modal';
+import React from "react";
+import Modal from "./Modal";
 
 export default ({
   options: initialOptions,
@@ -25,7 +25,7 @@ export default ({
   };
 
   const addOption = () => {
-    setOptions((opts) => [...opts, { value: '', label: '' }]);
+    setOptions((opts) => [...opts, { value: "", label: "" }]);
   };
 
   return isOpen ? (
@@ -71,12 +71,12 @@ const OptionRow = ({ value, label, onChange }) => {
       <input
         type="text"
         value={value}
-        onChange={(e) => handleChange('value', e.target.value)}
+        onChange={(e) => handleChange("value", e.target.value)}
       />
       <input
         type="text"
         value={label}
-        onChange={(e) => handleChange('label', e.target.value)}
+        onChange={(e) => handleChange("label", e.target.value)}
       />
     </div>
   );

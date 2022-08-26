@@ -1,22 +1,22 @@
-import { nodesReducer } from './index';
-import getDefaultData from './getDefaultData';
+import { nodesReducer } from "./index";
+import getDefaultData from "./getDefaultData";
 
 export default (initialNodes, nodeTypes, portTypes, context) => {
-  let nodes = {...initialNodes};
+  let nodes = { ...initialNodes };
 
   // Delete extraneous nodes
   let nodesToDelete = Object.values(nodes)
-                            .map(node => (!nodeTypes[node.type] ? node.id : undefined))
-                            .filter(x => x);
+    .map((node) => (!nodeTypes[node.type] ? node.id : undefined))
+    .filter((x) => x);
 
-  nodesToDelete.forEach(nodeId => {
+  nodesToDelete.forEach((nodeId) => {
     nodes = nodesReducer(
       nodes,
       {
         type: "REMOVE_NODE",
-        nodeId
+        nodeId,
       },
-      {nodeTypes, portTypes, context}
+      { nodeTypes, portTypes, context }
     );
   });
 
@@ -27,7 +27,7 @@ export default (initialNodes, nodeTypes, portTypes, context) => {
       node,
       nodeType,
       portTypes,
-      context
+      context,
     });
     const currentInputData = Object.entries(node.inputData).reduce(
       (dataObj, [key, data]) => {
@@ -40,18 +40,18 @@ export default (initialNodes, nodeTypes, portTypes, context) => {
     );
     const newInputData = {
       ...defaultInputData,
-      ...currentInputData
+      ...currentInputData,
     };
     nodesObj[node.id] = {
       ...node,
-      inputData: newInputData
+      inputData: newInputData,
     };
     return nodesObj;
   }, {});
 
   // Reconcile node attributes for each node
   reconciledNodes = Object.values(reconciledNodes).reduce((nodesObj, node) => {
-    let newNode = {...node};
+    let newNode = { ...node };
     const nodeType = nodeTypes[node.type];
     if (nodeType.root !== node.root) {
       if (nodeType.root && !node.root) {

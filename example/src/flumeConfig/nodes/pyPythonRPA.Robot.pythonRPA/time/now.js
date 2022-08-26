@@ -1,26 +1,26 @@
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
-import _ from 'lodash';
+} from "../../../shared/presets/errorBlockPreset";
+import _ from "lodash";
 
 export const nowNode = {
-  type: 'now',
-  name: 'now',
-  label: 'NOW',
-  description: 'Any kind of an action',
+  type: "now",
+  name: "now",
+  label: "NOW",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'nextAction',
-        label: 'Next action',
+        color: "#5ED28E",
+        name: "nextAction",
+        label: "Next action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -42,16 +42,16 @@ export const resolveNowNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'time',
-    function: 'now',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "time",
+    function: "now",
     class_params: {},
     func_params: {},
     breakpoint: false,
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : 'finish',
+      : "finish",
   };
 
   return { actionPort: actionList };

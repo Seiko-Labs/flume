@@ -1,99 +1,99 @@
-import _ from 'lodash';
+import _ from "lodash";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
-import { Controls } from 'node-editor';
+} from "../../../shared/presets/errorBlockPreset";
+import { Controls } from "node-editor";
 
 export const clickNode = {
-  type: 'click',
-  name: 'click',
-  label: 'CLICK',
-  description: 'Any kind of an action',
+  type: "click",
+  name: "click",
+  label: "CLICK",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.imageScreenshot({
-        name: 'click_area',
-        label: 'Image shot',
+        name: "click_area",
+        label: "Image shot",
         hidePort: true,
       }),
       ports.decimal({
-        name: 'confidence',
-        label: 'Confidence',
+        name: "confidence",
+        label: "Confidence",
         hidePort: true,
       }),
       ports.checkbox({
-        name: 'greyscale',
-        label: 'Greyscale',
+        name: "greyscale",
+        label: "Greyscale",
         hidePort: true,
       }),
       ports.number({
-        name: 'x',
-        label: 'X axis',
-        placeholder: 'lol kek',
+        name: "x",
+        label: "X axis",
+        placeholder: "lol kek",
         hidePort: true,
         controls: [
           Controls.number({
-            placeholder: 'lol kek',
+            placeholder: "lol kek",
             validate: (d) => d > 5 || !d,
           }),
         ],
       }),
       ports.number({
-        name: 'y',
-        label: 'Y axis',
+        name: "y",
+        label: "Y axis",
         hidePort: true,
       }),
       ports.number({
-        name: 'clicks',
-        label: 'Clicks amount',
+        name: "clicks",
+        label: "Clicks amount",
         hidePort: true,
       }),
       ports.number({
-        name: 'interval',
-        label: 'Click interval',
+        name: "interval",
+        label: "Click interval",
         hidePort: true,
       }),
       ports.buttonPort({
         hidePort: true,
       }),
       ports.decimal({
-        name: 'duration',
-        label: 'Duration (in seconds)',
+        name: "duration",
+        label: "Duration (in seconds)",
         hidePort: true,
       }),
       ports.checkbox({
-        name: 'pause',
-        label: 'Pause',
+        name: "pause",
+        label: "Pause",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'nextAction',
-        label: 'Next action',
+        color: "#5ED28E",
+        name: "nextAction",
+        label: "Next action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
 
 export const clickNodeButtonPort = {
-  type: 'buttonPort',
-  name: 'buttonPort',
-  label: 'Button',
+  type: "buttonPort",
+  name: "buttonPort",
+  label: "Button",
   controls: [
     Controls.select({
-      name: 'select',
-      defaultValue: 'left',
+      name: "select",
+      defaultValue: "left",
       options: [
-        { value: 'left', label: 'left' },
-        { value: 'center', label: 'center' },
-        { value: 'other', label: 'Very long something' },
-        { value: 'right', label: 'right' },
+        { value: "left", label: "left" },
+        { value: "center", label: "center" },
+        { value: "other", label: "Very long something" },
+        { value: "right", label: "right" },
       ],
     }),
   ],
@@ -116,9 +116,9 @@ export const resolveClickNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'mouse',
-    function: 'click',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "mouse",
+    function: "click",
     class_params: {
       image_path: inputValues.click_area.image,
       confidence: inputValues.confidence.number,
@@ -137,7 +137,7 @@ export const resolveClickNode = (node, inputValues, nodeType, context) => {
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : 'finish',
+      : "finish",
   };
 
   return { actionPort: actionList };

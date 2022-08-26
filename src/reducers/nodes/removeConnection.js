@@ -8,14 +8,14 @@ export default (nodes, input, output) => {
     ...inputNode,
     connections: {
       ...inputNode.connections,
-      inputs: newInputNodeConnectionsInputs
-    }
+      inputs: newInputNodeConnectionsInputs,
+    },
   };
 
   const outputNode = nodes[output.nodeId];
   const filteredOutputNodes = outputNode.connections.outputs[
     output.portName
-    ].filter(cnx => {
+  ].filter((cnx) => {
     return cnx.nodeId === input.nodeId ? cnx.portName !== input.portName : true;
   });
   const newOutputNode = {
@@ -24,14 +24,14 @@ export default (nodes, input, output) => {
       ...outputNode.connections,
       outputs: {
         ...outputNode.connections.outputs,
-        [output.portName]: filteredOutputNodes
-      }
-    }
+        [output.portName]: filteredOutputNodes,
+      },
+    },
   };
 
   return {
     ...nodes,
     [input.nodeId]: newInputNode,
-    [output.nodeId]: newOutputNode
+    [output.nodeId]: newOutputNode,
   };
 };

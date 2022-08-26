@@ -30,13 +30,13 @@
   justify-content: center;
   align-items: center;
 
-   & > * {
-     display: none;
-   }
+  & > * {
+    display: none;
+  }
 }
 
 .checkbox:checked + .checkboxMark {
-  background: #4BAEFC;
+  background: #4baefc;
   border: 1px solid rgba(0, 0, 0, 0.2);
 
   & > * {

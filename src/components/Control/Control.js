@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
-import Button from '../Button';
-import NumberInput from '../FieldInput/NumberInput';
-import styles from './Control.css';
-import Checkbox from '../Checkbox/Checkbox';
-import TextInput from '../FieldInput/TextInput';
-import Select from '../Select/Select';
-import { NodeDispatchContext, ContextContext } from '../../context';
+import React, { useContext } from "react";
+import Button from "../Button";
+import NumberInput from "../FieldInput/NumberInput";
+import styles from "./Control.css";
+import Checkbox from "../Checkbox/Checkbox";
+import TextInput from "../FieldInput/TextInput";
+import Select from "../Select/Select";
+import { NodeDispatchContext, ContextContext } from "../../context";
 
 const Control = ({
   type,
@@ -40,7 +40,7 @@ const Control = ({
 
   const onChange = (data) => {
     nodesDispatch({
-      type: 'SET_PORT_DATA',
+      type: "SET_PORT_DATA",
       data,
       nodeId,
       portName,
@@ -52,7 +52,7 @@ const Control = ({
 
   const onPressButton = (data, cName, pName, nId) => {
     nodesDispatch({
-      type: 'SET_PORT_DATA',
+      type: "SET_PORT_DATA",
       data,
       nodeId: nId || nodeId,
       portName: pName || portName,
@@ -70,7 +70,7 @@ const Control = ({
       data,
     };
     switch (type) {
-      case 'select':
+      case "select":
         return (
           <Select
             {...commonProps}
@@ -81,7 +81,7 @@ const Control = ({
             defaultValue={defaultValue}
           />
         );
-      case 'text':
+      case "text":
         return (
           <TextInput
             {...commonProps}
@@ -91,7 +91,7 @@ const Control = ({
             nodeData={nodeData}
           />
         );
-      case 'number':
+      case "number":
         return (
           <NumberInput
             {...commonProps}
@@ -101,9 +101,9 @@ const Control = ({
             placeholder={placeholder}
           />
         );
-      case 'checkbox':
+      case "checkbox":
         return <Checkbox {...commonProps} label={calculatedLabel} />;
-      case 'multiselect':
+      case "multiselect":
         return (
           <Select
             allowMultiple
@@ -115,7 +115,7 @@ const Control = ({
             label={label}
           />
         );
-      case 'button':
+      case "button":
         return (
           <Button
             {...commonProps}
@@ -131,7 +131,7 @@ const Control = ({
             }}
           />
         );
-      case 'custom':
+      case "custom":
         return render(
           data,
           onChange,
@@ -156,7 +156,7 @@ const Control = ({
       className={styles.wrapper}
       style={{
         ...(type.match(/^multiselect$/) && {
-          width: 'auto',
+          width: "auto",
         }),
       }}
     >

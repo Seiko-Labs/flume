@@ -2,8 +2,8 @@ import * as React from 'react';
 import React__default, { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect, createContext, forwardRef, useContext, createRef, useReducer, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
 
-function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
+function _extends$2() {
+  _extends$2 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -17,7 +17,7 @@ function _extends$3() {
     return target;
   };
 
-  return _extends$3.apply(this, arguments);
+  return _extends$2.apply(this, arguments);
 }
 
 function _defineProperty$1(obj, key, value) {
@@ -323,7 +323,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#2f2f3b;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='transparent' stroke='%23fff' stroke-opacity='.02'%3E%3Cpath stroke-width='2' stroke-dasharray='3 50%25 50%25 3.5' d='M0 0h11v11H0z'/%3E%3C/svg%3E\");color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
+var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
 var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$e);
 
@@ -4811,7 +4811,7 @@ var Draggable = (function (_ref) {
     document.addEventListener("mousemove", checkDragDelay);
   };
 
-  return /*#__PURE__*/React__default.createElement("div", _extends$3({
+  return /*#__PURE__*/React__default.createElement("div", _extends$2({
     onMouseDown: function onMouseDown(e) {
       if (!disabled || e.button === 1) {
         startDragDelay(e);
@@ -8132,9 +8132,9 @@ function orderBy(collection, iteratees, orders, guard) {
 
 var orderBy_1 = orderBy;
 
-var STAGE_ID = '__node_editor_stage__';
-var DRAG_CONNECTION_ID = '__node_editor_drag_connection__';
-var CONNECTIONS_ID = '__node_editor_connections__';
+var STAGE_ID = "__node_editor_stage__";
+var DRAG_CONNECTION_ID = "__node_editor_drag_connection__";
+var CONNECTIONS_ID = "__node_editor_connections__";
 
 var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
   var scale = _ref.scale,
@@ -8379,10 +8379,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       translate: translate
     },
     style: {
-      cursor: spaceIsPressed && spaceToPan ? "grab" : "",
-      backgroundSize: 10 * scale,
-      backgroundOrigin: "center",
-      backgroundPosition: "calc(50% + ".concat(-(translate.x * scale) % (10 * scale), "px) calc(50% + ").concat(-(translate.y * scale) % (10 * scale), "px) ")
+      cursor: spaceIsPressed && spaceToPan ? "grab" : ""
     },
     disabled: disablePan || spaceToPan && !spaceIsPressed,
     "data-flume-stage": true
@@ -8485,7 +8482,7 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border:1px solid rgba(0,0,0,.6);border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5;transition:all .3s ease-out}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
+var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
 var styles$c = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
 styleInject(css_248z$c);
 
@@ -9095,17 +9092,17 @@ var css_248z$7 = ".Checkbox_wrapper__aSqyY{font-size:10px;height:18px;line-heigh
 var styles$7 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","checkboxMark":"Checkbox_checkboxMark__3pZi7"};
 styleInject(css_248z$7);
 
-var _path$2;
+var _path$1;
 
-function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 
 function SvgOkTick(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$2({
+  return /*#__PURE__*/React.createElement("svg", _extends$1({
     width: 6,
     height: 5,
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$2 || (_path$2 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
     d: "M.804 2.34l1.749 1.615L5.497.672",
     stroke: "#fff",
     strokeLinecap: "round",
@@ -9190,7 +9187,7 @@ var Select = function Select(_ref) {
   var _ref$options = _ref.options,
       options = _ref$options === void 0 ? [] : _ref$options,
       _ref$placeholder = _ref.placeholder,
-      placeholder = _ref$placeholder === void 0 ? '[Select an option]' : _ref$placeholder,
+      placeholder = _ref$placeholder === void 0 ? "[Select an option]" : _ref$placeholder,
       onChange = _ref.onChange,
       defaultValue = _ref.defaultValue,
       data = _ref.data,
@@ -9255,7 +9252,7 @@ var Select = function Select(_ref) {
 
     if (option) {
       return _objectSpread$g(_objectSpread$g({}, option), {}, {
-        label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + '...' : option.label
+        label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + "..." : option.label
       });
     }
   }, [options, data]);
@@ -9267,7 +9264,7 @@ var Select = function Select(_ref) {
   }, placeholder), allowMultiple ? !!data.length && data.map(function (val, i) {
     var optLabel = (options.find(function (opt) {
       return opt.value === val;
-    }) || {}).label || '';
+    }) || {}).label || "";
     return /*#__PURE__*/React__default.createElement(OptionChip, {
       onRequestDelete: function onRequestDelete() {
         return handleOptionDeleted(i);
@@ -9353,7 +9350,7 @@ var Control = function Control(_ref) {
 
   var onChange = function onChange(data) {
     nodesDispatch({
-      type: 'SET_PORT_DATA',
+      type: "SET_PORT_DATA",
       data: data,
       nodeId: nodeId,
       portName: portName,
@@ -9365,7 +9362,7 @@ var Control = function Control(_ref) {
 
   var onPressButton = function onPressButton(data, cName, pName, nId) {
     nodesDispatch({
-      type: 'SET_PORT_DATA',
+      type: "SET_PORT_DATA",
       data: data,
       nodeId: nId || nodeId,
       portName: pName || portName,
@@ -9384,36 +9381,36 @@ var Control = function Control(_ref) {
     };
 
     switch (type) {
-      case 'select':
-        return /*#__PURE__*/React__default.createElement(Select, _extends$3({}, commonProps, {
+      case "select":
+        return /*#__PURE__*/React__default.createElement(Select, _extends$2({}, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
           placeholder: placeholder,
           defaultValue: defaultValue
         }));
 
-      case 'text':
-        return /*#__PURE__*/React__default.createElement(TextInput, _extends$3({}, commonProps, {
+      case "text":
+        return /*#__PURE__*/React__default.createElement(TextInput, _extends$2({}, commonProps, {
           predicate: predicate,
           placeholder: placeholder,
           validate: validate,
           nodeData: nodeData
         }));
 
-      case 'number':
-        return /*#__PURE__*/React__default.createElement(NumberInput, _extends$3({}, commonProps, {
+      case "number":
+        return /*#__PURE__*/React__default.createElement(NumberInput, _extends$2({}, commonProps, {
           step: step,
           predicate: predicate,
           validate: validate,
           placeholder: placeholder
         }));
 
-      case 'checkbox':
-        return /*#__PURE__*/React__default.createElement(Checkbox, _extends$3({}, commonProps, {
+      case "checkbox":
+        return /*#__PURE__*/React__default.createElement(Checkbox, _extends$2({}, commonProps, {
           label: calculatedLabel
         }));
 
-      case 'multiselect':
-        return /*#__PURE__*/React__default.createElement(Select, _extends$3({
+      case "multiselect":
+        return /*#__PURE__*/React__default.createElement(Select, _extends$2({
           allowMultiple: true
         }, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
@@ -9421,15 +9418,15 @@ var Control = function Control(_ref) {
           label: label
         }));
 
-      case 'button':
-        return /*#__PURE__*/React__default.createElement(Button, _extends$3({}, commonProps, {
+      case "button":
+        return /*#__PURE__*/React__default.createElement(Button, _extends$2({}, commonProps, {
           label: label,
           onPress: function onPress() {
             _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
           }
         }));
 
-      case 'custom':
+      case "custom":
         return render(data, onChange, executionContext, triggerRecalculation, {
           label: label,
           name: name,
@@ -9446,12 +9443,12 @@ var Control = function Control(_ref) {
   return /*#__PURE__*/React__default.createElement("div", {
     className: styles$8.wrapper,
     style: _objectSpread$f({}, type.match(/^multiselect$/) && {
-      width: 'auto'
+      width: "auto"
     })
   }, getControlByType(type));
 };
 
-var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:rgba(0,0,0,.15);border-right:1px solid rgba(0,0,0,.6);justify-content:center;padding:8px 1px 8px 0}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:rgba(0,0,0,.15);border-left:1px solid rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border:1px solid rgba(0,0,0,.6);border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:16px;justify-content:center;width:16px}.IoPorts_port__1_a6J *{pointer-events:none}";
+var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:rgba(0,0,0,.15);border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__1_a6J *{pointer-events:none}";
 var styles$5 = {"wrapper":"IoPorts_wrapper__3d2hh","outputs":"IoPorts_outputs__3JGh-","transput":"IoPorts_transput__1wbHA","inputs":"IoPorts_inputs__2etkb","inner":"IoPorts_inner__3UgDB","portLabel":"IoPorts_portLabel__qOE7y","controls":"IoPorts_controls__1dKFt","port":"IoPorts_port__1_a6J"};
 styleInject(css_248z$5);
 
@@ -9482,24 +9479,6 @@ var Connection = function Connection(_ref) {
     ref: lineRef
   }));
 };
-
-var _path$1;
-
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-
-function SvgPortArrow(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$1({
-    width: 4,
-    height: 7,
-    fill: "none",
-    stroke: "#000"
-  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
-    d: "M.502 6.5l2.999-2.998m0 0H3.5m0 0L.5.5",
-    strokeOpacity: 0.6,
-    strokeLinecap: "round",
-    strokeLinejoin: "round"
-  })));
-}
 
 var Port = function Port(_ref) {
   var color = _ref.color,
@@ -9718,9 +9697,8 @@ var Port = function Port(_ref) {
     onMouseDown: handleDragStart,
     className: styles$5.port,
     style: {
-      zIndex: 999,
-      marginLeft: isInput ? 0 : -9,
-      backgroundColor: color
+      marginLeft: isInput ? 1 : -9,
+      backgroundColor: "white"
     },
     "data-port-name": name,
     "data-port-type": type,
@@ -9731,7 +9709,16 @@ var Port = function Port(_ref) {
       e.stopPropagation();
     },
     ref: port
-  }, /*#__PURE__*/React__default.createElement(SvgPortArrow, null)), isDragging ? /*#__PURE__*/React__default.createElement(Portal$1, {
+  }, /*#__PURE__*/React__default.createElement("div", {
+    style: {
+      padding: 0,
+      margin: 0,
+      width: 7,
+      height: 7,
+      backgroundColor: color,
+      borderRadius: "100%"
+    }
+  })), isDragging ? /*#__PURE__*/React__default.createElement(Portal$1, {
     node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
   }, /*#__PURE__*/React__default.createElement(Connection, {
     from: dragStartCoordinates,
@@ -9773,7 +9760,7 @@ var Inner = function Inner(_ref) {
   }, label || defaultLabel), /*#__PURE__*/React__default.createElement("td", {
     className: styles$5.controls
   }, controls.map(function (control) {
-    return /*#__PURE__*/React__default.createElement(Control, _extends$3({}, control, {
+    return /*#__PURE__*/React__default.createElement(Control, _extends$2({}, control, {
       nodeId: nodeId,
       portName: name,
       triggerRecalculation: triggerRecalculation,
@@ -9878,9 +9865,12 @@ var IoPorts = function IoPorts(_ref) {
     case "outputsOnly":
       return (resolvedOutputs.length || null) && /*#__PURE__*/React__default.createElement("div", {
         className: styles$5.outputs,
+        style: {
+          backgroundColor: color
+        },
         "data-show": show
       }, resolvedOutputs.map(function (output) {
-        return /*#__PURE__*/React__default.createElement(Output, _extends$3({}, output, {
+        return /*#__PURE__*/React__default.createElement(Output, _extends$2({}, output, {
           optColor: color,
           triggerRecalculation: triggerRecalculation,
           inputTypes: inputTypes,
@@ -9901,7 +9891,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref3.hidePort;
         return !hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default.createElement(Input, _extends$3({
+        return /*#__PURE__*/React__default.createElement(Input, _extends$2({
           optColor: color
         }, input, {
           data: inputData[input.name] || {},
@@ -9925,7 +9915,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref5.hidePort;
         return hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default.createElement(Inner, _extends$3({}, input, {
+        return /*#__PURE__*/React__default.createElement(Inner, _extends$2({}, input, {
           data: inputData[input.name] || {},
           isConnected: !!connections.inputs[input.name],
           triggerRecalculation: triggerRecalculation,
@@ -10127,7 +10117,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
   return /*#__PURE__*/React__default.createElement(Draggable, {
     className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.wrapper,
     style: {
-      backgroundColor: tileBackground,
+      background: "rgba(46, 58, 89, 0.8)",
       color: tileFontColor,
       zIndex: isSelected && 1000,
       boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : "none",
@@ -10181,7 +10171,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     onClick: function onClick() {
       return navigator.clipboard.writeText(id);
     }
-  }, id)), /*#__PURE__*/React__default.createElement("div", {
+  }, "ID: ", id)), /*#__PURE__*/React__default.createElement("div", {
     className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerActions
   }, buttons.map(function (action) {
     return action(actionsData, function (getState) {
@@ -27553,14 +27543,14 @@ function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if 
 
 function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 var Colors = {
-  yellow: 'yellow',
-  orange: 'orange',
-  red: 'red',
-  pink: 'pink',
-  purple: 'purple',
-  blue: 'blue',
-  green: 'green',
-  grey: 'grey'
+  yellow: "yellow",
+  orange: "orange",
+  red: "red",
+  pink: "pink",
+  purple: "purple",
+  blue: "blue",
+  green: "green",
+  grey: "grey"
 };
 
 var FlumeConfig = /*#__PURE__*/function () {
@@ -27589,16 +27579,16 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addNodeType",
     value: function addNodeType(config) {
-      if (_typeof(config) !== 'object' && config !== null) {
-        throw new Error('You must provide a configuration object when calling addNodeType.');
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addNodeType.");
       } // noinspection JSObjectNullOrUndefined
 
 
-      if (typeof config.type !== 'string') {
+      if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
       }
 
-      if (typeof config.initialWidth !== 'undefined' && typeof config.initialWidth !== 'number') {
+      if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
         throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
       }
 
@@ -27608,8 +27598,8 @@ var FlumeConfig = /*#__PURE__*/function () {
 
       var node = {
         type: config.type,
-        label: define(config.label, ''),
-        description: define(config.description, ''),
+        label: define(config.label, ""),
+        description: define(config.description, ""),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
       }; // Validating category data of flume action that is used to render action
@@ -27618,14 +27608,14 @@ var FlumeConfig = /*#__PURE__*/function () {
       node.category = {};
       var category = config.category;
       node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
-      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === 'string' ? category.label : 'Other';
-      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === 'string' ? category.description : 'Ungrouped actions are stored here'; // Optionally supplying action header color
+      node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // Optionally supplying action header color
 
-      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === 'string' && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
+      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
 
-      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === 'string' && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
-      if (typeof config.icon === 'string') node.icon = config.icon;
-      if (typeof config.comment === 'string') node.comment = config.comment;
+      if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
+      if (typeof config.icon === "string") node.icon = config.icon;
+      if (typeof config.comment === "string") node.comment = config.comment;
       node.expanded = config.expanded || true;
       if (config.initialWidth) node.initialWidth = config.initialWidth;
       if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
@@ -27634,16 +27624,16 @@ var FlumeConfig = /*#__PURE__*/function () {
         node.actions = config.actions;
         node.actions.data = config.actions.data || {};
         node.actions.buttons = config.actions.buttons && lodash.exports.isArray(config.actions.buttons) ? config.actions.buttons.filter(function (button) {
-          return typeof button === 'function';
+          return typeof button === "function";
         }) : [];
       } else node.actions = {
         data: {},
         buttons: []
       };
 
-      if (typeof config.inputs === 'function') {
+      if (typeof config.inputs === "function") {
         var inputs = config.inputs(getPortBuilders(this.portTypes));
-        if (!Array.isArray(inputs) && typeof config.inputs !== 'function') throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
+        if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
         node.inputs = inputs;
       } else if (config.inputs === undefined) {
         node.inputs = [];
@@ -27653,10 +27643,10 @@ var FlumeConfig = /*#__PURE__*/function () {
         node.inputs = config.inputs;
       }
 
-      if (typeof config.outputs === 'function') {
+      if (typeof config.outputs === "function") {
         var outputs = config.outputs(getPortBuilders(this.portTypes));
 
-        if (!Array.isArray(outputs) && typeof config.outputs !== 'function') {
+        if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
           throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
         }
 
@@ -27670,7 +27660,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       }
 
       if (config.root !== undefined) {
-        if (typeof config.root !== 'boolean') {
+        if (typeof config.root !== "boolean") {
           throw new Error("Optional key, \"root\" must be a boolean.");
         } else {
           node.root = config.root;
@@ -27698,12 +27688,12 @@ var FlumeConfig = /*#__PURE__*/function () {
   }, {
     key: "addPortType",
     value: function addPortType(config) {
-      if (_typeof(config) !== 'object' && config !== null) {
-        throw new Error('You must provide a configuration object when calling addPortType');
+      if (_typeof(config) !== "object" && config !== null) {
+        throw new Error("You must provide a configuration object when calling addPortType");
       } // noinspection JSObjectNullOrUndefined
 
 
-      if (typeof config.type !== 'string') {
+      if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addPortType.");
       }
 
@@ -27711,14 +27701,14 @@ var FlumeConfig = /*#__PURE__*/function () {
         throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
       }
 
-      if (typeof config.name !== 'string') {
+      if (typeof config.name !== "string") {
         throw new Error("Required key, \"name\" must be a string when calling addPortType.");
       }
 
       var port = {
         type: config.type,
         name: config.name,
-        label: define(config.label, ''),
+        label: define(config.label, ""),
         hidePort: define(config.hidePort, true)
       };
 
@@ -27738,7 +27728,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         port.controls = config.controls;
       }
 
-      if (!port.color && config.color && typeof config.color === 'string' && checkColor(config.color)) port.color = config.color;
+      if (!port.color && config.color && typeof config.color === "string" && checkColor(config.color)) port.color = config.color;
       this.portTypes[config.type] = port;
       return this;
     }
@@ -27754,7 +27744,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         if (!skipDynamicNodesCheck) {
           var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
-            return typeof node.inputs === 'function' || typeof node.outputs === 'function';
+            return typeof node.inputs === "function" || typeof node.outputs === "function";
           });
 
           if (dynamicNodes.length) {
@@ -27773,7 +27763,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         if (affectedNodes.length) {
           throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
             return "".concat(n.type);
-          }).join(', '), "]"));
+          }).join(", "), "]"));
         } else {
           var _this$portTypes = this.portTypes;
               _this$portTypes[type];
@@ -27927,7 +27917,7 @@ var Comment = (function (_ref) {
     var x = _ref3.x,
         y = _ref3.y;
     dispatch({
-      type: 'SET_COMMENT_COORDINATES',
+      type: "SET_COMMENT_COORDINATES",
       id: id,
       x: x,
       y: y
@@ -27945,7 +27935,7 @@ var Comment = (function (_ref) {
     var width = clamp_1(coordinates.x - x + 10, 80, 10000);
     var height = clamp_1(coordinates.y - y + 10, 30, 10000);
     dispatch({
-      type: 'SET_COMMENT_DIMENSIONS',
+      type: "SET_COMMENT_DIMENSIONS",
       id: id,
       width: width,
       height: height
@@ -27954,18 +27944,18 @@ var Comment = (function (_ref) {
 
   var handleMenuOption = function handleMenuOption(option, e) {
     switch (option.value) {
-      case 'edit':
+      case "edit":
         startTextEdit();
         break;
 
-      case 'color':
+      case "color":
         setColorPickerCoordinates(menuCoordinates);
         setIsPickingColor(true);
         break;
 
-      case 'delete':
+      case "delete":
         dispatch({
-          type: 'DELETE_COMMENT',
+          type: "DELETE_COMMENT",
           id: id
         });
         break;
@@ -27982,7 +27972,7 @@ var Comment = (function (_ref) {
 
   var handleTextChange = function handleTextChange(e) {
     dispatch({
-      type: 'SET_COMMENT_TEXT',
+      type: "SET_COMMENT_TEXT",
       id: id,
       text: e.target.value
     });
@@ -27990,7 +27980,7 @@ var Comment = (function (_ref) {
 
   var handleColorPicked = function handleColorPicked(color) {
     dispatch({
-      type: 'SET_COMMENT_COLOR',
+      type: "SET_COMMENT_COLOR",
       id: id,
       color: color
     });
@@ -28000,7 +27990,7 @@ var Comment = (function (_ref) {
     if (isNew) {
       setIsEditing(true);
       dispatch({
-        type: 'REMOVE_COMMENT_NEW',
+        type: "REMOVE_COMMENT_NEW",
         id: id
       });
     }
@@ -28012,7 +28002,7 @@ var Comment = (function (_ref) {
       transform: "translate(".concat(x, "px,").concat(y, "px)"),
       width: width,
       height: height,
-      zIndex: isEditing ? 999 : ''
+      zIndex: isEditing ? 999 : ""
     },
     stageState: stageState,
     stageRect: stageRect,
@@ -28051,17 +28041,17 @@ var Comment = (function (_ref) {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: [{
-      value: 'edit',
-      label: 'Edit Comment',
-      description: 'Edit the text of the comment'
+      value: "edit",
+      label: "Edit Comment",
+      description: "Edit the text of the comment"
     }, {
-      value: 'color',
-      label: 'Change Color',
-      description: 'Change the color of the comment'
+      value: "color",
+      label: "Change Color",
+      description: "Change the color of the comment"
     }, {
-      value: 'delete',
-      label: 'Delete Comment',
-      description: 'Delete the comment'
+      value: "delete",
+      label: "Delete Comment",
+      description: "Delete the comment"
     }],
     onRequestClose: closeContextMenu,
     onOptionSelected: handleMenuOption
@@ -28105,7 +28095,7 @@ var Toaster = (function (_ref) {
   return /*#__PURE__*/React__default.createElement("div", {
     className: styles$2.toaster
   }, toasts.map(function (toast, i) {
-    return /*#__PURE__*/React__default.createElement(Toast, _extends$3({}, toast, {
+    return /*#__PURE__*/React__default.createElement(Toast, _extends$2({}, toast, {
       onHeightReceived: setHeight,
       onExitRequested: startExit,
       onRemoveRequested: removeToast,
@@ -32747,7 +32737,7 @@ var toastsReducer = (function () {
         id: nanoid(5),
         title: action.title,
         message: action.message,
-        type: action.toastType || 'info',
+        type: action.toastType || "info",
         duration: action.duration || 10000,
         height: 0,
         exiting: false
@@ -32918,14 +32908,14 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     _defineProperty$1(_assertThisInitialized(_this), "highlightedChildren", void 0);
 
     _defineProperty$1(_assertThisInitialized(_this), "bind", function () {
-      _this.props.target.addEventListener('mousedown', _this.onMouseDown);
+      _this.props.target.addEventListener("mousedown", _this.onMouseDown);
 
-      _this.props.target.addEventListener('touchstart', _this.onTouchStart);
+      _this.props.target.addEventListener("touchstart", _this.onTouchStart);
     });
 
     _defineProperty$1(_assertThisInitialized(_this), "reset", function () {
       if (_this.props.target) {
-        _this.props.target.removeEventListener('mousedown', _this.onMouseDown);
+        _this.props.target.removeEventListener("mousedown", _this.onMouseDown);
       }
     });
 
@@ -32942,7 +32932,7 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
           Target.matches = Target.matchesSelector || Target.mozMatchesSelector || Target.msMatchesSelector || Target.oMatchesSelector || Target.webkitMatchesSelector || defaultMatches;
         }
 
-        if (Target.matches && Target.matches(_this.props.ignoreTargets.join(','))) {
+        if (Target.matches && Target.matches(_this.props.ignoreTargets.join(","))) {
           return false;
         }
       }
@@ -32969,8 +32959,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       }
 
       if (_this.init(e, e.pageX, e.pageY)) {
-        window.document.addEventListener('mousemove', _this.onMouseMove);
-        window.document.addEventListener('mouseup', _this.onMouseUp);
+        window.document.addEventListener("mousemove", _this.onMouseMove);
+        window.document.addEventListener("mouseup", _this.onMouseUp);
 
         _this.onMouseMove(e);
       }
@@ -32982,16 +32972,16 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       }
 
       if (_this.init(e, e.touches[0].pageX, e.touches[0].pageY)) {
-        window.document.addEventListener('touchmove', _this.onTouchMove);
-        window.document.addEventListener('touchend', _this.onMouseUp);
+        window.document.addEventListener("touchmove", _this.onTouchMove);
+        window.document.addEventListener("touchend", _this.onMouseUp);
       }
     });
 
     _defineProperty$1(_assertThisInitialized(_this), "onMouseUp", function () {
-      window.document.removeEventListener('touchmove', _this.onTouchMove);
-      window.document.removeEventListener('mousemove', _this.onMouseMove);
-      window.document.removeEventListener('mouseup', _this.onMouseUp);
-      window.document.removeEventListener('touchend', _this.onMouseUp);
+      window.document.removeEventListener("touchmove", _this.onTouchMove);
+      window.document.removeEventListener("mousemove", _this.onMouseMove);
+      window.document.removeEventListener("mouseup", _this.onMouseUp);
+      window.document.removeEventListener("touchend", _this.onMouseUp);
 
       _this.setState({
         mouseDown: false,
@@ -33163,8 +33153,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.reset();
-      window.document.removeEventListener('mousemove', this.onMouseMove);
-      window.document.removeEventListener('mouseup', this.onMouseUp);
+      window.document.removeEventListener("mousemove", this.onMouseMove);
+      window.document.removeEventListener("mouseup", this.onMouseUp);
     }
   }, {
     key: "render",
@@ -33174,11 +33164,11 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
      */
     function render() {
       var style = _objectSpread$6({
-        position: 'absolute',
-        background: 'rgba(159, 217, 255, 0.3)',
-        border: 'solid 1px rgba(123, 123, 123, 0.61)',
+        position: "absolute",
+        background: "rgba(159, 217, 255, 0.3)",
+        border: "solid 1px rgba(123, 123, 123, 0.61)",
         zIndex: 9,
-        cursor: 'crosshair'
+        cursor: "crosshair"
       }, this.props.style);
 
       if (this.state.selectionBoxWithoutZoom) {
@@ -33914,7 +33904,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       nodesState: [{
         state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
         action: {
-          type: 'INITIAL'
+          type: "INITIAL"
         }
       }],
       currentStateIndex: 0
@@ -33941,7 +33931,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
 
   useEffect(function () {
     !currentStateIndex && dispatchNodes({
-      type: 'HYDRATE_DEFAULT_NODES'
+      type: "HYDRATE_DEFAULT_NODES"
     });
     recalculateConnections();
   }, []);
@@ -33954,10 +33944,10 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   var initialStageParams = _initialStageParams || tempState.stage;
 
   var _useReducer7 = useReducer(stageReducer, {
-    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === 'number' ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
+    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
     translate: {
-      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === 'number' ? initialStageParams.translate.x : 0,
-      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === 'number' ? initialStageParams.translate.y : 0
+      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
+      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
     }
   }),
       _useReducer8 = _slicedToArray(_useReducer7, 2),
@@ -33995,7 +33985,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   var handleDragEnd = function handleDragEnd(e, id, coordinates) {
     if (selectedNodes.length > 0) {
       dispatchNodes({
-        type: 'SET_MULTIPLE_NODES_COORDINATES',
+        type: "SET_MULTIPLE_NODES_COORDINATES",
         nodesInfo: selectedNodes.map(function (id) {
           var nodeRef = nodeRefs.find(function (_ref2) {
             var _ref3 = _slicedToArray(_ref2, 1),
@@ -34020,7 +34010,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       });
     } else {
       dispatchNodes(_objectSpread(_objectSpread({
-        type: 'SET_NODE_COORDINATES'
+        type: "SET_NODE_COORDINATES"
       }, coordinates), {}, {
         nodeId: id
       }));
@@ -34113,7 +34103,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: {
       zIndex: 100,
-      cursor: 'inherit'
+      cursor: "inherit"
     }
   }), /*#__PURE__*/React__default.createElement(Stage, {
     ref: editorRef,
@@ -34134,14 +34124,14 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
     draggableCanvasSet: context.draggableCanvasSet
   }, !hideComments && Object.values(comments).map(function (comment) {
-    return /*#__PURE__*/React__default.createElement(Comment, _extends$3({}, comment, {
+    return /*#__PURE__*/React__default.createElement(Comment, _extends$2({}, comment, {
       stageRect: stage,
       dispatch: dispatchComments,
       onDragStart: recalculateStageRect,
       key: comment.id
     }));
   }), Object.values(nodesState[currentStateIndex].state).map(function (node) {
-    return /*#__PURE__*/React__default.createElement(Node, _extends$3({}, node, {
+    return /*#__PURE__*/React__default.createElement(Node, _extends$2({}, node, {
       isSelected: selectedNodes.includes(node.id),
       ref: nodeRefs.find(function (_ref6) {
         var _ref7 = _slicedToArray(_ref6, 1),
@@ -34168,7 +34158,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     id: "".concat(DRAG_CONNECTION_ID).concat(editorId)
   }))))))))))));
 });
-NodeEditor.displayName = 'NodeEditor';
+NodeEditor.displayName = "NodeEditor";
 var useRootEngine = function useRootEngine(nodes, engine, context) {
   return Object.keys(nodes).length > 0 ? engine.resolveRootNode(nodes, {
     context: context

@@ -1,20 +1,20 @@
-import React from 'react';
-import axios from 'axios';
-import FloatingNavigation from '../../components/FloatingNavigation';
-import { BASE_URL } from '../Form/Form';
-import orderBy from 'lodash/orderBy';
-import { Link } from 'react-router-dom';
-import './Forms.css';
+import React from "react";
+import axios from "axios";
+import FloatingNavigation from "../../components/FloatingNavigation";
+import { BASE_URL } from "../Form/Form";
+import orderBy from "lodash/orderBy";
+import { Link } from "react-router-dom";
+import "./Forms.css";
 
 const placeholderDescription =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.';
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.";
 
 const Forms = () => {
   const [forms, setForms] = React.useState([]);
 
   React.useEffect(() => {
     axios.get(`${BASE_URL}/forms`).then((res) => {
-      setForms(orderBy(res.data, 'dateCreated'));
+      setForms(orderBy(res.data, "dateCreated"));
     });
   }, []);
 
@@ -31,7 +31,7 @@ const Forms = () => {
           {forms.map((form) => (
             <div key={form.id}>
               <FormBlock
-                title={form.definition.title || 'Untitled Form'}
+                title={form.definition.title || "Untitled Form"}
                 id={form.id}
                 description={placeholderDescription}
               />

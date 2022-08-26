@@ -2,7 +2,7 @@
 title: Running Logic
 ---
 
-import { RootNodeEditor } from '../components/GettingStartedExample'
+import { RootNodeEditor } from "../components/GettingStartedExample";
 
 Modeling your business logic using a visual editor is useful, but it's a lot more useful if you can actually execute that modeled logic at runtime. Many tools for modeling logic are purely for documentation or planning purposes. Flume let's you and your users model **and** run your logic in any Javascript environment.
 
@@ -14,11 +14,11 @@ While Flume can be used to model many types of graph data structures, the main f
 
 Let's take the following logic graph for example:
 
-<div style={{ width: "100%", height: 500, color: '#000' }}>
+<div style={{ width: "100%", height: 500, color: "#000" }}>
   <RootNodeEditor />
 </div>
 
-<br/>
+<br />
 
 In this case the "root" node is the "Homepage" node. This node represents the final output of the graph. When we run this graph using the [root engine](/docs/root-engine), the engine enters the graph at the root node, loops through each input, and then walks backwards to get the final value of the port.
 

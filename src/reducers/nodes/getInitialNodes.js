@@ -1,5 +1,5 @@
-import reconcileNodes from './reconcileNodes';
-import { nodesReducer } from './index';
+import reconcileNodes from "./reconcileNodes";
+import { nodesReducer } from "./index";
 
 export default (
   initialNodes = {},
@@ -8,13 +8,18 @@ export default (
   portTypes,
   context
 ) => {
-  const reconciledNodes = reconcileNodes(initialNodes, nodeTypes, portTypes, context);
+  const reconciledNodes = reconcileNodes(
+    initialNodes,
+    nodeTypes,
+    portTypes,
+    context
+  );
 
   return {
     ...reconciledNodes,
     ...defaultNodes.reduce((nodes, dNode, i) => {
       const nodeNotAdded = !Object.values(initialNodes).find(
-        n => n.type === dNode.type
+        (n) => n.type === dNode.type
       );
       if (nodeNotAdded) {
         nodes = nodesReducer(
@@ -25,12 +30,12 @@ export default (
             defaultNode: true,
             x: dNode.x || 0,
             y: dNode.y || 0,
-            nodeType: dNode.type
+            nodeType: dNode.type,
           },
-          {nodeTypes, portTypes, context}
+          { nodeTypes, portTypes, context }
         );
       }
       return nodes;
-    }, {})
+    }, {}),
   };
 };

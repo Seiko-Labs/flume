@@ -1,8 +1,8 @@
-import NodeTypes from './NodeTypes';
-import { previewState } from './Form';
+import NodeTypes from "./NodeTypes";
+import { previewState } from "./Form";
 
 const getRootNode = (nodes) =>
-  nodes[Object.values(nodes).find((n) => n.type === 'output').id];
+  nodes[Object.values(nodes).find((n) => n.type === "output").id];
 
 // const loopTransputs = (transputs, callback) => {
 //   Object.entries(transputs).forEach(([inputName, connection]) => {
@@ -17,32 +17,32 @@ const mapTransputs = (transputs, callback) =>
 
 const fireNodeFunction = (node, inputValues, nodeType) => {
   switch (node.type) {
-    case 'number':
+    case "number":
       return { number: inputValues.number };
-    case 'boolean':
+    case "boolean":
       return { boolean: inputValues.boolean };
-    case 'string':
+    case "string":
       return { string: inputValues.string };
-    case 'and':
+    case "and":
       return { output: inputValues.val1 && inputValues.val2 };
-    case 'or':
+    case "or":
       return { output: inputValues.val1 || inputValues.val2 };
-    case 'valueEqualsBoolean':
+    case "valueEqualsBoolean":
       return { output: inputValues.val1 === inputValues.boolean };
-    case 'valueEqualsValue':
+    case "valueEqualsValue":
       return { output: inputValues.val1 === inputValues.val2 };
-    case 'textSwitch':
+    case "textSwitch":
       return {
         output: inputValues.test
           ? inputValues.textIfTrue
           : inputValues.textIfFalse,
       };
-    case 'field': {
+    case "field": {
       const fields = previewState.getFields();
       const field = fields[inputValues.fieldId];
       return field ? resolveLogic(field, fields) : {};
     }
-    case 'valueEqualsOneOfOptions': {
+    case "valueEqualsOneOfOptions": {
       let value = inputValues.value;
       if (value === undefined) {
         const fields = previewState.getFields();
@@ -58,22 +58,22 @@ const fireNodeFunction = (node, inputValues, nodeType) => {
 
 const resolveInputControls = (type, data) => {
   switch (type) {
-    case 'number':
+    case "number":
       return data.number;
-    case 'boolean':
+    case "boolean":
       return data.boolean;
-    case 'string':
+    case "string":
       return data.text;
-    case 'fieldId':
+    case "fieldId":
       return data.selectedFieldId;
-    case 'textSwitch':
+    case "textSwitch":
       return {
         textIfTrue: data.textIfTrue.text,
         textIfFalse: data.textIfFalse.text,
       };
-    case 'stringArray':
+    case "stringArray":
       return data.values;
-    case 'value':
+    case "value":
       return Object.keys(data).length ? data : undefined;
     default:
       return data;

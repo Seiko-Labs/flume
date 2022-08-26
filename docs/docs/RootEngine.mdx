@@ -7,13 +7,13 @@ title: RootEngine
 ## Importing
 
 ```js
-import { RootEngine } from 'flume'
+import { RootEngine } from "flume";
 ```
 
 ## Creating a new root engine
 
 ```js
-const engine = new RootEngine(config, resolvePorts, resolveNodes)
+const engine = new RootEngine(config, resolvePorts, resolveNodes);
 ```
 
 ## `resolvePorts` : function
@@ -27,21 +27,21 @@ Typically this function is a switch statement that might look something like thi
 ```js
 const resolvePorts = (portType, data, context) => {
   switch (portType) {
-    case 'string':
-      return data.string
-    case 'boolean':
-      return data.boolean
-    case 'number':
-      return data.number
+    case "string":
+      return data.string;
+    case "boolean":
+      return data.boolean;
+    case "number":
+      return data.number;
     default:
-      return data
+      return data;
   }
-}
+};
 ```
 
 ### Returns : any
 
-This function must return the control values for the port currently being processed. In **most** cases, ports have only one control, so this function simply returns the value of that control out of the data object. If the port being processed has more than one control, this function *typically* returns an object with each key being the name of each control, and the value being its value.
+This function must return the control values for the port currently being processed. In **most** cases, ports have only one control, so this function simply returns the value of that control out of the data object. If the port being processed has more than one control, this function _typically_ returns an object with each key being the name of each control, and the value being its value.
 
 ### `portType` : string
 
@@ -66,22 +66,22 @@ Typically this function is a switch statement that might look something like thi
 ```js
 const resolveNodes = (node, inputValues, nodeType, context) => {
   switch (node.type) {
-    case 'string':
-      return { string: inputValues.string }
-    case 'boolean':
-      return { boolean: inputValues.boolean }
-    case 'number':
-      return { number: inputValues.number }
-    case 'user':
-      return context.user
-    case 'joinText':
-      return { joinedText: inputValues.string1 + inputValues.string2 }
+    case "string":
+      return { string: inputValues.string };
+    case "boolean":
+      return { boolean: inputValues.boolean };
+    case "number":
+      return { number: inputValues.number };
+    case "user":
+      return context.user;
+    case "joinText":
+      return { joinedText: inputValues.string1 + inputValues.string2 };
     case "reverseBoolean":
-      return { boolean: !inputValues.boolean }
+      return { boolean: !inputValues.boolean };
     default:
-      return inputValues
+      return inputValues;
   }
-}
+};
 ```
 
 ### Returns : object
@@ -130,4 +130,4 @@ Optional. In some cases you may wish to override which node is considered the ro
 
 #### `maxLoops` : int
 
-Optional. By default, the root engine will only allow up to `1000` recursive loops through nodes before it will bail out of processing the current root node input and log an error. This prevents the call stack from being overwhelmed by a circular node setup. Passing an integer to this property will change the number of max loops before this occurs. Passing a `-1` will disable this check and allow infinite loops. 
+Optional. By default, the root engine will only allow up to `1000` recursive loops through nodes before it will bail out of processing the current root node input and log an error. This prevents the call stack from being overwhelmed by a circular node setup. Passing an integer to this property will change the number of max loops before this occurs. Passing a `-1` will disable this check and allow infinite loops.

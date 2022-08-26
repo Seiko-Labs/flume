@@ -1,19 +1,19 @@
-import { Controls } from 'node-editor';
-import { isBase64UrlImage } from '../presets/miscellaneous';
-import { useEffect, useState } from 'react';
+import { Controls } from "node-editor";
+import { isBase64UrlImage } from "../presets/miscellaneous";
+import { useEffect, useState } from "react";
 
 export const imageScreenshot = {
-  type: 'imageScreenshot',
-  name: 'imageScreenshot',
-  label: 'Image screenshot',
+  type: "imageScreenshot",
+  name: "imageScreenshot",
+  label: "Image screenshot",
   controls: [
     Controls.text({
-      name: 'image',
-      label: 'Image (Base64)',
+      name: "image",
+      label: "Image (Base64)",
     }),
     Controls.button({
-      name: 'testButton',
-      label: 'Super extra long button what you do wit it?',
+      name: "testButton",
+      label: "Super extra long button what you do wit it?",
       onPress: (
         inputData,
         nodeData,
@@ -22,12 +22,12 @@ export const imageScreenshot = {
         triggerRecalculation
       ) => {
         console.log(inputData);
-        onPressButton(['other'], 'select', 'buttonPort');
+        onPressButton(["other"], "select", "buttonPort");
       },
     }),
     Controls.text({
-      name: 'image1',
-      label: 'Image (Base64)',
+      name: "image1",
+      label: "Image (Base64)",
     }),
   ],
 };

@@ -153,7 +153,7 @@ const HeroBlock = () => {
   );
 };
 
-const getInitialScale = size => {
+const getInitialScale = (size) => {
   switch (size) {
     case "extra-small":
       return 0.4;
@@ -411,7 +411,7 @@ const RunLogicBlock = () => (
   </div>
 );
 
-const Wordmark = props => {
+const Wordmark = (props) => {
   return (
     <svg viewBox="0 0 118.84 46.5" {...props}>
       <g id="prefix__Layer_2" data-name="Layer 2">
@@ -457,10 +457,19 @@ const Footer = () => {
       <span>© Christopher Patty {CURRENT_YEAR}</span>
       <span className={clsx(styles.alignRight, styles.netlifyRecommend)}>
         <span className={styles.hostedBy}>Proudly hosted by</span>
-        <a className={styles.netlifyWrapper} href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img src="/img/netlify.svg" alt="Netlify" className={styles.netlifyLogo} />
+        <a
+          className={styles.netlifyWrapper}
+          href="https://www.netlify.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="/img/netlify.svg"
+            alt="Netlify"
+            className={styles.netlifyLogo}
+          />
         </a>
       </span>
     </footer>
-  )
-}
+  );
+};

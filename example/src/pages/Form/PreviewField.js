@@ -1,7 +1,7 @@
-import React from 'react';
-import { PreviewFieldsDispatchContext } from './Form';
-import resolveLogic from './resolveLogic';
-import nanoid from 'nanoid/non-secure/index';
+import React from "react";
+import { PreviewFieldsDispatchContext } from "./Form";
+import resolveLogic from "./resolveLogic";
+import nanoid from "nanoid/non-secure/index";
 
 export default ({ field, fields }) => {
   const { label, value, disabled, visible, required } =
@@ -10,7 +10,7 @@ export default ({ field, fields }) => {
 
   const handleChange = (value) => {
     dispatchPreviewFields({
-      type: 'SET_FIELD_VALUE',
+      type: "SET_FIELD_VALUE",
       fieldId: field.id,
       value,
     });
@@ -18,7 +18,7 @@ export default ({ field, fields }) => {
 
   const getFieldByType = () => {
     switch (field.type) {
-      case 'text':
+      case "text":
         return (
           <input
             className="dummy-input"
@@ -29,7 +29,7 @@ export default ({ field, fields }) => {
             onChange={(e) => handleChange(e.target.value)}
           />
         );
-      case 'checkbox':
+      case "checkbox":
         return (
           <Checkbox
             label={label}
@@ -39,7 +39,7 @@ export default ({ field, fields }) => {
             onChange={handleChange}
           />
         );
-      case 'select':
+      case "select":
         return (
           <Select
             value={value}
@@ -58,7 +58,7 @@ export default ({ field, fields }) => {
     <FieldWrapper
       disabled={disabled}
       required={required}
-      hideLabel={field.type === 'checkbox'}
+      hideLabel={field.type === "checkbox"}
       label={label}
     >
       {getFieldByType()}

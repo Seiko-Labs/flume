@@ -235,9 +235,13 @@ const Stage = forwardRef(
         onMouseDown={(e) => {
           if (e.button === 1) {
             if (!DRAGGABLE_CANVAS) {
-              draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(true);
+              draggableCanvasSet &&
+                typeof draggableCanvasSet === "function" &&
+                draggableCanvasSet(true);
             } else {
-              draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(false);
+              draggableCanvasSet &&
+                typeof draggableCanvasSet === "function" &&
+                draggableCanvasSet(false);
             }
           }
         }}
@@ -251,11 +255,6 @@ const Stage = forwardRef(
         stageState={{ scale, translate }}
         style={{
           cursor: spaceIsPressed && spaceToPan ? "grab" : "",
-          backgroundSize: 10 * scale,
-          backgroundOrigin: "center",
-          backgroundPosition: `calc(50% + ${
-            -(translate.x * scale) % (10 * scale)
-          }px) calc(50% + ${-(translate.y * scale) % (10 * scale)}px) `,
         }}
         disabled={disablePan || (spaceToPan && !spaceIsPressed)}
         data-flume-stage={true}

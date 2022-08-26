@@ -13,12 +13,16 @@ const animalIds = [
   "hvvNY6b8pE0",
 ];
 
-const getRandomId = () => animalIds[Math.floor(Math.random() * animalIds.length)];
+const getRandomId = () =>
+  animalIds[Math.floor(Math.random() * animalIds.length)];
 
 const RandomPhotoComponent = ({ url, onChange }) => {
   return (
     <div>
-      <button style={{marginBottom: 10}} onClick={() => onChange(getRandomId())}>
+      <button
+        style={{ marginBottom: 10 }}
+        onClick={() => onChange(getRandomId())}
+      >
         Get Random Photo
       </button>
       <img
@@ -39,9 +43,9 @@ const config = new FlumeConfig()
     controls: [
       Controls.text({
         name: "string",
-        label: "Text"
-      })
-    ]
+        label: "Text",
+      }),
+    ],
   })
   .addPortType({
     type: "number",
@@ -51,9 +55,9 @@ const config = new FlumeConfig()
     controls: [
       Controls.number({
         name: "number",
-        label: "Number"
-      })
-    ]
+        label: "Number",
+      }),
+    ],
   })
   .addPortType({
     type: "boolean",
@@ -63,9 +67,9 @@ const config = new FlumeConfig()
     controls: [
       Controls.checkbox({
         name: "boolean",
-        label: "True/False"
-      })
-    ]
+        label: "True/False",
+      }),
+    ],
   })
   .addPortType({
     type: "animal",
@@ -81,10 +85,10 @@ const config = new FlumeConfig()
           { value: "horse", label: "Horse" },
           { value: "pig", label: "Pig" },
           { value: "elephant", label: "Elephant" },
-          { value: "snake", label: "Snake" }
-        ]
-      })
-    ]
+          { value: "snake", label: "Snake" },
+        ],
+      }),
+    ],
   })
   .addPortType({
     type: "colors",
@@ -101,10 +105,10 @@ const config = new FlumeConfig()
           { value: "yellow", label: "Yellow" },
           { value: "green", label: "Green" },
           { value: "orange", label: "Orange" },
-          { value: "purple", label: "Purple" }
-        ]
-      })
-    ]
+          { value: "purple", label: "Purple" },
+        ],
+      }),
+    ],
   })
   .addPortType({
     type: "randomPhoto",
@@ -118,51 +122,51 @@ const config = new FlumeConfig()
         defaultValue: "D6TqIa-tWRY",
         render: (data, onChange) => (
           <RandomPhotoComponent url={data} onChange={onChange} />
-        )
-      })
-    ]
+        ),
+      }),
+    ],
   })
   .addNodeType({
     type: "string",
     label: "Text",
     description: "Outputs a string of text",
-    inputs: ports => [ports.string()],
-    outputs: ports => [ports.string()]
+    inputs: (ports) => [ports.string()],
+    outputs: (ports) => [ports.string()],
   })
   .addNodeType({
     type: "number",
     label: "Number",
     description: "Outputs a numeric value",
-    inputs: ports => [ports.number()],
-    outputs: ports => [ports.number()]
+    inputs: (ports) => [ports.number()],
+    outputs: (ports) => [ports.number()],
   })
   .addNodeType({
     type: "boolean",
     label: "True/False",
     description: "Outputs a true/false value",
-    inputs: ports => [ports.boolean()],
-    outputs: ports => [ports.boolean()]
+    inputs: (ports) => [ports.boolean()],
+    outputs: (ports) => [ports.boolean()],
   })
   .addNodeType({
     type: "animal",
     label: "Animal",
     description: "Outputs a selected animal",
-    inputs: ports => [ports.animal()],
-    outputs: ports => [ports.animal()]
+    inputs: (ports) => [ports.animal()],
+    outputs: (ports) => [ports.animal()],
   })
   .addNodeType({
     type: "colors",
     label: "Colors",
     description: "Outputs a set of selected colors",
-    inputs: ports => [ports.colors()],
-    outputs: ports => [ports.colors()]
+    inputs: (ports) => [ports.colors()],
+    outputs: (ports) => [ports.colors()],
   })
   .addNodeType({
     type: "randomPhoto",
     label: "Random Photo",
     description: "Outputs a random photo from Unsplash",
-    inputs: ports => [ports.randomPhoto()],
-    outputs: ports => [ports.randomPhoto()]
+    inputs: (ports) => [ports.randomPhoto()],
+    outputs: (ports) => [ports.randomPhoto()],
   });
 
 export const TextControlGraph = () => (

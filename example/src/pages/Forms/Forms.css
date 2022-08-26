@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .forms-wrapper {
   width: 100%;
@@ -87,7 +87,7 @@
 }
 .plus-icon::before,
 .plus-icon::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0px;
   top: calc(50% - 1px);

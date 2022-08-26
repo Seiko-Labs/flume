@@ -1,46 +1,46 @@
-import _ from 'lodash';
+import _ from "lodash";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
+} from "../../../shared/presets/errorBlockPreset";
 
 export const forINode = {
-  type: 'for_i',
-  name: 'for_i',
-  label: 'FOR..I',
-  description: 'Any kind of an action',
+  type: "for_i",
+  name: "for_i",
+  label: "FOR..I",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.number({
-        name: 'from',
-        label: 'Start from integer',
+        name: "from",
+        label: "Start from integer",
         hidePort: true,
       }),
       ports.number({
-        name: 'to',
-        label: 'Repeat until integer',
+        name: "to",
+        label: "Repeat until integer",
         hidePort: true,
       }),
       ports.number({
-        name: 'step',
-        label: 'Step size',
+        name: "step",
+        label: "Step size",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#4BAEFC',
-        name: 'trueCaseAction',
-        label: 'Loop actions',
+        color: "#4BAEFC",
+        name: "trueCaseAction",
+        label: "Loop actions",
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'falseCaseAction',
-        label: 'After loop actions',
+        color: "#5ED28E",
+        name: "falseCaseAction",
+        label: "After loop actions",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -62,9 +62,9 @@ export const resolveForINode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'loops',
-    function: 'for_i',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "loops",
+    function: "for_i",
     class_params: {},
     func_params: {
       range:
@@ -89,7 +89,7 @@ export const resolveForINode = (node, inputValues, nodeType, context) => {
     },
     breakpoint: false,
     ...resolveErrorBlockPreset(node, inputValues),
-    next_id: 'condition',
+    next_id: "condition",
   };
 
   return { actionPort: actionList };

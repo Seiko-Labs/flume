@@ -1,46 +1,46 @@
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
-import _ from 'lodash';
+} from "../../../shared/presets/errorBlockPreset";
+import _ from "lodash";
 
 export const scrollNode = {
-  type: 'scroll',
-  name: 'scroll',
-  label: 'SCROLL',
-  description: 'Any kind of an action',
+  type: "scroll",
+  name: "scroll",
+  label: "SCROLL",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.number({
-        name: 'x',
-        label: 'X axis',
+        name: "x",
+        label: "X axis",
         hidePort: true,
       }),
       ports.number({
-        name: 'y',
-        label: 'Y axis',
+        name: "y",
+        label: "Y axis",
         hidePort: true,
       }),
       ports.number({
-        name: 'clicks',
-        label: 'Clicks amount',
+        name: "clicks",
+        label: "Clicks amount",
         hidePort: true,
       }),
       ports.checkbox({
-        name: 'pause',
-        label: 'Pause',
+        name: "pause",
+        label: "Pause",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'nextAction',
-        label: 'Next action',
+        color: "#5ED28E",
+        name: "nextAction",
+        label: "Next action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -62,9 +62,9 @@ export const resolveScrollNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'mouse',
-    function: 'click',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "mouse",
+    function: "click",
     class_params: {},
     func_params: {
       x: inputValues.x.number,
@@ -76,7 +76,7 @@ export const resolveScrollNode = (node, inputValues, nodeType, context) => {
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : 'finish',
+      : "finish",
   };
 
   return { actionPort: actionList };

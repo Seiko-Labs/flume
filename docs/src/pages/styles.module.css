@@ -447,30 +447,30 @@
   animation: rotate-fill 900ms linear infinite;
   animation-delay: -450ms;
 }
-.footer{
+.footer {
   width: 100%;
   display: flex;
   align-items: center;
   background: var(--background-extra-light);
   padding: 30px;
 }
-.netlifyWrapper{
-  padding: 10px 15px;;
+.netlifyWrapper {
+  padding: 10px 15px;
   border-radius: 9px;
-  background: rgba(0,0,0,.2);
+  background: rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.netlifyLogo{
+.netlifyLogo {
   width: 80px;
   margin: 0px;
 }
-.netlifyRecommend{
+.netlifyRecommend {
   display: flex;
   align-items: center;
 }
-.hostedBy{
+.hostedBy {
   margin-right: 10px;
   text-align: center;
 }
@@ -489,12 +489,12 @@
   }
 }
 
-@media screen and (max-height: 750px){
-  .heroBlock{
+@media screen and (max-height: 750px) {
+  .heroBlock {
     min-height: calc(100vh - 30px);
     padding-bottom: 15vh;
   }
-  .heroImageBlock img.heroNodes{
+  .heroImageBlock img.heroNodes {
     min-height: 400px;
   }
 }
@@ -546,7 +546,7 @@
   .mobileInline {
     display: inline;
   }
-  .heroBlock{
+  .heroBlock {
     padding-bottom: 0px;
   }
   .heroImageBlock {
@@ -670,19 +670,19 @@
   }
   .flumeWrapper {
   }
-  .netlifyRecommend{
+  .netlifyRecommend {
     flex-direction: column;
   }
-  .netlifyRecommend .hostedBy{
+  .netlifyRecommend .hostedBy {
     margin-right: 0px;
     margin-bottom: 10px;
   }
 }
-@media screen and (max-width: 400px){
-  .footer{
+@media screen and (max-width: 400px) {
+  .footer {
     flex-direction: column-reverse;
   }
-  .netlifyRecommend{
+  .netlifyRecommend {
     margin-left: 0px;
     margin-bottom: 20px;
   }

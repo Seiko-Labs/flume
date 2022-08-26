@@ -10,11 +10,11 @@ export default (nodes, input, output, portTypes) => ({
           ...(nodes[input.nodeId].connections.inputs[input.portName] || []),
           {
             nodeId: output.nodeId,
-            portName: output.portName
-          }
-        ]
-      }
-    }
+            portName: output.portName,
+          },
+        ],
+      },
+    },
   },
   [output.nodeId]: {
     ...nodes[output.nodeId],
@@ -23,14 +23,13 @@ export default (nodes, input, output, portTypes) => ({
       outputs: {
         ...nodes[output.nodeId].connections.outputs,
         [output.portName]: [
-          ...(nodes[output.nodeId].connections.outputs[output.portName] ||
-            []),
+          ...(nodes[output.nodeId].connections.outputs[output.portName] || []),
           {
             nodeId: input.nodeId,
-            portName: input.portName
-          }
-        ]
-      }
-    }
-  }
+            portName: input.portName,
+          },
+        ],
+      },
+    },
+  },
 });

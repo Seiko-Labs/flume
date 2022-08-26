@@ -233,9 +233,8 @@ const Port = ({
         onMouseDown={handleDragStart}
         className={styles.port}
         style={{
-          zIndex: 999,
-          marginLeft: isInput ? 0 : -9,
-          backgroundColor: color,
+          marginLeft: isInput ? 1 : -9,
+          backgroundColor: "white",
         }}
         data-port-name={name}
         data-port-type={type}
@@ -247,7 +246,16 @@ const Port = ({
         }}
         ref={port}
       >
-        <PortArrow />
+        <div
+          style={{
+            padding: 0,
+            margin: 0,
+            width: 7,
+            height: 7,
+            backgroundColor: color,
+            borderRadius: "100%",
+          }}
+        />
       </div>
       {isDragging ? (
         <Portal

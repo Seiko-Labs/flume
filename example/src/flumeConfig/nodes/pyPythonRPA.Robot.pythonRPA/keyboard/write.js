@@ -1,46 +1,46 @@
-import _ from 'lodash';
+import _ from "lodash";
 import {
   configErrorBlockPreset,
   resolveErrorBlockPreset,
-} from '../../../shared/presets/errorBlockPreset';
+} from "../../../shared/presets/errorBlockPreset";
 
 export const writeNode = {
-  type: 'write',
-  name: 'write',
-  label: 'WRITE',
-  description: 'Any kind of an action',
+  type: "write",
+  name: "write",
+  label: "WRITE",
+  description: "Any kind of an action",
   inputs: (ports) => (_, connections) =>
     [
       ports.string({
-        name: 'text',
-        label: 'Text',
+        name: "text",
+        label: "Text",
         hidePort: true,
       }),
       ports.decimal({
-        name: 'timing_after',
-        label: 'Wait after',
+        name: "timing_after",
+        label: "Wait after",
         hidePort: true,
       }),
       ports.decimal({
-        name: 'timing_before',
-        label: 'Wait before',
+        name: "timing_before",
+        label: "Wait before",
         hidePort: true,
       }),
       ports.decimal({
-        name: 'timing_between',
-        label: 'Wait between',
+        name: "timing_between",
+        label: "Wait between",
         hidePort: true,
       }),
       ports.actionPort({
-        color: '#5ED28E',
-        name: 'nextAction',
-        label: 'Next action',
+        color: "#5ED28E",
+        name: "nextAction",
+        label: "Next action",
       }),
       ...configErrorBlockPreset(ports, connections),
     ],
   outputs: (ports) => [
     ports.actionPort({
-      label: 'Previous action',
+      label: "Previous action",
     }),
   ],
 };
@@ -62,9 +62,9 @@ export const resolveWriteNode = (node, inputValues, nodeType, context) => {
   actionList.actions[node.id] = {
     ...(isFirst && { start: true }),
     name: nodeType.label,
-    module: 'pyPythonRPA.Robot.pythonRPA',
-    class: 'keyboard',
-    function: 'write',
+    module: "pyPythonRPA.Robot.pythonRPA",
+    class: "keyboard",
+    function: "write",
     class_params: {},
     func_params: {
       text: inputValues.text.text,
@@ -76,7 +76,7 @@ export const resolveWriteNode = (node, inputValues, nodeType, context) => {
     ...resolveErrorBlockPreset(node, inputValues),
     next_id: node.connections.inputs?.nextAction?.length
       ? node.connections.inputs?.nextAction[0]?.nodeId
-      : 'finish',
+      : "finish",
   };
 
   return { actionPort: actionList };

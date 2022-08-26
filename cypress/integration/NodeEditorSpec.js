@@ -1,4 +1,4 @@
-const getCurrentNodes = callback =>
+const getCurrentNodes = (callback) =>
   cy
     .contains("Log Nodes")
     .click()
@@ -28,32 +28,36 @@ describe("<NodeEditor/> Interactions", () => {
     cy.contains("h2", /^Number$/);
     cy.contains("h2", /^Add Numbers$/);
 
-    getCurrentNodes(nodes => {
+    getCurrentNodes((nodes) => {
       expect(Object.keys(nodes).length).to.equal(3);
       expect(
-        Object.values(nodes).filter(node => node.type === "number").length
+        Object.values(nodes).filter((node) => node.type === "number").length
       ).to.equal(2);
       expect(
-        Object.values(nodes).filter(node => node.type === "addNumbers").length
+        Object.values(nodes).filter((node) => node.type === "addNumbers").length
       ).to.equal(1);
     });
   });
 
   it("Can type in number inputs", () => {
-    cy.get(`input[type="number"]`)
-      .first()
-      .clear()
-      .type(10);
-    cy.get(`input[type="number"]`)
-      .eq(1)
-      .clear()
-      .type(20);
+    cy.get(`input[type="number"]`).first().clear().type(10);
+    cy.get(`input[type="number"]`).eq(1).clear().type(20);
 
-    getCurrentNodes(nodes => {
-      console.log(nodes)
-      expect(Object.values(nodes).filter(node => node.type === "number" && node.inputData.number.number === 10).length).to.equal(1)
-      expect(Object.values(nodes).filter(node => node.type === "number" && node.inputData.number.number === 20).length).to.equal(1)
-    })
+    getCurrentNodes((nodes) => {
+      console.log(nodes);
+      expect(
+        Object.values(nodes).filter(
+          (node) =>
+            node.type === "number" && node.inputData.number.number === 10
+        ).length
+      ).to.equal(1);
+      expect(
+        Object.values(nodes).filter(
+          (node) =>
+            node.type === "number" && node.inputData.number.number === 20
+        ).length
+      ).to.equal(1);
+    });
   });
 
   it("Can connect nodes", () => {
@@ -65,7 +69,7 @@ describe("<NodeEditor/> Interactions", () => {
       .trigger("mousedown")
       .trigger("mousemove", {
         clientX: firstInputRect.x + firstInputRect.width / 2,
-        clientY: firstInputRect.y + firstInputRect.height / 2
+        clientY: firstInputRect.y + firstInputRect.height / 2,
       });
     cy.get(`[data-port-transput-type="input"]`)
       .eq(3)
@@ -80,7 +84,7 @@ describe("<NodeEditor/> Interactions", () => {
           .trigger("mousedown")
           .trigger("mousemove", {
             clientX: secondInputRect.x + secondInputRect.width / 2,
-            clientY: secondInputRect.y + secondInputRect.height / 2
+            clientY: secondInputRect.y + secondInputRect.height / 2,
           });
         cy.get(`[data-port-transput-type="input"]`)
           .eq(2)
@@ -90,27 +94,36 @@ describe("<NodeEditor/> Interactions", () => {
             secondInputRect.height / 2
           );
 
-        getCurrentNodes(nodes => {
-          const addNumberId = Object.values(nodes).find(node => node.type === "addNumbers").id
-          Object.values(nodes).forEach(node => {
-            if(node.type === "number"){
-              expect(Object.keys(node.connections.outputs).length).to.equal(1)
-              expect(node.connections.outputs.number[0].nodeId).to.equal(addNumberId)
+        getCurrentNodes((nodes) => {
+          const addNumberId = Object.values(nodes).find(
+            (node) => node.type === "addNumbers"
+          ).id;
+          Object.values(nodes).forEach((node) => {
+            if (node.type === "number") {
+              expect(Object.keys(node.connections.outputs).length).to.equal(1);
+              expect(node.connections.outputs.number[0].nodeId).to.equal(
+                addNumberId
+              );
+            } else if (node.type === "addNumbers") {
+              expect(Object.keys(node.connections.outputs).length).to.equal(0);
+              expect(Object.keys(node.connections.inputs).length).to.equal(2);
+              expect(node.connections.inputs.num1[0].nodeId).to.not.equal(
+                addNumberId
+              );
+              expect(node.connections.inputs.num2[0].nodeId).to.not.equal(
+                addNumberId
+              );
             }
-            else if(node.type === "addNumbers"){
-              expect(Object.keys(node.connections.outputs).length).to.equal(0)
-              expect(Object.keys(node.connections.inputs).length).to.equal(2)
-              expect(node.connections.inputs.num1[0].nodeId).to.not.equal(addNumberId)
-              expect(node.connections.inputs.num2[0].nodeId).to.not.equal(addNumberId)
-            }
-          })
-        })
+          });
+        });
       });
   });
 
   it("Can move nodes", () => {
-    getCurrentNodes(nodes => {
-      const addNumberNode = Object.values(nodes).find(node => node.type === "addNumbers");
+    getCurrentNodes((nodes) => {
+      const addNumberNode = Object.values(nodes).find(
+        (node) => node.type === "addNumbers"
+      );
 
       cy.contains("Add Numbers")
         .trigger("mousedown")
@@ -119,11 +132,13 @@ describe("<NodeEditor/> Interactions", () => {
         .trigger("mousemove", { clientX: 700, clientY: 200 })
         .trigger("mouseup");
 
-      getCurrentNodes(nodes => {
-        const newAddNumberNode = Object.values(nodes).find(node => node.type === "addNumbers");
-        expect(addNumberNode.x).to.not.equal(newAddNumberNode.x)
-        expect(addNumberNode.y).to.not.equal(newAddNumberNode.y)
-      })
-    })
+      getCurrentNodes((nodes) => {
+        const newAddNumberNode = Object.values(nodes).find(
+          (node) => node.type === "addNumbers"
+        );
+        expect(addNumberNode.x).to.not.equal(newAddNumberNode.x);
+        expect(addNumberNode.y).to.not.equal(newAddNumberNode.y);
+      });
+    });
   });
 });
