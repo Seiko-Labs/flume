@@ -10120,7 +10120,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       background: "rgba(46, 58, 89, 0.8)",
       color: tileFontColor,
       zIndex: isSelected && 1000,
-      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : "none",
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
     onDragStart: onDragStart,
@@ -10158,7 +10158,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     style: {
       transform: expanded ? "none" : "rotate(-90deg)",
       cursor: "pointer",
-      stroke: tileFontColor
+      stroke: "#C5CEE0"
     }
   }), /*#__PURE__*/React__default.createElement("div", {
     className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.title
