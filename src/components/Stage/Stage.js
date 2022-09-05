@@ -37,14 +37,12 @@ const Stage = forwardRef(
     },
     wrapper
   ) => {
-    const [wheelPressed, setWheelPressed] = useState(false);
     useEffect(() => {
-      const d3Zoom = d3.zoom().scaleExtent([0.1, 2]);
+      const d3Zoom = d3.zoom().scaleExtent([0.5, 2]);
       const d3Selection = select(wrapper.current).call(d3Zoom);
+      d3Selection.on("mousedown.zoom", null);
 
       d3Zoom.on("zoom", (event) => {
-        const delta = event.sourceEvent.deltaY;
-
         translateWrapper.current.style.transform =
           "translate(" +
           event.transform.x +
@@ -53,6 +51,8 @@ const Stage = forwardRef(
           "px) scale(" +
           event.transform.k +
           ")";
+      });
+      d3Zoom.on("end", (event) => {
         dispatchStageState(({ translate: tran }) => ({
           type: "SET_TRANSLATE",
           translate: {
@@ -64,61 +64,17 @@ const Stage = forwardRef(
           type: "SET_SCALE",
           scale: event.transform.k,
         }));
-        if (numNodes > 0) {
-          const delta = event.sourceEvent.deltaY;
-        }
       });
     }, []);
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
     const translateWrapper = useRef();
-    const scaleWrapper = useRef();
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [menuCoordinates, setMenuCoordinates] = useState({
       x: 0,
       y: 0,
     });
-    const dragData = useRef({ x: 0, y: 0 });
-    const [spaceIsPressed, setSpaceIsPressed] = useState(false);
-
-    const setStageRect = useCallback(() => {
-      stageRef.current = wrapper.current.getBoundingClientRect();
-    }, []);
-
-    useEffect(() => {
-      stageRef.current = wrapper.current.getBoundingClientRect();
-      window.addEventListener("resize", setStageRect);
-      return () => {
-        window.removeEventListener("resize", setStageRect);
-      };
-    }, [stageRef, setStageRect]);
-
-    // useEffect(() => {
-    //   if (DRAGGABLE_CANVAS) {
-    //     parentSetSpaceIsPressed(true);
-    //     setSpaceIsPressed(true);
-    //   } else {
-    //     parentSetSpaceIsPressed(false);
-    //     setSpaceIsPressed(false);
-    //   }
-    // }, [DRAGGABLE_CANVAS]);
-
-    // const handleWheel = useCallback(
-    //   (e) => {
-    //     if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
-    //       if (e.target.clientHeight < e.target.scrollHeight) return;
-    //     }
-    //     e.preventDefault();
-    //     if (numNodes > 0) {
-    //       const delta = e.deltaY;
-    // dispatchStageState(({ scale }) => ({
-    //   type: "SET_SCALE",
-    //   scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 2),
-    // }));
-    //     }
-    //   },
-    //   [dispatchStageState, numNodes]
-    // );
 
     const handleContextMenu = (e) => {
       e.preventDefault();
@@ -154,10 +110,6 @@ const Stage = forwardRef(
       }
     };
 
-    const handleMouseEnter = () => {
-      wrapper.current.focus();
-    };
-
     const menuOptions = useMemo(() => {
       const options = orderBy(
         Object.values(nodeTypes)
@@ -183,20 +135,12 @@ const Stage = forwardRef(
     }, [nodeTypes, disableComments]);
 
     return (
-      <Draggable
+      <div
         id={`${STAGE_ID}${editorId}`}
         className={styles.wrapper}
-        innerRef={wrapper}
+        ref={wrapper}
         onContextMenu={handleContextMenu}
-        tabIndex={-1}
-        stageState={{ scale, translate }}
-        style={{
-          cursor: spaceIsPressed && spaceToPan ? "grab" : "",
-        }}
-        disabled={disablePan || (spaceToPan && !spaceIsPressed)}
-        data-flume-stage={true}
       >
-        {spaceIsPressed ? <Portal></Portal> : null}
         {menuOpen ? (
           <Portal>
             <ContextMenu
@@ -209,18 +153,16 @@ const Stage = forwardRef(
             />
           </Portal>
         ) : null}
-        <div ref={scaleWrapper}>
-          <div
-            ref={translateWrapper}
-            style={{
-              transformOrigin: "0 0",
-            }}
-          >
-            {children}
-          </div>
+        <div
+          ref={translateWrapper}
+          style={{
+            transformOrigin: "0 0",
+          }}
+        >
+          {children}
         </div>
         {outerStageChildren}
-      </Draggable>
+      </div>
     );
   }
 );

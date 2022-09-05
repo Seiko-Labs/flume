@@ -101,7 +101,7 @@ const Node = forwardRef(
             isOutput ? "input" : "output"
             // cache
           );
-          const portHalf = fromRect.width / 1.4;
+          const portHalf = fromRect.width / 2;
           let combined;
           if (isOutput) {
             combined = id + portName + output.nodeId + output.portName;

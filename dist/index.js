@@ -11431,26 +11431,22 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       editorId = _ref.editorId,
       dispatchStageState = _ref.dispatchStageState,
       children = _ref.children,
-      outerStageChildren = _ref.outerStageChildren,
-      numNodes = _ref.numNodes,
-      stageRef = _ref.stageRef,
-      spaceToPan = _ref.spaceToPan,
-      dispatchComments = _ref.dispatchComments,
-      disableComments = _ref.disableComments,
-      disablePan = _ref.disablePan;
+      outerStageChildren = _ref.outerStageChildren;
+      _ref.numNodes;
+      _ref.stageRef;
+      _ref.spaceToPan;
+      var dispatchComments = _ref.dispatchComments,
+      disableComments = _ref.disableComments;
+      _ref.disablePan;
       _ref.disableZoom;
-
-  var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2);
-      _useState2[0];
-      _useState2[1];
-
   React.useEffect(function () {
-    var d3Zoom = zoom().scaleExtent([0.1, 2]);
-    select(wrapper.current).call(d3Zoom);
+    var d3Zoom = zoom().scaleExtent([0.5, 2]);
+    var d3Selection = select(wrapper.current).call(d3Zoom);
+    d3Selection.on("mousedown.zoom", null);
     d3Zoom.on("zoom", function (event) {
-      event.sourceEvent.deltaY;
       translateWrapper.current.style.transform = "translate(" + event.transform.x + "px," + event.transform.y + "px) scale(" + event.transform.k + ")";
+    });
+    d3Zoom.on("end", function (event) {
       dispatchStageState(function (_ref2) {
         _ref2.translate;
         return {
@@ -11468,74 +11464,24 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
           scale: event.transform.k
         };
       });
-
-      if (numNodes > 0) {
-        event.sourceEvent.deltaY;
-      }
     });
   }, []);
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
   var translateWrapper = React.useRef();
-  var scaleWrapper = React.useRef();
 
-  var _useState3 = React.useState(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuOpen = _useState4[0],
-      setMenuOpen = _useState4[1];
+  var _useState = React.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      menuOpen = _useState2[0],
+      setMenuOpen = _useState2[1];
 
-  var _useState5 = React.useState({
+  var _useState3 = React.useState({
     x: 0,
     y: 0
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      menuCoordinates = _useState6[0],
-      setMenuCoordinates = _useState6[1];
-
-  React.useRef({
-    x: 0,
-    y: 0
-  });
-
-  var _useState7 = React.useState(false),
-      _useState8 = _slicedToArray(_useState7, 2),
-      spaceIsPressed = _useState8[0];
-      _useState8[1];
-
-  var setStageRect = React.useCallback(function () {
-    stageRef.current = wrapper.current.getBoundingClientRect();
-  }, []);
-  React.useEffect(function () {
-    stageRef.current = wrapper.current.getBoundingClientRect();
-    window.addEventListener("resize", setStageRect);
-    return function () {
-      window.removeEventListener("resize", setStageRect);
-    };
-  }, [stageRef, setStageRect]); // useEffect(() => {
-  //   if (DRAGGABLE_CANVAS) {
-  //     parentSetSpaceIsPressed(true);
-  //     setSpaceIsPressed(true);
-  //   } else {
-  //     parentSetSpaceIsPressed(false);
-  //     setSpaceIsPressed(false);
-  //   }
-  // }, [DRAGGABLE_CANVAS]);
-  // const handleWheel = useCallback(
-  //   (e) => {
-  //     if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
-  //       if (e.target.clientHeight < e.target.scrollHeight) return;
-  //     }
-  //     e.preventDefault();
-  //     if (numNodes > 0) {
-  //       const delta = e.deltaY;
-  // dispatchStageState(({ scale }) => ({
-  //   type: "SET_SCALE",
-  //   scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 2),
-  // }));
-  //     }
-  //   },
-  //   [dispatchStageState, numNodes]
-  // );
+      _useState4 = _slicedToArray(_useState3, 2),
+      menuCoordinates = _useState4[0],
+      setMenuCoordinates = _useState4[1];
 
   var handleContextMenu = function handleContextMenu(e) {
     e.preventDefault();
@@ -11603,22 +11549,12 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
 
     return options;
   }, [nodeTypes, disableComments]);
-  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     id: "".concat(STAGE_ID).concat(editorId),
     className: styles$e.wrapper,
-    innerRef: wrapper,
-    onContextMenu: handleContextMenu,
-    tabIndex: -1,
-    stageState: {
-      scale: scale,
-      translate: translate
-    },
-    style: {
-      cursor: spaceIsPressed && spaceToPan ? "grab" : ""
-    },
-    disabled: disablePan || spaceToPan && !spaceIsPressed,
-    "data-flume-stage": true
-  }, spaceIsPressed ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null) : null, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+    ref: wrapper,
+    onContextMenu: handleContextMenu
+  }, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: menuOptions,
@@ -11626,13 +11562,11 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     onOptionSelected: addNode,
     label: "Add Node"
   })) : null, /*#__PURE__*/React__default["default"].createElement("div", {
-    ref: scaleWrapper
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
     ref: translateWrapper,
     style: {
       transformOrigin: "0 0"
     }
-  }, children)), outerStageChildren);
+  }, children), outerStageChildren);
 });
 Stage.displayName = "Stage";
 
@@ -13260,7 +13194,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
         );
         var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
         );
-        var portHalf = fromRect.width / 1.4;
+        var portHalf = fromRect.width / 2;
         var combined;
 
         if (isOutput) {
