@@ -4,15 +4,14 @@
   min-height: 100px;
   background-color: #192038;
   /*noinspection ALL*/
-
+  position: absolute;
   color: #000;
-  position: relative;
-  overflow: hidden;
   -webkit-overflow-scrolling: touch;
   font-family: "Segoe UI", Helvetica, sans-serif;
   text-align: left;
   line-height: 1;
   outline: none !important;
+  z-index: 1;
 }
 .wrapper * {
   box-sizing: border-box;

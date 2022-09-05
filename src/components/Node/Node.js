@@ -101,7 +101,7 @@ const Node = forwardRef(
             isOutput ? "input" : "output"
             // cache
           );
-          const portHalf = fromRect.width / 2;
+          const portHalf = fromRect.width / 1.4;
           let combined;
           if (isOutput) {
             combined = id + portName + output.nodeId + output.portName;
@@ -113,36 +113,26 @@ const Node = forwardRef(
             `[data-connection-id="${combined}"]`
           );
           const from = {
-            x:
-              byScale(
-                toRect.x -
-                  stageRect.current.x +
-                  portHalf -
-                  stageRect.current.width / 2
-              ) + stageState.translate.x,
-            y:
-              byScale(
-                toRect.y -
-                  stageRect.current.y +
-                  portHalf -
-                  stageRect.current.height / 2
-              ) + stageState.translate.y,
+            x: byScale(
+              toRect.x - stageRect.current.x + portHalf - stageState.translate.x
+            ),
+            y: byScale(
+              toRect.y - stageRect.current.y + portHalf - stageState.translate.y
+            ),
           };
           const to = {
-            x:
-              byScale(
-                fromRect.x -
-                  stageRect.current.x +
-                  portHalf -
-                  stageRect.current.width / 2
-              ) + stageState.translate.x,
-            y:
-              byScale(
-                fromRect.y -
-                  stageRect.current.y +
-                  portHalf -
-                  stageRect.current.height / 2
-              ) + stageState.translate.y,
+            x: byScale(
+              fromRect.x -
+                stageRect.current.x +
+                portHalf -
+                stageState.translate.x
+            ),
+            y: byScale(
+              fromRect.y -
+                stageRect.current.y +
+                portHalf -
+                stageState.translate.y
+            ),
           };
           cnx.setAttribute(
             "d",
@@ -160,19 +150,20 @@ const Node = forwardRef(
     };
 
     const handleDrag = ({ x, y }) => {
-      const oldPositions = nodeWrapper.current.style.transform.match(
+      const nWrapper = document.getElementById(id);
+      const oldPositions = nWrapper.style.transform.match(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
 
       if (oldPositions?.length === 3) {
         onDragHandle(
-          nodeWrapper.current.dataset.nodeId,
+          nWrapper.dataset.nodeId,
           x - Number(oldPositions[1]),
           y - Number(oldPositions[2])
         );
       }
 
-      nodeWrapper.current.style.transform = `translate(${x}px,${y}px)`;
+      nWrapper.style.transform = `translate(${x}px,${y}px)`;
 
       updateNodeConnections();
     };
@@ -227,6 +218,7 @@ const Node = forwardRef(
         onContextMenu={handleContextMenu}
         stageState={stageState}
         stageRect={stageRect}
+        id={id}
       >
         <IoPorts
           nodeId={id}

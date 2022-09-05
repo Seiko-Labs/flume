@@ -146,6 +146,7 @@ const TestEditor = () => {
             overflowY: "scroll",
             maxHeight: "100vh",
             filter: "invert(.85)",
+            zIndex: 2,
           }}
         >
           <h2>Testing workflow</h2>

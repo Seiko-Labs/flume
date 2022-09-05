@@ -231,7 +231,6 @@ export const NodeEditor = forwardRef(
                 const oldPositions = nodeRef.current.style.transform.match(
                   /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
                 );
-
                 if (oldPositions.length === 3) {
                   nodeRef.current.style.transform = `translate(${
                     Number(oldPositions[1]) + deltaX
@@ -312,7 +311,6 @@ export const NodeEditor = forwardRef(
                           <Stage
                             ref={editorRef}
                             editorId={editorId}
-                            setSpaceIsPressed={setSpaceIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}
                             spaceToPan={true}
@@ -330,8 +328,6 @@ export const NodeEditor = forwardRef(
                                 dispatchToasts={dispatchToasts}
                               />
                             }
-                            DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
-                            draggableCanvasSet={context.draggableCanvasSet}
                           >
                             {!hideComments &&
                               Object.values(comments).map((comment) => (

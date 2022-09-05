@@ -22,20 +22,8 @@ export default ({
   const byScale = (value) => value / stageState.scale;
 
   const getScaledCoordinates = (e) => {
-    const x =
-      byScale(
-        e.clientX -
-          (stageRect ? stageRect.current.left : 0) -
-          offset.current.x -
-          (stageRect ? stageRect.current.width : 0) / 2
-      ) + stageState.translate.x;
-    const y =
-      byScale(
-        e.clientY -
-          (stageRect ? stageRect.current.top : 0) -
-          offset.current.y -
-          (stageRect ? stageRect.current.height : 0) / 2
-      ) + stageState.translate.y;
+    const x = byScale(e.clientX - offset.current.x - stageState.translate.x);
+    const y = byScale(e.clientY - offset.current.y - stageState.translate.y);
     return { x, y };
   };
 
