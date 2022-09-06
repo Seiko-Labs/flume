@@ -11,6 +11,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
+  useMemo,
   useReducer,
   useRef,
   useState,
@@ -57,6 +58,8 @@ export const NodeEditor = forwardRef(
       disableComments = true,
       circularBehavior,
       debug,
+      onSelectionChange,
+      onChange,
     },
     ref
   ) => {
@@ -122,6 +125,14 @@ export const NodeEditor = forwardRef(
         initialNodesState.nodesState[initialNodesState.currentStateIndex],
       nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
     );
+
+    useMemo(() => {
+      onSelectionChange && onSelectionChange(selectedNodes);
+    }, [selectedNodes.length]);
+
+    useMemo(() => {
+      onChange && onChange(nodesState, currentStateIndex);
+    }, [nodesState]);
 
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
@@ -272,113 +283,117 @@ export const NodeEditor = forwardRef(
     }, [sideEffectToasts]);
 
     return (
-      <PortTypesContext.Provider value={portTypes}>
-        <NodeTypesContext.Provider value={nodeTypes}>
-          <NodeDispatchContext.Provider value={dispatchNodes}>
-            <ConnectionRecalculateContext.Provider value={triggerRecalculation}>
-              <ContextContext.Provider value={context}>
-                <StageContext.Provider value={stageState}>
-                  <CacheContext.Provider value={cache}>
-                    <EditorIdContext.Provider value={editorId}>
-                      <ControllerOptionsContext.Provider
-                        value={connector.options || {}}
-                      >
-                        <RecalculateStageRectContext.Provider
-                          value={recalculateStageRect}
+      <div style={{ overflow: "hidden", height: "100%" }}>
+        <PortTypesContext.Provider value={portTypes}>
+          <NodeTypesContext.Provider value={nodeTypes}>
+            <NodeDispatchContext.Provider value={dispatchNodes}>
+              <ConnectionRecalculateContext.Provider
+                value={triggerRecalculation}
+              >
+                <ContextContext.Provider value={context}>
+                  <StageContext.Provider value={stageState}>
+                    <CacheContext.Provider value={cache}>
+                      <EditorIdContext.Provider value={editorId}>
+                        <ControllerOptionsContext.Provider
+                          value={connector.options || {}}
                         >
-                          {editorRef.current && !spaceIsPressed && (
-                            <Selection
-                              target={editorRef.current}
-                              elements={nodeRefs.map((n) => n[1].current)}
-                              onSelectionChange={(i) => {
-                                spaceIsPressed ||
-                                  handleSelection(i, tempState.multiselect);
-                              }}
-                              offset={{
-                                top: 0,
-                                left: 0,
-                              }}
-                              zoom={stageState.scale}
-                              ignoreTargets={[
-                                'div[class^="Node_wrapper__"]',
-                                'div[class^="Node_wrapper__"] *',
-                                'div[class^="Comment_wrapper__"]',
-                                'div[class^="Comment_wrapper__"] *',
-                              ]}
-                              style={{ zIndex: 100, cursor: "inherit" }}
-                            />
-                          )}
-                          <Stage
-                            ref={editorRef}
-                            editorId={editorId}
-                            scale={stageState.scale}
-                            translate={stageState.translate}
-                            spaceToPan={true}
-                            dispatchStageState={dispatchStageState}
-                            dispatchComments={dispatchComments}
-                            disableComments={disableComments || hideComments}
-                            stageRef={stage}
-                            numNodes={
-                              Object.keys(nodesState[currentStateIndex].state)
-                                .length
-                            }
-                            outerStageChildren={
-                              <Toaster
-                                toasts={toasts}
-                                dispatchToasts={dispatchToasts}
-                              />
-                            }
+                          <RecalculateStageRectContext.Provider
+                            value={recalculateStageRect}
                           >
-                            {!hideComments &&
-                              Object.values(comments).map((comment) => (
-                                <Comment
-                                  {...comment}
+                            {editorRef.current && !spaceIsPressed && (
+                              <Selection
+                                target={editorRef.current}
+                                elements={nodeRefs.map((n) => n[1].current)}
+                                onSelectionChange={(i) => {
+                                  spaceIsPressed ||
+                                    handleSelection(i, tempState.multiselect);
+                                }}
+                                offset={{
+                                  top: 0,
+                                  left: 0,
+                                }}
+                                zoom={stageState.scale}
+                                ignoreTargets={[
+                                  'div[class^="Node_wrapper__"]',
+                                  'div[class^="Node_wrapper__"] *',
+                                  'div[class^="Comment_wrapper__"]',
+                                  'div[class^="Comment_wrapper__"] *',
+                                ]}
+                                style={{ zIndex: 100, cursor: "inherit" }}
+                              />
+                            )}
+                            <Stage
+                              ref={editorRef}
+                              editorId={editorId}
+                              scale={stageState.scale}
+                              translate={stageState.translate}
+                              spaceToPan={true}
+                              dispatchStageState={dispatchStageState}
+                              dispatchComments={dispatchComments}
+                              disableComments={disableComments || hideComments}
+                              stageRef={stage}
+                              numNodes={
+                                Object.keys(nodesState[currentStateIndex].state)
+                                  .length
+                              }
+                              outerStageChildren={
+                                <Toaster
+                                  toasts={toasts}
+                                  dispatchToasts={dispatchToasts}
+                                />
+                              }
+                            >
+                              {!hideComments &&
+                                Object.values(comments).map((comment) => (
+                                  <Comment
+                                    {...comment}
+                                    stageRect={stage}
+                                    dispatch={dispatchComments}
+                                    onDragStart={recalculateStageRect}
+                                    key={comment.id}
+                                  />
+                                ))}
+                              {Object.values(
+                                nodesState[currentStateIndex].state
+                              ).map((node) => (
+                                <Node
+                                  {...node}
+                                  isSelected={selectedNodes.includes(node.id)}
+                                  ref={
+                                    nodeRefs.find(([n]) => n.id === node.id)
+                                      ? nodeRefs.find(
+                                          ([n]) => n.id === node.id
+                                        )[1]
+                                      : createRef()
+                                  }
                                   stageRect={stage}
-                                  dispatch={dispatchComments}
+                                  onDragEnd={handleDragEnd}
+                                  onDragHandle={dragSelectedNodes}
                                   onDragStart={recalculateStageRect}
-                                  key={comment.id}
+                                  key={node.id}
                                 />
                               ))}
-                            {Object.values(
-                              nodesState[currentStateIndex].state
-                            ).map((node) => (
-                              <Node
-                                {...node}
-                                isSelected={selectedNodes.includes(node.id)}
-                                ref={
-                                  nodeRefs.find(([n]) => n.id === node.id)
-                                    ? nodeRefs.find(
-                                        ([n]) => n.id === node.id
-                                      )[1]
-                                    : createRef()
-                                }
-                                stageRect={stage}
-                                onDragEnd={handleDragEnd}
-                                onDragHandle={dragSelectedNodes}
-                                onDragStart={recalculateStageRect}
-                                key={node.id}
+                              <Connections
+                                nodes={nodesState[currentStateIndex].state}
+                                editorId={editorId}
                               />
-                            ))}
-                            <Connections
-                              nodes={nodesState[currentStateIndex].state}
-                              editorId={editorId}
-                            />
-                            <div
-                              className={styles.dragWrapper}
-                              id={`${DRAG_CONNECTION_ID}${editorId}`}
-                            />
-                          </Stage>
-                          {/* </HotKeys> */}
-                        </RecalculateStageRectContext.Provider>
-                      </ControllerOptionsContext.Provider>
-                    </EditorIdContext.Provider>
-                  </CacheContext.Provider>
-                </StageContext.Provider>
-              </ContextContext.Provider>
-            </ConnectionRecalculateContext.Provider>
-          </NodeDispatchContext.Provider>
-        </NodeTypesContext.Provider>
-      </PortTypesContext.Provider>
+                              <div
+                                className={styles.dragWrapper}
+                                id={`${DRAG_CONNECTION_ID}${editorId}`}
+                              />
+                            </Stage>
+                            {/* </HotKeys> */}
+                          </RecalculateStageRectContext.Provider>
+                        </ControllerOptionsContext.Provider>
+                      </EditorIdContext.Provider>
+                    </CacheContext.Provider>
+                  </StageContext.Provider>
+                </ContextContext.Provider>
+              </ConnectionRecalculateContext.Provider>
+            </NodeDispatchContext.Provider>
+          </NodeTypesContext.Provider>
+        </PortTypesContext.Provider>
+      </div>
     );
   }
 );

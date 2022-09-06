@@ -323,7 +323,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;position:absolute;text-align:left;width:100%;z-index:1}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
+var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
 var styles$e = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
 styleInject(css_248z$e);
 
@@ -37007,6 +37007,8 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
       circularBehavior = _ref.circularBehavior;
       _ref.debug;
+      var onSelectionChange = _ref.onSelectionChange,
+      onChange = _ref.onChange;
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
       initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
@@ -37070,6 +37072,12 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       handleSelection = _useSelect2[3],
       clearSelection = _useSelect2[4];
 
+  useMemo(function () {
+    onSelectionChange && onSelectionChange(selectedNodes);
+  }, [selectedNodes.length]);
+  useMemo(function () {
+    onChange && onChange(nodesState, currentStateIndex);
+  }, [nodesState]);
   useEffect(function () {
     !currentStateIndex && dispatchNodes({
       type: "HYDRATE_DEFAULT_NODES"
@@ -37208,7 +37216,12 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-  return /*#__PURE__*/React__default.createElement(PortTypesContext.Provider, {
+  return /*#__PURE__*/React__default.createElement("div", {
+    style: {
+      overflow: "hidden",
+      height: "100%"
+    }
+  }, /*#__PURE__*/React__default.createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default.createElement(NodeTypesContext.Provider, {
     value: nodeTypes
@@ -37294,7 +37307,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   }), /*#__PURE__*/React__default.createElement("div", {
     className: styles.dragWrapper,
     id: "".concat(DRAG_CONNECTION_ID).concat(editorId)
-  }))))))))))));
+  })))))))))))));
 });
 NodeEditor.displayName = "NodeEditor";
 var useRootEngine = function useRootEngine(nodes, engine, context) {
