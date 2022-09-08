@@ -10120,7 +10120,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
       background: "rgba(46, 58, 89, 0.8)",
       color: tileFontColor,
       zIndex: isSelected && 1000,
-      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px rgba(75, 174, 252, 0.5)") : "none",
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
       transform: "translate(".concat(x, "px, ").concat(y, "px)")
     },
     onDragStart: onDragStart,
@@ -10158,7 +10158,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref, nodeWrapper) {
     style: {
       transform: expanded ? "none" : "rotate(-90deg)",
       cursor: "pointer",
-      stroke: tileFontColor
+      stroke: "#C5CEE0"
     }
   }), /*#__PURE__*/React__default.createElement("div", {
     className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.title
@@ -27612,8 +27612,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       var category = config.category;
       node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
       node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
-      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here"; // +++
-
+      node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here";
       node.category.icon = category !== null && category !== void 0 && category.icon && typeof category.icon === 'string' ? category.icon : 'no icon'; // Optionally supplying action header color
 
       if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color

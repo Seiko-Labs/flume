@@ -215,7 +215,7 @@ const Node = forwardRef(
           color: tileFontColor,
           zIndex: isSelected && 1000,
           boxShadow: isSelected
-            ? `0 0 0 ${2 / stageState.scale}px rgba(75, 174, 252, 0.5)`
+            ? `0 0 0 ${2 / stageState.scale}px ${tileBackground}`
             : "none",
           transform: `translate(${x}px, ${y}px)`,
         }}
@@ -249,7 +249,7 @@ const Node = forwardRef(
                   style={{
                     transform: expanded ? "none" : "rotate(-90deg)",
                     cursor: "pointer",
-                    stroke: tileFontColor,
+                    stroke: "#C5CEE0",
                   }}
                 />
               )}
