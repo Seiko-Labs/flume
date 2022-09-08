@@ -87,7 +87,6 @@ export default class FlumeConfig {
         ? category.description
         : "Ungrouped actions are stored here";
 
-    // +++
     node.category.icon =
       category?.icon && typeof category.icon === 'string'
         ? category.icon
