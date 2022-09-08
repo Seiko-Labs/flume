@@ -1,14 +1,14 @@
 .menuWrapper {
   position: fixed;
   z-index: 9999;
-  background: #25252f;
+  background: #161A30;
   font-size: 14px;
   max-width: 300px;
   min-width: 150px;
   font-family: "Segoe UI", Helvetica, sans-serif;
   outline: none;
-  box-shadow: 1px 3px 6px 2px rgba(32, 35, 48, 0.35);
-  border: 1px solid #2f2f3b;
+  box-shadow: 1px 3px 6px 2px rgba(23, 26, 48, 0.35);
+  border: 1px solid #242B45;
   border-radius: 4px;
 
   touch-action: pan-x pan-y;
@@ -16,14 +16,14 @@
 
 .menuHeader {
   padding: 6px;
-  border-bottom: 1px solid #3b3b45;
+  border-bottom: 1px solid #2E3A59;
   display: flex;
   flex-direction: column;
 }
 
 .menuLabel {
   margin: 0;
-  color: #b3b3b3;
+  color: #C6CEE0;
   font-size: 13px;
   font-weight: 600;
 }
@@ -41,7 +41,7 @@
   flex: 1 1 auto;
   width: 100%;
   outline: none;
-  color: #b3b3b3;
+  color: #C6CEE0;
 
   &::placeholder {
     font-style: italic;
@@ -53,15 +53,15 @@
   flex-direction: column;
   flex-shrink: 0;
   padding: 6px;
-  border-bottom: 1px solid #3b3b45;
-  color: #b3b3b3;
+  border-bottom: 1px solid #2E3A59;
+  color: #C6CEE0;
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: #2f2f3b;
+    background: #242B45;
   }
 
   label {
@@ -77,16 +77,16 @@
     margin: 0;
     font-style: italic;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.3);
+    color: #8A8B93;
     user-select: none;
   }
 
   &[data-selected="true"] {
-    background: #2f2f3b;
+    background: #242B45;
   }
 }
 
 .emptyText {
-  color: #b3b3b3;
+  color: #C6CEE0;
   padding: 6px;
 }
