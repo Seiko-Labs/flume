@@ -9322,7 +9322,8 @@ var SelectedOption = function SelectedOption(_ref2) {
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$6.wrapper,
     onClick: onClick,
-    ref: wrapperRef
+    ref: wrapperRef,
+    title: label
   }, label);
 };
 

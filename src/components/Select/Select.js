@@ -126,7 +126,12 @@ const SelectedOption = ({
   wrapperRef,
   onClick,
 }) => (
-  <div className={styles.wrapper} onClick={onClick} ref={wrapperRef}>
+  <div
+    className={styles.wrapper}
+    onClick={onClick}
+    ref={wrapperRef}
+    title={label}
+  >
     {label}
   </div>
 );
