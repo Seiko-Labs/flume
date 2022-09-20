@@ -74,6 +74,10 @@ const Stage = forwardRef(
 
     const handleWheel = useCallback(
       (e) => {
+        translateWrapper.current.style.transition = "0.1s";
+
+        wrapper.current.style.transition = "0.1s";
+        scaleWrapper.current.style.transition = "0.1s";
         if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
           if (e.target.clientHeight < e.target.scrollHeight) return;
         }
@@ -104,7 +108,10 @@ const Stage = forwardRef(
     const handleMouseDrag = (coords, e) => {
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
+      translateWrapper.current.style.transition = "0s";
+
       wrapper.current.style.transition = "0s";
+      scaleWrapper.current.style.transition = "0s";
 
       wrapper.current.style.backgroundPosition = `calc(50% + ${
         (-(translate.x + xDistance) * scale) % (10 * scale)
@@ -120,6 +127,10 @@ const Stage = forwardRef(
     const handleDragEnd = (e) => {
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
+      translateWrapper.current.style.transition = "0.2s";
+
+      wrapper.current.style.transition = "0.2s";
+      scaleWrapper.current.style.transition = "0.2s";
       dragData.current.x = e.clientX;
       dragData.current.y = e.clientY;
       dispatchStageState(({ translate: tran }) => ({

@@ -8201,6 +8201,10 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     }
   }, [DRAGGABLE_CANVAS]);
   var handleWheel = useCallback(function (e) {
+    translateWrapper.current.style.transition = "0.1s";
+    wrapper.current.style.transition = "0.1s";
+    scaleWrapper.current.style.transition = "0.1s";
+
     if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
       if (e.target.clientHeight < e.target.scrollHeight) return;
     }
@@ -8234,7 +8238,9 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
   var handleMouseDrag = function handleMouseDrag(coords, e) {
     var xDistance = dragData.current.x - e.clientX / scale;
     var yDistance = dragData.current.y - e.clientY / scale;
+    translateWrapper.current.style.transition = "0s";
     wrapper.current.style.transition = "0s";
+    scaleWrapper.current.style.transition = "0s";
     wrapper.current.style.backgroundPosition = "calc(50% + ".concat(-(translate.x + xDistance) * scale % (10 * scale), "px) calc(50% + ").concat(-(translate.y + yDistance) * scale % (10 * scale), "px) ");
     translateWrapper.current.style.transform = "translate(".concat(-(translate.x + xDistance), "px, ").concat(-(translate.y + yDistance), "px)");
   };
@@ -8242,6 +8248,9 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
   var handleDragEnd = function handleDragEnd(e) {
     var xDistance = dragData.current.x - e.clientX / scale;
     var yDistance = dragData.current.y - e.clientY / scale;
+    translateWrapper.current.style.transition = "0.2s";
+    wrapper.current.style.transition = "0.2s";
+    scaleWrapper.current.style.transition = "0.2s";
     dragData.current.x = e.clientX;
     dragData.current.y = e.clientY;
     dispatchStageState(function (_ref3) {
