@@ -8261,6 +8261,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   var handleMouseDrag = function handleMouseDrag(coords, e) {
     var xDistance = dragData.current.x - e.clientX / scale;
     var yDistance = dragData.current.y - e.clientY / scale;
+    wrapper.current.style.transition = "0s";
     wrapper.current.style.backgroundPosition = "calc(50% + ".concat(-(translate.x + xDistance) * scale % (10 * scale), "px) calc(50% + ").concat(-(translate.y + yDistance) * scale % (10 * scale), "px) ");
     translateWrapper.current.style.transform = "translate(".concat(-(translate.x + xDistance), "px, ").concat(-(translate.y + yDistance), "px)");
   };
@@ -8421,6 +8422,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     ref: scaleWrapper,
     className: styles$e.scaleWrapper,
     style: {
+      transition: "0.2s",
       transformOrigin: "center",
       transform: "scale(".concat(scale, ")")
     }
@@ -8428,6 +8430,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     ref: translateWrapper,
     className: styles$e.transformWrapper,
     style: {
+      transition: "0.2s",
       transform: "translate(".concat(-translate.x, "px, ").concat(-translate.y, "px)")
     }
   }, children)), outerStageChildren);
@@ -33896,16 +33899,11 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
       _ref$disableComments = _ref.disableComments,
       disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
-      circularBehavior = _ref.circularBehavior;
+      circularBehavior = _ref.circularBehavior,
+      _ref$focusNode = _ref.focusNode,
+      focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode,
+      onFocusChange = _ref.onFocusChange;
       _ref.debug;
-      var _ref$focusNode = _ref.focusNode,
-      focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode;
-
-  var _useState = React.useState(focusNode),
-      _useState2 = _slicedToArray(_useState, 2),
-      focusWrapper = _useState2[0],
-      setFocusWrapper = _useState2[1];
-
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
       initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
@@ -33916,10 +33914,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var cache = React.useRef(new Cache());
   var stage = React.useRef();
 
-  var _useState3 = React.useState(),
-      _useState4 = _slicedToArray(_useState3, 2),
-      sideEffectToasts = _useState4[0],
-      setSideEffectToasts = _useState4[1];
+  var _useState = React.useState(),
+      _useState2 = _slicedToArray(_useState, 2),
+      sideEffectToasts = _useState2[0],
+      setSideEffectToasts = _useState2[1];
 
   var _useReducer = React.useReducer(toastsReducer, []),
       _useReducer2 = _slicedToArray(_useReducer, 2),
@@ -33928,10 +33926,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
 
   var editorRef = React.useRef();
 
-  var _useState5 = React.useState(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      spaceIsPressed = _useState6[0],
-      setSpaceIsPressed = _useState6[1];
+  var _useState3 = React.useState(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      spaceIsPressed = _useState4[0],
+      setSpaceIsPressed = _useState4[1];
 
   var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
@@ -33976,10 +33974,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     recalculateConnections();
   }, []);
 
-  var _useState7 = React.useState(true),
-      _useState8 = _slicedToArray(_useState7, 2),
-      shouldRecalculateConnections = _useState8[0],
-      setShouldRecalculateConnections = _useState8[1];
+  var _useState5 = React.useState(true),
+      _useState6 = _slicedToArray(_useState5, 2),
+      shouldRecalculateConnections = _useState6[0],
+      setShouldRecalculateConnections = _useState6[1];
 
   var initialStageParams = _initialStageParams || tempState.stage;
 
@@ -34107,11 +34105,11 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-  React.useMemo(function () {
-    if (focusWrapper) {
+  React.useEffect(function () {
+    if (focusNode) {
       var nodes = nodesState[currentStateIndex].state;
       Object.keys(nodes).map(function (node) {
-        if (node === focusWrapper) {
+        if (node === focusNode) {
           dispatchStageState(function () {
             return {
               type: "SET_SCALE",
@@ -34129,9 +34127,9 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
           });
         }
       });
-      setFocusWrapper(null);
+      onFocusChange && onFocusChange(focusNode);
     }
-  }, [focusWrapper]);
+  }, [focusNode]);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {

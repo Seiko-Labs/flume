@@ -57,13 +57,12 @@ export const NodeEditor = forwardRef(
       hideComments = true,
       disableComments = true,
       circularBehavior,
-      debug,
       focusNode = null,
+      onFocusChange,
+      debug,
     },
     ref
   ) => {
-    const [focusWrapper, setFocusWrapper] = useState(focusNode);
-
     const editorId = useId();
     const {
       initialNodes = {},
@@ -276,11 +275,11 @@ export const NodeEditor = forwardRef(
       }
     }, [sideEffectToasts]);
 
-    useMemo(() => {
-      if (focusWrapper) {
+    useEffect(() => {
+      if (focusNode) {
         const nodes = nodesState[currentStateIndex].state;
         Object.keys(nodes).map((node) => {
-          if (node === focusWrapper) {
+          if (node === focusNode) {
             dispatchStageState(() => ({
               type: "SET_SCALE",
               scale: 1,
@@ -294,9 +293,9 @@ export const NodeEditor = forwardRef(
             }));
           }
         });
-        setFocusWrapper(null);
+        onFocusChange && onFocusChange(focusNode);
       }
-    }, [focusWrapper]);
+    }, [focusNode]);
 
     return (
       <PortTypesContext.Provider value={portTypes}>

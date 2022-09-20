@@ -1,5 +1,5 @@
 import { sample } from "lodash/collection";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "normalize.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import ReactJson from "react-json-view";
@@ -30,6 +30,7 @@ const ControlsBlock = styled.div`
 `;
 
 const TestEditor = () => {
+  const [focusNode, setFocusNode] = useState(null);
   const [ns, , dispatch, connector, temp] = useNodeEditorController({
     defaultNodes: [
       {
@@ -132,8 +133,25 @@ const TestEditor = () => {
             >
               Add "click" node
             </button>
+            {ns.nodesState &&
+              Object.keys(ns.nodesState[ns.currentStateIndex].state).map(
+                (node) => (
+                  <button
+                    onClick={() => {
+                      console.log(node);
+                      setFocusNode(node);
+                    }}
+                  >
+                    {node}
+                  </button>
+                )
+              )}
           </ControlsBlock>
           <NodeEditor
+            focusNode={focusNode}
+            onFocusChange={() => {
+              setFocusNode(null);
+            }}
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}
             connector={connector}

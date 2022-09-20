@@ -104,6 +104,7 @@ const Stage = forwardRef(
     const handleMouseDrag = (coords, e) => {
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
+      wrapper.current.style.transition = "0s";
 
       wrapper.current.style.backgroundPosition = `calc(50% + ${
         (-(translate.x + xDistance) * scale) % (10 * scale)
@@ -276,6 +277,7 @@ const Stage = forwardRef(
           ref={scaleWrapper}
           className={styles.scaleWrapper}
           style={{
+            transition: "0.2s",
             transformOrigin: "center",
             transform: `scale(${scale})`,
           }}
@@ -284,6 +286,7 @@ const Stage = forwardRef(
             ref={translateWrapper}
             className={styles.transformWrapper}
             style={{
+              transition: "0.2s",
               transform: `translate(${-translate.x}px, ${-translate.y}px)`,
             }}
           >
