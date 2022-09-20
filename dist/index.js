@@ -33898,6 +33898,14 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
       circularBehavior = _ref.circularBehavior;
       _ref.debug;
+      var _ref$focusNode = _ref.focusNode,
+      focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode;
+
+  var _useState = React.useState(focusNode),
+      _useState2 = _slicedToArray(_useState, 2),
+      focusWrapper = _useState2[0],
+      setFocusWrapper = _useState2[1];
+
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
       initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
@@ -33908,10 +33916,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var cache = React.useRef(new Cache());
   var stage = React.useRef();
 
-  var _useState = React.useState(),
-      _useState2 = _slicedToArray(_useState, 2),
-      sideEffectToasts = _useState2[0],
-      setSideEffectToasts = _useState2[1];
+  var _useState3 = React.useState(),
+      _useState4 = _slicedToArray(_useState3, 2),
+      sideEffectToasts = _useState4[0],
+      setSideEffectToasts = _useState4[1];
 
   var _useReducer = React.useReducer(toastsReducer, []),
       _useReducer2 = _slicedToArray(_useReducer, 2),
@@ -33920,10 +33928,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
 
   var editorRef = React.useRef();
 
-  var _useState3 = React.useState(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      spaceIsPressed = _useState4[0],
-      setSpaceIsPressed = _useState4[1];
+  var _useState5 = React.useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      spaceIsPressed = _useState6[0],
+      setSpaceIsPressed = _useState6[1];
 
   var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
     nodeTypes: nodeTypes,
@@ -33968,10 +33976,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     recalculateConnections();
   }, []);
 
-  var _useState5 = React.useState(true),
-      _useState6 = _slicedToArray(_useState5, 2),
-      shouldRecalculateConnections = _useState6[0],
-      setShouldRecalculateConnections = _useState6[1];
+  var _useState7 = React.useState(true),
+      _useState8 = _slicedToArray(_useState7, 2),
+      shouldRecalculateConnections = _useState8[0],
+      setShouldRecalculateConnections = _useState8[1];
 
   var initialStageParams = _initialStageParams || tempState.stage;
 
@@ -34099,6 +34107,31 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
+  React.useMemo(function () {
+    if (focusWrapper) {
+      var nodes = nodesState[currentStateIndex].state;
+      Object.keys(nodes).map(function (node) {
+        if (node === focusWrapper) {
+          dispatchStageState(function () {
+            return {
+              type: "SET_SCALE",
+              scale: 1
+            };
+          });
+          dispatchStageState(function () {
+            return {
+              type: "SET_TRANSLATE",
+              translate: {
+                x: nodes[node].x,
+                y: nodes[node].y + 100
+              }
+            };
+          });
+        }
+      });
+      setFocusWrapper(null);
+    }
+  }, [focusWrapper]);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {
