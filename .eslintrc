@@ -5,7 +5,7 @@
     "Cypress": true
   },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
     "max-params": "off"
   },
   "parser": "@babel/eslint-parser",

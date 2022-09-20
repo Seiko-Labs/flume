@@ -10,6 +10,7 @@ import {
   useRootEngine,
 } from "node-editor";
 import { engine, flumeBaseConfig } from "../flumeConfig";
+import { useState } from "react";
 
 const NodeWrapper = styled(Col)`
   height: 100vh;
@@ -30,6 +31,7 @@ const ControlsBlock = styled.div`
 `;
 
 const TestEditor = () => {
+  const [focusNode, setFocusNode] = useState(null);
   const [ns, , dispatch, connector, temp] = useNodeEditorController({
     defaultNodes: [
       {
@@ -134,6 +136,7 @@ const TestEditor = () => {
             </button>
           </ControlsBlock>
           <NodeEditor
+            focusNode={focusNode}
             portTypes={flumeBaseConfig.portTypes}
             nodeTypes={flumeBaseConfig.nodeTypes}
             connector={connector}

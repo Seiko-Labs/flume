@@ -11,6 +11,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
+  useMemo,
   useReducer,
   useRef,
   useState,
@@ -57,9 +58,11 @@ export const NodeEditor = forwardRef(
       disableComments = true,
       circularBehavior,
       debug,
+      focusNode = null,
     },
     ref
   ) => {
+    const [focusWrapper, setFocusWrapper] = useState(focusNode);
     const editorId = useId();
     const {
       initialNodes = {},
@@ -246,6 +249,28 @@ export const NodeEditor = forwardRef(
         }
       }
     };
+
+    useMemo(() => {
+      if (focusWrapper) {
+        const nodes = nodesState[currentStateIndex].state;
+        Object.keys(nodes).map((node) => {
+          if (node === focusWrapper) {
+            dispatchStageState(() => ({
+              type: "SET_SCALE",
+              scale: 1,
+            }));
+            dispatchStageState(() => ({
+              type: "SET_TRANSLATE",
+              translate: {
+                x: nodes[node].x,
+                y: nodes[node].y + 100,
+              },
+            }));
+          }
+        });
+        setFocusWrapper(null);
+      }
+    }, [focusWrapper]);
 
     useImperativeHandle(ref, () => ({
       getNodes() {
