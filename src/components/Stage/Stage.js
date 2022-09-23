@@ -102,6 +102,7 @@ const Stage = forwardRef(
         );
         timeout = setTimeout(() => {
           scaleWrapper.current.style.transition = "1s";
+          toggleVisibility();
         }, 300);
 
         if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
