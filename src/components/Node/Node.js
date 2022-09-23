@@ -227,6 +227,7 @@ const Node = forwardRef(
         onContextMenu={handleContextMenu}
         stageState={stageState}
         stageRect={stageRect}
+        id={id}
       >
         <IoPorts
           nodeId={id}

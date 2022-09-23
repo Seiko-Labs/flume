@@ -96,7 +96,7 @@ function _iterableToArrayLimit(arr, i) {
   return _arr;
 }
 
-function _arrayLikeToArray$3(arr, len) {
+function _arrayLikeToArray$4(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
 
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -106,13 +106,13 @@ function _arrayLikeToArray$3(arr, len) {
   return arr2;
 }
 
-function _unsupportedIterableToArray$3(o, minLen) {
+function _unsupportedIterableToArray$4(o, minLen) {
   if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray$3(o, minLen);
+  if (typeof o === "string") return _arrayLikeToArray$4(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
   if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen);
 }
 
 function _nonIterableRest() {
@@ -120,7 +120,7 @@ function _nonIterableRest() {
 }
 
 function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest();
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -8162,2148 +8162,6 @@ var orderBy_1 = orderBy;
 var STAGE_ID = "__node_editor_stage__";
 var DRAG_CONNECTION_ID = "__node_editor_drag_connection__";
 var CONNECTIONS_ID = "__node_editor_connections__";
-
-var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
-  var scale = _ref.scale,
-      translate = _ref.translate,
-      editorId = _ref.editorId,
-      dispatchStageState = _ref.dispatchStageState,
-      children = _ref.children,
-      outerStageChildren = _ref.outerStageChildren,
-      parentSetSpaceIsPressed = _ref.setSpaceIsPressed,
-      numNodes = _ref.numNodes,
-      stageRef = _ref.stageRef,
-      spaceToPan = _ref.spaceToPan,
-      dispatchComments = _ref.dispatchComments,
-      disableComments = _ref.disableComments,
-      disablePan = _ref.disablePan,
-      disableZoom = _ref.disableZoom,
-      DRAGGABLE_CANVAS = _ref.DRAGGABLE_CANVAS,
-      draggableCanvasSet = _ref.draggableCanvasSet;
-  var nodeTypes = React.useContext(NodeTypesContext);
-  var dispatchNodes = React.useContext(NodeDispatchContext);
-  var translateWrapper = React.useRef();
-  var scaleWrapper = React.useRef();
-
-  var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      menuOpen = _useState2[0],
-      setMenuOpen = _useState2[1];
-
-  var _useState3 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuCoordinates = _useState4[0],
-      setMenuCoordinates = _useState4[1];
-
-  var dragData = React.useRef({
-    x: 0,
-    y: 0
-  });
-
-  var _useState5 = React.useState(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      spaceIsPressed = _useState6[0],
-      setSpaceIsPressed = _useState6[1];
-
-  var setStageRect = React.useCallback(function () {
-    stageRef.current = wrapper.current.getBoundingClientRect();
-  }, []);
-  React.useEffect(function () {
-    stageRef.current = wrapper.current.getBoundingClientRect();
-    window.addEventListener("resize", setStageRect);
-    return function () {
-      window.removeEventListener("resize", setStageRect);
-    };
-  }, [stageRef, setStageRect]);
-  React.useEffect(function () {
-    if (DRAGGABLE_CANVAS) {
-      parentSetSpaceIsPressed(true);
-      setSpaceIsPressed(true);
-    } else {
-      parentSetSpaceIsPressed(false);
-      setSpaceIsPressed(false);
-    }
-  }, [DRAGGABLE_CANVAS]);
-  var handleWheel = React.useCallback(function (e) {
-    translateWrapper.current.style.transition = "0.1s";
-    wrapper.current.style.transition = "0.1s";
-    scaleWrapper.current.style.transition = "0.1s";
-
-    if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
-      if (e.target.clientHeight < e.target.scrollHeight) return;
-    }
-
-    e.preventDefault();
-
-    if (numNodes > 0) {
-      var delta = e.deltaY;
-      dispatchStageState(function (_ref2) {
-        var scale = _ref2.scale;
-        return {
-          type: "SET_SCALE",
-          scale: clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 2)
-        };
-      });
-    }
-  }, [dispatchStageState, numNodes]);
-
-  var handleDragDelayStart = function handleDragDelayStart(e) {
-    wrapper.current.focus();
-  };
-
-  var handleDragStart = function handleDragStart(e) {
-    e.preventDefault();
-    dragData.current = {
-      x: e.clientX / scale,
-      y: e.clientY / scale
-    };
-  };
-
-  var handleMouseDrag = function handleMouseDrag(coords, e) {
-    var xDistance = dragData.current.x - e.clientX / scale;
-    var yDistance = dragData.current.y - e.clientY / scale;
-    translateWrapper.current.style.transition = "0s";
-    wrapper.current.style.transition = "0s";
-    scaleWrapper.current.style.transition = "0s";
-    wrapper.current.style.backgroundPosition = "calc(50% + ".concat(-(translate.x + xDistance) * scale % (10 * scale), "px) calc(50% + ").concat(-(translate.y + yDistance) * scale % (10 * scale), "px) ");
-    translateWrapper.current.style.transform = "translate(".concat(-(translate.x + xDistance), "px, ").concat(-(translate.y + yDistance), "px)");
-  };
-
-  var handleDragEnd = function handleDragEnd(e) {
-    var xDistance = dragData.current.x - e.clientX / scale;
-    var yDistance = dragData.current.y - e.clientY / scale;
-    translateWrapper.current.style.transition = "0.2s";
-    wrapper.current.style.transition = "0.2s";
-    scaleWrapper.current.style.transition = "0.2s";
-    dragData.current.x = e.clientX;
-    dragData.current.y = e.clientY;
-    dispatchStageState(function (_ref3) {
-      var tran = _ref3.translate;
-      return {
-        type: "SET_TRANSLATE",
-        translate: {
-          x: tran.x + xDistance,
-          y: tran.y + yDistance
-        }
-      };
-    });
-  };
-
-  var handleContextMenu = function handleContextMenu(e) {
-    setMenuCoordinates({
-      x: e.clientX,
-      y: e.clientY
-    });
-    setMenuOpen(true);
-    return false;
-  };
-
-  var closeContextMenu = function closeContextMenu() {
-    setMenuOpen(false);
-  };
-
-  var byScale = function byScale(value) {
-    return value / scale;
-  };
-
-  var addNode = function addNode(_ref4) {
-    var node = _ref4.node,
-        internalType = _ref4.internalType;
-    var wrapperRect = wrapper.current.getBoundingClientRect();
-    var x = byScale(menuCoordinates.x - wrapperRect.x - wrapperRect.width / 2) + translate.x;
-    var y = byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) + translate.y;
-
-    if (internalType === "comment") {
-      dispatchComments({
-        type: "ADD_COMMENT",
-        x: x,
-        y: y
-      });
-    } else {
-      dispatchNodes({
-        type: "ADD_NODE",
-        x: x,
-        y: y,
-        nodeType: node.type
-      });
-    }
-  };
-
-  var handleDocumentKeyUp = function handleDocumentKeyUp(e) {
-    if (e.which === 32) {
-      setSpaceIsPressed(false);
-      parentSetSpaceIsPressed(false);
-      document.removeEventListener("keyup", handleDocumentKeyUp);
-    }
-  };
-
-  var handleKeyDown = function handleKeyDown(e) {
-    if (e.which === 32) {
-      parentSetSpaceIsPressed(true);
-      setSpaceIsPressed(true);
-      document.addEventListener("keyup", handleDocumentKeyUp);
-    }
-  };
-
-  var handleMouseEnter = function handleMouseEnter() {
-    wrapper.current.focus();
-  };
-
-  React.useEffect(function () {
-    if (!disableZoom) {
-      var stageWrapper = wrapper.current;
-      stageWrapper.addEventListener("wheel", handleWheel);
-      return function () {
-        stageWrapper.removeEventListener("wheel", handleWheel);
-      };
-    }
-  }, [handleWheel, disableZoom]);
-  var menuOptions = React.useMemo(function () {
-    var options = orderBy_1(Object.values(nodeTypes).filter(function (node) {
-      return node.addable !== false;
-    }).map(function (node) {
-      return {
-        value: node.type,
-        label: node.label,
-        description: node.description,
-        sortIndex: node.sortIndex,
-        node: node
-      };
-    }), ["sortIndex", "label"]);
-
-    if (!disableComments) {
-      options.push({
-        value: "comment",
-        label: "Comment",
-        description: "A comment for documenting nodes",
-        internalType: "comment"
-      });
-    }
-
-    return options;
-  }, [nodeTypes, disableComments]);
-  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
-    id: "".concat(STAGE_ID).concat(editorId),
-    className: styles$e.wrapper,
-    innerRef: wrapper,
-    onContextMenu: handleContextMenu,
-    onMouseEnter: handleMouseEnter,
-    onDragDelayStart: handleDragDelayStart,
-    onDragStart: handleDragStart,
-    onDrag: handleMouseDrag,
-    onDragEnd: handleDragEnd,
-    onKeyDown: handleKeyDown,
-    onMouseDown: function onMouseDown(e) {
-      if (e.button === 1) {
-        if (!DRAGGABLE_CANVAS) {
-          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(true);
-        } else {
-          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(false);
-        }
-      }
-    },
-    onMouseUp: function onMouseUp(e) {// if (e.button === 1) {
-      //   setSpaceIsPressed(false);
-      //   parentSetSpaceIsPressed(false);
-      // }
-    },
-    tabIndex: -1,
-    stageState: {
-      scale: scale,
-      translate: translate
-    },
-    style: {
-      cursor: spaceIsPressed && spaceToPan ? "grab" : ""
-    },
-    disabled: disablePan || spaceToPan && !spaceIsPressed,
-    "data-flume-stage": true
-  }, spaceIsPressed ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null) : null, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
-    x: menuCoordinates.x,
-    y: menuCoordinates.y,
-    options: menuOptions,
-    onRequestClose: closeContextMenu,
-    onOptionSelected: addNode,
-    label: "Add Node"
-  })) : null, /*#__PURE__*/React__default["default"].createElement("div", {
-    ref: scaleWrapper,
-    className: styles$e.scaleWrapper,
-    style: {
-      transition: "0.2s",
-      transformOrigin: "center",
-      transform: "scale(".concat(scale, ")")
-    }
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
-    ref: translateWrapper,
-    className: styles$e.transformWrapper,
-    style: {
-      transition: "0.2s",
-      transform: "translate(".concat(-translate.x, "px, ").concat(-translate.y, "px)")
-    }
-  }, children)), outerStageChildren);
-});
-Stage.displayName = "Stage";
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray$3(arr);
-}
-
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$3(arr) || _nonIterableSpread();
-}
-
-var usePrevious = function usePrevious(value) {
-  var ref = React__default["default"].useRef();
-  React__default["default"].useEffect(function () {
-    ref.current = value;
-  });
-  return ref.current;
-};
-
-function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
-
-function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-var useTransputs = (function (transputsFn, transputType, nodeId, inputData, connections) {
-  var nodesDispatch = React.useContext(NodeDispatchContext);
-  var executionContext = React.useContext(ContextContext);
-  var transputs = React.useMemo(function () {
-    if (Array.isArray(transputsFn)) return transputsFn;
-    return transputsFn(inputData, connections, executionContext);
-  }, [transputsFn, inputData, connections, executionContext]);
-  var prevTransputs = usePrevious(transputs);
-  React.useEffect(function () {
-    if (!prevTransputs || Array.isArray(transputsFn)) return;
-
-    var _iterator = _createForOfIteratorHelper$2(prevTransputs),
-        _step;
-
-    try {
-      var _loop = function _loop() {
-        var transput = _step.value;
-        var current = transputs.find(function (_ref) {
-          var name = _ref.name;
-          return transput.name === name;
-        });
-
-        if (!current) {
-          nodesDispatch({
-            type: "DESTROY_TRANSPUT",
-            transputType: transputType,
-            transput: {
-              nodeId: nodeId,
-              portName: "" + transput.name
-            }
-          });
-        }
-      };
-
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        _loop();
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-  }, [transputsFn, transputs, prevTransputs, nodesDispatch, nodeId, transputType]);
-  return transputs;
-});
-
-var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_body__3Pwq7 *{color:#c5cee0}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
-var styles$c = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
-styleInject(css_248z$c);
-
-const pi = Math.PI,
-    tau = 2 * pi,
-    epsilon = 1e-6,
-    tauEpsilon = tau - epsilon;
-
-function Path() {
-  this._x0 = this._y0 = // start of current subpath
-  this._x1 = this._y1 = null; // end of current subpath
-  this._ = "";
-}
-
-function path() {
-  return new Path;
-}
-
-Path.prototype = path.prototype = {
-  constructor: Path,
-  moveTo: function(x, y) {
-    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
-  },
-  closePath: function() {
-    if (this._x1 !== null) {
-      this._x1 = this._x0, this._y1 = this._y0;
-      this._ += "Z";
-    }
-  },
-  lineTo: function(x, y) {
-    this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
-  },
-  quadraticCurveTo: function(x1, y1, x, y) {
-    this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
-  },
-  bezierCurveTo: function(x1, y1, x2, y2, x, y) {
-    this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
-  },
-  arcTo: function(x1, y1, x2, y2, r) {
-    x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
-    var x0 = this._x1,
-        y0 = this._y1,
-        x21 = x2 - x1,
-        y21 = y2 - y1,
-        x01 = x0 - x1,
-        y01 = y0 - y1,
-        l01_2 = x01 * x01 + y01 * y01;
-
-    // Is the radius negative? Error.
-    if (r < 0) throw new Error("negative radius: " + r);
-
-    // Is this path empty? Move to (x1,y1).
-    if (this._x1 === null) {
-      this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
-    }
-
-    // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-    else if (!(l01_2 > epsilon));
-
-    // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
-    // Equivalently, is (x1,y1) coincident with (x2,y2)?
-    // Or, is the radius zero? Line to (x1,y1).
-    else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
-      this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
-    }
-
-    // Otherwise, draw an arc!
-    else {
-      var x20 = x2 - x0,
-          y20 = y2 - y0,
-          l21_2 = x21 * x21 + y21 * y21,
-          l20_2 = x20 * x20 + y20 * y20,
-          l21 = Math.sqrt(l21_2),
-          l01 = Math.sqrt(l01_2),
-          l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
-          t01 = l / l01,
-          t21 = l / l21;
-
-      // If the start tangent is not coincident with (x0,y0), line to.
-      if (Math.abs(t01 - 1) > epsilon) {
-        this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
-      }
-
-      this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
-    }
-  },
-  arc: function(x, y, r, a0, a1, ccw) {
-    x = +x, y = +y, r = +r, ccw = !!ccw;
-    var dx = r * Math.cos(a0),
-        dy = r * Math.sin(a0),
-        x0 = x + dx,
-        y0 = y + dy,
-        cw = 1 ^ ccw,
-        da = ccw ? a0 - a1 : a1 - a0;
-
-    // Is the radius negative? Error.
-    if (r < 0) throw new Error("negative radius: " + r);
-
-    // Is this path empty? Move to (x0,y0).
-    if (this._x1 === null) {
-      this._ += "M" + x0 + "," + y0;
-    }
-
-    // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
-    else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
-      this._ += "L" + x0 + "," + y0;
-    }
-
-    // Is this arc empty? We’re done.
-    if (!r) return;
-
-    // Does the angle go the wrong way? Flip the direction.
-    if (da < 0) da = da % tau + tau;
-
-    // Is this a complete circle? Draw two arcs to complete the circle.
-    if (da > tauEpsilon) {
-      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
-    }
-
-    // Is this arc non-empty? Draw an arc!
-    else if (da > epsilon) {
-      this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
-    }
-  },
-  rect: function(x, y, w, h) {
-    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
-  },
-  toString: function() {
-    return this._;
-  }
-};
-
-function constant$3(x) {
-  return function constant() {
-    return x;
-  };
-}
-
-function array(x) {
-  return typeof x === "object" && "length" in x
-    ? x // Array, TypedArray, NodeList, array-like
-    : Array.from(x); // Map, Set, iterable, string, or anything else
-}
-
-function Linear(context) {
-  this._context = context;
-}
-
-Linear.prototype = {
-  areaStart: function() {
-    this._line = 0;
-  },
-  areaEnd: function() {
-    this._line = NaN;
-  },
-  lineStart: function() {
-    this._point = 0;
-  },
-  lineEnd: function() {
-    if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
-    this._line = 1 - this._line;
-  },
-  point: function(x, y) {
-    x = +x, y = +y;
-    switch (this._point) {
-      case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
-      case 1: this._point = 2; // falls through
-      default: this._context.lineTo(x, y); break;
-    }
-  }
-};
-
-function curveLinear(context) {
-  return new Linear(context);
-}
-
-function x(p) {
-  return p[0];
-}
-
-function y(p) {
-  return p[1];
-}
-
-function line(x$1, y$1) {
-  var defined = constant$3(true),
-      context = null,
-      curve = curveLinear,
-      output = null;
-
-  x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant$3(x$1);
-  y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant$3(y$1);
-
-  function line(data) {
-    var i,
-        n = (data = array(data)).length,
-        d,
-        defined0 = false,
-        buffer;
-
-    if (context == null) output = curve(buffer = path());
-
-    for (i = 0; i <= n; ++i) {
-      if (!(i < n && defined(d = data[i], i, data)) === defined0) {
-        if (defined0 = !defined0) output.lineStart();
-        else output.lineEnd();
-      }
-      if (defined0) output.point(+x$1(d, i, data), +y$1(d, i, data));
-    }
-
-    if (buffer) return output = null, buffer + "" || null;
-  }
-
-  line.x = function(_) {
-    return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$3(+_), line) : x$1;
-  };
-
-  line.y = function(_) {
-    return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$3(+_), line) : y$1;
-  };
-
-  line.defined = function(_) {
-    return arguments.length ? (defined = typeof _ === "function" ? _ : constant$3(!!_), line) : defined;
-  };
-
-  line.curve = function(_) {
-    return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
-  };
-
-  line.context = function(_) {
-    return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
-  };
-
-  return line;
-}
-
-function point(that, x, y) {
-  that._context.bezierCurveTo(
-    (2 * that._x0 + that._x1) / 3,
-    (2 * that._y0 + that._y1) / 3,
-    (that._x0 + 2 * that._x1) / 3,
-    (that._y0 + 2 * that._y1) / 3,
-    (that._x0 + 4 * that._x1 + x) / 6,
-    (that._y0 + 4 * that._y1 + y) / 6
-  );
-}
-
-function Basis(context) {
-  this._context = context;
-}
-
-Basis.prototype = {
-  areaStart: function() {
-    this._line = 0;
-  },
-  areaEnd: function() {
-    this._line = NaN;
-  },
-  lineStart: function() {
-    this._x0 = this._x1 =
-    this._y0 = this._y1 = NaN;
-    this._point = 0;
-  },
-  lineEnd: function() {
-    switch (this._point) {
-      case 3: point(this, this._x1, this._y1); // falls through
-      case 2: this._context.lineTo(this._x1, this._y1); break;
-    }
-    if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
-    this._line = 1 - this._line;
-  },
-  point: function(x, y) {
-    x = +x, y = +y;
-    switch (this._point) {
-      case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
-      case 1: this._point = 2; break;
-      case 2: this._point = 3; this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // falls through
-      default: point(this, x, y); break;
-    }
-    this._x0 = this._x1, this._x1 = x;
-    this._y0 = this._y1, this._y1 = y;
-  }
-};
-
-function Bundle(context, beta) {
-  this._basis = new Basis(context);
-  this._beta = beta;
-}
-
-Bundle.prototype = {
-  lineStart: function() {
-    this._x = [];
-    this._y = [];
-    this._basis.lineStart();
-  },
-  lineEnd: function() {
-    var x = this._x,
-        y = this._y,
-        j = x.length - 1;
-
-    if (j > 0) {
-      var x0 = x[0],
-          y0 = y[0],
-          dx = x[j] - x0,
-          dy = y[j] - y0,
-          i = -1,
-          t;
-
-      while (++i <= j) {
-        t = i / j;
-        this._basis.point(
-          this._beta * x[i] + (1 - this._beta) * (x0 + t * dx),
-          this._beta * y[i] + (1 - this._beta) * (y0 + t * dy)
-        );
-      }
-    }
-
-    this._x = this._y = null;
-    this._basis.lineEnd();
-  },
-  point: function(x, y) {
-    this._x.push(+x);
-    this._y.push(+y);
-  }
-};
-
-var curveBundle = (function custom(beta) {
-
-  function bundle(context) {
-    return beta === 1 ? new Basis(context) : new Bundle(context, beta);
-  }
-
-  bundle.beta = function(beta) {
-    return custom(+beta);
-  };
-
-  return bundle;
-})(0.85);
-
-var css_248z$b = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
-var styles$b = {"svg":"Connection_svg__-fKLY"};
-styleInject(css_248z$b);
-
-function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
-
-function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-var getPort = function getPort(nodeId, portName) {
-  var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
-  return document.querySelector("[data-node-id=\"".concat(nodeId, "\"] [data-port-name=\"").concat(portName, "\"][data-port-transput-type=\"").concat(transputType, "\"]"));
-};
-
-var getPortRect = function getPortRect(nodeId, portName) {
-  var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
-  var cache = arguments.length > 3 ? arguments[3] : undefined;
-
-  if (cache) {
-    var portCacheName = nodeId + portName + transputType;
-    var cachedPort = cache.current.ports[portCacheName];
-
-    if (cachedPort) {
-      return cachedPort.getBoundingClientRect();
-    } else {
-      var port = getPort(nodeId, portName, transputType);
-      cache.current.ports[portCacheName] = port;
-      return port && port.getBoundingClientRect();
-    }
-  } else {
-    var _port = getPort(nodeId, portName, transputType);
-
-    return _port && _port.getBoundingClientRect();
-  }
-};
-var calculateCurve = function calculateCurve(from, to) {
-  var fFrom = from;
-  var fTo = to;
-  var deltaX = fTo.x - fFrom.x;
-  var deltaY = fTo.y - fFrom.y;
-  var xSlope = Math.min(deltaX > 0 ? Math.abs(deltaX) / 3 : Math.abs(deltaX) / 3 + 30, 200);
-  var ySlope = deltaX < 0 ? deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0 : 0;
-  return line().curve(curveBundle.beta(Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8 ? 0 : 0.75))([[fFrom.x, fFrom.y], [fFrom.x + xSlope, fFrom.y - ySlope], [fTo.x - xSlope, fTo.y + ySlope], [fTo.x, fTo.y]]);
-};
-var deleteConnection = function deleteConnection(_ref3) {
-  var id = _ref3.id;
-  var line = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
-  if (line) line.parentNode.remove();
-};
-var clearConnections = function clearConnections() {
-  var lines = document.querySelectorAll("[data-output-node-id], [data-input-node-id]");
-
-  var _iterator = _createForOfIteratorHelper$1(lines),
-      _step;
-
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var _line = _step.value;
-
-      _line.parentNode.remove();
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-};
-var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
-  var lines = document.querySelectorAll("[data-output-node-id=\"".concat(nodeId, "\"], [data-input-node-id=\"").concat(nodeId, "\"]"));
-
-  var _iterator2 = _createForOfIteratorHelper$1(lines),
-      _step2;
-
-  try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var _line2 = _step2.value;
-
-      _line2.parentNode.remove();
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-};
-var updateConnection = function updateConnection(_ref4) {
-  var line = _ref4.line,
-      from = _ref4.from,
-      to = _ref4.to;
-  line.setAttribute("d", calculateCurve(from, to));
-};
-var createSVG = function createSVG(_ref5) {
-  var from = _ref5.from,
-      to = _ref5.to,
-      stage = _ref5.stage,
-      id = _ref5.id,
-      outputNodeId = _ref5.outputNodeId,
-      outputPortName = _ref5.outputPortName,
-      inputNodeId = _ref5.inputNodeId,
-      inputPortName = _ref5.inputPortName;
-  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", styles$b.svg);
-  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  var curve = calculateCurve(from, to);
-  path.setAttribute("d", curve);
-  path.setAttribute("stroke", "white");
-  path.setAttribute("stroke-opacity", ".3");
-  path.setAttribute("stroke-width", "1");
-  path.setAttribute("stroke-linecap", "round");
-  path.setAttribute("fill", "none");
-  path.setAttribute("data-connection-id", id);
-  path.setAttribute("data-output-node-id", outputNodeId);
-  path.setAttribute("data-output-port-name", outputPortName);
-  path.setAttribute("data-input-node-id", inputNodeId);
-  path.setAttribute("data-input-port-name", inputPortName);
-  svg.appendChild(path);
-  stage.appendChild(svg);
-  return svg;
-};
-var getStageRef = function getStageRef(editorId) {
-  return document.getElementById("".concat(CONNECTIONS_ID).concat(editorId));
-};
-var createConnections = function createConnections(nodes, _ref6, editorId) {
-  var scale = _ref6.scale;
-      _ref6.stageId;
-  var stageRef = getStageRef(editorId);
-
-  if (stageRef) {
-    var stage = stageRef.getBoundingClientRect();
-    var stageHalfWidth = stage.width / 2;
-    var stageHalfHeight = stage.height / 2;
-
-    var byScale = function byScale(value) {
-      return value / scale;
-    };
-
-    Object.values(nodes).forEach(function (node) {
-      if (node.connections && node.connections.inputs) {
-        Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
-          var _ref8 = _slicedToArray(_ref7, 2),
-              inputName = _ref8[0],
-              outputs = _ref8[1];
-
-          outputs.forEach(function (output) {
-            var fromPort = getPortRect(output.nodeId, output.portName, "output");
-            var toPort = getPortRect(node.id, inputName, "input");
-            var portHalf = fromPort ? fromPort.width / 2 : 0;
-
-            if (fromPort && toPort) {
-              var id = output.nodeId + output.portName + node.id + inputName;
-              var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
-
-              if (existingLine) {
-                updateConnection({
-                  line: existingLine,
-                  to: {
-                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  from: {
-                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
-                  }
-                });
-              } else {
-                createSVG({
-                  id: id,
-                  outputNodeId: output.nodeId,
-                  outputPortName: output.portName,
-                  inputNodeId: node.id,
-                  inputPortName: inputName,
-                  to: {
-                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  from: {
-                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  stage: stageRef
-                });
-              }
-            }
-          });
-        });
-      }
-    });
-  }
-};
-
-var css_248z$a = ".index_wrapper__3LoG0{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.index_wrapper__3LoG0>*{line-height:normal}.index_button__1mmZb{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__1mmZb:focus,.index_button__1mmZb:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__1mmZb:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
-var styles$a = {"wrapper":"index_wrapper__3LoG0","button":"index_button__1mmZb"};
-styleInject(css_248z$a);
-
-var Button = function Button(_ref) {
-  var onPress = _ref.onPress,
-      label = _ref.label;
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a.wrapper
-  }, /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$a.button,
-    title: label,
-    onClick: onPress
-  }, label));
-};
-
-var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}";
-var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-"};
-styleInject(css_248z$9);
-
-var NumberInput = function NumberInput(_ref) {
-  var placeholder = _ref.placeholder,
-      onChange = _ref.onChange,
-      data = _ref.data,
-      step = _ref.step,
-      validate = _ref.validate;
-  var numberInput = React.useRef();
-
-  var preventPropagation = function preventPropagation(e) {
-    return e.stopPropagation();
-  };
-
-  var parseNumber = function parseNumber(_ref2) {
-    var target = _ref2.target,
-        type = _ref2.type;
-
-    if (validate(target.value)) {
-      var inputValue = target.value.replace(",", ".").replace(/[^0-9.]+/g, "");
-      if (!inputValue) return onChange(null);
-      var value = parseFloat(inputValue, 10);
-
-      if (Number.isNaN(value)) {
-        if (type === "blur") numberInput.current.value = data;
-      } else {
-        onChange(numberInput.current.value = value);
-      }
-    } else if (type === "blur") numberInput.current.value = data;
-  };
-
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$9.wrapper
-  }, /*#__PURE__*/React__default["default"].createElement("input", {
-    onKeyDown: function onKeyDown(e) {
-      if (e.keyCode === 69) {
-        e.preventDefault();
-        return false;
-      }
-    },
-    onChange: parseNumber,
-    onBlur: parseNumber,
-    step: step || "1",
-    onDragStart: preventPropagation,
-    onMouseDown: preventPropagation,
-    type: "number",
-    placeholder: placeholder,
-    className: styles$9.input,
-    value: data || "",
-    ref: numberInput
-  }));
-};
-
-var css_248z$8 = ".Control_wrapper__VZIiC{padding:1px 2px 1px 1px;width:100%}";
-var styles$8 = {"wrapper":"Control_wrapper__VZIiC"};
-styleInject(css_248z$8);
-
-var css_248z$7 = ".Checkbox_wrapper__aSqyY{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__Qv5gn{display:none}.Checkbox_checkboxMark__3pZi7{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__3pZi7>*{display:none}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7>*{display:block}";
-var styles$7 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","checkboxMark":"Checkbox_checkboxMark__3pZi7"};
-styleInject(css_248z$7);
-
-var _path$1;
-
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-
-function SvgOkTick(props) {
-  return /*#__PURE__*/React__namespace.createElement("svg", _extends$1({
-    width: 6,
-    height: 5,
-    fill: "none",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$1 || (_path$1 = /*#__PURE__*/React__namespace.createElement("path", {
-    d: "M.804 2.34l1.749 1.615L5.497.672",
-    stroke: "#fff",
-    strokeLinecap: "round",
-    strokeLinejoin: "round"
-  })));
-}
-
-var Checkbox = function Checkbox(_ref) {
-  var label = _ref.label,
-      data = _ref.data,
-      _onChange = _ref.onChange;
-  return /*#__PURE__*/React__default["default"].createElement("label", {
-    className: styles$7.wrapper,
-    title: label
-  }, /*#__PURE__*/React__default["default"].createElement("input", {
-    className: styles$7.checkbox,
-    type: "checkbox",
-    value: data,
-    checked: data,
-    onChange: function onChange(e) {
-      return _onChange(e.target.checked);
-    }
-  }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$7.checkboxMark
-  }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
-};
-
-var TextInput = function TextInput(_ref) {
-  var placeholder = _ref.placeholder,
-      _onChange = _ref.onChange,
-      data = _ref.data,
-      nodeData = _ref.nodeData,
-      validate = _ref.validate;
-
-  var preventPropagation = function preventPropagation(e) {
-    return e.stopPropagation();
-  };
-
-  var _useContext = React.useContext(ControllerOptionsContext),
-      openEditor = _useContext.openEditor,
-      isRightBarOpened = _useContext.isRightBarOpened;
-
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$9.wrapper
-  }, /*#__PURE__*/React__default["default"].createElement("input", {
-    onChange: function onChange(_ref2) {
-      var target = _ref2.target;
-      if (validate(target.value)) _onChange(target.value);else target.value = data;
-    },
-    value: data,
-    onDragStart: preventPropagation,
-    onMouseDown: preventPropagation,
-    onClick: function onClick(e) {
-      e.stopPropagation();
-
-      if (isRightBarOpened()) {
-        openEditor(data, _onChange, nodeData);
-      }
-    },
-    type: "text",
-    placeholder: placeholder,
-    className: styles$9.input
-  }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$9.expander,
-    onClick: function onClick() {
-      document.activeElement.blur();
-      openEditor(data, _onChange, nodeData);
-    }
-  }));
-};
-
-var css_248z$6 = ".Select_wrapper__eAPoQ{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u,.Select_wrapper__eAPoQ:active,.Select_wrapper__eAPoQ:focus,.Select_wrapper__eAPoQ:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__3hK2u{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u:nth-child(3n){margin-right:0}.Select_deleteButton__1FnLK{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__1FnLK:active,.Select_deleteButton__1FnLK:focus,.Select_deleteButton__1FnLK:hover{color:inherit}";
-var styles$6 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK"};
-styleInject(css_248z$6);
-
-function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$g(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var MAX_LABEL_LENGTH = 50;
-
-var Select = function Select(_ref) {
-  var _ref$options = _ref.options,
-      options = _ref$options === void 0 ? [] : _ref$options,
-      _ref$placeholder = _ref.placeholder,
-      placeholder = _ref$placeholder === void 0 ? "[Select an option]" : _ref$placeholder,
-      onChange = _ref.onChange,
-      defaultValue = _ref.defaultValue,
-      data = _ref.data,
-      allowMultiple = _ref.allowMultiple;
-
-  var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      drawerOpen = _React$useState2[0],
-      setDrawerOpen = _React$useState2[1];
-
-  var _React$useState3 = React__default["default"].useState({
-    x: 0,
-    y: 0
-  }),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      drawerCoordinates = _React$useState4[0],
-      setDrawerCoordinates = _React$useState4[1];
-
-  var wrapper = React__default["default"].useRef();
-
-  var closeDrawer = function closeDrawer() {
-    setDrawerOpen(false);
-  };
-
-  var openDrawer = function openDrawer() {
-    if (!drawerOpen) {
-      var wrapperRect = wrapper.current.getBoundingClientRect();
-      setDrawerCoordinates({
-        x: wrapperRect.x,
-        y: wrapperRect.y + wrapperRect.height
-      });
-      setDrawerOpen(true);
-    }
-  };
-
-  var handleOptionSelected = function handleOptionSelected(option) {
-    if (allowMultiple) {
-      onChange([].concat(_toConsumableArray(data), [option.value]));
-    } else {
-      onChange(option.value);
-    }
-  };
-
-  React__default["default"].useEffect(function () {
-    if (!data) onChange(defaultValue);
-  }, [defaultValue]);
-
-  var handleOptionDeleted = function handleOptionDeleted(optionIndex) {
-    onChange([].concat(_toConsumableArray(data.slice(0, optionIndex)), _toConsumableArray(data.slice(optionIndex + 1))));
-  };
-
-  var getFilteredOptions = function getFilteredOptions() {
-    return allowMultiple ? options.filter(function (opt) {
-      return !data.includes(opt.value);
-    }) : options;
-  };
-
-  var selectedOption = React__default["default"].useMemo(function () {
-    var option = options.find(function (o) {
-      return o.value === data;
-    });
-
-    if (option) {
-      return _objectSpread$g(_objectSpread$g({}, option), {}, {
-        label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + "..." : option.label
-      });
-    }
-  }, [options, data]);
-  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, (allowMultiple || !selectedOption) && /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$6.wrapper,
-    ref: wrapper,
-    onClick: openDrawer,
-    title: placeholder
-  }, placeholder), allowMultiple ? !!data.length && data.map(function (val, i) {
-    var optLabel = (options.find(function (opt) {
-      return opt.value === val;
-    }) || {}).label || "";
-    return /*#__PURE__*/React__default["default"].createElement(OptionChip, {
-      onRequestDelete: function onRequestDelete() {
-        return handleOptionDeleted(i);
-      },
-      key: val
-    }, optLabel);
-  }) : selectedOption ? /*#__PURE__*/React__default["default"].createElement(SelectedOption, {
-    wrapperRef: wrapper,
-    option: selectedOption,
-    onClick: openDrawer
-  }) : null, drawerOpen && /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
-    x: drawerCoordinates.x,
-    y: drawerCoordinates.y,
-    emptyText: "There are no options",
-    options: getFilteredOptions(),
-    onOptionSelected: handleOptionSelected,
-    onRequestClose: closeDrawer
-  })));
-};
-
-var SelectedOption = function SelectedOption(_ref2) {
-  var _ref2$option = _ref2.option;
-  _ref2$option = _ref2$option === void 0 ? {} : _ref2$option;
-  var label = _ref2$option.label;
-      _ref2$option.description;
-      var wrapperRef = _ref2.wrapperRef,
-      onClick = _ref2.onClick;
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$6.wrapper,
-    onClick: onClick,
-    ref: wrapperRef,
-    title: label
-  }, label);
-};
-
-var OptionChip = function OptionChip(_ref3) {
-  var children = _ref3.children,
-      onRequestDelete = _ref3.onRequestDelete;
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$6.chipWrapper,
-    title: children.toString()
-  }, children, /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$6.deleteButton,
-    onMouseDown: function onMouseDown(e) {
-      e.stopPropagation();
-    },
-    onClick: onRequestDelete
-  }, "\u2715"));
-};
-
-function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$f(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var Control = function Control(_ref) {
-  var type = _ref.type,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      portName = _ref.portName,
-      label = _ref.label,
-      inputLabel = _ref.inputLabel,
-      data = _ref.data,
-      allData = _ref.allData,
-      render = _ref.render,
-      predicate = _ref.predicate,
-      step = _ref.step,
-      _ref$options = _ref.options,
-      options = _ref$options === void 0 ? [] : _ref$options,
-      placeholder = _ref.placeholder,
-      validate = _ref.validate,
-      inputData = _ref.inputData,
-      triggerRecalculation = _ref.triggerRecalculation,
-      updateNodeConnections = _ref.updateNodeConnections,
-      getOptions = _ref.getOptions,
-      setValue = _ref.setValue;
-      _ref.value;
-      var defaultValue = _ref.defaultValue,
-      isMonoControl = _ref.isMonoControl,
-      nodeData = _ref.nodeData,
-      _onPress = _ref.onPress;
-  var nodesDispatch = React.useContext(NodeDispatchContext);
-  var executionContext = React.useContext(ContextContext);
-  var calculatedLabel = isMonoControl ? inputLabel : label;
-
-  var onChange = function onChange(data) {
-    nodesDispatch({
-      type: "SET_PORT_DATA",
-      data: data,
-      nodeId: nodeId,
-      portName: portName,
-      controlName: name,
-      setValue: setValue
-    });
-    triggerRecalculation();
-  };
-
-  var onPressButton = function onPressButton(data, cName, pName, nId) {
-    nodesDispatch({
-      type: "SET_PORT_DATA",
-      data: data,
-      nodeId: nId || nodeId,
-      portName: pName || portName,
-      controlName: cName || name,
-      setValue: setValue
-    });
-    triggerRecalculation();
-  };
-
-  var getControlByType = function getControlByType(type) {
-    var commonProps = {
-      triggerRecalculation: triggerRecalculation,
-      updateNodeConnections: updateNodeConnections,
-      onChange: onChange,
-      data: data
-    };
-
-    switch (type) {
-      case "select":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$2({}, commonProps, {
-          options: getOptions ? getOptions(inputData, executionContext) : options,
-          placeholder: placeholder,
-          defaultValue: defaultValue
-        }));
-
-      case "text":
-        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$2({}, commonProps, {
-          predicate: predicate,
-          placeholder: placeholder,
-          validate: validate,
-          nodeData: nodeData
-        }));
-
-      case "number":
-        return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$2({}, commonProps, {
-          step: step,
-          predicate: predicate,
-          validate: validate,
-          placeholder: placeholder
-        }));
-
-      case "checkbox":
-        return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$2({}, commonProps, {
-          label: calculatedLabel
-        }));
-
-      case "multiselect":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$2({
-          allowMultiple: true
-        }, commonProps, {
-          options: getOptions ? getOptions(inputData, executionContext) : options,
-          placeholder: placeholder,
-          label: label
-        }));
-
-      case "button":
-        return /*#__PURE__*/React__default["default"].createElement(Button, _extends$2({}, commonProps, {
-          label: label,
-          onPress: function onPress() {
-            _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
-          }
-        }));
-
-      case "custom":
-        return render(data, onChange, executionContext, triggerRecalculation, {
-          label: label,
-          name: name,
-          portName: portName,
-          inputLabel: inputLabel,
-          defaultValue: defaultValue
-        }, allData);
-
-      default:
-        return /*#__PURE__*/React__default["default"].createElement("div", null, "Control");
-    }
-  };
-
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$8.wrapper,
-    style: _objectSpread$f({}, type.match(/^multiselect$/) && {
-      width: "auto"
-    })
-  }, getControlByType(type));
-};
-
-var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:rgba(0,0,0,.15);border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__1_a6J *{pointer-events:none}";
-var styles$5 = {"wrapper":"IoPorts_wrapper__3d2hh","outputs":"IoPorts_outputs__3JGh-","transput":"IoPorts_transput__1wbHA","inputs":"IoPorts_inputs__2etkb","inner":"IoPorts_inner__3UgDB","portLabel":"IoPorts_portLabel__qOE7y","controls":"IoPorts_controls__1dKFt","port":"IoPorts_port__1_a6J"};
-styleInject(css_248z$5);
-
-var Connection = function Connection(_ref) {
-  var from = _ref.from,
-      to = _ref.to,
-      id = _ref.id,
-      lineRef = _ref.lineRef,
-      outputNodeId = _ref.outputNodeId,
-      outputPortName = _ref.outputPortName,
-      inputNodeId = _ref.inputNodeId,
-      inputPortName = _ref.inputPortName;
-  var curve = calculateCurve(from, to);
-  return /*#__PURE__*/React__default["default"].createElement("svg", {
-    className: styles$b.svg
-  }, /*#__PURE__*/React__default["default"].createElement("path", {
-    "data-connection-id": id,
-    "data-output-node-id": outputNodeId,
-    "data-output-port-name": outputPortName,
-    "data-input-node-id": inputNodeId,
-    "data-input-port-name": inputPortName,
-    stroke: "white",
-    strokeOpacity: 0.3,
-    fill: "none",
-    strokeWidth: 1,
-    strokeLinecap: "round",
-    d: curve,
-    ref: lineRef
-  }));
-};
-
-var Port = function Port(_ref) {
-  var color = _ref.color,
-      _ref$name = _ref.name,
-      name = _ref$name === void 0 ? "" : _ref$name,
-      type = _ref.type,
-      isInput = _ref.isInput,
-      nodeId = _ref.nodeId,
-      triggerRecalculation = _ref.triggerRecalculation;
-  var nodesDispatch = React.useContext(NodeDispatchContext);
-  var stageState = React.useContext(StageContext);
-  var editorId = React.useContext(EditorIdContext);
-  var stageId = "".concat(STAGE_ID).concat(editorId);
-  var inputTypes = React.useContext(PortTypesContext);
-
-  var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      isDragging = _useState2[0],
-      setIsDragging = _useState2[1];
-
-  var _useState3 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      dragStartCoordinates = _useState4[0],
-      setDragStartCoordinates = _useState4[1];
-
-  var dragStartCoordinatesCache = React.useRef(dragStartCoordinates);
-  var port = React.useRef();
-  var line = React.useRef();
-  var lineInToPort = React.useRef();
-
-  var byScale = function byScale(value) {
-    return value / stageState.scale;
-  };
-
-  var handleDrag = function handleDrag(e) {
-    var stage = document.getElementById(stageId).getBoundingClientRect();
-
-    if (isInput) {
-      var to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
-        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
-      };
-      if (lineInToPort.current) lineInToPort.current.setAttribute("d", calculateCurve(to, dragStartCoordinatesCache.current));else line.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, to));
-    } else {
-      var _to = {
-        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
-        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
-      };
-      line.current.setAttribute("d", calculateCurve(_to, dragStartCoordinatesCache.current));
-    }
-  }; // TODO: Refactor onDragEnd method (input -> output part)
-
-
-  var handleDragEnd = function handleDragEnd(e) {
-    var droppedOnPort = !!e.target.dataset.portName;
-
-    if (isInput && lineInToPort.current) {
-      var _lineInToPort$current = lineInToPort.current.dataset,
-          inputNodeId = _lineInToPort$current.inputNodeId,
-          inputPortName = _lineInToPort$current.inputPortName,
-          outputNodeId = _lineInToPort$current.outputNodeId,
-          outputPortName = _lineInToPort$current.outputPortName;
-      nodesDispatch({
-        type: "REMOVE_CONNECTION",
-        input: {
-          nodeId: inputNodeId,
-          portName: inputPortName
-        },
-        output: {
-          nodeId: outputNodeId,
-          portName: outputPortName
-        }
-      });
-
-      if (droppedOnPort) {
-        var _e$target$dataset = e.target.dataset,
-            connectToPortName = _e$target$dataset.portName,
-            connectToNodeId = _e$target$dataset.nodeId,
-            connectToPortType = _e$target$dataset.portType,
-            connectToTransputType = _e$target$dataset.portTransputType;
-        var isNotSameNode = outputNodeId !== connectToNodeId;
-
-        if (isNotSameNode && connectToTransputType !== "output") {
-          var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
-
-          if (inputWillAcceptConnection) {
-            nodesDispatch({
-              type: "ADD_CONNECTION",
-              input: {
-                nodeId: connectToNodeId,
-                portName: connectToPortName
-              },
-              output: {
-                nodeId: outputNodeId,
-                portName: outputPortName
-              }
-            });
-          }
-        }
-      }
-    } else {
-      if (droppedOnPort) {
-        if (!isInput) {
-          var _e$target$dataset2 = e.target.dataset,
-              _inputPortName = _e$target$dataset2.portName,
-              _inputNodeId = _e$target$dataset2.nodeId,
-              inputNodeType = _e$target$dataset2.portType,
-              inputTransputType = _e$target$dataset2.portTransputType;
-
-          var _isNotSameNode = _inputNodeId !== nodeId;
-
-          if (_isNotSameNode && inputTransputType !== "output") {
-            var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
-
-            if (_inputWillAcceptConnection) {
-              nodesDispatch({
-                type: "ADD_CONNECTION",
-                output: {
-                  nodeId: nodeId,
-                  portName: name
-                },
-                input: {
-                  nodeId: _inputNodeId,
-                  portName: _inputPortName
-                }
-              });
-              triggerRecalculation();
-            }
-          }
-        } else {
-          var _e$target$dataset3 = e.target.dataset,
-              _inputPortName2 = _e$target$dataset3.portName,
-              _inputNodeId2 = _e$target$dataset3.nodeId,
-              _inputNodeType = _e$target$dataset3.portType,
-              _inputTransputType = _e$target$dataset3.portTransputType;
-
-          var _isNotSameNode2 = _inputNodeId2 !== nodeId;
-
-          if (_isNotSameNode2 && _inputTransputType === "output") {
-            var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
-
-            if (_inputWillAcceptConnection2) {
-              nodesDispatch({
-                type: "ADD_CONNECTION",
-                output: {
-                  nodeId: _inputNodeId2,
-                  portName: _inputPortName2
-                },
-                input: {
-                  nodeId: nodeId,
-                  portName: name
-                }
-              });
-              triggerRecalculation();
-            }
-          }
-        }
-      }
-    }
-
-    setIsDragging(false);
-    document.removeEventListener("mouseup", handleDragEnd);
-    document.removeEventListener("mousemove", handleDrag);
-  };
-
-  var handleDragStart = function handleDragStart(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var startPort = port.current.getBoundingClientRect();
-    var stage = document.getElementById(stageId).getBoundingClientRect();
-
-    if (isInput) {
-      lineInToPort.current = document.querySelector("[data-input-node-id=\"".concat(nodeId, "\"][data-input-port-name=\"").concat(name, "\"]"));
-      var portIsConnected = !!lineInToPort.current;
-
-      if (portIsConnected) {
-        lineInToPort.current.parentNode.style.zIndex = 9999;
-        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
-        var coordinates = {
-          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + stageState.translate.x,
-          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + stageState.translate.y
-        };
-        setDragStartCoordinates(coordinates);
-        dragStartCoordinatesCache.current = coordinates;
-        setIsDragging(true);
-        document.addEventListener("mouseup", handleDragEnd);
-        document.addEventListener("mousemove", handleDrag);
-      } else {
-        var _coordinates = {
-          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
-          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
-        };
-        setDragStartCoordinates(_coordinates);
-        dragStartCoordinatesCache.current = _coordinates;
-        setIsDragging(true);
-        document.addEventListener("mouseup", handleDragEnd);
-        document.addEventListener("mousemove", handleDrag);
-      }
-    } else {
-      var _coordinates2 = {
-        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
-        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
-      };
-      setDragStartCoordinates(_coordinates2);
-      dragStartCoordinatesCache.current = _coordinates2;
-      setIsDragging(true);
-      document.addEventListener("mouseup", handleDragEnd);
-      document.addEventListener("mousemove", handleDrag);
-    }
-  };
-
-  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
-    onMouseDown: handleDragStart,
-    className: styles$5.port,
-    style: {
-      marginLeft: isInput ? 1 : -9,
-      backgroundColor: "white"
-    },
-    "data-port-name": name,
-    "data-port-type": type,
-    "data-port-transput-type": isInput ? "input" : "output",
-    "data-node-id": nodeId,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    ref: port
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
-    style: {
-      padding: 0,
-      margin: 0,
-      width: 7,
-      height: 7,
-      backgroundColor: color,
-      borderRadius: "100%"
-    }
-  })), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
-    node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
-  }, /*#__PURE__*/React__default["default"].createElement(Connection, {
-    from: dragStartCoordinates,
-    to: dragStartCoordinates,
-    lineRef: line
-  })) : null);
-};
-
-var Inner = function Inner(_ref) {
-  var type = _ref.type,
-      label = _ref.label,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      data = _ref.data,
-      localControls = _ref.controls,
-      inputTypes = _ref.inputTypes,
-      noControls = _ref.noControls,
-      triggerRecalculation = _ref.triggerRecalculation,
-      updateNodeConnections = _ref.updateNodeConnections,
-      inputData = _ref.inputData,
-      nodeData = _ref.nodeData;
-
-  var _ref2 = inputTypes[type] || {},
-      defaultLabel = _ref2.label,
-      _ref2$controls = _ref2.controls,
-      defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
-
-  var controls = localControls || defaultControls;
-  return /*#__PURE__*/React__default["default"].createElement("tr", {
-    "data-controlless": noControls || !controls.length,
-    "data-is-inner": true,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, /*#__PURE__*/React__default["default"].createElement("td", {
-    className: styles$5.portLabel,
-    title: label || defaultLabel
-  }, label || defaultLabel), /*#__PURE__*/React__default["default"].createElement("td", {
-    className: styles$5.controls
-  }, controls.map(function (control) {
-    return /*#__PURE__*/React__default["default"].createElement(Control, _extends$2({}, control, {
-      nodeId: nodeId,
-      portName: name,
-      triggerRecalculation: triggerRecalculation,
-      updateNodeConnections: updateNodeConnections,
-      inputLabel: label,
-      data: data[control.name],
-      allData: data,
-      key: control.name,
-      inputData: inputData,
-      nodeData: nodeData,
-      isMonoControl: controls.length === 1
-    }));
-  })));
-};
-
-var Input = function Input(_ref) {
-  var _ref2;
-
-  var type = _ref.type,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      localControls = _ref.controls,
-      inputTypes = _ref.inputTypes,
-      noControls = _ref.noControls,
-      triggerRecalculation = _ref.triggerRecalculation,
-      optColor = _ref.optColor,
-      isConnected = _ref.isConnected,
-      c = _ref.color;
-  var _inputTypes$type = inputTypes[type];
-      _inputTypes$type.label;
-      var color = _inputTypes$type.color,
-      _inputTypes$type$cont = _inputTypes$type.controls,
-      defaultControls = _inputTypes$type$cont === void 0 ? [] : _inputTypes$type$cont;
-  var prevConnected = usePrevious(isConnected);
-  var controls = localControls || defaultControls;
-  React.useEffect(function () {
-    if (isConnected !== prevConnected) {
-      triggerRecalculation();
-    }
-  }, [isConnected, prevConnected, triggerRecalculation]);
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$5.transput,
-    "data-controlless": isConnected || noControls || !controls.length,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, /*#__PURE__*/React__default["default"].createElement(Port, {
-    type: type,
-    color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
-    name: name,
-    nodeId: nodeId,
-    isInput: true,
-    triggerRecalculation: triggerRecalculation
-  }));
-};
-
-var Output = function Output(_ref) {
-  var _ref2;
-
-  var name = _ref.name,
-      nodeId = _ref.nodeId,
-      type = _ref.type,
-      inputTypes = _ref.inputTypes,
-      triggerRecalculation = _ref.triggerRecalculation,
-      optColor = _ref.optColor,
-      c = _ref.color;
-  var color = inputTypes[type].color;
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$5.transput,
-    "data-controlless": true,
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, /*#__PURE__*/React__default["default"].createElement(Port, {
-    type: type,
-    name: name,
-    color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
-    nodeId: nodeId,
-    triggerRecalculation: triggerRecalculation
-  }));
-};
-
-var IoPorts = function IoPorts(_ref) {
-  var nodeId = _ref.nodeId,
-      _ref$show = _ref.show,
-      show = _ref$show === void 0 ? "innerOnly" : _ref$show,
-      _ref$resolvedInputs = _ref.resolvedInputs,
-      resolvedInputs = _ref$resolvedInputs === void 0 ? [] : _ref$resolvedInputs,
-      _ref$resolvedOutputs = _ref.resolvedOutputs,
-      resolvedOutputs = _ref$resolvedOutputs === void 0 ? [] : _ref$resolvedOutputs,
-      connections = _ref.connections,
-      color = _ref.color,
-      inputData = _ref.inputData,
-      updateNodeConnections = _ref.updateNodeConnections,
-      nodeData = _ref.nodeData;
-  var inputTypes = React.useContext(PortTypesContext);
-  var triggerRecalculation = React.useContext(ConnectionRecalculateContext);
-
-  switch (show) {
-    case "outputsOnly":
-      return (resolvedOutputs.length || null) && /*#__PURE__*/React__default["default"].createElement("div", {
-        className: styles$5.outputs,
-        style: {
-          backgroundColor: color
-        },
-        "data-show": show
-      }, resolvedOutputs.map(function (output) {
-        return /*#__PURE__*/React__default["default"].createElement(Output, _extends$2({}, output, {
-          optColor: color,
-          triggerRecalculation: triggerRecalculation,
-          inputTypes: inputTypes,
-          nodeId: nodeId,
-          inputData: inputData,
-          key: output.name
-        }));
-      }));
-
-    case "inputsOnly":
-      return resolvedInputs.some(function (_ref2) {
-        var hidePort = _ref2.hidePort;
-        return !hidePort;
-      }) && /*#__PURE__*/React__default["default"].createElement("div", {
-        className: styles$5.inputs,
-        "data-show": show
-      }, resolvedInputs.filter(function (_ref3) {
-        var hidePort = _ref3.hidePort;
-        return !hidePort;
-      }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Input, _extends$2({
-          optColor: color
-        }, input, {
-          data: inputData[input.name] || {},
-          isConnected: !!connections.inputs[input.name],
-          triggerRecalculation: triggerRecalculation,
-          updateNodeConnections: updateNodeConnections,
-          inputTypes: inputTypes,
-          nodeId: nodeId,
-          inputData: inputData,
-          key: input.name
-        }));
-      }));
-
-    default:
-      return resolvedInputs.some(function (_ref4) {
-        var hidePort = _ref4.hidePort;
-        return hidePort;
-      }) && /*#__PURE__*/React__default["default"].createElement("table", {
-        className: styles$5.inner
-      }, /*#__PURE__*/React__default["default"].createElement("tbody", null, resolvedInputs.filter(function (_ref5) {
-        var hidePort = _ref5.hidePort;
-        return hidePort;
-      }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Inner, _extends$2({}, input, {
-          data: inputData[input.name] || {},
-          isConnected: !!connections.inputs[input.name],
-          triggerRecalculation: triggerRecalculation,
-          updateNodeConnections: updateNodeConnections,
-          inputTypes: inputTypes,
-          nodeId: nodeId,
-          inputData: inputData,
-          nodeData: nodeData,
-          key: input.name
-        }));
-      })));
-  }
-};
-
-var _path;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function SvgTicker(props) {
-  return /*#__PURE__*/React__namespace.createElement("svg", _extends({
-    width: 8,
-    height: 6,
-    fill: "none",
-    stroke: "#B3B3B3"
-  }, props), _path || (_path = /*#__PURE__*/React__namespace.createElement("path", {
-    d: "M1 1.505l2.683 2.993m0 0v-.001m0 .001L6.68 1.502",
-    strokeWidth: 1.5,
-    strokeLinecap: "round",
-    strokeLinejoin: "round"
-  })));
-}
-
-var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
-  var id = _ref.id;
-      _ref.width;
-      _ref.height;
-      var x = _ref.x,
-      isSelected = _ref.isSelected;
-      _ref.comment;
-      var y = _ref.y,
-      expanded = _ref.expanded;
-      _ref.delay;
-      var stageRect = _ref.stageRect,
-      connections = _ref.connections,
-      type = _ref.type,
-      inputData = _ref.inputData,
-      onDragStart = _ref.onDragStart,
-      _onDragEnd = _ref.onDragEnd,
-      onDragHandle = _ref.onDragHandle;
-      _ref.onDrag;
-      var _ref$actions = _ref.actions;
-  _ref$actions = _ref$actions === void 0 ? {} : _ref$actions;
-  var actionsData = _ref$actions.data;
-  // const cache = useContext(CacheContext);
-  var nodeTypes = React.useContext(NodeTypesContext);
-  var nodesDispatch = React.useContext(NodeDispatchContext);
-  var stageState = React.useContext(StageContext);
-  var recalculateConnections = React.useContext(ConnectionRecalculateContext);
-  var _nodeTypes$type = nodeTypes[type],
-      label = _nodeTypes$type.label,
-      deletable = _nodeTypes$type.deletable,
-      _nodeTypes$type$input = _nodeTypes$type.inputs,
-      inputs = _nodeTypes$type$input === void 0 ? [] : _nodeTypes$type$input,
-      _nodeTypes$type$outpu = _nodeTypes$type.outputs,
-      outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
-      icon = _nodeTypes$type.icon,
-      description = _nodeTypes$type.description,
-      buttons = _nodeTypes$type.actions.buttons,
-      _nodeTypes$type$categ = _nodeTypes$type.category,
-      _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
-      tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
-      _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
-      tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
-
-  var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      menuOpen = _useState2[0],
-      setMenuOpen = _useState2[1];
-
-  var _useState3 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuCoordinates = _useState4[0],
-      setMenuCoordinates = _useState4[1];
-
-  var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
-  var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
-  var nodeData = {
-    label: label,
-    id: id,
-    icon: icon,
-    description: description,
-    tileFontColor: tileFontColor,
-    tileBackground: tileBackground
-  };
-
-  var byScale = function byScale(value) {
-    return value / stageState.scale;
-  };
-
-  var updateConnectionsByTransput = function updateConnectionsByTransput() {
-    var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var isOutput = arguments.length > 1 ? arguments[1] : undefined;
-    Object.entries(transput).forEach(function (_ref2) {
-      var _ref3 = _slicedToArray(_ref2, 2),
-          portName = _ref3[0],
-          outputs = _ref3[1];
-
-      outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? "output" : "input" // cache
-        );
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
-        );
-        var portHalf = fromRect.width / 2;
-        var combined;
-
-        if (isOutput) {
-          combined = id + portName + output.nodeId + output.portName;
-        } else {
-          combined = output.nodeId + output.portName + id + portName;
-        } // const cachedConnection = null; /* cache.current.connections[combined] */
-
-
-        var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
-        var from = {
-          x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
-          y: byScale(toRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
-        };
-        var to = {
-          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
-          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
-        };
-        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
-      });
-    });
-  };
-
-  var updateNodeConnections = function updateNodeConnections() {
-    if (connections) {
-      updateConnectionsByTransput(connections.inputs);
-      updateConnectionsByTransput(connections.outputs, true);
-    }
-  };
-
-  var handleDrag = function handleDrag(_ref4) {
-    var x = _ref4.x,
-        y = _ref4.y;
-    var oldPositions = nodeWrapper.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
-
-    if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
-      onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
-    }
-
-    nodeWrapper.current.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
-    updateNodeConnections();
-  };
-
-  var handleContextMenu = function handleContextMenu(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuCoordinates({
-      x: e.clientX,
-      y: e.clientY
-    });
-    setMenuOpen(true);
-    return false;
-  };
-
-  var closeContextMenu = function closeContextMenu() {
-    setMenuOpen(false);
-  };
-
-  var handleMenuOption = function handleMenuOption(_ref5) {
-    var value = _ref5.value;
-
-    switch (value) {
-      case "deleteNode":
-        nodesDispatch({
-          type: "REMOVE_NODE",
-          nodeId: id
-        });
-        break;
-
-      default:
-        return;
-    }
-  };
-
-  var hasInner = React.useMemo(function () {
-    var _resolvedInputs$some;
-
-    return !!(resolvedInputs !== null && resolvedInputs !== void 0 && (_resolvedInputs$some = resolvedInputs.some) !== null && _resolvedInputs$some !== void 0 && _resolvedInputs$some.call(resolvedInputs, function (_ref6) {
-      var hidePort = _ref6.hidePort;
-      return hidePort;
-    }));
-  }, [resolvedInputs]);
-  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.wrapper,
-    style: {
-      background: "rgba(46, 58, 89, 0.8)",
-      color: tileFontColor,
-      zIndex: isSelected && 1000,
-      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
-      transform: "translate(".concat(x, "px, ").concat(y, "px)")
-    },
-    onDragStart: onDragStart,
-    onDrag: handleDrag,
-    onDragEnd: function onDragEnd(e, coords) {
-      return _onDragEnd(e, id, coords);
-    },
-    innerRef: nodeWrapper,
-    "data-node-id": id,
-    onContextMenu: handleContextMenu,
-    stageState: stageState,
-    stageRect: stageRect
-  }, /*#__PURE__*/React__default["default"].createElement(IoPorts, {
-    nodeId: id,
-    resolvedOutputs: resolvedOutputs,
-    show: "outputsOnly",
-    color: tileBackground,
-    connections: connections,
-    updateNodeConnections: updateNodeConnections,
-    inputData: inputData
-  }), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.body
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.header
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerMeta
-  }, hasInner && /*#__PURE__*/React__default["default"].createElement(SvgTicker, {
-    onClick: function onClick() {
-      nodesDispatch({
-        type: "TOGGLE_NODE_VIEW",
-        id: id
-      });
-      recalculateConnections();
-    },
-    style: {
-      transform: expanded ? "none" : "rotate(-90deg)",
-      cursor: "pointer",
-      stroke: "#C5CEE0"
-    }
-  }), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.title
-  }, icon && /*#__PURE__*/React__default["default"].createElement("img", {
-    src: icon
-  }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.label,
-    style: {
-      color: "#fff"
-    }
-  }, label)), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.id,
-    onClick: function onClick() {
-      return navigator.clipboard.writeText(id);
-    }
-  }, "ID: ", id)), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerActions
-  }, buttons.map(function (action) {
-    return action(actionsData, function (getState) {
-      return nodesDispatch({
-        type: "UPDATE_NODE_ACTION_DATA",
-        data: getState(actionsData),
-        nodeId: id
-      });
-    }, inputData, connections, nodeData, nodesDispatch);
-  }))), expanded && hasInner ? /*#__PURE__*/React__default["default"].createElement(IoPorts, {
-    nodeId: id,
-    resolvedInputs: resolvedInputs,
-    show: "innerOnly",
-    connections: connections,
-    nodeData: nodeData,
-    updateNodeConnections: updateNodeConnections,
-    inputData: inputData
-  }) : description && /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.description
-  }, description)), /*#__PURE__*/React__default["default"].createElement(IoPorts, {
-    nodeId: id,
-    resolvedInputs: resolvedInputs,
-    show: "inputsOnly",
-    color: tileBackground,
-    connections: connections,
-    updateNodeConnections: updateNodeConnections,
-    inputData: inputData
-  }), menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
-    x: menuCoordinates.x,
-    y: menuCoordinates.y,
-    options: _toConsumableArray(deletable !== false ? [{
-      label: "Delete Node",
-      value: "deleteNode",
-      description: "Deletes a node and all of its connections."
-    }] : []),
-    onRequestClose: closeContextMenu,
-    onOptionSelected: handleMenuOption,
-    hideFilter: true,
-    label: "Node Options",
-    emptyText: "This node has no options."
-  })) : null);
-});
-Node.displayName = "Node";
-
-var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
-var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
-styleInject(css_248z$4);
-
-var css_248z$3 = ".ColorPicker_wrapper__1M1j2{background:rgba(29,32,34,.95);border:1px solid rgba(0,0,0,.4);border-radius:5px;box-shadow:0 6px 7px rgba(0,0,0,.3);color:#fff;display:flex;flex-wrap:wrap;padding:2px;position:fixed;width:102px;z-index:9999}@supports (backdrop-filter:blur(6px)){.ColorPicker_wrapper__1M1j2{backdrop-filter:blur(6px);background:rgba(29,32,34,.8)}}.ColorPicker_colorButtonWrapper__1ijdj{align-items:center;display:flex;justify-content:center;padding:2px}.ColorPicker_colorButton__1Qcuq{background:#ccc;border:none;border-radius:3px;height:20px;width:20px}.ColorPicker_colorButton__1Qcuq[data-color=red]{background:#d2656f}.ColorPicker_colorButton__1Qcuq[data-color=purple]{background:#9f65d2}.ColorPicker_colorButton__1Qcuq[data-color=blue]{background:#6597d2}.ColorPicker_colorButton__1Qcuq[data-color=green]{background:#65d2a8}.ColorPicker_colorButton__1Qcuq[data-color=orange]{background:#d28965}.ColorPicker_colorButton__1Qcuq[data-color=yellow]{background:#d2c465}.ColorPicker_colorButton__1Qcuq[data-color=pink]{background:#f17ce2}.ColorPicker_colorButton__1Qcuq:hover{opacity:.8}";
-var styles$3 = {"wrapper":"ColorPicker_wrapper__1M1j2","colorButtonWrapper":"ColorPicker_colorButtonWrapper__1ijdj","colorButton":"ColorPicker_colorButton__1Qcuq"};
-styleInject(css_248z$3);
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
 
 var lodash = {exports: {}};
 
@@ -27508,6 +25366,2192 @@ var lodash = {exports: {}};
 
 var _ = lodash.exports;
 
+var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;transition:opacity .2s;user-select:none;z-index:1}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_body__3Pwq7 *{color:#c5cee0}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
+var styles$c = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
+styleInject(css_248z$c);
+
+function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
+
+function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var checkIntersection = function checkIntersection(boxA, boxB) {
+  if (boxA.bottom > boxB.top && boxA.right > boxB.left && boxA.top < boxB.bottom && boxA.left < boxB.right) {
+    return true;
+  }
+
+  return false;
+};
+
+var timeout = null;
+var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
+  var scale = _ref.scale,
+      translate = _ref.translate,
+      editorId = _ref.editorId,
+      dispatchStageState = _ref.dispatchStageState,
+      children = _ref.children,
+      outerStageChildren = _ref.outerStageChildren,
+      parentSetSpaceIsPressed = _ref.setSpaceIsPressed,
+      numNodes = _ref.numNodes,
+      stageRef = _ref.stageRef,
+      spaceToPan = _ref.spaceToPan,
+      dispatchComments = _ref.dispatchComments,
+      disableComments = _ref.disableComments,
+      disablePan = _ref.disablePan,
+      disableZoom = _ref.disableZoom,
+      DRAGGABLE_CANVAS = _ref.DRAGGABLE_CANVAS,
+      draggableCanvasSet = _ref.draggableCanvasSet;
+  var nodeTypes = React.useContext(NodeTypesContext);
+  var dispatchNodes = React.useContext(NodeDispatchContext);
+  var translateWrapper = React.useRef();
+  var scaleWrapper = React.useRef();
+
+  var _useState = React.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      menuOpen = _useState2[0],
+      setMenuOpen = _useState2[1];
+
+  var _useState3 = React.useState({
+    x: 0,
+    y: 0
+  }),
+      _useState4 = _slicedToArray(_useState3, 2),
+      menuCoordinates = _useState4[0],
+      setMenuCoordinates = _useState4[1];
+
+  var dragData = React.useRef({
+    x: 0,
+    y: 0
+  });
+
+  var _useState5 = React.useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      spaceIsPressed = _useState6[0],
+      setSpaceIsPressed = _useState6[1];
+
+  var setStageRect = React.useCallback(function () {
+    stageRef.current = wrapper.current.getBoundingClientRect();
+  }, []);
+  React.useEffect(function () {
+    stageRef.current = wrapper.current.getBoundingClientRect();
+    window.addEventListener("resize", setStageRect);
+    return function () {
+      window.removeEventListener("resize", setStageRect);
+    };
+  }, [stageRef, setStageRect]);
+  React.useEffect(function () {
+    if (DRAGGABLE_CANVAS) {
+      parentSetSpaceIsPressed(true);
+      setSpaceIsPressed(true);
+    } else {
+      parentSetSpaceIsPressed(false);
+      setSpaceIsPressed(false);
+    }
+  }, [DRAGGABLE_CANVAS]);
+  var handleWheel = React.useCallback(function (e) {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    var delta = e.deltaY;
+    scaleWrapper.current.style.transition = "0.0s";
+    scaleWrapper.current.style.scale = clamp_1(scale - clamp_1(delta, -10, 10) * 0.005, 0.1, 2);
+    timeout = setTimeout(function () {
+      scaleWrapper.current.style.transition = "1s";
+    }, 300);
+
+    if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
+      if (e.target.clientHeight < e.target.scrollHeight) return;
+    }
+
+    e.preventDefault();
+
+    if (numNodes > 0) {
+      var _delta = e.deltaY;
+      dispatchStageState(function (_ref2) {
+        var scale = _ref2.scale;
+        return {
+          type: "SET_SCALE",
+          scale: clamp_1(scale - clamp_1(_delta, -10, 10) * 0.005, 0.1, 2)
+        };
+      });
+    }
+  }, [dispatchStageState, numNodes]);
+
+  var handleDragDelayStart = function handleDragDelayStart(e) {
+    wrapper.current.focus();
+  };
+
+  var handleDragStart = function handleDragStart(e) {
+    e.preventDefault();
+    dragData.current = {
+      x: e.clientX / scale,
+      y: e.clientY / scale
+    };
+  };
+
+  var toggleVisibility = function toggleVisibility() {
+    var nodes = document.getElementsByClassName(styles$c === null || styles$c === void 0 ? void 0 : styles$c.wrapper);
+
+    var _iterator = _createForOfIteratorHelper$3(nodes),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var node = _step.value;
+
+        if (!checkIntersection(node.getBoundingClientRect(), wrapper.current.getBoundingClientRect())) {
+          node.style.opacity = "0";
+        } else {
+          node.style.opacity = "1";
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+  };
+
+  var handleMouseDrag = function handleMouseDrag(coords, e) {
+    var xDistance = dragData.current.x - e.clientX / scale;
+    var yDistance = dragData.current.y - e.clientY / scale;
+    translateWrapper.current.style.transition = "0s";
+    wrapper.current.style.backgroundPosition = "calc(50% + ".concat(-(translate.x + xDistance) * scale % (10 * scale), "px) calc(50% + ").concat(-(translate.y + yDistance) * scale % (10 * scale), "px) ");
+    translateWrapper.current.style.transform = "translate(".concat(-(translate.x + xDistance), "px, ").concat(-(translate.y + yDistance), "px)");
+    lodash.exports.debounce(toggleVisibility, 1000)();
+  };
+
+  var handleDragEnd = function handleDragEnd(e) {
+    var xDistance = dragData.current.x - e.clientX / scale;
+    var yDistance = dragData.current.y - e.clientY / scale;
+    translateWrapper.current.style.transition = "1s";
+    dragData.current.x = e.clientX;
+    dragData.current.y = e.clientY;
+    dispatchStageState(function (_ref3) {
+      var tran = _ref3.translate;
+      return {
+        type: "SET_TRANSLATE",
+        translate: {
+          x: tran.x + xDistance,
+          y: tran.y + yDistance
+        }
+      };
+    });
+    toggleVisibility();
+  };
+
+  var handleContextMenu = function handleContextMenu(e) {
+    setMenuCoordinates({
+      x: e.clientX,
+      y: e.clientY
+    });
+    setMenuOpen(true);
+    return false;
+  };
+
+  var closeContextMenu = function closeContextMenu() {
+    setMenuOpen(false);
+  };
+
+  var byScale = function byScale(value) {
+    return value / scale;
+  };
+
+  var addNode = function addNode(_ref4) {
+    var node = _ref4.node,
+        internalType = _ref4.internalType;
+    var wrapperRect = wrapper.current.getBoundingClientRect();
+    var x = byScale(menuCoordinates.x - wrapperRect.x - wrapperRect.width / 2) + translate.x;
+    var y = byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) + translate.y;
+
+    if (internalType === "comment") {
+      dispatchComments({
+        type: "ADD_COMMENT",
+        x: x,
+        y: y
+      });
+    } else {
+      dispatchNodes({
+        type: "ADD_NODE",
+        x: x,
+        y: y,
+        nodeType: node.type
+      });
+    }
+  };
+
+  var handleDocumentKeyUp = function handleDocumentKeyUp(e) {
+    if (e.which === 32) {
+      setSpaceIsPressed(false);
+      parentSetSpaceIsPressed(false);
+      document.removeEventListener("keyup", handleDocumentKeyUp);
+    }
+  };
+
+  var handleKeyDown = function handleKeyDown(e) {
+    if (e.which === 32) {
+      parentSetSpaceIsPressed(true);
+      setSpaceIsPressed(true);
+      document.addEventListener("keyup", handleDocumentKeyUp);
+    }
+  };
+
+  var handleMouseEnter = function handleMouseEnter() {
+    wrapper.current.focus();
+  };
+
+  React.useEffect(function () {
+    if (!disableZoom) {
+      var stageWrapper = wrapper.current;
+      stageWrapper.addEventListener("wheel", handleWheel);
+      return function () {
+        stageWrapper.removeEventListener("wheel", handleWheel);
+      };
+    }
+  }, [handleWheel, disableZoom]);
+  var menuOptions = React.useMemo(function () {
+    var options = orderBy_1(Object.values(nodeTypes).filter(function (node) {
+      return node.addable !== false;
+    }).map(function (node) {
+      return {
+        value: node.type,
+        label: node.label,
+        description: node.description,
+        sortIndex: node.sortIndex,
+        node: node
+      };
+    }), ["sortIndex", "label"]);
+
+    if (!disableComments) {
+      options.push({
+        value: "comment",
+        label: "Comment",
+        description: "A comment for documenting nodes",
+        internalType: "comment"
+      });
+    }
+
+    return options;
+  }, [nodeTypes, disableComments]);
+  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
+    id: "".concat(STAGE_ID).concat(editorId),
+    className: styles$e.wrapper,
+    innerRef: wrapper,
+    onContextMenu: handleContextMenu,
+    onMouseEnter: handleMouseEnter,
+    onDragDelayStart: handleDragDelayStart,
+    onDragStart: handleDragStart,
+    onDrag: handleMouseDrag,
+    onDragEnd: handleDragEnd,
+    onKeyDown: handleKeyDown,
+    onMouseDown: function onMouseDown(e) {
+      if (e.button === 1) {
+        if (!DRAGGABLE_CANVAS) {
+          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(true);
+        } else {
+          draggableCanvasSet && typeof draggableCanvasSet === "function" && draggableCanvasSet(false);
+        }
+      }
+    },
+    onMouseUp: function onMouseUp(e) {// if (e.button === 1) {
+      //   setSpaceIsPressed(false);
+      //   parentSetSpaceIsPressed(false);
+      // }
+    },
+    tabIndex: -1,
+    stageState: {
+      scale: scale,
+      translate: translate
+    },
+    style: {
+      cursor: spaceIsPressed && spaceToPan ? "grab" : ""
+    },
+    disabled: disablePan || spaceToPan && !spaceIsPressed,
+    "data-flume-stage": true
+  }, spaceIsPressed ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null) : null, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+    x: menuCoordinates.x,
+    y: menuCoordinates.y,
+    options: menuOptions,
+    onRequestClose: closeContextMenu,
+    onOptionSelected: addNode,
+    label: "Add Node"
+  })) : null, /*#__PURE__*/React__default["default"].createElement("div", {
+    ref: scaleWrapper,
+    className: styles$e.scaleWrapper,
+    style: {
+      transition: "1s",
+      transformOrigin: "center",
+      transform: "scale(".concat(scale, ")")
+    }
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
+    ref: translateWrapper,
+    className: styles$e.transformWrapper,
+    style: {
+      transition: "1s",
+      transform: "translate(".concat(-translate.x, "px, ").concat(-translate.y, "px)")
+    }
+  }, children)), outerStageChildren);
+});
+Stage.displayName = "Stage";
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray$4(arr);
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$4(arr) || _nonIterableSpread();
+}
+
+var usePrevious = function usePrevious(value) {
+  var ref = React__default["default"].useRef();
+  React__default["default"].useEffect(function () {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
+function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
+
+function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+var useTransputs = (function (transputsFn, transputType, nodeId, inputData, connections) {
+  var nodesDispatch = React.useContext(NodeDispatchContext);
+  var executionContext = React.useContext(ContextContext);
+  var transputs = React.useMemo(function () {
+    if (Array.isArray(transputsFn)) return transputsFn;
+    return transputsFn(inputData, connections, executionContext);
+  }, [transputsFn, inputData, connections, executionContext]);
+  var prevTransputs = usePrevious(transputs);
+  React.useEffect(function () {
+    if (!prevTransputs || Array.isArray(transputsFn)) return;
+
+    var _iterator = _createForOfIteratorHelper$2(prevTransputs),
+        _step;
+
+    try {
+      var _loop = function _loop() {
+        var transput = _step.value;
+        var current = transputs.find(function (_ref) {
+          var name = _ref.name;
+          return transput.name === name;
+        });
+
+        if (!current) {
+          nodesDispatch({
+            type: "DESTROY_TRANSPUT",
+            transputType: transputType,
+            transput: {
+              nodeId: nodeId,
+              portName: "" + transput.name
+            }
+          });
+        }
+      };
+
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        _loop();
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+  }, [transputsFn, transputs, prevTransputs, nodesDispatch, nodeId, transputType]);
+  return transputs;
+});
+
+const pi = Math.PI,
+    tau = 2 * pi,
+    epsilon = 1e-6,
+    tauEpsilon = tau - epsilon;
+
+function Path() {
+  this._x0 = this._y0 = // start of current subpath
+  this._x1 = this._y1 = null; // end of current subpath
+  this._ = "";
+}
+
+function path() {
+  return new Path;
+}
+
+Path.prototype = path.prototype = {
+  constructor: Path,
+  moveTo: function(x, y) {
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
+  },
+  closePath: function() {
+    if (this._x1 !== null) {
+      this._x1 = this._x0, this._y1 = this._y0;
+      this._ += "Z";
+    }
+  },
+  lineTo: function(x, y) {
+    this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
+  },
+  quadraticCurveTo: function(x1, y1, x, y) {
+    this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+  },
+  bezierCurveTo: function(x1, y1, x2, y2, x, y) {
+    this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+  },
+  arcTo: function(x1, y1, x2, y2, r) {
+    x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
+    var x0 = this._x1,
+        y0 = this._y1,
+        x21 = x2 - x1,
+        y21 = y2 - y1,
+        x01 = x0 - x1,
+        y01 = y0 - y1,
+        l01_2 = x01 * x01 + y01 * y01;
+
+    // Is the radius negative? Error.
+    if (r < 0) throw new Error("negative radius: " + r);
+
+    // Is this path empty? Move to (x1,y1).
+    if (this._x1 === null) {
+      this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
+    }
+
+    // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
+    else if (!(l01_2 > epsilon));
+
+    // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
+    // Equivalently, is (x1,y1) coincident with (x2,y2)?
+    // Or, is the radius zero? Line to (x1,y1).
+    else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
+      this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
+    }
+
+    // Otherwise, draw an arc!
+    else {
+      var x20 = x2 - x0,
+          y20 = y2 - y0,
+          l21_2 = x21 * x21 + y21 * y21,
+          l20_2 = x20 * x20 + y20 * y20,
+          l21 = Math.sqrt(l21_2),
+          l01 = Math.sqrt(l01_2),
+          l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+          t01 = l / l01,
+          t21 = l / l21;
+
+      // If the start tangent is not coincident with (x0,y0), line to.
+      if (Math.abs(t01 - 1) > epsilon) {
+        this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
+      }
+
+      this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
+    }
+  },
+  arc: function(x, y, r, a0, a1, ccw) {
+    x = +x, y = +y, r = +r, ccw = !!ccw;
+    var dx = r * Math.cos(a0),
+        dy = r * Math.sin(a0),
+        x0 = x + dx,
+        y0 = y + dy,
+        cw = 1 ^ ccw,
+        da = ccw ? a0 - a1 : a1 - a0;
+
+    // Is the radius negative? Error.
+    if (r < 0) throw new Error("negative radius: " + r);
+
+    // Is this path empty? Move to (x0,y0).
+    if (this._x1 === null) {
+      this._ += "M" + x0 + "," + y0;
+    }
+
+    // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
+    else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
+      this._ += "L" + x0 + "," + y0;
+    }
+
+    // Is this arc empty? We’re done.
+    if (!r) return;
+
+    // Does the angle go the wrong way? Flip the direction.
+    if (da < 0) da = da % tau + tau;
+
+    // Is this a complete circle? Draw two arcs to complete the circle.
+    if (da > tauEpsilon) {
+      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
+    }
+
+    // Is this arc non-empty? Draw an arc!
+    else if (da > epsilon) {
+      this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
+    }
+  },
+  rect: function(x, y, w, h) {
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
+  },
+  toString: function() {
+    return this._;
+  }
+};
+
+function constant$3(x) {
+  return function constant() {
+    return x;
+  };
+}
+
+function array(x) {
+  return typeof x === "object" && "length" in x
+    ? x // Array, TypedArray, NodeList, array-like
+    : Array.from(x); // Map, Set, iterable, string, or anything else
+}
+
+function Linear(context) {
+  this._context = context;
+}
+
+Linear.prototype = {
+  areaStart: function() {
+    this._line = 0;
+  },
+  areaEnd: function() {
+    this._line = NaN;
+  },
+  lineStart: function() {
+    this._point = 0;
+  },
+  lineEnd: function() {
+    if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+    this._line = 1 - this._line;
+  },
+  point: function(x, y) {
+    x = +x, y = +y;
+    switch (this._point) {
+      case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
+      case 1: this._point = 2; // falls through
+      default: this._context.lineTo(x, y); break;
+    }
+  }
+};
+
+function curveLinear(context) {
+  return new Linear(context);
+}
+
+function x(p) {
+  return p[0];
+}
+
+function y(p) {
+  return p[1];
+}
+
+function line(x$1, y$1) {
+  var defined = constant$3(true),
+      context = null,
+      curve = curveLinear,
+      output = null;
+
+  x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant$3(x$1);
+  y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant$3(y$1);
+
+  function line(data) {
+    var i,
+        n = (data = array(data)).length,
+        d,
+        defined0 = false,
+        buffer;
+
+    if (context == null) output = curve(buffer = path());
+
+    for (i = 0; i <= n; ++i) {
+      if (!(i < n && defined(d = data[i], i, data)) === defined0) {
+        if (defined0 = !defined0) output.lineStart();
+        else output.lineEnd();
+      }
+      if (defined0) output.point(+x$1(d, i, data), +y$1(d, i, data));
+    }
+
+    if (buffer) return output = null, buffer + "" || null;
+  }
+
+  line.x = function(_) {
+    return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$3(+_), line) : x$1;
+  };
+
+  line.y = function(_) {
+    return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$3(+_), line) : y$1;
+  };
+
+  line.defined = function(_) {
+    return arguments.length ? (defined = typeof _ === "function" ? _ : constant$3(!!_), line) : defined;
+  };
+
+  line.curve = function(_) {
+    return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
+  };
+
+  line.context = function(_) {
+    return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
+  };
+
+  return line;
+}
+
+function point(that, x, y) {
+  that._context.bezierCurveTo(
+    (2 * that._x0 + that._x1) / 3,
+    (2 * that._y0 + that._y1) / 3,
+    (that._x0 + 2 * that._x1) / 3,
+    (that._y0 + 2 * that._y1) / 3,
+    (that._x0 + 4 * that._x1 + x) / 6,
+    (that._y0 + 4 * that._y1 + y) / 6
+  );
+}
+
+function Basis(context) {
+  this._context = context;
+}
+
+Basis.prototype = {
+  areaStart: function() {
+    this._line = 0;
+  },
+  areaEnd: function() {
+    this._line = NaN;
+  },
+  lineStart: function() {
+    this._x0 = this._x1 =
+    this._y0 = this._y1 = NaN;
+    this._point = 0;
+  },
+  lineEnd: function() {
+    switch (this._point) {
+      case 3: point(this, this._x1, this._y1); // falls through
+      case 2: this._context.lineTo(this._x1, this._y1); break;
+    }
+    if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+    this._line = 1 - this._line;
+  },
+  point: function(x, y) {
+    x = +x, y = +y;
+    switch (this._point) {
+      case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
+      case 1: this._point = 2; break;
+      case 2: this._point = 3; this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // falls through
+      default: point(this, x, y); break;
+    }
+    this._x0 = this._x1, this._x1 = x;
+    this._y0 = this._y1, this._y1 = y;
+  }
+};
+
+function Bundle(context, beta) {
+  this._basis = new Basis(context);
+  this._beta = beta;
+}
+
+Bundle.prototype = {
+  lineStart: function() {
+    this._x = [];
+    this._y = [];
+    this._basis.lineStart();
+  },
+  lineEnd: function() {
+    var x = this._x,
+        y = this._y,
+        j = x.length - 1;
+
+    if (j > 0) {
+      var x0 = x[0],
+          y0 = y[0],
+          dx = x[j] - x0,
+          dy = y[j] - y0,
+          i = -1,
+          t;
+
+      while (++i <= j) {
+        t = i / j;
+        this._basis.point(
+          this._beta * x[i] + (1 - this._beta) * (x0 + t * dx),
+          this._beta * y[i] + (1 - this._beta) * (y0 + t * dy)
+        );
+      }
+    }
+
+    this._x = this._y = null;
+    this._basis.lineEnd();
+  },
+  point: function(x, y) {
+    this._x.push(+x);
+    this._y.push(+y);
+  }
+};
+
+var curveBundle = (function custom(beta) {
+
+  function bundle(context) {
+    return beta === 1 ? new Basis(context) : new Bundle(context, beta);
+  }
+
+  bundle.beta = function(beta) {
+    return custom(+beta);
+  };
+
+  return bundle;
+})(0.85);
+
+var css_248z$b = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
+var styles$b = {"svg":"Connection_svg__-fKLY"};
+styleInject(css_248z$b);
+
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+
+function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var getPort = function getPort(nodeId, portName) {
+  var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
+  return document.querySelector("[data-node-id=\"".concat(nodeId, "\"] [data-port-name=\"").concat(portName, "\"][data-port-transput-type=\"").concat(transputType, "\"]"));
+};
+
+var getPortRect = function getPortRect(nodeId, portName) {
+  var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
+  var cache = arguments.length > 3 ? arguments[3] : undefined;
+
+  if (cache) {
+    var portCacheName = nodeId + portName + transputType;
+    var cachedPort = cache.current.ports[portCacheName];
+
+    if (cachedPort) {
+      return cachedPort.getBoundingClientRect();
+    } else {
+      var port = getPort(nodeId, portName, transputType);
+      cache.current.ports[portCacheName] = port;
+      return port && port.getBoundingClientRect();
+    }
+  } else {
+    var _port = getPort(nodeId, portName, transputType);
+
+    return _port && _port.getBoundingClientRect();
+  }
+};
+var calculateCurve = function calculateCurve(from, to) {
+  var fFrom = from;
+  var fTo = to;
+  var deltaX = fTo.x - fFrom.x;
+  var deltaY = fTo.y - fFrom.y;
+  var xSlope = Math.min(deltaX > 0 ? Math.abs(deltaX) / 3 : Math.abs(deltaX) / 3 + 30, 200);
+  var ySlope = deltaX < 0 ? deltaY < 10 ? 30 : -deltaY < 10 ? -30 : 0 : 0;
+  return line().curve(curveBundle.beta(Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8 ? 0 : 0.75))([[fFrom.x, fFrom.y], [fFrom.x + xSlope, fFrom.y - ySlope], [fTo.x - xSlope, fTo.y + ySlope], [fTo.x, fTo.y]]);
+};
+var deleteConnection = function deleteConnection(_ref3) {
+  var id = _ref3.id;
+  var line = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
+  if (line) line.parentNode.remove();
+};
+var clearConnections = function clearConnections() {
+  var lines = document.querySelectorAll("[data-output-node-id], [data-input-node-id]");
+
+  var _iterator = _createForOfIteratorHelper$1(lines),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _line = _step.value;
+
+      _line.parentNode.remove();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+};
+var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
+  var lines = document.querySelectorAll("[data-output-node-id=\"".concat(nodeId, "\"], [data-input-node-id=\"").concat(nodeId, "\"]"));
+
+  var _iterator2 = _createForOfIteratorHelper$1(lines),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var _line2 = _step2.value;
+
+      _line2.parentNode.remove();
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+};
+var updateConnection = function updateConnection(_ref4) {
+  var line = _ref4.line,
+      from = _ref4.from,
+      to = _ref4.to;
+  line.setAttribute("d", calculateCurve(from, to));
+};
+var createSVG = function createSVG(_ref5) {
+  var from = _ref5.from,
+      to = _ref5.to,
+      stage = _ref5.stage,
+      id = _ref5.id,
+      outputNodeId = _ref5.outputNodeId,
+      outputPortName = _ref5.outputPortName,
+      inputNodeId = _ref5.inputNodeId,
+      inputPortName = _ref5.inputPortName;
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", styles$b.svg);
+  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  var curve = calculateCurve(from, to);
+  path.setAttribute("d", curve);
+  path.setAttribute("stroke", "white");
+  path.setAttribute("stroke-opacity", ".3");
+  path.setAttribute("stroke-width", "1");
+  path.setAttribute("stroke-linecap", "round");
+  path.setAttribute("fill", "none");
+  path.setAttribute("data-connection-id", id);
+  path.setAttribute("data-output-node-id", outputNodeId);
+  path.setAttribute("data-output-port-name", outputPortName);
+  path.setAttribute("data-input-node-id", inputNodeId);
+  path.setAttribute("data-input-port-name", inputPortName);
+  svg.appendChild(path);
+  stage.appendChild(svg);
+  return svg;
+};
+var getStageRef = function getStageRef(editorId) {
+  return document.getElementById("".concat(CONNECTIONS_ID).concat(editorId));
+};
+var createConnections = function createConnections(nodes, _ref6, editorId) {
+  var scale = _ref6.scale;
+      _ref6.stageId;
+  var stageRef = getStageRef(editorId);
+
+  if (stageRef) {
+    var stage = stageRef.getBoundingClientRect();
+    var stageHalfWidth = stage.width / 2;
+    var stageHalfHeight = stage.height / 2;
+
+    var byScale = function byScale(value) {
+      return value / scale;
+    };
+
+    Object.values(nodes).forEach(function (node) {
+      if (node.connections && node.connections.inputs) {
+        Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
+          var _ref8 = _slicedToArray(_ref7, 2),
+              inputName = _ref8[0],
+              outputs = _ref8[1];
+
+          outputs.forEach(function (output) {
+            var fromPort = getPortRect(output.nodeId, output.portName, "output");
+            var toPort = getPortRect(node.id, inputName, "input");
+            var portHalf = fromPort ? fromPort.width / 2 : 0;
+
+            if (fromPort && toPort) {
+              var id = output.nodeId + output.portName + node.id + inputName;
+              var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
+
+              if (existingLine) {
+                updateConnection({
+                  line: existingLine,
+                  to: {
+                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
+                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
+                  },
+                  from: {
+                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
+                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
+                  }
+                });
+              } else {
+                createSVG({
+                  id: id,
+                  outputNodeId: output.nodeId,
+                  outputPortName: output.portName,
+                  inputNodeId: node.id,
+                  inputPortName: inputName,
+                  to: {
+                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
+                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
+                  },
+                  from: {
+                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
+                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
+                  },
+                  stage: stageRef
+                });
+              }
+            }
+          });
+        });
+      }
+    });
+  }
+};
+
+var css_248z$a = ".index_wrapper__3LoG0{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.index_wrapper__3LoG0>*{line-height:normal}.index_button__1mmZb{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__1mmZb:focus,.index_button__1mmZb:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__1mmZb:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
+var styles$a = {"wrapper":"index_wrapper__3LoG0","button":"index_button__1mmZb"};
+styleInject(css_248z$a);
+
+var Button = function Button(_ref) {
+  var onPress = _ref.onPress,
+      label = _ref.label;
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$a.wrapper
+  }, /*#__PURE__*/React__default["default"].createElement("button", {
+    className: styles$a.button,
+    title: label,
+    onClick: onPress
+  }, label));
+};
+
+var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}";
+var styles$9 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-"};
+styleInject(css_248z$9);
+
+var NumberInput = function NumberInput(_ref) {
+  var placeholder = _ref.placeholder,
+      onChange = _ref.onChange,
+      data = _ref.data,
+      step = _ref.step,
+      validate = _ref.validate;
+  var numberInput = React.useRef();
+
+  var preventPropagation = function preventPropagation(e) {
+    return e.stopPropagation();
+  };
+
+  var parseNumber = function parseNumber(_ref2) {
+    var target = _ref2.target,
+        type = _ref2.type;
+
+    if (validate(target.value)) {
+      var inputValue = target.value.replace(",", ".").replace(/[^0-9.]+/g, "");
+      if (!inputValue) return onChange(null);
+      var value = parseFloat(inputValue, 10);
+
+      if (Number.isNaN(value)) {
+        if (type === "blur") numberInput.current.value = data;
+      } else {
+        onChange(numberInput.current.value = value);
+      }
+    } else if (type === "blur") numberInput.current.value = data;
+  };
+
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$9.wrapper
+  }, /*#__PURE__*/React__default["default"].createElement("input", {
+    onKeyDown: function onKeyDown(e) {
+      if (e.keyCode === 69) {
+        e.preventDefault();
+        return false;
+      }
+    },
+    onChange: parseNumber,
+    onBlur: parseNumber,
+    step: step || "1",
+    onDragStart: preventPropagation,
+    onMouseDown: preventPropagation,
+    type: "number",
+    placeholder: placeholder,
+    className: styles$9.input,
+    value: data || "",
+    ref: numberInput
+  }));
+};
+
+var css_248z$8 = ".Control_wrapper__VZIiC{padding:1px 2px 1px 1px;width:100%}";
+var styles$8 = {"wrapper":"Control_wrapper__VZIiC"};
+styleInject(css_248z$8);
+
+var css_248z$7 = ".Checkbox_wrapper__aSqyY{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__Qv5gn{display:none}.Checkbox_checkboxMark__3pZi7{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__3pZi7>*{display:none}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7>*{display:block}";
+var styles$7 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","checkboxMark":"Checkbox_checkboxMark__3pZi7"};
+styleInject(css_248z$7);
+
+var _path$1;
+
+function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+
+function SvgOkTick(props) {
+  return /*#__PURE__*/React__namespace.createElement("svg", _extends$1({
+    width: 6,
+    height: 5,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _path$1 || (_path$1 = /*#__PURE__*/React__namespace.createElement("path", {
+    d: "M.804 2.34l1.749 1.615L5.497.672",
+    stroke: "#fff",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  })));
+}
+
+var Checkbox = function Checkbox(_ref) {
+  var label = _ref.label,
+      data = _ref.data,
+      _onChange = _ref.onChange;
+  return /*#__PURE__*/React__default["default"].createElement("label", {
+    className: styles$7.wrapper,
+    title: label
+  }, /*#__PURE__*/React__default["default"].createElement("input", {
+    className: styles$7.checkbox,
+    type: "checkbox",
+    value: data,
+    checked: data,
+    onChange: function onChange(e) {
+      return _onChange(e.target.checked);
+    }
+  }), /*#__PURE__*/React__default["default"].createElement("span", {
+    className: styles$7.checkboxMark
+  }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
+};
+
+var TextInput = function TextInput(_ref) {
+  var placeholder = _ref.placeholder,
+      _onChange = _ref.onChange,
+      data = _ref.data,
+      nodeData = _ref.nodeData,
+      validate = _ref.validate;
+
+  var preventPropagation = function preventPropagation(e) {
+    return e.stopPropagation();
+  };
+
+  var _useContext = React.useContext(ControllerOptionsContext),
+      openEditor = _useContext.openEditor,
+      isRightBarOpened = _useContext.isRightBarOpened;
+
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$9.wrapper
+  }, /*#__PURE__*/React__default["default"].createElement("input", {
+    onChange: function onChange(_ref2) {
+      var target = _ref2.target;
+      if (validate(target.value)) _onChange(target.value);else target.value = data;
+    },
+    value: data,
+    onDragStart: preventPropagation,
+    onMouseDown: preventPropagation,
+    onClick: function onClick(e) {
+      e.stopPropagation();
+
+      if (isRightBarOpened()) {
+        openEditor(data, _onChange, nodeData);
+      }
+    },
+    type: "text",
+    placeholder: placeholder,
+    className: styles$9.input
+  }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
+    className: styles$9.expander,
+    onClick: function onClick() {
+      document.activeElement.blur();
+      openEditor(data, _onChange, nodeData);
+    }
+  }));
+};
+
+var css_248z$6 = ".Select_wrapper__eAPoQ{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u,.Select_wrapper__eAPoQ:active,.Select_wrapper__eAPoQ:focus,.Select_wrapper__eAPoQ:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__3hK2u{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u:nth-child(3n){margin-right:0}.Select_deleteButton__1FnLK{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__1FnLK:active,.Select_deleteButton__1FnLK:focus,.Select_deleteButton__1FnLK:hover{color:inherit}";
+var styles$6 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK"};
+styleInject(css_248z$6);
+
+function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$g(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+var MAX_LABEL_LENGTH = 50;
+
+var Select = function Select(_ref) {
+  var _ref$options = _ref.options,
+      options = _ref$options === void 0 ? [] : _ref$options,
+      _ref$placeholder = _ref.placeholder,
+      placeholder = _ref$placeholder === void 0 ? "[Select an option]" : _ref$placeholder,
+      onChange = _ref.onChange,
+      defaultValue = _ref.defaultValue,
+      data = _ref.data,
+      allowMultiple = _ref.allowMultiple;
+
+  var _React$useState = React__default["default"].useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      drawerOpen = _React$useState2[0],
+      setDrawerOpen = _React$useState2[1];
+
+  var _React$useState3 = React__default["default"].useState({
+    x: 0,
+    y: 0
+  }),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      drawerCoordinates = _React$useState4[0],
+      setDrawerCoordinates = _React$useState4[1];
+
+  var wrapper = React__default["default"].useRef();
+
+  var closeDrawer = function closeDrawer() {
+    setDrawerOpen(false);
+  };
+
+  var openDrawer = function openDrawer() {
+    if (!drawerOpen) {
+      var wrapperRect = wrapper.current.getBoundingClientRect();
+      setDrawerCoordinates({
+        x: wrapperRect.x,
+        y: wrapperRect.y + wrapperRect.height
+      });
+      setDrawerOpen(true);
+    }
+  };
+
+  var handleOptionSelected = function handleOptionSelected(option) {
+    if (allowMultiple) {
+      onChange([].concat(_toConsumableArray(data), [option.value]));
+    } else {
+      onChange(option.value);
+    }
+  };
+
+  React__default["default"].useEffect(function () {
+    if (!data) onChange(defaultValue);
+  }, [defaultValue]);
+
+  var handleOptionDeleted = function handleOptionDeleted(optionIndex) {
+    onChange([].concat(_toConsumableArray(data.slice(0, optionIndex)), _toConsumableArray(data.slice(optionIndex + 1))));
+  };
+
+  var getFilteredOptions = function getFilteredOptions() {
+    return allowMultiple ? options.filter(function (opt) {
+      return !data.includes(opt.value);
+    }) : options;
+  };
+
+  var selectedOption = React__default["default"].useMemo(function () {
+    var option = options.find(function (o) {
+      return o.value === data;
+    });
+
+    if (option) {
+      return _objectSpread$g(_objectSpread$g({}, option), {}, {
+        label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + "..." : option.label
+      });
+    }
+  }, [options, data]);
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, (allowMultiple || !selectedOption) && /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$6.wrapper,
+    ref: wrapper,
+    onClick: openDrawer,
+    title: placeholder
+  }, placeholder), allowMultiple ? !!data.length && data.map(function (val, i) {
+    var optLabel = (options.find(function (opt) {
+      return opt.value === val;
+    }) || {}).label || "";
+    return /*#__PURE__*/React__default["default"].createElement(OptionChip, {
+      onRequestDelete: function onRequestDelete() {
+        return handleOptionDeleted(i);
+      },
+      key: val
+    }, optLabel);
+  }) : selectedOption ? /*#__PURE__*/React__default["default"].createElement(SelectedOption, {
+    wrapperRef: wrapper,
+    option: selectedOption,
+    onClick: openDrawer
+  }) : null, drawerOpen && /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+    x: drawerCoordinates.x,
+    y: drawerCoordinates.y,
+    emptyText: "There are no options",
+    options: getFilteredOptions(),
+    onOptionSelected: handleOptionSelected,
+    onRequestClose: closeDrawer
+  })));
+};
+
+var SelectedOption = function SelectedOption(_ref2) {
+  var _ref2$option = _ref2.option;
+  _ref2$option = _ref2$option === void 0 ? {} : _ref2$option;
+  var label = _ref2$option.label;
+      _ref2$option.description;
+      var wrapperRef = _ref2.wrapperRef,
+      onClick = _ref2.onClick;
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$6.wrapper,
+    onClick: onClick,
+    ref: wrapperRef,
+    title: label
+  }, label);
+};
+
+var OptionChip = function OptionChip(_ref3) {
+  var children = _ref3.children,
+      onRequestDelete = _ref3.onRequestDelete;
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$6.chipWrapper,
+    title: children.toString()
+  }, children, /*#__PURE__*/React__default["default"].createElement("button", {
+    className: styles$6.deleteButton,
+    onMouseDown: function onMouseDown(e) {
+      e.stopPropagation();
+    },
+    onClick: onRequestDelete
+  }, "\u2715"));
+};
+
+function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$f(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+var Control = function Control(_ref) {
+  var type = _ref.type,
+      name = _ref.name,
+      nodeId = _ref.nodeId,
+      portName = _ref.portName,
+      label = _ref.label,
+      inputLabel = _ref.inputLabel,
+      data = _ref.data,
+      allData = _ref.allData,
+      render = _ref.render,
+      predicate = _ref.predicate,
+      step = _ref.step,
+      _ref$options = _ref.options,
+      options = _ref$options === void 0 ? [] : _ref$options,
+      placeholder = _ref.placeholder,
+      validate = _ref.validate,
+      inputData = _ref.inputData,
+      triggerRecalculation = _ref.triggerRecalculation,
+      updateNodeConnections = _ref.updateNodeConnections,
+      getOptions = _ref.getOptions,
+      setValue = _ref.setValue;
+      _ref.value;
+      var defaultValue = _ref.defaultValue,
+      isMonoControl = _ref.isMonoControl,
+      nodeData = _ref.nodeData,
+      _onPress = _ref.onPress;
+  var nodesDispatch = React.useContext(NodeDispatchContext);
+  var executionContext = React.useContext(ContextContext);
+  var calculatedLabel = isMonoControl ? inputLabel : label;
+
+  var onChange = function onChange(data) {
+    nodesDispatch({
+      type: "SET_PORT_DATA",
+      data: data,
+      nodeId: nodeId,
+      portName: portName,
+      controlName: name,
+      setValue: setValue
+    });
+    triggerRecalculation();
+  };
+
+  var onPressButton = function onPressButton(data, cName, pName, nId) {
+    nodesDispatch({
+      type: "SET_PORT_DATA",
+      data: data,
+      nodeId: nId || nodeId,
+      portName: pName || portName,
+      controlName: cName || name,
+      setValue: setValue
+    });
+    triggerRecalculation();
+  };
+
+  var getControlByType = function getControlByType(type) {
+    var commonProps = {
+      triggerRecalculation: triggerRecalculation,
+      updateNodeConnections: updateNodeConnections,
+      onChange: onChange,
+      data: data
+    };
+
+    switch (type) {
+      case "select":
+        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$2({}, commonProps, {
+          options: getOptions ? getOptions(inputData, executionContext) : options,
+          placeholder: placeholder,
+          defaultValue: defaultValue
+        }));
+
+      case "text":
+        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$2({}, commonProps, {
+          predicate: predicate,
+          placeholder: placeholder,
+          validate: validate,
+          nodeData: nodeData
+        }));
+
+      case "number":
+        return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$2({}, commonProps, {
+          step: step,
+          predicate: predicate,
+          validate: validate,
+          placeholder: placeholder
+        }));
+
+      case "checkbox":
+        return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$2({}, commonProps, {
+          label: calculatedLabel
+        }));
+
+      case "multiselect":
+        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$2({
+          allowMultiple: true
+        }, commonProps, {
+          options: getOptions ? getOptions(inputData, executionContext) : options,
+          placeholder: placeholder,
+          label: label
+        }));
+
+      case "button":
+        return /*#__PURE__*/React__default["default"].createElement(Button, _extends$2({}, commonProps, {
+          label: label,
+          onPress: function onPress() {
+            _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
+          }
+        }));
+
+      case "custom":
+        return render(data, onChange, executionContext, triggerRecalculation, {
+          label: label,
+          name: name,
+          portName: portName,
+          inputLabel: inputLabel,
+          defaultValue: defaultValue
+        }, allData);
+
+      default:
+        return /*#__PURE__*/React__default["default"].createElement("div", null, "Control");
+    }
+  };
+
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$8.wrapper,
+    style: _objectSpread$f({}, type.match(/^multiselect$/) && {
+      width: "auto"
+    })
+  }, getControlByType(type));
+};
+
+var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:rgba(0,0,0,.15);border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__1_a6J *{pointer-events:none}";
+var styles$5 = {"wrapper":"IoPorts_wrapper__3d2hh","outputs":"IoPorts_outputs__3JGh-","transput":"IoPorts_transput__1wbHA","inputs":"IoPorts_inputs__2etkb","inner":"IoPorts_inner__3UgDB","portLabel":"IoPorts_portLabel__qOE7y","controls":"IoPorts_controls__1dKFt","port":"IoPorts_port__1_a6J"};
+styleInject(css_248z$5);
+
+var Connection = function Connection(_ref) {
+  var from = _ref.from,
+      to = _ref.to,
+      id = _ref.id,
+      lineRef = _ref.lineRef,
+      outputNodeId = _ref.outputNodeId,
+      outputPortName = _ref.outputPortName,
+      inputNodeId = _ref.inputNodeId,
+      inputPortName = _ref.inputPortName;
+  var curve = calculateCurve(from, to);
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
+    className: styles$b.svg
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
+    "data-connection-id": id,
+    "data-output-node-id": outputNodeId,
+    "data-output-port-name": outputPortName,
+    "data-input-node-id": inputNodeId,
+    "data-input-port-name": inputPortName,
+    stroke: "white",
+    strokeOpacity: 0.3,
+    fill: "none",
+    strokeWidth: 1,
+    strokeLinecap: "round",
+    d: curve,
+    ref: lineRef
+  }));
+};
+
+var Port = function Port(_ref) {
+  var color = _ref.color,
+      _ref$name = _ref.name,
+      name = _ref$name === void 0 ? "" : _ref$name,
+      type = _ref.type,
+      isInput = _ref.isInput,
+      nodeId = _ref.nodeId,
+      triggerRecalculation = _ref.triggerRecalculation;
+  var nodesDispatch = React.useContext(NodeDispatchContext);
+  var stageState = React.useContext(StageContext);
+  var editorId = React.useContext(EditorIdContext);
+  var stageId = "".concat(STAGE_ID).concat(editorId);
+  var inputTypes = React.useContext(PortTypesContext);
+
+  var _useState = React.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      isDragging = _useState2[0],
+      setIsDragging = _useState2[1];
+
+  var _useState3 = React.useState({
+    x: 0,
+    y: 0
+  }),
+      _useState4 = _slicedToArray(_useState3, 2),
+      dragStartCoordinates = _useState4[0],
+      setDragStartCoordinates = _useState4[1];
+
+  var dragStartCoordinatesCache = React.useRef(dragStartCoordinates);
+  var port = React.useRef();
+  var line = React.useRef();
+  var lineInToPort = React.useRef();
+
+  var byScale = function byScale(value) {
+    return value / stageState.scale;
+  };
+
+  var handleDrag = function handleDrag(e) {
+    var stage = document.getElementById(stageId).getBoundingClientRect();
+
+    if (isInput) {
+      var to = {
+        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
+        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
+      };
+      if (lineInToPort.current) lineInToPort.current.setAttribute("d", calculateCurve(to, dragStartCoordinatesCache.current));else line.current.setAttribute("d", calculateCurve(dragStartCoordinatesCache.current, to));
+    } else {
+      var _to = {
+        x: byScale(e.clientX - stage.x - stage.width / 2) + stageState.translate.x,
+        y: byScale(e.clientY - stage.y - stage.height / 2) + stageState.translate.y
+      };
+      line.current.setAttribute("d", calculateCurve(_to, dragStartCoordinatesCache.current));
+    }
+  }; // TODO: Refactor onDragEnd method (input -> output part)
+
+
+  var handleDragEnd = function handleDragEnd(e) {
+    var droppedOnPort = !!e.target.dataset.portName;
+
+    if (isInput && lineInToPort.current) {
+      var _lineInToPort$current = lineInToPort.current.dataset,
+          inputNodeId = _lineInToPort$current.inputNodeId,
+          inputPortName = _lineInToPort$current.inputPortName,
+          outputNodeId = _lineInToPort$current.outputNodeId,
+          outputPortName = _lineInToPort$current.outputPortName;
+      nodesDispatch({
+        type: "REMOVE_CONNECTION",
+        input: {
+          nodeId: inputNodeId,
+          portName: inputPortName
+        },
+        output: {
+          nodeId: outputNodeId,
+          portName: outputPortName
+        }
+      });
+
+      if (droppedOnPort) {
+        var _e$target$dataset = e.target.dataset,
+            connectToPortName = _e$target$dataset.portName,
+            connectToNodeId = _e$target$dataset.nodeId,
+            connectToPortType = _e$target$dataset.portType,
+            connectToTransputType = _e$target$dataset.portTransputType;
+        var isNotSameNode = outputNodeId !== connectToNodeId;
+
+        if (isNotSameNode && connectToTransputType !== "output") {
+          var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
+
+          if (inputWillAcceptConnection) {
+            nodesDispatch({
+              type: "ADD_CONNECTION",
+              input: {
+                nodeId: connectToNodeId,
+                portName: connectToPortName
+              },
+              output: {
+                nodeId: outputNodeId,
+                portName: outputPortName
+              }
+            });
+          }
+        }
+      }
+    } else {
+      if (droppedOnPort) {
+        if (!isInput) {
+          var _e$target$dataset2 = e.target.dataset,
+              _inputPortName = _e$target$dataset2.portName,
+              _inputNodeId = _e$target$dataset2.nodeId,
+              inputNodeType = _e$target$dataset2.portType,
+              inputTransputType = _e$target$dataset2.portTransputType;
+
+          var _isNotSameNode = _inputNodeId !== nodeId;
+
+          if (_isNotSameNode && inputTransputType !== "output") {
+            var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
+
+            if (_inputWillAcceptConnection) {
+              nodesDispatch({
+                type: "ADD_CONNECTION",
+                output: {
+                  nodeId: nodeId,
+                  portName: name
+                },
+                input: {
+                  nodeId: _inputNodeId,
+                  portName: _inputPortName
+                }
+              });
+              triggerRecalculation();
+            }
+          }
+        } else {
+          var _e$target$dataset3 = e.target.dataset,
+              _inputPortName2 = _e$target$dataset3.portName,
+              _inputNodeId2 = _e$target$dataset3.nodeId,
+              _inputNodeType = _e$target$dataset3.portType,
+              _inputTransputType = _e$target$dataset3.portTransputType;
+
+          var _isNotSameNode2 = _inputNodeId2 !== nodeId;
+
+          if (_isNotSameNode2 && _inputTransputType === "output") {
+            var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
+
+            if (_inputWillAcceptConnection2) {
+              nodesDispatch({
+                type: "ADD_CONNECTION",
+                output: {
+                  nodeId: _inputNodeId2,
+                  portName: _inputPortName2
+                },
+                input: {
+                  nodeId: nodeId,
+                  portName: name
+                }
+              });
+              triggerRecalculation();
+            }
+          }
+        }
+      }
+    }
+
+    setIsDragging(false);
+    document.removeEventListener("mouseup", handleDragEnd);
+    document.removeEventListener("mousemove", handleDrag);
+  };
+
+  var handleDragStart = function handleDragStart(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var startPort = port.current.getBoundingClientRect();
+    var stage = document.getElementById(stageId).getBoundingClientRect();
+
+    if (isInput) {
+      lineInToPort.current = document.querySelector("[data-input-node-id=\"".concat(nodeId, "\"][data-input-port-name=\"").concat(name, "\"]"));
+      var portIsConnected = !!lineInToPort.current;
+
+      if (portIsConnected) {
+        lineInToPort.current.parentNode.style.zIndex = 9999;
+        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
+        var coordinates = {
+          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2) + stageState.translate.x,
+          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2) + stageState.translate.y
+        };
+        setDragStartCoordinates(coordinates);
+        dragStartCoordinatesCache.current = coordinates;
+        setIsDragging(true);
+        document.addEventListener("mouseup", handleDragEnd);
+        document.addEventListener("mousemove", handleDrag);
+      } else {
+        var _coordinates = {
+          x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
+          y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
+        };
+        setDragStartCoordinates(_coordinates);
+        dragStartCoordinatesCache.current = _coordinates;
+        setIsDragging(true);
+        document.addEventListener("mouseup", handleDragEnd);
+        document.addEventListener("mousemove", handleDrag);
+      }
+    } else {
+      var _coordinates2 = {
+        x: byScale(startPort.x - stage.x + startPort.width / 2 - stage.width / 2) + stageState.translate.x,
+        y: byScale(startPort.y - stage.y + startPort.width / 2 - stage.height / 2) + stageState.translate.y
+      };
+      setDragStartCoordinates(_coordinates2);
+      dragStartCoordinatesCache.current = _coordinates2;
+      setIsDragging(true);
+      document.addEventListener("mouseup", handleDragEnd);
+      document.addEventListener("mousemove", handleDrag);
+    }
+  };
+
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
+    onMouseDown: handleDragStart,
+    className: styles$5.port,
+    style: {
+      marginLeft: isInput ? 1 : -9,
+      backgroundColor: "white"
+    },
+    "data-port-name": name,
+    "data-port-type": type,
+    "data-port-transput-type": isInput ? "input" : "output",
+    "data-node-id": nodeId,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    ref: port
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
+    style: {
+      padding: 0,
+      margin: 0,
+      width: 7,
+      height: 7,
+      backgroundColor: color,
+      borderRadius: "100%"
+    }
+  })), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
+    node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
+  }, /*#__PURE__*/React__default["default"].createElement(Connection, {
+    from: dragStartCoordinates,
+    to: dragStartCoordinates,
+    lineRef: line
+  })) : null);
+};
+
+var Inner = function Inner(_ref) {
+  var type = _ref.type,
+      label = _ref.label,
+      name = _ref.name,
+      nodeId = _ref.nodeId,
+      data = _ref.data,
+      localControls = _ref.controls,
+      inputTypes = _ref.inputTypes,
+      noControls = _ref.noControls,
+      triggerRecalculation = _ref.triggerRecalculation,
+      updateNodeConnections = _ref.updateNodeConnections,
+      inputData = _ref.inputData,
+      nodeData = _ref.nodeData;
+
+  var _ref2 = inputTypes[type] || {},
+      defaultLabel = _ref2.label,
+      _ref2$controls = _ref2.controls,
+      defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
+
+  var controls = localControls || defaultControls;
+  return /*#__PURE__*/React__default["default"].createElement("tr", {
+    "data-controlless": noControls || !controls.length,
+    "data-is-inner": true,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, /*#__PURE__*/React__default["default"].createElement("td", {
+    className: styles$5.portLabel,
+    title: label || defaultLabel
+  }, label || defaultLabel), /*#__PURE__*/React__default["default"].createElement("td", {
+    className: styles$5.controls
+  }, controls.map(function (control) {
+    return /*#__PURE__*/React__default["default"].createElement(Control, _extends$2({}, control, {
+      nodeId: nodeId,
+      portName: name,
+      triggerRecalculation: triggerRecalculation,
+      updateNodeConnections: updateNodeConnections,
+      inputLabel: label,
+      data: data[control.name],
+      allData: data,
+      key: control.name,
+      inputData: inputData,
+      nodeData: nodeData,
+      isMonoControl: controls.length === 1
+    }));
+  })));
+};
+
+var Input = function Input(_ref) {
+  var _ref2;
+
+  var type = _ref.type,
+      name = _ref.name,
+      nodeId = _ref.nodeId,
+      localControls = _ref.controls,
+      inputTypes = _ref.inputTypes,
+      noControls = _ref.noControls,
+      triggerRecalculation = _ref.triggerRecalculation,
+      optColor = _ref.optColor,
+      isConnected = _ref.isConnected,
+      c = _ref.color;
+  var _inputTypes$type = inputTypes[type];
+      _inputTypes$type.label;
+      var color = _inputTypes$type.color,
+      _inputTypes$type$cont = _inputTypes$type.controls,
+      defaultControls = _inputTypes$type$cont === void 0 ? [] : _inputTypes$type$cont;
+  var prevConnected = usePrevious(isConnected);
+  var controls = localControls || defaultControls;
+  React.useEffect(function () {
+    if (isConnected !== prevConnected) {
+      triggerRecalculation();
+    }
+  }, [isConnected, prevConnected, triggerRecalculation]);
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$5.transput,
+    "data-controlless": isConnected || noControls || !controls.length,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, /*#__PURE__*/React__default["default"].createElement(Port, {
+    type: type,
+    color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
+    name: name,
+    nodeId: nodeId,
+    isInput: true,
+    triggerRecalculation: triggerRecalculation
+  }));
+};
+
+var Output = function Output(_ref) {
+  var _ref2;
+
+  var name = _ref.name,
+      nodeId = _ref.nodeId,
+      type = _ref.type,
+      inputTypes = _ref.inputTypes,
+      triggerRecalculation = _ref.triggerRecalculation,
+      optColor = _ref.optColor,
+      c = _ref.color;
+  var color = inputTypes[type].color;
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$5.transput,
+    "data-controlless": true,
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, /*#__PURE__*/React__default["default"].createElement(Port, {
+    type: type,
+    name: name,
+    color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
+    nodeId: nodeId,
+    triggerRecalculation: triggerRecalculation
+  }));
+};
+
+var IoPorts = function IoPorts(_ref) {
+  var nodeId = _ref.nodeId,
+      _ref$show = _ref.show,
+      show = _ref$show === void 0 ? "innerOnly" : _ref$show,
+      _ref$resolvedInputs = _ref.resolvedInputs,
+      resolvedInputs = _ref$resolvedInputs === void 0 ? [] : _ref$resolvedInputs,
+      _ref$resolvedOutputs = _ref.resolvedOutputs,
+      resolvedOutputs = _ref$resolvedOutputs === void 0 ? [] : _ref$resolvedOutputs,
+      connections = _ref.connections,
+      color = _ref.color,
+      inputData = _ref.inputData,
+      updateNodeConnections = _ref.updateNodeConnections,
+      nodeData = _ref.nodeData;
+  var inputTypes = React.useContext(PortTypesContext);
+  var triggerRecalculation = React.useContext(ConnectionRecalculateContext);
+
+  switch (show) {
+    case "outputsOnly":
+      return (resolvedOutputs.length || null) && /*#__PURE__*/React__default["default"].createElement("div", {
+        className: styles$5.outputs,
+        style: {
+          backgroundColor: color
+        },
+        "data-show": show
+      }, resolvedOutputs.map(function (output) {
+        return /*#__PURE__*/React__default["default"].createElement(Output, _extends$2({}, output, {
+          optColor: color,
+          triggerRecalculation: triggerRecalculation,
+          inputTypes: inputTypes,
+          nodeId: nodeId,
+          inputData: inputData,
+          key: output.name
+        }));
+      }));
+
+    case "inputsOnly":
+      return resolvedInputs.some(function (_ref2) {
+        var hidePort = _ref2.hidePort;
+        return !hidePort;
+      }) && /*#__PURE__*/React__default["default"].createElement("div", {
+        className: styles$5.inputs,
+        "data-show": show
+      }, resolvedInputs.filter(function (_ref3) {
+        var hidePort = _ref3.hidePort;
+        return !hidePort;
+      }).map(function (input) {
+        return /*#__PURE__*/React__default["default"].createElement(Input, _extends$2({
+          optColor: color
+        }, input, {
+          data: inputData[input.name] || {},
+          isConnected: !!connections.inputs[input.name],
+          triggerRecalculation: triggerRecalculation,
+          updateNodeConnections: updateNodeConnections,
+          inputTypes: inputTypes,
+          nodeId: nodeId,
+          inputData: inputData,
+          key: input.name
+        }));
+      }));
+
+    default:
+      return resolvedInputs.some(function (_ref4) {
+        var hidePort = _ref4.hidePort;
+        return hidePort;
+      }) && /*#__PURE__*/React__default["default"].createElement("table", {
+        className: styles$5.inner
+      }, /*#__PURE__*/React__default["default"].createElement("tbody", null, resolvedInputs.filter(function (_ref5) {
+        var hidePort = _ref5.hidePort;
+        return hidePort;
+      }).map(function (input) {
+        return /*#__PURE__*/React__default["default"].createElement(Inner, _extends$2({}, input, {
+          data: inputData[input.name] || {},
+          isConnected: !!connections.inputs[input.name],
+          triggerRecalculation: triggerRecalculation,
+          updateNodeConnections: updateNodeConnections,
+          inputTypes: inputTypes,
+          nodeId: nodeId,
+          inputData: inputData,
+          nodeData: nodeData,
+          key: input.name
+        }));
+      })));
+  }
+};
+
+var _path;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function SvgTicker(props) {
+  return /*#__PURE__*/React__namespace.createElement("svg", _extends({
+    width: 8,
+    height: 6,
+    fill: "none",
+    stroke: "#B3B3B3"
+  }, props), _path || (_path = /*#__PURE__*/React__namespace.createElement("path", {
+    d: "M1 1.505l2.683 2.993m0 0v-.001m0 .001L6.68 1.502",
+    strokeWidth: 1.5,
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  })));
+}
+
+var Node = /*#__PURE__*/React.forwardRef(function (_ref, nodeWrapper) {
+  var id = _ref.id;
+      _ref.width;
+      _ref.height;
+      var x = _ref.x,
+      isSelected = _ref.isSelected;
+      _ref.comment;
+      var y = _ref.y,
+      expanded = _ref.expanded;
+      _ref.delay;
+      var stageRect = _ref.stageRect,
+      connections = _ref.connections,
+      type = _ref.type,
+      inputData = _ref.inputData,
+      onDragStart = _ref.onDragStart,
+      _onDragEnd = _ref.onDragEnd,
+      onDragHandle = _ref.onDragHandle;
+      _ref.onDrag;
+      var _ref$actions = _ref.actions;
+  _ref$actions = _ref$actions === void 0 ? {} : _ref$actions;
+  var actionsData = _ref$actions.data;
+  // const cache = useContext(CacheContext);
+  var nodeTypes = React.useContext(NodeTypesContext);
+  var nodesDispatch = React.useContext(NodeDispatchContext);
+  var stageState = React.useContext(StageContext);
+  var recalculateConnections = React.useContext(ConnectionRecalculateContext);
+  var _nodeTypes$type = nodeTypes[type],
+      label = _nodeTypes$type.label,
+      deletable = _nodeTypes$type.deletable,
+      _nodeTypes$type$input = _nodeTypes$type.inputs,
+      inputs = _nodeTypes$type$input === void 0 ? [] : _nodeTypes$type$input,
+      _nodeTypes$type$outpu = _nodeTypes$type.outputs,
+      outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
+      icon = _nodeTypes$type.icon,
+      description = _nodeTypes$type.description,
+      buttons = _nodeTypes$type.actions.buttons,
+      _nodeTypes$type$categ = _nodeTypes$type.category,
+      _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
+      tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
+      _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
+      tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
+
+  var _useState = React.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      menuOpen = _useState2[0],
+      setMenuOpen = _useState2[1];
+
+  var _useState3 = React.useState({
+    x: 0,
+    y: 0
+  }),
+      _useState4 = _slicedToArray(_useState3, 2),
+      menuCoordinates = _useState4[0],
+      setMenuCoordinates = _useState4[1];
+
+  var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
+  var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
+  var nodeData = {
+    label: label,
+    id: id,
+    icon: icon,
+    description: description,
+    tileFontColor: tileFontColor,
+    tileBackground: tileBackground
+  };
+
+  var byScale = function byScale(value) {
+    return value / stageState.scale;
+  };
+
+  var updateConnectionsByTransput = function updateConnectionsByTransput() {
+    var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var isOutput = arguments.length > 1 ? arguments[1] : undefined;
+    Object.entries(transput).forEach(function (_ref2) {
+      var _ref3 = _slicedToArray(_ref2, 2),
+          portName = _ref3[0],
+          outputs = _ref3[1];
+
+      outputs.forEach(function (output) {
+        var toRect = getPortRect(id, portName, isOutput ? "output" : "input" // cache
+        );
+        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
+        );
+        var portHalf = fromRect.width / 2;
+        var combined;
+
+        if (isOutput) {
+          combined = id + portName + output.nodeId + output.portName;
+        } else {
+          combined = output.nodeId + output.portName + id + portName;
+        } // const cachedConnection = null; /* cache.current.connections[combined] */
+
+
+        var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
+        var from = {
+          x: byScale(toRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
+          y: byScale(toRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
+        };
+        var to = {
+          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageRect.current.width / 2) + stageState.translate.x,
+          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageRect.current.height / 2) + stageState.translate.y
+        };
+        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
+      });
+    });
+  };
+
+  var updateNodeConnections = function updateNodeConnections() {
+    if (connections) {
+      updateConnectionsByTransput(connections.inputs);
+      updateConnectionsByTransput(connections.outputs, true);
+    }
+  };
+
+  var handleDrag = function handleDrag(_ref4) {
+    var x = _ref4.x,
+        y = _ref4.y;
+    var oldPositions = nodeWrapper.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+
+    if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
+      onDragHandle(nodeWrapper.current.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+    }
+
+    nodeWrapper.current.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
+    updateNodeConnections();
+  };
+
+  var handleContextMenu = function handleContextMenu(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setMenuCoordinates({
+      x: e.clientX,
+      y: e.clientY
+    });
+    setMenuOpen(true);
+    return false;
+  };
+
+  var closeContextMenu = function closeContextMenu() {
+    setMenuOpen(false);
+  };
+
+  var handleMenuOption = function handleMenuOption(_ref5) {
+    var value = _ref5.value;
+
+    switch (value) {
+      case "deleteNode":
+        nodesDispatch({
+          type: "REMOVE_NODE",
+          nodeId: id
+        });
+        break;
+
+      default:
+        return;
+    }
+  };
+
+  var hasInner = React.useMemo(function () {
+    var _resolvedInputs$some;
+
+    return !!(resolvedInputs !== null && resolvedInputs !== void 0 && (_resolvedInputs$some = resolvedInputs.some) !== null && _resolvedInputs$some !== void 0 && _resolvedInputs$some.call(resolvedInputs, function (_ref6) {
+      var hidePort = _ref6.hidePort;
+      return hidePort;
+    }));
+  }, [resolvedInputs]);
+  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.wrapper,
+    style: {
+      background: "rgba(46, 58, 89, 0.8)",
+      color: tileFontColor,
+      zIndex: isSelected && 1000,
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
+      transform: "translate(".concat(x, "px, ").concat(y, "px)")
+    },
+    onDragStart: onDragStart,
+    onDrag: handleDrag,
+    onDragEnd: function onDragEnd(e, coords) {
+      return _onDragEnd(e, id, coords);
+    },
+    innerRef: nodeWrapper,
+    "data-node-id": id,
+    onContextMenu: handleContextMenu,
+    stageState: stageState,
+    stageRect: stageRect,
+    id: id
+  }, /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+    nodeId: id,
+    resolvedOutputs: resolvedOutputs,
+    show: "outputsOnly",
+    color: tileBackground,
+    connections: connections,
+    updateNodeConnections: updateNodeConnections,
+    inputData: inputData
+  }), /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.body
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.header
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerMeta
+  }, hasInner && /*#__PURE__*/React__default["default"].createElement(SvgTicker, {
+    onClick: function onClick() {
+      nodesDispatch({
+        type: "TOGGLE_NODE_VIEW",
+        id: id
+      });
+      recalculateConnections();
+    },
+    style: {
+      transform: expanded ? "none" : "rotate(-90deg)",
+      cursor: "pointer",
+      stroke: "#C5CEE0"
+    }
+  }), /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.title
+  }, icon && /*#__PURE__*/React__default["default"].createElement("img", {
+    src: icon
+  }), /*#__PURE__*/React__default["default"].createElement("span", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.label,
+    style: {
+      color: "#fff"
+    }
+  }, label)), /*#__PURE__*/React__default["default"].createElement("span", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.id,
+    onClick: function onClick() {
+      return navigator.clipboard.writeText(id);
+    }
+  }, "ID: ", id)), /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.headerActions
+  }, buttons.map(function (action) {
+    return action(actionsData, function (getState) {
+      return nodesDispatch({
+        type: "UPDATE_NODE_ACTION_DATA",
+        data: getState(actionsData),
+        nodeId: id
+      });
+    }, inputData, connections, nodeData, nodesDispatch);
+  }))), expanded && hasInner ? /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+    nodeId: id,
+    resolvedInputs: resolvedInputs,
+    show: "innerOnly",
+    connections: connections,
+    nodeData: nodeData,
+    updateNodeConnections: updateNodeConnections,
+    inputData: inputData
+  }) : description && /*#__PURE__*/React__default["default"].createElement("div", {
+    className: styles$c === null || styles$c === void 0 ? void 0 : styles$c.description
+  }, description)), /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+    nodeId: id,
+    resolvedInputs: resolvedInputs,
+    show: "inputsOnly",
+    color: tileBackground,
+    connections: connections,
+    updateNodeConnections: updateNodeConnections,
+    inputData: inputData
+  }), menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+    x: menuCoordinates.x,
+    y: menuCoordinates.y,
+    options: _toConsumableArray(deletable !== false ? [{
+      label: "Delete Node",
+      value: "deleteNode",
+      description: "Deletes a node and all of its connections."
+    }] : []),
+    onRequestClose: closeContextMenu,
+    onOptionSelected: handleMenuOption,
+    hideFilter: true,
+    label: "Node Options",
+    emptyText: "This node has no options."
+  })) : null);
+});
+Node.displayName = "Node";
+
+var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
+var styles$4 = {"wrapper":"Comment_wrapper__1Pnbd","text":"Comment_text__Ie2nX","resizeThumb":"Comment_resizeThumb__20KWn","textarea":"Comment_textarea__2Rze3"};
+styleInject(css_248z$4);
+
+var css_248z$3 = ".ColorPicker_wrapper__1M1j2{background:rgba(29,32,34,.95);border:1px solid rgba(0,0,0,.4);border-radius:5px;box-shadow:0 6px 7px rgba(0,0,0,.3);color:#fff;display:flex;flex-wrap:wrap;padding:2px;position:fixed;width:102px;z-index:9999}@supports (backdrop-filter:blur(6px)){.ColorPicker_wrapper__1M1j2{backdrop-filter:blur(6px);background:rgba(29,32,34,.8)}}.ColorPicker_colorButtonWrapper__1ijdj{align-items:center;display:flex;justify-content:center;padding:2px}.ColorPicker_colorButton__1Qcuq{background:#ccc;border:none;border-radius:3px;height:20px;width:20px}.ColorPicker_colorButton__1Qcuq[data-color=red]{background:#d2656f}.ColorPicker_colorButton__1Qcuq[data-color=purple]{background:#9f65d2}.ColorPicker_colorButton__1Qcuq[data-color=blue]{background:#6597d2}.ColorPicker_colorButton__1Qcuq[data-color=green]{background:#65d2a8}.ColorPicker_colorButton__1Qcuq[data-color=orange]{background:#d28965}.ColorPicker_colorButton__1Qcuq[data-color=yellow]{background:#d2c465}.ColorPicker_colorButton__1Qcuq[data-color=pink]{background:#f17ce2}.ColorPicker_colorButton__1Qcuq:hover{opacity:.8}";
+var styles$3 = {"wrapper":"ColorPicker_wrapper__1M1j2","colorButtonWrapper":"ColorPicker_colorButtonWrapper__1ijdj","colorButton":"ColorPicker_colorButton__1Qcuq"};
+styleInject(css_248z$3);
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -32952,14 +32996,13 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     _defineProperty$1(_assertThisInitialized(_this), "highlightedChildren", void 0);
 
     _defineProperty$1(_assertThisInitialized(_this), "bind", function () {
-      _this.props.target.addEventListener("mousedown", _this.onMouseDown);
-
-      _this.props.target.addEventListener("touchstart", _this.onTouchStart);
+      document.addEventListener("mousedown", _this.onMouseDown);
+      document.addEventListener("touchstart", _this.onTouchStart);
     });
 
     _defineProperty$1(_assertThisInitialized(_this), "reset", function () {
       if (_this.props.target) {
-        _this.props.target.removeEventListener("mousedown", _this.onMouseDown);
+        document.removeEventListener("mousedown", _this.onMouseDown);
       }
     });
 
@@ -33003,8 +33046,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       }
 
       if (_this.init(e, e.pageX, e.pageY)) {
-        window.document.addEventListener("mousemove", _this.onMouseMove);
-        window.document.addEventListener("mouseup", _this.onMouseUp);
+        document.addEventListener("mousemove", _this.onMouseMove);
+        document.addEventListener("mouseup", _this.onMouseUp);
 
         _this.onMouseMove(e);
       }
@@ -33016,16 +33059,16 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       }
 
       if (_this.init(e, e.touches[0].pageX, e.touches[0].pageY)) {
-        window.document.addEventListener("touchmove", _this.onTouchMove);
-        window.document.addEventListener("touchend", _this.onMouseUp);
+        document.addEventListener("touchmove", _this.onTouchMove);
+        document.addEventListener("touchend", _this.onMouseUp);
       }
     });
 
     _defineProperty$1(_assertThisInitialized(_this), "onMouseUp", function () {
-      window.document.removeEventListener("touchmove", _this.onTouchMove);
-      window.document.removeEventListener("mousemove", _this.onMouseMove);
-      window.document.removeEventListener("mouseup", _this.onMouseUp);
-      window.document.removeEventListener("touchend", _this.onMouseUp);
+      document.removeEventListener("touchmove", _this.onTouchMove);
+      document.removeEventListener("mousemove", _this.onMouseMove);
+      document.removeEventListener("mouseup", _this.onMouseUp);
+      document.removeEventListener("touchend", _this.onMouseUp);
 
       _this.setState({
         mouseDown: false,
@@ -33197,8 +33240,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.reset();
-      window.document.removeEventListener("mousemove", this.onMouseMove);
-      window.document.removeEventListener("mouseup", this.onMouseUp);
+      document.removeEventListener("mousemove", this.onMouseMove);
+      document.removeEventListener("mouseup", this.onMouseUp);
     }
   }, {
     key: "render",
@@ -34130,7 +34173,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
               type: "SET_TRANSLATE",
               translate: {
                 x: nodes[node].x,
-                y: nodes[node].y + 100
+                y: nodes[node].y
               }
             };
           });
@@ -34159,7 +34202,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     value: connector.options || {}
   }, /*#__PURE__*/React__default["default"].createElement(RecalculateStageRectContext.Provider, {
     value: recalculateStageRect
-  }, editorRef.current && !spaceIsPressed && /*#__PURE__*/React__default["default"].createElement(Selection, {
+  }, !spaceIsPressed && /*#__PURE__*/React__default["default"].createElement(Selection, {
     target: editorRef.current,
     elements: nodeRefs.map(function (n) {
       return n[1].current;

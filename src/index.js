@@ -288,7 +288,7 @@ export const NodeEditor = forwardRef(
               type: "SET_TRANSLATE",
               translate: {
                 x: nodes[node].x,
-                y: nodes[node].y + 100,
+                y: nodes[node].y,
               },
             }));
           }
@@ -312,7 +312,7 @@ export const NodeEditor = forwardRef(
                         <RecalculateStageRectContext.Provider
                           value={recalculateStageRect}
                         >
-                          {editorRef.current && !spaceIsPressed && (
+                          {!spaceIsPressed && (
                             <Selection
                               target={editorRef.current}
                               elements={nodeRefs.map((n) => n[1].current)}

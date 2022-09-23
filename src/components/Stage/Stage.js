@@ -15,7 +15,22 @@ import Draggable from "../Draggable/Draggable";
 import orderBy from "lodash/orderBy";
 import clamp from "lodash/clamp";
 import { STAGE_ID } from "../../constants";
+import { debounce } from "lodash";
+import nodeStyles from "../Node/Node.css";
 
+const checkIntersection = (boxA, boxB) => {
+  if (
+    boxA.bottom > boxB.top &&
+    boxA.right > boxB.left &&
+    boxA.top < boxB.bottom &&
+    boxA.left < boxB.right
+  ) {
+    return true;
+  }
+  return false;
+};
+
+let timeout = null;
 const Stage = forwardRef(
   (
     {
@@ -74,10 +89,21 @@ const Stage = forwardRef(
 
     const handleWheel = useCallback(
       (e) => {
-        translateWrapper.current.style.transition = "0.1s";
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        const delta = e.deltaY;
 
-        wrapper.current.style.transition = "0.1s";
-        scaleWrapper.current.style.transition = "0.1s";
+        scaleWrapper.current.style.transition = "0.0s";
+        scaleWrapper.current.style.scale = clamp(
+          scale - clamp(delta, -10, 10) * 0.005,
+          0.1,
+          2
+        );
+        timeout = setTimeout(() => {
+          scaleWrapper.current.style.transition = "1s";
+        }, 300);
+
         if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
           if (e.target.clientHeight < e.target.scrollHeight) return;
         }
@@ -105,13 +131,26 @@ const Stage = forwardRef(
       };
     };
 
+    const toggleVisibility = () => {
+      const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
+      for (const node of nodes) {
+        if (
+          !checkIntersection(
+            node.getBoundingClientRect(),
+            wrapper.current.getBoundingClientRect()
+          )
+        ) {
+          node.style.opacity = "0";
+        } else {
+          node.style.opacity = "1";
+        }
+      }
+    };
+
     const handleMouseDrag = (coords, e) => {
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
       translateWrapper.current.style.transition = "0s";
-
-      wrapper.current.style.transition = "0s";
-      scaleWrapper.current.style.transition = "0s";
 
       wrapper.current.style.backgroundPosition = `calc(50% + ${
         (-(translate.x + xDistance) * scale) % (10 * scale)
@@ -122,15 +161,16 @@ const Stage = forwardRef(
       translateWrapper.current.style.transform = `translate(${-(
         translate.x + xDistance
       )}px, ${-(translate.y + yDistance)}px)`;
+
+      debounce(toggleVisibility, 1000)();
     };
 
     const handleDragEnd = (e) => {
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
-      translateWrapper.current.style.transition = "0.2s";
 
-      wrapper.current.style.transition = "0.2s";
-      scaleWrapper.current.style.transition = "0.2s";
+      translateWrapper.current.style.transition = "1s";
+
       dragData.current.x = e.clientX;
       dragData.current.y = e.clientY;
       dispatchStageState(({ translate: tran }) => ({
@@ -140,6 +180,8 @@ const Stage = forwardRef(
           y: tran.y + yDistance,
         },
       }));
+
+      toggleVisibility();
     };
 
     const handleContextMenu = (e) => {
@@ -288,7 +330,7 @@ const Stage = forwardRef(
           ref={scaleWrapper}
           className={styles.scaleWrapper}
           style={{
-            transition: "0.2s",
+            transition: "1s",
             transformOrigin: "center",
             transform: `scale(${scale})`,
           }}
@@ -297,7 +339,7 @@ const Stage = forwardRef(
             ref={translateWrapper}
             className={styles.transformWrapper}
             style={{
-              transition: "0.2s",
+              transition: "1s",
               transform: `translate(${-translate.x}px, ${-translate.y}px)`,
             }}
           >

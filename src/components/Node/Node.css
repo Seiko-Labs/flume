@@ -10,6 +10,7 @@
   z-index: 1;
   cursor: default;
   box-sizing: border-box;
+  transition: opacity 0.2s;
 }
 
 .body {
