@@ -34133,6 +34133,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   useEffect(function () {
     if (focusNode) {
       var nodes = nodesState[currentStateIndex].state;
+      setSelectedNodes([focusNode]);
       Object.keys(nodes).map(function (node) {
         if (node === focusNode) {
           dispatchStageState(function () {
@@ -34152,10 +34153,10 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
           });
         }
       });
-      setSelectedNodes(focusNode);
       onFocusChange && onFocusChange(focusNode);
     }
   }, [focusNode]);
+  console.log(selectedNodes);
   return /*#__PURE__*/React__default.createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default.createElement(NodeTypesContext.Provider, {

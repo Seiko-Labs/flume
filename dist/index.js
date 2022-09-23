@@ -34160,6 +34160,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   React.useEffect(function () {
     if (focusNode) {
       var nodes = nodesState[currentStateIndex].state;
+      setSelectedNodes([focusNode]);
       Object.keys(nodes).map(function (node) {
         if (node === focusNode) {
           dispatchStageState(function () {
@@ -34179,10 +34180,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
           });
         }
       });
-      setSelectedNodes(focusNode);
       onFocusChange && onFocusChange(focusNode);
     }
   }, [focusNode]);
+  console.log(selectedNodes);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {

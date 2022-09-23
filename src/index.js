@@ -278,6 +278,7 @@ export const NodeEditor = forwardRef(
     useEffect(() => {
       if (focusNode) {
         const nodes = nodesState[currentStateIndex].state;
+        setSelectedNodes([focusNode]);
         Object.keys(nodes).map((node) => {
           if (node === focusNode) {
             dispatchStageState(() => ({
@@ -293,7 +294,6 @@ export const NodeEditor = forwardRef(
             }));
           }
         });
-        setSelectedNodes(focusNode);
         onFocusChange && onFocusChange(focusNode);
       }
     }, [focusNode]);
