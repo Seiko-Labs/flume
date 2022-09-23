@@ -34164,21 +34164,22 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         if (node === focusNode) {
           dispatchStageState(function () {
             return {
-              type: "SET_SCALE",
-              scale: 1
+              type: "SET_TRANSLATE",
+              translate: {
+                x: nodes[node].x + 60,
+                y: nodes[node].y + 60
+              }
             };
           });
           dispatchStageState(function () {
             return {
-              type: "SET_TRANSLATE",
-              translate: {
-                x: nodes[node].x,
-                y: nodes[node].y
-              }
+              type: "SET_SCALE",
+              scale: 1
             };
           });
         }
       });
+      setSelectedNodes(focusNode);
       onFocusChange && onFocusChange(focusNode);
     }
   }, [focusNode]);

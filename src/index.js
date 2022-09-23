@@ -281,18 +281,19 @@ export const NodeEditor = forwardRef(
         Object.keys(nodes).map((node) => {
           if (node === focusNode) {
             dispatchStageState(() => ({
+              type: "SET_TRANSLATE",
+              translate: {
+                x: nodes[node].x + 60,
+                y: nodes[node].y + 60,
+              },
+            }));
+            dispatchStageState(() => ({
               type: "SET_SCALE",
               scale: 1,
             }));
-            dispatchStageState(() => ({
-              type: "SET_TRANSLATE",
-              translate: {
-                x: nodes[node].x,
-                y: nodes[node].y,
-              },
-            }));
           }
         });
+        setSelectedNodes(focusNode);
         onFocusChange && onFocusChange(focusNode);
       }
     }, [focusNode]);
