@@ -8,6 +8,8 @@
   color: #000;
   position: relative;
   overflow: hidden;
+  transform-origin: 0 0;
+
   -webkit-overflow-scrolling: touch;
   font-family: "Segoe UI", Helvetica, sans-serif;
   text-align: left;
@@ -23,12 +25,12 @@ select {
   font-family: "Segoe UI", Helvetica, sans-serif;
 }
 .transformWrapper {
-  transform-origin: center center;
+  transform-origin: 0 0;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0px;
-  height: 0px;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
 }
 .scaleWrapper {
   position: absolute;

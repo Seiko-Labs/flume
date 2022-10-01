@@ -18,18 +18,6 @@ import { STAGE_ID } from "../../constants";
 import { debounce } from "lodash";
 import nodeStyles from "../Node/Node.css";
 
-const checkIntersection = (boxA, boxB) => {
-  if (
-    boxA.bottom > boxB.top &&
-    boxA.right > boxB.left &&
-    boxA.top < boxB.bottom &&
-    boxA.left < boxB.right
-  ) {
-    return true;
-  }
-  return false;
-};
-
 let timeout = null;
 const Stage = forwardRef(
   (
@@ -50,6 +38,7 @@ const Stage = forwardRef(
       disableZoom,
       DRAGGABLE_CANVAS,
       draggableCanvasSet,
+      toggleVisibility,
     },
     wrapper
   ) => {
@@ -87,23 +76,21 @@ const Stage = forwardRef(
       }
     }, [DRAGGABLE_CANVAS]);
 
+    const handleDelay = (nextScale) => {
+      toggleVisibility();
+      dispatchStageState(({ scale }) => ({
+        type: "SET_SCALE",
+        scale: nextScale,
+      }));
+    };
+
     const handleWheel = useCallback(
       (e) => {
         if (timeout) {
           clearTimeout(timeout);
         }
-        const delta = e.deltaY;
 
-        scaleWrapper.current.style.transition = "0.0s";
-        scaleWrapper.current.style.scale = clamp(
-          scale - clamp(delta, -10, 10) * 0.005,
-          0.1,
-          2
-        );
-        timeout = setTimeout(() => {
-          scaleWrapper.current.style.transition = "1s";
-          toggleVisibility();
-        }, 300);
+        scaleWrapper.current.style.transition = "0.2s";
 
         if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
           if (e.target.clientHeight < e.target.scrollHeight) return;
@@ -111,10 +98,17 @@ const Stage = forwardRef(
         e.preventDefault();
         if (numNodes > 0) {
           const delta = e.deltaY;
-          dispatchStageState(({ scale }) => ({
-            type: "SET_SCALE",
-            scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 2),
-          }));
+          const prevScale =
+            +scaleWrapper.current.style.transform.match(/[+-]?\d+(\.\d+)?/g)[0];
+          const nextScale = clamp(
+            prevScale - clamp(delta, -10, 10) * 0.005,
+            0.1,
+            2
+          );
+
+          scaleWrapper.current.style.transform = `scale(${nextScale})`;
+
+          timeout = setTimeout(handleDelay, 399, nextScale);
         }
       },
       [dispatchStageState, numNodes]
@@ -132,38 +126,20 @@ const Stage = forwardRef(
       };
     };
 
-    const toggleVisibility = () => {
-      const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
-      for (const node of nodes) {
-        if (
-          !checkIntersection(
-            node.getBoundingClientRect(),
-            wrapper.current.getBoundingClientRect()
-          )
-        ) {
-          node.style.opacity = "0";
-        } else {
-          node.style.opacity = "1";
-        }
-      }
-    };
-
     const handleMouseDrag = (coords, e) => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
       const xDistance = dragData.current.x - e.clientX / scale;
       const yDistance = dragData.current.y - e.clientY / scale;
       translateWrapper.current.style.transition = "0s";
-
-      wrapper.current.style.backgroundPosition = `calc(50% + ${
-        (-(translate.x + xDistance) * scale) % (10 * scale)
-      }px) calc(50% + ${
-        (-(translate.y + yDistance) * scale) % (10 * scale)
-      }px) `;
 
       translateWrapper.current.style.transform = `translate(${-(
         translate.x + xDistance
       )}px, ${-(translate.y + yDistance)}px)`;
 
-      debounce(toggleVisibility, 1000)();
+      timeout = setTimeout(toggleVisibility, 399);
     };
 
     const handleDragEnd = (e) => {
@@ -314,7 +290,6 @@ const Stage = forwardRef(
         disabled={disablePan || (spaceToPan && !spaceIsPressed)}
         data-flume-stage={true}
       >
-        {spaceIsPressed ? <Portal></Portal> : null}
         {menuOpen ? (
           <Portal>
             <ContextMenu

@@ -10,7 +10,13 @@
   z-index: 1;
   cursor: default;
   box-sizing: border-box;
-  transition: opacity 0.2s;
+}
+
+.wrapper > * {
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .body {

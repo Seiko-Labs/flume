@@ -3,6 +3,7 @@
   "dependencies": {
     "@reach/auto-id": "^0.10.5",
     "@react-hook/debounce": "^4.0.0",
+    "@rooks/use-raf": "^4.11.2",
     "d3-shape": "^3.0.1",
     "lodash": "^4.17.15",
     "md5": "2.3.0",

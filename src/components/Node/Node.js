@@ -1,4 +1,10 @@
-import React, { forwardRef, useContext, useMemo, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import useTransputs from "../../hooks/useTransputs";
 import styles from "./Node.css";
 import {
@@ -34,6 +40,7 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       onDrag,
+      hideControls,
       actions: { data: actionsData } = {},
     },
     nodeWrapper
@@ -160,19 +167,21 @@ const Node = forwardRef(
     };
 
     const handleDrag = ({ x, y }) => {
-      const oldPositions = nodeWrapper.current.style.transform.match(
+      const nWrapper = document.getElementById(id);
+      nWrapper.style.transition = "0s";
+      const oldPositions = nWrapper.style.transform.match(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
 
       if (oldPositions?.length === 3) {
         onDragHandle(
-          nodeWrapper.current.dataset.nodeId,
+          id,
           x - Number(oldPositions[1]),
           y - Number(oldPositions[2])
         );
       }
 
-      nodeWrapper.current.style.transform = `translate(${x}px,${y}px)`;
+      nWrapper.style.transform = `translate(${x}px,${y}px)`;
 
       updateNodeConnections();
     };
@@ -211,7 +220,7 @@ const Node = forwardRef(
       <Draggable
         className={styles?.wrapper}
         style={{
-          background: "rgba(46, 58, 89, 0.8)",
+          background: "rgba(46, 58, 89)",
           color: tileFontColor,
           zIndex: isSelected && 1000,
           boxShadow: isSelected
@@ -238,10 +247,10 @@ const Node = forwardRef(
           updateNodeConnections={updateNodeConnections}
           inputData={inputData}
         />
-        <div className={styles?.body}>
+        <div className={styles?.body} id="in_body">
           <div className={styles?.header}>
             <div className={styles?.headerMeta}>
-              {hasInner && (
+              {!hideControls && hasInner && (
                 <Ticker
                   onClick={() => {
                     nodesDispatch({ type: "TOGGLE_NODE_VIEW", id });
@@ -254,7 +263,11 @@ const Node = forwardRef(
                   }}
                 />
               )}
-              <div className={styles?.title}>
+
+              <div
+                className={styles?.title}
+                style={{ opacity: hideControls ? 0 : 1 }}
+              >
                 {icon && <img src={icon} />}
                 <span className={styles?.label} style={{ color: "#fff" }}>
                   {label}
@@ -263,6 +276,7 @@ const Node = forwardRef(
               <span
                 className={styles?.id}
                 onClick={() => navigator.clipboard.writeText(id)}
+                style={{ opacity: hideControls ? 0 : 1 }}
               >
                 ID: {id}
               </span>
@@ -286,15 +300,49 @@ const Node = forwardRef(
             </div>
           </div>
           {expanded && hasInner ? (
-            <IoPorts
-              nodeId={id}
-              resolvedInputs={resolvedInputs}
-              show={"innerOnly"}
-              connections={connections}
-              nodeData={nodeData}
-              updateNodeConnections={updateNodeConnections}
-              inputData={inputData}
-            />
+            <>
+              {/* {hideControls && (
+                <div
+                  style={{
+                    textAlign: "center",
+                    lineHeight: "50px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div className={styles?.title}>
+                    {icon && <img src={icon} />}
+                    <span
+                      className={styles?.label}
+                      style={{ color: "#fff", fontSize: "3.0vh" }}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                  <span
+                    className={styles?.id}
+                    onClick={() => navigator.clipboard.writeText(id)}
+                    style={{ fontSize: "3.0vh" }}
+                  >
+                    {id}
+                  </span>
+                </div>
+              )} */}
+              <div
+                style={{
+                  visibility: hideControls ? "hidden" : "visible",
+                }}
+              >
+                <IoPorts
+                  nodeId={id}
+                  resolvedInputs={resolvedInputs}
+                  show={"innerOnly"}
+                  connections={connections}
+                  nodeData={nodeData}
+                  updateNodeConnections={updateNodeConnections}
+                  inputData={inputData}
+                />
+              </div>
+            </>
           ) : (
             description && (
               <div className={styles?.description}>{description}</div>
