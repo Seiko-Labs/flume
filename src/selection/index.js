@@ -1,5 +1,3 @@
-// @flow
-
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -67,18 +65,18 @@ export default class Selection extends React.PureComponent {
 
   componentWillUnmount() {
     this.reset();
-    window.document.removeEventListener("mousemove", this.onMouseMove);
-    window.document.removeEventListener("mouseup", this.onMouseUp);
+    document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener("mouseup", this.onMouseUp);
   }
 
   bind = () => {
-    this.props.target.addEventListener("mousedown", this.onMouseDown);
-    this.props.target.addEventListener("touchstart", this.onTouchStart);
+    document.addEventListener("mousedown", this.onMouseDown);
+    document.addEventListener("touchstart", this.onTouchStart);
   };
 
   reset = () => {
     if (this.props.target) {
-      this.props.target.removeEventListener("mousedown", this.onMouseDown);
+      document.removeEventListener("mousedown", this.onMouseDown);
     }
   };
 
@@ -135,8 +133,8 @@ export default class Selection extends React.PureComponent {
     }
 
     if (this.init(e, e.pageX, e.pageY)) {
-      window.document.addEventListener("mousemove", this.onMouseMove);
-      window.document.addEventListener("mouseup", this.onMouseUp);
+      document.addEventListener("mousemove", this.onMouseMove);
+      document.addEventListener("mouseup", this.onMouseUp);
 
       this.onMouseMove(e);
     }
@@ -153,8 +151,8 @@ export default class Selection extends React.PureComponent {
     }
 
     if (this.init(e, e.touches[0].pageX, e.touches[0].pageY)) {
-      window.document.addEventListener("touchmove", this.onTouchMove);
-      window.document.addEventListener("touchend", this.onMouseUp);
+      document.addEventListener("touchmove", this.onTouchMove);
+      document.addEventListener("touchend", this.onMouseUp);
     }
   };
 
@@ -163,10 +161,10 @@ export default class Selection extends React.PureComponent {
    * @private
    */
   onMouseUp = () => {
-    window.document.removeEventListener("touchmove", this.onTouchMove);
-    window.document.removeEventListener("mousemove", this.onMouseMove);
-    window.document.removeEventListener("mouseup", this.onMouseUp);
-    window.document.removeEventListener("touchend", this.onMouseUp);
+    document.removeEventListener("touchmove", this.onTouchMove);
+    document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener("mouseup", this.onMouseUp);
+    document.removeEventListener("touchend", this.onMouseUp);
 
     this.setState({
       mouseDown: false,

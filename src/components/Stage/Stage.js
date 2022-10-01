@@ -34,11 +34,12 @@ const Stage = forwardRef(
       disableComments,
       disablePan,
       disableZoom,
+      toggleVisibility,
     },
     wrapper
   ) => {
     useEffect(() => {
-      const d3Zoom = d3.zoom().scaleExtent([0.5, 2]);
+      const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current).call(d3Zoom);
       d3Selection.on("mousedown.zoom", null);
 
@@ -64,6 +65,7 @@ const Stage = forwardRef(
           type: "SET_SCALE",
           scale: event.transform.k,
         }));
+        toggleVisibility();
       });
     }, []);
     const nodeTypes = useContext(NodeTypesContext);
@@ -78,7 +80,7 @@ const Stage = forwardRef(
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-      event.stopPropagation();
+      e.stopPropagation();
       setMenuCoordinates({ x: e.clientX, y: e.clientY });
       setMenuOpen(true);
       return false;
