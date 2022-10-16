@@ -1,4 +1,11 @@
-import React, { forwardRef, useContext, useMemo, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import useTransputs from "../../hooks/useTransputs";
 import styles from "./Node.css";
 import {
@@ -13,6 +20,43 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 import IoPorts from "../IoPorts/IoPorts";
 import Draggable from "../Draggable/Draggable";
 import { ReactComponent as Ticker } from "../../img/ticker.svg";
+import { ReactComponent as CommentIcon } from "../../img/comment-icon.svg";
+
+const Comment = ({ onOutsideClick, onChange, value, border }) => {
+  const ref = useRef();
+  const handleOutsideClick = (e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      onChange(ref.current.value);
+      onOutsideClick && onOutsideClick(e);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  return (
+    <textarea
+      ref={ref}
+      defaultValue={value}
+      onMouseDown={(e) => e.stopPropagation()}
+      onDrag={(e) => e.stopPropagation()}
+      onScroll={(e) => e.stopPropagation()}
+      style={{
+        lineHeight: 1.5,
+        resize: "both",
+        position: "absolute",
+        outline: 0,
+        border: `1px solid ${border}`,
+        zIndex: 1000,
+        padding: 5,
+        borderRadius: "5px",
+        background: "rgba(46, 58, 89, 1)",
+      }}
+    />
+  );
+};
 
 const Node = forwardRef(
   (
@@ -34,10 +78,14 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       onDrag,
+      hideControls,
+
       actions: { data: actionsData } = {},
+      setSelected,
     },
     nodeWrapper
   ) => {
+    const [commentVisibile, toggleCommentVisibility] = useState(false);
     // const cache = useContext(CacheContext);
     const nodeTypes = useContext(NodeTypesContext);
     const nodesDispatch = useContext(NodeDispatchContext);
@@ -113,36 +161,26 @@ const Node = forwardRef(
             `[data-connection-id="${combined}"]`
           );
           const from = {
-            x:
-              byScale(
-                toRect.x -
-                  stageRect.current.x +
-                  portHalf -
-                  stageRect.current.width / 2
-              ) + stageState.translate.x,
-            y:
-              byScale(
-                toRect.y -
-                  stageRect.current.y +
-                  portHalf -
-                  stageRect.current.height / 2
-              ) + stageState.translate.y,
+            x: byScale(
+              toRect.x - stageRect.current.x + portHalf - stageState.translate.x
+            ),
+            y: byScale(
+              toRect.y - stageRect.current.y + portHalf - stageState.translate.y
+            ),
           };
           const to = {
-            x:
-              byScale(
-                fromRect.x -
-                  stageRect.current.x +
-                  portHalf -
-                  stageRect.current.width / 2
-              ) + stageState.translate.x,
-            y:
-              byScale(
-                fromRect.y -
-                  stageRect.current.y +
-                  portHalf -
-                  stageRect.current.height / 2
-              ) + stageState.translate.y,
+            x: byScale(
+              fromRect.x -
+                stageRect.current.x +
+                portHalf -
+                stageState.translate.x
+            ),
+            y: byScale(
+              fromRect.y -
+                stageRect.current.y +
+                portHalf -
+                stageState.translate.y
+            ),
           };
           cnx.setAttribute(
             "d",
@@ -160,19 +198,21 @@ const Node = forwardRef(
     };
 
     const handleDrag = ({ x, y }) => {
-      const oldPositions = nodeWrapper.current.style.transform.match(
+      const nWrapper = document.getElementById(id);
+      const oldPositions = nWrapper.style.transform.match(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
+      nWrapper.style.transition = "0s";
 
       if (oldPositions?.length === 3) {
         onDragHandle(
-          nodeWrapper.current.dataset.nodeId,
+          nWrapper.dataset.nodeId,
           x - Number(oldPositions[1]),
           y - Number(oldPositions[2])
         );
       }
 
-      nodeWrapper.current.style.transform = `translate(${x}px,${y}px)`;
+      nWrapper.style.transform = `translate(${x}px,${y}px)`;
 
       updateNodeConnections();
     };
@@ -211,7 +251,7 @@ const Node = forwardRef(
       <Draggable
         className={styles?.wrapper}
         style={{
-          background: "rgba(46, 58, 89, 0.8)",
+          background: "rgba(46, 58, 89)",
           color: tileFontColor,
           zIndex: isSelected && 1000,
           boxShadow: isSelected
@@ -238,10 +278,31 @@ const Node = forwardRef(
           updateNodeConnections={updateNodeConnections}
           inputData={inputData}
         />
-        <div className={styles?.body}>
+        <div className={styles?.body} id="in_body">
+          {comment && (
+            <div
+              style={{
+                fontSize: 10,
+                margin: 4,
+                overflow: "hidden",
+                wordWrap: "break-word",
+                maxWidth: "150px",
+                borderRadius: 5,
+                background: tileBackground.includes("rgba")
+                  ? tileBackground
+                  : tileBackground + "59",
+                padding: 4,
+              }}
+            >
+              <div style={{ visibility: hideControls ? "hidden" : "visible" }}>
+                <b>Comment: </b>
+                {comment}
+              </div>
+            </div>
+          )}
           <div className={styles?.header}>
             <div className={styles?.headerMeta}>
-              {hasInner && (
+              {!hideControls && hasInner && (
                 <Ticker
                   onClick={() => {
                     nodesDispatch({ type: "TOGGLE_NODE_VIEW", id });
@@ -251,6 +312,24 @@ const Node = forwardRef(
                     transform: expanded ? "none" : "rotate(-90deg)",
                     cursor: "pointer",
                     stroke: "#C5CEE0",
+                  }}
+                />
+              )}
+              <CommentIcon
+                fill={tileBackground}
+                onClick={() => toggleCommentVisibility(true)}
+                style={{
+                  cursor: "pointer",
+                  stroke: "#C5CEE0",
+                }}
+              />
+              {commentVisibile && (
+                <Comment
+                  border={tileBackground}
+                  value={comment}
+                  onOutsideClick={() => toggleCommentVisibility(false)}
+                  onChange={(value) => {
+                    nodesDispatch({ type: "COMMENT", id, value });
                   }}
                 />
               )}
@@ -286,15 +365,23 @@ const Node = forwardRef(
             </div>
           </div>
           {expanded && hasInner ? (
-            <IoPorts
-              nodeId={id}
-              resolvedInputs={resolvedInputs}
-              show={"innerOnly"}
-              connections={connections}
-              nodeData={nodeData}
-              updateNodeConnections={updateNodeConnections}
-              inputData={inputData}
-            />
+            <>
+              <div
+                style={{
+                  visibility: hideControls ? "hidden" : "visible",
+                }}
+              >
+                <IoPorts
+                  nodeId={id}
+                  resolvedInputs={resolvedInputs}
+                  show={"innerOnly"}
+                  connections={connections}
+                  nodeData={nodeData}
+                  updateNodeConnections={updateNodeConnections}
+                  inputData={inputData}
+                />
+              </div>
+            </>
           ) : (
             description && (
               <div className={styles?.description}>{description}</div>

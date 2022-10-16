@@ -335,6 +335,29 @@ export default (...props) => {
       nodesReducer(...props);
       return copyObj(props[0]);
     }
+    case "COMMENT": {
+      const nodes = props[0].nodesState[props[0].currentStateIndex].state;
+      const newState = copyObj(props[0]);
+
+      for (const node of nodesState) {
+        const { id, value } = props[1];
+        for (const nodeID of Object.keys(node.state)) {
+          if (id === nodeID) {
+            newState.nodesState[newState.currentStateIndex].state = {
+              ...nodes,
+              [nodeID]: {
+                ...nodes[nodeID],
+                comment: value,
+              },
+            };
+          }
+        }
+      }
+      return newState;
+
+      nodesReducer(...props);
+      return copyObj(props[0]);
+    }
     case "TOGGLE_NODE_VIEW": {
       const { id: nodeId, doExpand } = props[1];
       const nodes = props[0].nodesState[props[0].currentStateIndex].state;

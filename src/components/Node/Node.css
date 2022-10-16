@@ -1,4 +1,5 @@
 .wrapper {
+  box-sizing: border-box;
   border-radius: 4px;
   position: absolute;
   left: 0;
@@ -7,10 +8,8 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  z-index: 1;
+  z-index: 0;
   cursor: default;
-  box-sizing: border-box;
-  transition: opacity 0.2s;
 }
 
 .body {

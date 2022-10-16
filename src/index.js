@@ -42,8 +42,21 @@ import styles from "./styles.css";
 import Selection from "./selection";
 import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
+import nodeStyles from "./components/Node/Node.css";
 
 const defaultContext = {};
+
+const checkIntersection = (boxA, boxB) => {
+  if (
+    boxA.bottom > boxB.top &&
+    boxA.right > boxB.left &&
+    boxA.top < boxB.bottom &&
+    boxA.left < boxB.right
+  ) {
+    return true;
+  }
+  return false;
+};
 
 export const NodeEditor = forwardRef(
   (
@@ -78,6 +91,7 @@ export const NodeEditor = forwardRef(
     const [toasts, dispatchToasts] = useReducer(toastsReducer, []);
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
+    const [visibleNodes, setVisibleNodes] = useState([]);
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(
@@ -109,6 +123,7 @@ export const NodeEditor = forwardRef(
           currentStateIndex: 0,
         }
     );
+
     const [comments, dispatchComments] = useReducer(
       commentsReducer,
       initialComments || {}
@@ -126,9 +141,27 @@ export const NodeEditor = forwardRef(
       nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
     );
 
+    const handleDocumentKeyUp = (e) => {
+      if (e.which === 32) {
+        setSpaceIsPressed(false);
+        document.removeEventListener("keyup", handleDocumentKeyUp);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.which === 32) {
+        setSpaceIsPressed(true);
+        document.addEventListener("keyup", handleDocumentKeyUp);
+      }
+    };
+
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
       recalculateConnections();
+
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => document.removeEventListener("keydown", handleKeyDown);
     }, []);
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =
@@ -177,13 +210,18 @@ export const NodeEditor = forwardRef(
       );
     }, [currentStateIndex, nodesState, editorId, stageState]);
 
-    const recalculateStageRect = useCallback(() => {
+    const recalculateStageRect = () => {
+      setVisibleNodes((prev) =>
+        prev.filter((nodeid) => !selectedNodes.includes(nodeid))
+      );
+
       stage.current = document
         .getElementById(`${STAGE_ID}${editorId}`)
         .getBoundingClientRect();
-    }, [stage.current, editorId]);
+    };
 
     useLayoutEffect(() => {
+      window.STAGE_ID = `${STAGE_ID}${editorId}`;
       if (shouldRecalculateConnections) {
         recalculateConnections();
         setShouldRecalculateConnections(false);
@@ -191,15 +229,16 @@ export const NodeEditor = forwardRef(
     }, [shouldRecalculateConnections, recalculateConnections]);
 
     const handleDragEnd = (e, id, coordinates) => {
+      toggleVisibility();
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
           nodesInfo: selectedNodes
             .map((id) => {
-              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
+              const nodeRef = document.getElementById(id);
 
-              if (nodeRef.current) {
-                const newPositions = nodeRef.current.style.transform.match(
+              if (nodeRef) {
+                const newPositions = nodeRef.style.transform.match(
                   /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
                 );
 
@@ -224,25 +263,61 @@ export const NodeEditor = forwardRef(
       triggerRecalculation();
     };
 
-    const dragSelectedNodes = (excludedNodeId, deltaX, deltaY) => {
+    const toggleVisibility = (args) => {
+      if (args) return setVisibleNodes([]);
+
+      const v = [];
+      if (editorRef.current) {
+        const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
+
+        for (const node of nodes) {
+          const nodeRef = node;
+
+          if (nodeRef) {
+            if (
+              !checkIntersection(
+                nodeRef.getBoundingClientRect(),
+                editorRef.current.getBoundingClientRect()
+              )
+            ) {
+              nodeRef.style.visibility = "hidden";
+            } else {
+              nodeRef.style.visibility = "visible";
+
+              v.push(nodeRef.id);
+            }
+          }
+        }
+        setVisibleNodes(v);
+      }
+    };
+
+    useEffect(() => {
+      toggleVisibility();
+    }, [nodesState]);
+
+    const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
-          selectedNodes.forEach((id) => {
+          for (const id of selectedNodes) {
             if (id !== excludedNodeId) {
-              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
-              if (nodeRef.current) {
-                const oldPositions = nodeRef.current.style.transform.match(
+              const nodeRef = document.getElementById(id);
+              // const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
+              //   ?.current;
+              if (nodeRef) {
+                const oldPositions = nodeRef.style.transform.match(
                   /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
                 );
 
-                if (oldPositions.length === 3) {
-                  nodeRef.current.style.transform = `translate(${
+                if (oldPositions && oldPositions.length === 3) {
+                  nodeRef.style.transform = `translate(${
                     Number(oldPositions[1]) + deltaX
                   }px,${Number(oldPositions[2]) + deltaY}px)`;
                 }
               }
             }
-          });
+          }
+
           recalculateConnections();
         } else {
           clearSelection();
@@ -275,26 +350,22 @@ export const NodeEditor = forwardRef(
       }
     }, [sideEffectToasts]);
 
-    useEffect(() => {
+    useMemo(() => {
       if (focusNode) {
         const nodes = nodesState[currentStateIndex].state;
-        setSelectedNodes([focusNode]);
-        Object.keys(nodes).map((node) => {
+
+        Object.keys(nodes).forEach((node) => {
           if (node === focusNode) {
-            dispatchStageState(() => ({
-              type: "SET_TRANSLATE",
-              translate: {
-                x: nodes[node].x + 60,
-                y: nodes[node].y + 60,
-              },
-            }));
+            document.getElementById(focusNode).style.border = "2px solid red";
+            setTimeout(() => {
+              document.getElementById(focusNode).style.border = "0";
+            }, 1000);
             dispatchStageState(() => ({
               type: "SET_SCALE",
               scale: 1,
             }));
           }
         });
-        onFocusChange && onFocusChange(focusNode);
       }
     }, [focusNode]);
 
@@ -313,7 +384,7 @@ export const NodeEditor = forwardRef(
                         <RecalculateStageRectContext.Provider
                           value={recalculateStageRect}
                         >
-                          {!spaceIsPressed && (
+                          {!spaceIsPressed && editorRef.current && (
                             <Selection
                               target={editorRef.current}
                               elements={nodeRefs.map((n) => n[1].current)}
@@ -335,10 +406,15 @@ export const NodeEditor = forwardRef(
                               style={{ zIndex: 100, cursor: "inherit" }}
                             />
                           )}
+
                           <Stage
+                            focusNode={focusNode}
+                            onFocusChange={onFocusChange}
                             ref={editorRef}
                             editorId={editorId}
+                            toggleVisibility={toggleVisibility}
                             setSpaceIsPressed={setSpaceIsPressed}
+                            spaceIsPressed={spaceIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}
                             spaceToPan={true}
@@ -358,23 +434,15 @@ export const NodeEditor = forwardRef(
                             }
                             DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
                             draggableCanvasSet={context.draggableCanvasSet}
+                            spaceIsPressed={spaceIsPressed}
                           >
-                            {!hideComments &&
-                              Object.values(comments).map((comment) => (
-                                <Comment
-                                  {...comment}
-                                  stageRect={stage}
-                                  dispatch={dispatchComments}
-                                  onDragStart={recalculateStageRect}
-                                  key={comment.id}
-                                />
-                              ))}
                             {Object.values(
                               nodesState[currentStateIndex].state
                             ).map((node) => (
                               <Node
                                 {...node}
                                 isSelected={selectedNodes.includes(node.id)}
+                                setSelected={(id) => setSelectedNodes([id])}
                                 ref={
                                   nodeRefs.find(([n]) => n.id === node.id)
                                     ? nodeRefs.find(
@@ -383,6 +451,10 @@ export const NodeEditor = forwardRef(
                                     : createRef()
                                 }
                                 stageRect={stage}
+                                hideControls={
+                                  !visibleNodes.includes(node.id) ||
+                                  stageState.scale < 0.5
+                                }
                                 onDragEnd={handleDragEnd}
                                 onDragHandle={dragSelectedNodes}
                                 onDragStart={recalculateStageRect}
@@ -398,6 +470,7 @@ export const NodeEditor = forwardRef(
                               id={`${DRAG_CONNECTION_ID}${editorId}`}
                             />
                           </Stage>
+
                           {/* </HotKeys> */}
                         </RecalculateStageRectContext.Provider>
                       </ControllerOptionsContext.Provider>

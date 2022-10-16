@@ -42,12 +42,8 @@ const Port = ({
 
     if (isInput) {
       const to = {
-        x:
-          byScale(e.clientX - stage.x - stage.width / 2) +
-          stageState.translate.x,
-        y:
-          byScale(e.clientY - stage.y - stage.height / 2) +
-          stageState.translate.y,
+        x: byScale(e.clientX - stage.x - stageState.translate.x),
+        y: byScale(e.clientY - stage.y - stageState.translate.y),
       };
       if (lineInToPort.current)
         lineInToPort.current.setAttribute(
@@ -61,12 +57,8 @@ const Port = ({
         );
     } else {
       const to = {
-        x:
-          byScale(e.clientX - stage.x - stage.width / 2) +
-          stageState.translate.x,
-        y:
-          byScale(e.clientY - stage.y - stage.height / 2) +
-          stageState.translate.y,
+        x: byScale(e.clientX - stage.x - stageState.translate.x),
+        y: byScale(e.clientY - stage.y - stageState.translate.y),
       };
       line.current.setAttribute(
         "d",
@@ -177,14 +169,18 @@ const Port = ({
           "output"
         );
         const coordinates = {
-          x:
-            byScale(
-              outputPort.x - stage.x + outputPort.width / 2 - stage.width / 2
-            ) + stageState.translate.x,
-          y:
-            byScale(
-              outputPort.y - stage.y + outputPort.width / 2 - stage.height / 2
-            ) + stageState.translate.y,
+          x: byScale(
+            outputPort.x -
+              stage.x +
+              outputPort.width / 2 -
+              stageState.translate.x
+          ),
+          y: byScale(
+            outputPort.y -
+              stage.y +
+              outputPort.width / 2 -
+              stageState.translate.y
+          ),
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -193,14 +189,12 @@ const Port = ({
         document.addEventListener("mousemove", handleDrag);
       } else {
         const coordinates = {
-          x:
-            byScale(
-              startPort.x - stage.x + startPort.width / 2 - stage.width / 2
-            ) + stageState.translate.x,
-          y:
-            byScale(
-              startPort.y - stage.y + startPort.width / 2 - stage.height / 2
-            ) + stageState.translate.y,
+          x: byScale(
+            startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
+          ),
+          y: byScale(
+            startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
+          ),
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -210,14 +204,12 @@ const Port = ({
       }
     } else {
       const coordinates = {
-        x:
-          byScale(
-            startPort.x - stage.x + startPort.width / 2 - stage.width / 2
-          ) + stageState.translate.x,
-        y:
-          byScale(
-            startPort.y - stage.y + startPort.width / 2 - stage.height / 2
-          ) + stageState.translate.y,
+        x: byScale(
+          startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
+        ),
+        y: byScale(
+          startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
+        ),
       };
       setDragStartCoordinates(coordinates);
       dragStartCoordinatesCache.current = coordinates;

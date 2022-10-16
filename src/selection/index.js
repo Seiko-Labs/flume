@@ -67,18 +67,18 @@ export default class Selection extends React.PureComponent {
 
   componentWillUnmount() {
     this.reset();
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
+    window.document.removeEventListener("mousemove", this.onMouseMove);
+    window.document.removeEventListener("mouseup", this.onMouseUp);
   }
 
   bind = () => {
-    document.addEventListener("mousedown", this.onMouseDown);
-    document.addEventListener("touchstart", this.onTouchStart);
+    this.props.target.addEventListener("mousedown", this.onMouseDown);
+    this.props.target.addEventListener("touchstart", this.onTouchStart);
   };
 
   reset = () => {
     if (this.props.target) {
-      document.removeEventListener("mousedown", this.onMouseDown);
+      this.props.target.removeEventListener("mousedown", this.onMouseDown);
     }
   };
 
@@ -135,8 +135,8 @@ export default class Selection extends React.PureComponent {
     }
 
     if (this.init(e, e.pageX, e.pageY)) {
-      document.addEventListener("mousemove", this.onMouseMove);
-      document.addEventListener("mouseup", this.onMouseUp);
+      window.document.addEventListener("mousemove", this.onMouseMove);
+      window.document.addEventListener("mouseup", this.onMouseUp);
 
       this.onMouseMove(e);
     }
@@ -153,8 +153,8 @@ export default class Selection extends React.PureComponent {
     }
 
     if (this.init(e, e.touches[0].pageX, e.touches[0].pageY)) {
-      document.addEventListener("touchmove", this.onTouchMove);
-      document.addEventListener("touchend", this.onMouseUp);
+      window.document.addEventListener("touchmove", this.onTouchMove);
+      window.document.addEventListener("touchend", this.onMouseUp);
     }
   };
 
@@ -163,10 +163,10 @@ export default class Selection extends React.PureComponent {
    * @private
    */
   onMouseUp = () => {
-    document.removeEventListener("touchmove", this.onTouchMove);
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+    window.document.removeEventListener("touchmove", this.onTouchMove);
+    window.document.removeEventListener("mousemove", this.onMouseMove);
+    window.document.removeEventListener("mouseup", this.onMouseUp);
+    window.document.removeEventListener("touchend", this.onMouseUp);
 
     this.setState({
       mouseDown: false,
@@ -350,6 +350,7 @@ export default class Selection extends React.PureComponent {
       border: "solid 1px rgba(123, 123, 123, 0.61)",
       zIndex: 9,
       cursor: "crosshair",
+
       ...this.props.style,
     };
 

@@ -3,7 +3,11 @@
   "dependencies": {
     "@reach/auto-id": "^0.10.5",
     "@react-hook/debounce": "^4.0.0",
+    "d3-drag": "^3.0.0",
+    "d3-selection": "^3.0.0",
     "d3-shape": "^3.0.1",
+    "d3-zoom": "^3.0.0",
+    "framer-motion": "^7.5.3",
     "lodash": "^4.17.15",
     "md5": "2.3.0",
     "nanoid": "^2.1.11",

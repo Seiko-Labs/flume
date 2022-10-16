@@ -14,23 +14,10 @@ import { NodeTypesContext, NodeDispatchContext } from "../../context";
 import Draggable from "../Draggable/Draggable";
 import orderBy from "lodash/orderBy";
 import clamp from "lodash/clamp";
+import * as d3 from "d3-zoom";
+import { select } from "d3-selection";
 import { STAGE_ID } from "../../constants";
-import { debounce } from "lodash";
-import nodeStyles from "../Node/Node.css";
 
-const checkIntersection = (boxA, boxB) => {
-  if (
-    boxA.bottom > boxB.top &&
-    boxA.right > boxB.left &&
-    boxA.top < boxB.bottom &&
-    boxA.left < boxB.right
-  ) {
-    return true;
-  }
-  return false;
-};
-
-let timeout = null;
 const Stage = forwardRef(
   (
     {
@@ -40,7 +27,6 @@ const Stage = forwardRef(
       dispatchStageState,
       children,
       outerStageChildren,
-      setSpaceIsPressed: parentSetSpaceIsPressed,
       numNodes,
       stageRef,
       spaceToPan,
@@ -48,144 +34,100 @@ const Stage = forwardRef(
       disableComments,
       disablePan,
       disableZoom,
-      DRAGGABLE_CANVAS,
-      draggableCanvasSet,
+      toggleVisibility,
+      spaceIsPressed,
+      onMouseDown,
+      onMouseUp,
+      focusNode,
+      onFocusChange,
     },
     wrapper
   ) => {
+    useEffect(() => {
+      const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
+      const d3Selection = select(wrapper.current);
+      d3Zoom.transform(
+        d3Selection,
+        d3.zoomIdentity.translate(translate.x, translate.y).scale(scale)
+      );
+
+      d3Zoom.filter((e) => {
+        if (e.type === "mousedown") {
+          if (spaceIsPressed) {
+            return e;
+          } else {
+            return false;
+          }
+        }
+        return e;
+      });
+
+      d3Zoom.on("zoom", (event) => {
+        translateWrapper.current.style.transition = "0.055s";
+
+        requestAnimationFrame(() => {
+          translateWrapper.current.style.transform =
+            "translate(" +
+            event.transform.x +
+            "px," +
+            event.transform.y +
+            "px) scale(" +
+            event.transform.k +
+            ")";
+        });
+      });
+      d3Zoom.on("end", (event) => {
+        translateWrapper.current.style.transition = "0.5s";
+
+        toggleVisibility();
+        dispatchStageState(() => ({
+          type: "SET_TRANSLATE",
+          translate: {
+            x: event.transform.x,
+            y: event.transform.y,
+          },
+        }));
+        dispatchStageState(() => ({
+          type: "SET_SCALE",
+          scale: event.transform.k,
+        }));
+      });
+
+      if (focusNode) {
+        const node = document.getElementById(focusNode);
+        const oldPositions = node.style.transform.match(
+          /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+        );
+
+        d3Zoom.translateTo(d3Selection, oldPositions[1], oldPositions[2]);
+        onFocusChange && onFocusChange(focusNode);
+
+        translateWrapper.current.ontransitionend = () => {
+          toggleVisibility();
+
+          translateWrapper.current.ontransitionend = null;
+        };
+      }
+      d3Selection.call(d3Zoom).on("dblclick.zoom", null);
+
+      return () => {
+        d3Zoom.on("zoom", null);
+        d3Zoom.on("end", null);
+      };
+    }, [focusNode, spaceIsPressed]);
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
     const translateWrapper = useRef();
-    const scaleWrapper = useRef();
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [menuCoordinates, setMenuCoordinates] = useState({
       x: 0,
       y: 0,
     });
-    const dragData = useRef({ x: 0, y: 0 });
-    const [spaceIsPressed, setSpaceIsPressed] = useState(false);
-
-    const setStageRect = useCallback(() => {
-      stageRef.current = wrapper.current.getBoundingClientRect();
-    }, []);
-
-    useEffect(() => {
-      stageRef.current = wrapper.current.getBoundingClientRect();
-      window.addEventListener("resize", setStageRect);
-      return () => {
-        window.removeEventListener("resize", setStageRect);
-      };
-    }, [stageRef, setStageRect]);
-
-    useEffect(() => {
-      if (DRAGGABLE_CANVAS) {
-        parentSetSpaceIsPressed(true);
-        setSpaceIsPressed(true);
-      } else {
-        parentSetSpaceIsPressed(false);
-        setSpaceIsPressed(false);
-      }
-    }, [DRAGGABLE_CANVAS]);
-
-    const handleWheel = useCallback(
-      (e) => {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-        const delta = e.deltaY;
-
-        scaleWrapper.current.style.transition = "0.0s";
-        scaleWrapper.current.style.scale = clamp(
-          scale - clamp(delta, -10, 10) * 0.005,
-          0.1,
-          2
-        );
-        timeout = setTimeout(() => {
-          scaleWrapper.current.style.transition = "1s";
-          toggleVisibility();
-        }, 300);
-
-        if (e.target.nodeName === "TEXTAREA" || e.target.dataset.comment) {
-          if (e.target.clientHeight < e.target.scrollHeight) return;
-        }
-        e.preventDefault();
-        if (numNodes > 0) {
-          const delta = e.deltaY;
-          dispatchStageState(({ scale }) => ({
-            type: "SET_SCALE",
-            scale: clamp(scale - clamp(delta, -10, 10) * 0.005, 0.1, 2),
-          }));
-        }
-      },
-      [dispatchStageState, numNodes]
-    );
-
-    const handleDragDelayStart = (e) => {
-      wrapper.current.focus();
-    };
-
-    const handleDragStart = (e) => {
-      e.preventDefault();
-      dragData.current = {
-        x: e.clientX / scale,
-        y: e.clientY / scale,
-      };
-    };
-
-    const toggleVisibility = () => {
-      const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
-      for (const node of nodes) {
-        if (
-          !checkIntersection(
-            node.getBoundingClientRect(),
-            wrapper.current.getBoundingClientRect()
-          )
-        ) {
-          node.style.opacity = "0";
-        } else {
-          node.style.opacity = "1";
-        }
-      }
-    };
-
-    const handleMouseDrag = (coords, e) => {
-      const xDistance = dragData.current.x - e.clientX / scale;
-      const yDistance = dragData.current.y - e.clientY / scale;
-      translateWrapper.current.style.transition = "0s";
-
-      wrapper.current.style.backgroundPosition = `calc(50% + ${
-        (-(translate.x + xDistance) * scale) % (10 * scale)
-      }px) calc(50% + ${
-        (-(translate.y + yDistance) * scale) % (10 * scale)
-      }px) `;
-
-      translateWrapper.current.style.transform = `translate(${-(
-        translate.x + xDistance
-      )}px, ${-(translate.y + yDistance)}px)`;
-
-      debounce(toggleVisibility, 1000)();
-    };
-
-    const handleDragEnd = (e) => {
-      const xDistance = dragData.current.x - e.clientX / scale;
-      const yDistance = dragData.current.y - e.clientY / scale;
-
-      translateWrapper.current.style.transition = "1s";
-
-      dragData.current.x = e.clientX;
-      dragData.current.y = e.clientY;
-      dispatchStageState(({ translate: tran }) => ({
-        type: "SET_TRANSLATE",
-        translate: {
-          x: tran.x + xDistance,
-          y: tran.y + yDistance,
-        },
-      }));
-
-      toggleVisibility();
-    };
 
     const handleContextMenu = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setMenuCoordinates({ x: e.clientX, y: e.clientY });
       setMenuOpen(true);
       return false;
@@ -199,12 +141,8 @@ const Stage = forwardRef(
 
     const addNode = ({ node, internalType }) => {
       const wrapperRect = wrapper.current.getBoundingClientRect();
-      const x =
-        byScale(menuCoordinates.x - wrapperRect.x - wrapperRect.width / 2) +
-        translate.x;
-      const y =
-        byScale(menuCoordinates.y - wrapperRect.y - wrapperRect.height / 2) +
-        translate.y;
+      const x = byScale(menuCoordinates.x - wrapperRect.left - translate.x);
+      const y = byScale(menuCoordinates.y - wrapperRect.top - translate.y);
       if (internalType === "comment") {
         dispatchComments({
           type: "ADD_COMMENT",
@@ -220,36 +158,6 @@ const Stage = forwardRef(
         });
       }
     };
-
-    const handleDocumentKeyUp = (e) => {
-      if (e.which === 32) {
-        setSpaceIsPressed(false);
-        parentSetSpaceIsPressed(false);
-        document.removeEventListener("keyup", handleDocumentKeyUp);
-      }
-    };
-
-    const handleKeyDown = (e) => {
-      if (e.which === 32) {
-        parentSetSpaceIsPressed(true);
-        setSpaceIsPressed(true);
-        document.addEventListener("keyup", handleDocumentKeyUp);
-      }
-    };
-
-    const handleMouseEnter = () => {
-      wrapper.current.focus();
-    };
-
-    useEffect(() => {
-      if (!disableZoom) {
-        let stageWrapper = wrapper.current;
-        stageWrapper.addEventListener("wheel", handleWheel);
-        return () => {
-          stageWrapper.removeEventListener("wheel", handleWheel);
-        };
-      }
-    }, [handleWheel, disableZoom]);
 
     const menuOptions = useMemo(() => {
       const options = orderBy(
@@ -276,45 +184,12 @@ const Stage = forwardRef(
     }, [nodeTypes, disableComments]);
 
     return (
-      <Draggable
+      <div
         id={`${STAGE_ID}${editorId}`}
         className={styles.wrapper}
-        innerRef={wrapper}
+        ref={wrapper}
         onContextMenu={handleContextMenu}
-        onMouseEnter={handleMouseEnter}
-        onDragDelayStart={handleDragDelayStart}
-        onDragStart={handleDragStart}
-        onDrag={handleMouseDrag}
-        onDragEnd={handleDragEnd}
-        onKeyDown={handleKeyDown}
-        onMouseDown={(e) => {
-          if (e.button === 1) {
-            if (!DRAGGABLE_CANVAS) {
-              draggableCanvasSet &&
-                typeof draggableCanvasSet === "function" &&
-                draggableCanvasSet(true);
-            } else {
-              draggableCanvasSet &&
-                typeof draggableCanvasSet === "function" &&
-                draggableCanvasSet(false);
-            }
-          }
-        }}
-        onMouseUp={(e) => {
-          // if (e.button === 1) {
-          //   setSpaceIsPressed(false);
-          //   parentSetSpaceIsPressed(false);
-          // }
-        }}
-        tabIndex={-1}
-        stageState={{ scale, translate }}
-        style={{
-          cursor: spaceIsPressed && spaceToPan ? "grab" : "",
-        }}
-        disabled={disablePan || (spaceToPan && !spaceIsPressed)}
-        data-flume-stage={true}
       >
-        {spaceIsPressed ? <Portal></Portal> : null}
         {menuOpen ? (
           <Portal>
             <ContextMenu
@@ -328,27 +203,24 @@ const Stage = forwardRef(
           </Portal>
         ) : null}
         <div
-          ref={scaleWrapper}
-          className={styles.scaleWrapper}
+          ref={translateWrapper}
           style={{
             transition: "1s",
-            transformOrigin: "center",
-            transform: `scale(${scale})`,
+            transform:
+              "translate(" +
+              translate.x +
+              "px," +
+              translate.y +
+              "px) scale(" +
+              scale +
+              ")",
+            transformOrigin: "0 0",
           }}
         >
-          <div
-            ref={translateWrapper}
-            className={styles.transformWrapper}
-            style={{
-              transition: "1s",
-              transform: `translate(${-translate.x}px, ${-translate.y}px)`,
-            }}
-          >
-            {children}
-          </div>
+          {children}
         </div>
         {outerStageChildren}
-      </Draggable>
+      </div>
     );
   }
 );
