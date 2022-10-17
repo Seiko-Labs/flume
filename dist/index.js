@@ -12259,7 +12259,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     d3Zoom.on("zoom", function (event) {
       translateWrapper.current.style.transition = "0.055s";
       requestAnimationFrame(function () {
-        translateWrapper.current.style.transform = "translate(" + event.transform.x + "px," + event.transform.y + "px) scale(" + event.transform.k + ")";
+        translateWrapper.current.style.transform = "translate3d(" + event.transform.x + "px," + event.transform.y + "px, 0px) scale(" + event.transform.k + ")";
       });
     });
     d3Zoom.on("end", function (event) {

@@ -67,11 +67,11 @@ const Stage = forwardRef(
 
         requestAnimationFrame(() => {
           translateWrapper.current.style.transform =
-            "translate(" +
+            "translate3d(" +
             event.transform.x +
             "px," +
             event.transform.y +
-            "px) scale(" +
+            "px, 0px) scale(" +
             event.transform.k +
             ")";
         });
