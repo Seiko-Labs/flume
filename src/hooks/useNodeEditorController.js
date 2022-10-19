@@ -105,4 +105,4 @@ const useNodeEditorController = ({
 
 useNodeEditorController.displayName = "useNodeEditorController";
 
-export default useNodeEditorController;
+export { useNodeEditorController };

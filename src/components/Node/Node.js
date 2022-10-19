@@ -62,14 +62,11 @@ const Node = forwardRef(
   (
     {
       id,
-      width,
-      height,
       x,
+      y,
       isSelected,
       comment,
-      y,
       expanded,
-      delay = 6,
       stageRect,
       connections,
       type,
@@ -77,11 +74,8 @@ const Node = forwardRef(
       onDragStart,
       onDragEnd,
       onDragHandle,
-      onDrag,
       hideControls,
-
       actions: { data: actionsData } = {},
-      setSelected,
     },
     nodeWrapper
   ) => {

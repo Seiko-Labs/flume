@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -11,9 +12,7 @@ import styles from "./Stage.css";
 import { Portal } from "react-portal";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import { NodeTypesContext, NodeDispatchContext } from "../../context";
-import Draggable from "../Draggable/Draggable";
 import orderBy from "lodash/orderBy";
-import clamp from "lodash/clamp";
 import * as d3 from "d3-zoom";
 import { select } from "d3-selection";
 import { STAGE_ID } from "../../constants";
@@ -27,23 +26,16 @@ const Stage = forwardRef(
       dispatchStageState,
       children,
       outerStageChildren,
-      numNodes,
-      stageRef,
-      spaceToPan,
       dispatchComments,
       disableComments,
-      disablePan,
-      disableZoom,
       toggleVisibility,
       spaceIsPressed,
-      onMouseDown,
-      onMouseUp,
       focusNode,
       onFocusChange,
     },
     wrapper
   ) => {
-    useEffect(() => {
+    useLayoutEffect(() => {
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
       d3Zoom.transform(
@@ -52,34 +44,17 @@ const Stage = forwardRef(
       );
 
       d3Zoom.filter((e) => {
-        if (e.type === "mousedown") {
-          if (spaceIsPressed) {
-            return e;
-          } else {
-            return false;
-          }
-        }
+        if (e.type === "mousedown") return spaceIsPressed ? e : false;
         return e;
       });
 
       d3Zoom.on("zoom", (event) => {
-        translateWrapper.current.style.transition = "0.055s";
-
         requestAnimationFrame(() => {
-          translateWrapper.current.style.transform =
-            "translate3d(" +
-            event.transform.x +
-            "px," +
-            event.transform.y +
-            "px, 0px) scale(" +
-            event.transform.k +
-            ")";
+          const { x, y, k } = event.transform;
+          translateWrapper.current.style.transform = `translate3d(${x}px, ${y}px, 0px) scale3d(${k}, ${k}, ${k})`;
         });
       });
       d3Zoom.on("end", (event) => {
-        translateWrapper.current.style.transition = "0.5s";
-
-        toggleVisibility();
         dispatchStageState(() => ({
           type: "SET_TRANSLATE",
           translate: {
@@ -91,9 +66,11 @@ const Stage = forwardRef(
           type: "SET_SCALE",
           scale: event.transform.k,
         }));
+        toggleVisibility();
       });
 
       if (focusNode) {
+        translateWrapper.current.style.transition = "1s";
         const node = document.getElementById(focusNode);
         const oldPositions = node.style.transform.match(
           /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
@@ -103,6 +80,7 @@ const Stage = forwardRef(
         onFocusChange && onFocusChange(focusNode);
 
         translateWrapper.current.ontransitionend = () => {
+          translateWrapper.current.style.transition = "0.055s";
           toggleVisibility();
 
           translateWrapper.current.ontransitionend = null;
@@ -115,6 +93,7 @@ const Stage = forwardRef(
         d3Zoom.on("end", null);
       };
     }, [focusNode, spaceIsPressed]);
+  
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
     const translateWrapper = useRef();
@@ -205,15 +184,8 @@ const Stage = forwardRef(
         <div
           ref={translateWrapper}
           style={{
-            transition: "1s",
-            transform:
-              "translate(" +
-              translate.x +
-              "px," +
-              translate.y +
-              "px) scale(" +
-              scale +
-              ")",
+            transition: "0.055s",
+            transform: `translate3d(${translate.x}px, ${translate.y}px, 0px) scale3d(${scale}, ${scale}, ${scale})`,
             transformOrigin: "0 0",
           }}
         >

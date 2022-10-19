@@ -17,7 +17,7 @@ const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
         onMouseDown={preventPropagation}
         onClick={(e) => {
           e.stopPropagation();
-          if (isRightBarOpened()) {
+          if (isRightBarOpened && isRightBarOpened()) {
             openEditor(data, onChange, nodeData);
           }
         }}

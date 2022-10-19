@@ -297,13 +297,12 @@ export const NodeEditor = forwardRef(
     }, [nodesState]);
 
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
-      if (selectedNodes.length > 0) {
+      if (selectedNodes.length > 0 && selectedNodes.includes(excludedNodeId)) {
         if (selectedNodes.includes(excludedNodeId)) {
           for (const id of selectedNodes) {
             if (id !== excludedNodeId) {
-              const nodeRef = document.getElementById(id);
-              // const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-              //   ?.current;
+              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
+                ?.current;
               if (nodeRef) {
                 const oldPositions = nodeRef.style.transform.match(
                   /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
@@ -325,23 +324,23 @@ export const NodeEditor = forwardRef(
       }
     };
 
-    useImperativeHandle(ref, () => ({
-      getNodes() {
-        return nodesState[currentStateIndex].state;
-      },
-      getComments() {
-        return comments;
-      },
-    }));
+    // useImperativeHandle(ref, () => ({
+    //   getNodes() {
+    //     return nodesState[currentStateIndex].state;
+    //   },
+    //   getComments() {
+    //     return comments;
+    //   },
+    // }));
 
-    const previousComments = usePrevious(comments);
+    // const previousComments = usePrevious(comments);
 
-    useEffect(() => {
-      previousComments &&
-        comments !== previousComments &&
-        setComments &&
-        setComments(comments);
-    }, [comments, previousComments, setComments]);
+    // useEffect(() => {
+    //   previousComments &&
+    //     comments !== previousComments &&
+    //     setComments &&
+    //     setComments(comments);
+    // }, [comments, previousComments, setComments]);
 
     useEffect(() => {
       if (sideEffectToasts) {
@@ -413,7 +412,6 @@ export const NodeEditor = forwardRef(
                             ref={editorRef}
                             editorId={editorId}
                             toggleVisibility={toggleVisibility}
-                            setSpaceIsPressed={setSpaceIsPressed}
                             spaceIsPressed={spaceIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}
@@ -434,15 +432,23 @@ export const NodeEditor = forwardRef(
                             }
                             DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
                             draggableCanvasSet={context.draggableCanvasSet}
-                            spaceIsPressed={spaceIsPressed}
                           >
+                            {/* {!hideComments &&
+                              Object.values(comments).map((comment) => (
+                                <Comment
+                                  {...comment}
+                                  stageRect={stage}
+                                  dispatch={dispatchComments}
+                                  onDragStart={recalculateStageRect}
+                                  key={comment.id}
+                                />
+                              ))} */}
                             {Object.values(
                               nodesState[currentStateIndex].state
                             ).map((node) => (
                               <Node
                                 {...node}
                                 isSelected={selectedNodes.includes(node.id)}
-                                setSelected={(id) => setSelectedNodes([id])}
                                 ref={
                                   nodeRefs.find(([n]) => n.id === node.id)
                                     ? nodeRefs.find(
@@ -465,10 +471,6 @@ export const NodeEditor = forwardRef(
                               nodes={nodesState[currentStateIndex].state}
                               editorId={editorId}
                             />
-                            <div
-                              className={styles.dragWrapper}
-                              id={`${DRAG_CONNECTION_ID}${editorId}`}
-                            />
                           </Stage>
 
                           {/* </HotKeys> */}
@@ -488,10 +490,10 @@ export const NodeEditor = forwardRef(
 
 NodeEditor.displayName = "NodeEditor";
 
-export FlumeConfig, { Colors } from "./typeBuilder/FlumeConfig";
-export Controls from "./typeBuilder/Controls";
+export { FlumeConfig, Colors } from "./typeBuilder/FlumeConfig";
+export { Controls } from "./typeBuilder/Controls";
 export { RootEngine } from "./RootEngine";
-export useNodeEditorController from "./hooks/useNodeEditorController";
+export { useNodeEditorController } from "./hooks/useNodeEditorController";
 export const useRootEngine = (nodes, engine, context) =>
   Object.keys(nodes).length > 0
     ? engine.resolveRootNode(nodes, { context })

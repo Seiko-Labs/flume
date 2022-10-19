@@ -14,7 +14,7 @@ export const Colors = {
   grey: "grey",
 };
 
-export default class FlumeConfig {
+export class FlumeConfig {
   constructor(config) {
     if (config) {
       this.nodeTypes = { ...config.nodeTypes };
@@ -88,9 +88,9 @@ export default class FlumeConfig {
         : "Ungrouped actions are stored here";
 
     node.category.icon =
-      category?.icon && typeof category.icon === 'string'
+      category?.icon && typeof category.icon === "string"
         ? category.icon
-        : 'no icon';
+        : "no icon";
 
     // Optionally supplying action header color
     if (
