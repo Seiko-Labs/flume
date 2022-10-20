@@ -10803,9 +10803,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     spaceIsPressed = _ref.spaceIsPressed,
     focusNode = _ref.focusNode,
     onFocusChange = _ref.onFocusChange;
-  React.useEffect(function () {
-    toggleVisibility();
-  }, []);
   React.useLayoutEffect(function () {
     var d3Zoom = zoom().scaleExtent([0.3, 3]);
     var d3Selection = select(wrapper.current);
@@ -36111,6 +36108,9 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
   };
+  React.useEffect(function () {
+    toggleVisibility();
+  }, [nodesState]);
 
   // useEffect(() => {
   //   previousComments &&

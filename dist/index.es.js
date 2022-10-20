@@ -10776,9 +10776,6 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     spaceIsPressed = _ref.spaceIsPressed,
     focusNode = _ref.focusNode,
     onFocusChange = _ref.onFocusChange;
-  useEffect(function () {
-    toggleVisibility();
-  }, []);
   useLayoutEffect(function () {
     var d3Zoom = zoom().scaleExtent([0.3, 3]);
     var d3Selection = select(wrapper.current);
@@ -36084,6 +36081,9 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
   };
+  useEffect(function () {
+    toggleVisibility();
+  }, [nodesState]);
 
   // useEffect(() => {
   //   previousComments &&

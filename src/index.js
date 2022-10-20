@@ -163,6 +163,10 @@ export const NodeEditor = forwardRef(
       }
     };
 
+    useEffect(() => {
+      toggleVisibility();
+    }, [nodesState]);
+
     // useEffect(() => {
     //   previousComments &&
     //     comments !== previousComments &&

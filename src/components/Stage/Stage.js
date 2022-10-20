@@ -35,10 +35,6 @@ const Stage = forwardRef(
     },
     wrapper
   ) => {
-    useEffect(() => {
-      toggleVisibility();
-    }, []);
-
     useLayoutEffect(() => {
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
