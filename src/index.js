@@ -46,6 +46,14 @@ import nodeStyles from "./components/Node/Node.css";
 
 const defaultContext = {};
 
+function getTranslate3d(el) {
+  var values = el.style.transform.split(/\w+\(|\);?/);
+  if (!values[1] || !values[1].length) {
+    return [];
+  }
+  return values[1].split(/,\s?/g);
+}
+
 const checkIntersection = (boxA, boxB) => {
   if (
     boxA.bottom > boxB.top &&
@@ -155,9 +163,26 @@ export const NodeEditor = forwardRef(
       }
     };
 
+    // useEffect(() => {
+    //   previousComments &&
+    //     comments !== previousComments &&
+    //     setComments &&
+    //     setComments(comments);
+    // }, [comments, previousComments, setComments]);
+
+    useImperativeHandle(ref, () => ({
+      getNodes() {
+        return nodesState[currentStateIndex].state;
+      },
+      getComments() {
+        return comments;
+      },
+    }));
+
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
       recalculateConnections();
+      triggerRecalculation();
 
       document.addEventListener("keydown", handleKeyDown);
 
@@ -238,14 +263,12 @@ export const NodeEditor = forwardRef(
               const nodeRef = document.getElementById(id);
 
               if (nodeRef) {
-                const newPositions = nodeRef.style.transform.match(
-                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-                );
+                const newPositions = getTranslate3d(nodeRef);
 
                 return {
                   nodeId: id,
-                  x: newPositions[1],
-                  y: newPositions[2],
+                  x: newPositions[0].replace("px", ""),
+                  y: newPositions[1].replace("px", ""),
                 };
               }
 
@@ -292,10 +315,6 @@ export const NodeEditor = forwardRef(
       }
     };
 
-    useEffect(() => {
-      toggleVisibility();
-    }, [nodesState]);
-
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0 && selectedNodes.includes(excludedNodeId)) {
         if (selectedNodes.includes(excludedNodeId)) {
@@ -304,14 +323,14 @@ export const NodeEditor = forwardRef(
               const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
                 ?.current;
               if (nodeRef) {
-                const oldPositions = nodeRef.style.transform.match(
-                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-                );
+                const oldPositions = getTranslate3d(nodeRef);
 
-                if (oldPositions && oldPositions.length === 3) {
-                  nodeRef.style.transform = `translate(${
-                    Number(oldPositions[1]) + deltaX
-                  }px,${Number(oldPositions[2]) + deltaY}px)`;
+                if (oldPositions && oldPositions.length > 1) {
+                  nodeRef.style.transform = `translate3d(${
+                    Number(oldPositions[0].replace("px", "")) + deltaX
+                  }px,${
+                    Number(oldPositions[1].replace("px", "")) + deltaY
+                  }px, 0px)`;
                 }
               }
             }
@@ -323,24 +342,6 @@ export const NodeEditor = forwardRef(
         }
       }
     };
-
-    // useImperativeHandle(ref, () => ({
-    //   getNodes() {
-    //     return nodesState[currentStateIndex].state;
-    //   },
-    //   getComments() {
-    //     return comments;
-    //   },
-    // }));
-
-    // const previousComments = usePrevious(comments);
-
-    // useEffect(() => {
-    //   previousComments &&
-    //     comments !== previousComments &&
-    //     setComments &&
-    //     setComments(comments);
-    // }, [comments, previousComments, setComments]);
 
     useEffect(() => {
       if (sideEffectToasts) {
@@ -470,6 +471,10 @@ export const NodeEditor = forwardRef(
                             <Connections
                               nodes={nodesState[currentStateIndex].state}
                               editorId={editorId}
+                            />
+                            <div
+                              className={styles.dragWrapper}
+                              id={`${DRAG_CONNECTION_ID}${editorId}`}
                             />
                           </Stage>
 

@@ -6,9 +6,11 @@
   /*noinspection ALL*/
 
   color: #000;
+  position: relative;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   font-family: "Segoe UI", Helvetica, sans-serif;
+  text-align: left;
   line-height: 1;
   outline: none !important;
 }
@@ -19,4 +21,20 @@
 textarea,
 select {
   font-family: "Segoe UI", Helvetica, sans-serif;
+}
+
+.transformWrapper {
+  transform-origin: center center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0px;
+  height: 0px;
+}
+.scaleWrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0px;
+  height: 0px;
 }

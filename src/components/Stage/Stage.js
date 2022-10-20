@@ -35,6 +35,10 @@ const Stage = forwardRef(
     },
     wrapper
   ) => {
+    useEffect(() => {
+      toggleVisibility();
+    }, []);
+
     useLayoutEffect(() => {
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
@@ -93,7 +97,7 @@ const Stage = forwardRef(
         d3Zoom.on("end", null);
       };
     }, [focusNode, spaceIsPressed]);
-  
+
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
     const translateWrapper = useRef();
