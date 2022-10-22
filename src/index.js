@@ -46,6 +46,14 @@ import nodeStyles from "./components/Node/Node.css";
 
 const defaultContext = {};
 
+function getTranslate3d(el) {
+  var values = el.style.transform.split(/\w+\(|\);?/);
+  if (!values[1] || !values[1].length) {
+    return [];
+  }
+  return values[1].split(/,\s?/g);
+}
+
 const checkIntersection = (boxA, boxB) => {
   if (
     boxA.bottom > boxB.top &&
@@ -156,8 +164,29 @@ export const NodeEditor = forwardRef(
     };
 
     useEffect(() => {
+      toggleVisibility();
+    }, [nodesState]);
+
+    // useEffect(() => {
+    //   previousComments &&
+    //     comments !== previousComments &&
+    //     setComments &&
+    //     setComments(comments);
+    // }, [comments, previousComments, setComments]);
+
+    useImperativeHandle(ref, () => ({
+      getNodes() {
+        return nodesState[currentStateIndex].state;
+      },
+      getComments() {
+        return comments;
+      },
+    }));
+
+    useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
       recalculateConnections();
+      triggerRecalculation();
 
       document.addEventListener("keydown", handleKeyDown);
 
@@ -238,14 +267,12 @@ export const NodeEditor = forwardRef(
               const nodeRef = document.getElementById(id);
 
               if (nodeRef) {
-                const newPositions = nodeRef.style.transform.match(
-                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-                );
+                const newPositions = getTranslate3d(nodeRef);
 
                 return {
                   nodeId: id,
-                  x: newPositions[1],
-                  y: newPositions[2],
+                  x: newPositions[0].replace("px", ""),
+                  y: newPositions[1].replace("px", ""),
                 };
               }
 
@@ -292,18 +319,14 @@ export const NodeEditor = forwardRef(
       }
     };
 
-    useEffect(() => {
-      toggleVisibility();
-    }, [nodesState]);
-
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
           for (const id of selectedNodes) {
             if (id !== excludedNodeId) {
-              const nodeRef = document.getElementById(id);
-              // const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-              //   ?.current;
+              // const nodeRef = document.getElementById(id);
+              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
+                ?.current;
               if (nodeRef) {
                 const oldPositions = nodeRef.style.transform.match(
                   /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
@@ -325,49 +348,12 @@ export const NodeEditor = forwardRef(
       }
     };
 
-    useImperativeHandle(ref, () => ({
-      getNodes() {
-        return nodesState[currentStateIndex].state;
-      },
-      getComments() {
-        return comments;
-      },
-    }));
-
-    const previousComments = usePrevious(comments);
-
-    useEffect(() => {
-      previousComments &&
-        comments !== previousComments &&
-        setComments &&
-        setComments(comments);
-    }, [comments, previousComments, setComments]);
-
     useEffect(() => {
       if (sideEffectToasts) {
         dispatchToasts(sideEffectToasts);
         setSideEffectToasts(null);
       }
     }, [sideEffectToasts]);
-
-    useMemo(() => {
-      if (focusNode) {
-        const nodes = nodesState[currentStateIndex].state;
-
-        Object.keys(nodes).forEach((node) => {
-          if (node === focusNode) {
-            document.getElementById(focusNode).style.border = "2px solid red";
-            setTimeout(() => {
-              document.getElementById(focusNode).style.border = "0";
-            }, 1000);
-            dispatchStageState(() => ({
-              type: "SET_SCALE",
-              scale: 1,
-            }));
-          }
-        });
-      }
-    }, [focusNode]);
 
     return (
       <PortTypesContext.Provider value={portTypes}>
@@ -413,7 +399,6 @@ export const NodeEditor = forwardRef(
                             ref={editorRef}
                             editorId={editorId}
                             toggleVisibility={toggleVisibility}
-                            setSpaceIsPressed={setSpaceIsPressed}
                             spaceIsPressed={spaceIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}
@@ -434,15 +419,23 @@ export const NodeEditor = forwardRef(
                             }
                             DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
                             draggableCanvasSet={context.draggableCanvasSet}
-                            spaceIsPressed={spaceIsPressed}
                           >
+                            {/* {!hideComments &&
+                              Object.values(comments).map((comment) => (
+                                <Comment
+                                  {...comment}
+                                  stageRect={stage}
+                                  dispatch={dispatchComments}
+                                  onDragStart={recalculateStageRect}
+                                  key={comment.id}
+                                />
+                              ))} */}
                             {Object.values(
                               nodesState[currentStateIndex].state
                             ).map((node) => (
                               <Node
                                 {...node}
                                 isSelected={selectedNodes.includes(node.id)}
-                                setSelected={(id) => setSelectedNodes([id])}
                                 ref={
                                   nodeRefs.find(([n]) => n.id === node.id)
                                     ? nodeRefs.find(
@@ -488,10 +481,10 @@ export const NodeEditor = forwardRef(
 
 NodeEditor.displayName = "NodeEditor";
 
-export FlumeConfig, { Colors } from "./typeBuilder/FlumeConfig";
-export Controls from "./typeBuilder/Controls";
+export { FlumeConfig, Colors } from "./typeBuilder/FlumeConfig";
+export { Controls } from "./typeBuilder/Controls";
 export { RootEngine } from "./RootEngine";
-export useNodeEditorController from "./hooks/useNodeEditorController";
+export { useNodeEditorController } from "./hooks/useNodeEditorController";
 export const useRootEngine = (nodes, engine, context) =>
   Object.keys(nodes).length > 0
     ? engine.resolveRootNode(nodes, { context })

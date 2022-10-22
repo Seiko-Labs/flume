@@ -30,20 +30,17 @@ var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 
 function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
+  _extends$3 = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
-
       for (var key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
         }
       }
     }
-
     return target;
   };
-
   return _extends$3.apply(this, arguments);
 }
 
@@ -55,29 +52,24 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     reject(error);
     return;
   }
-
   if (info.done) {
     resolve(value);
   } else {
     Promise.resolve(value).then(_next, _throw);
   }
 }
-
 function _asyncToGenerator(fn) {
   return function () {
     var self = this,
-        args = arguments;
+      args = arguments;
     return new Promise(function (resolve, reject) {
       var gen = fn.apply(self, args);
-
       function _next(value) {
         asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
       }
-
       function _throw(err) {
         asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
       }
-
       _next(undefined);
     });
   };
@@ -94,7 +86,6 @@ function _defineProperty$1(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
 
@@ -104,18 +95,14 @@ function _arrayWithHoles(arr) {
 
 function _iterableToArrayLimit(arr, i) {
   var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
   if (_i == null) return;
   var _arr = [];
   var _n = true;
   var _d = false;
-
   var _s, _e;
-
   try {
     for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
       _arr.push(_s.value);
-
       if (i && _arr.length === i) break;
     }
   } catch (err) {
@@ -128,17 +115,14 @@ function _iterableToArrayLimit(arr, i) {
       if (_d) throw _e;
     }
   }
-
   return _arr;
 }
 
 function _arrayLikeToArray$5(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
     arr2[i] = arr[i];
   }
-
   return arr2;
 }
 
@@ -180,765 +164,340 @@ function getAugmentedNamespace(n) {
 	return a;
 }
 
-var runtime = {exports: {}};
+var regeneratorRuntime$1 = {exports: {}};
 
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+var _typeof$1 = {exports: {}};
 
 (function (module) {
-var runtime = (function (exports) {
+function _typeof(obj) {
+  "@babel/helpers - typeof";
 
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined$1; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+}(_typeof$1));
 
+(function (module) {
+var _typeof = _typeof$1.exports["default"];
+function _regeneratorRuntime() {
+  module.exports = _regeneratorRuntime = function _regeneratorRuntime() {
+    return exports;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
+  var exports = {},
+    Op = Object.prototype,
+    hasOwn = Op.hasOwnProperty,
+    $Symbol = "function" == typeof Symbol ? Symbol : {},
+    iteratorSymbol = $Symbol.iterator || "@@iterator",
+    asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
+    toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
   function define(obj, key, value) {
-    Object.defineProperty(obj, key, {
+    return Object.defineProperty(obj, key, {
       value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-    return obj[key];
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }), obj[key];
   }
   try {
-    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
     define({}, "");
   } catch (err) {
-    define = function(obj, key, value) {
+    define = function define(obj, key, value) {
       return obj[key] = value;
     };
   }
-
   function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
+      generator = Object.create(protoGenerator.prototype),
+      context = new Context(tryLocsList || []);
+    return generator._invoke = function (innerFn, self, context) {
+      var state = "suspendedStart";
+      return function (method, arg) {
+        if ("executing" === state) throw new Error("Generator is already running");
+        if ("completed" === state) {
+          if ("throw" === method) throw arg;
+          return doneResult();
+        }
+        for (context.method = method, context.arg = arg;;) {
+          var delegate = context.delegate;
+          if (delegate) {
+            var delegateResult = maybeInvokeDelegate(delegate, context);
+            if (delegateResult) {
+              if (delegateResult === ContinueSentinel) continue;
+              return delegateResult;
+            }
+          }
+          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
+            if ("suspendedStart" === state) throw state = "completed", context.arg;
+            context.dispatchException(context.arg);
+          } else "return" === context.method && context.abrupt("return", context.arg);
+          state = "executing";
+          var record = tryCatch(innerFn, self, context);
+          if ("normal" === record.type) {
+            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+            return {
+              value: record.arg,
+              done: context.done
+            };
+          }
+          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+        }
+      };
+    }(innerFn, self, context), generator;
   }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
   function tryCatch(fn, obj, arg) {
     try {
-      return { type: "normal", arg: fn.call(obj, arg) };
+      return {
+        type: "normal",
+        arg: fn.call(obj, arg)
+      };
     } catch (err) {
-      return { type: "throw", arg: err };
+      return {
+        type: "throw",
+        arg: err
+      };
     }
   }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
+  exports.wrap = wrap;
   var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
   function Generator() {}
   function GeneratorFunction() {}
   function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
   var IteratorPrototype = {};
   define(IteratorPrototype, iteratorSymbol, function () {
     return this;
   });
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = GeneratorFunctionPrototype;
-  define(Gp, "constructor", GeneratorFunctionPrototype);
-  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
-  GeneratorFunction.displayName = define(
-    GeneratorFunctionPrototype,
-    toStringTagSymbol,
-    "GeneratorFunction"
-  );
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
+  var getProto = Object.getPrototypeOf,
+    NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
+  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
   function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      define(prototype, method, function(arg) {
+    ["next", "throw", "return"].forEach(function (method) {
+      define(prototype, method, function (arg) {
         return this._invoke(method, arg);
       });
     });
   }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      define(genFun, toStringTagSymbol, "GeneratorFunction");
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
   function AsyncIterator(generator, PromiseImpl) {
     function invoke(method, arg, resolve, reject) {
       var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
+      if ("throw" !== record.type) {
+        var result = record.arg,
+          value = result.value;
+        return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) {
+          invoke("next", value, resolve, reject);
+        }, function (err) {
+          invoke("throw", err, resolve, reject);
+        }) : PromiseImpl.resolve(value).then(function (unwrapped) {
+          result.value = unwrapped, resolve(result);
+        }, function (error) {
           return invoke("throw", error, resolve, reject);
         });
       }
+      reject(record.arg);
     }
-
     var previousPromise;
-
-    function enqueue(method, arg) {
+    this._invoke = function (method, arg) {
       function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
+        return new PromiseImpl(function (resolve, reject) {
           invoke(method, arg, resolve, reject);
         });
       }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  });
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
+      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
     };
   }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
   function maybeInvokeDelegate(delegate, context) {
     var method = delegate.iterator[context.method];
-    if (method === undefined$1) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined$1;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
+    if (undefined === method) {
+      if (context.delegate = null, "throw" === context.method) {
+        if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
+        context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
       }
-
       return ContinueSentinel;
     }
-
     var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
+    if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
     var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined$1;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
+    return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
   }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  define(Gp, toStringTagSymbol, "Generator");
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  define(Gp, iteratorSymbol, function() {
-    return this;
-  });
-
-  define(Gp, "toString", function() {
-    return "[object Generator]";
-  });
-
   function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
+    var entry = {
+      tryLoc: locs[0]
+    };
+    1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
   }
-
   function resetTryEntry(entry) {
     var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
+    record.type = "normal", delete record.arg, entry.completion = record;
   }
-
   function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
+    this.tryEntries = [{
+      tryLoc: "root"
+    }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
   }
-
-  exports.keys = function(object) {
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) return iteratorMethod.call(iterable);
+      if ("function" == typeof iterable.next) return iterable;
+      if (!isNaN(iterable.length)) {
+        var i = -1,
+          next = function next() {
+            for (; ++i < iterable.length;) {
+              if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
+            }
+            return next.value = undefined, next.done = !0, next;
+          };
+        return next.next = next;
+      }
+    }
+    return {
+      next: doneResult
+    };
+  }
+  function doneResult() {
+    return {
+      value: undefined,
+      done: !0
+    };
+  }
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
+    var ctor = "function" == typeof genFun && genFun.constructor;
+    return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
+  }, exports.mark = function (genFun) {
+    return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
+  }, exports.awrap = function (arg) {
+    return {
+      __await: arg
+    };
+  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+    return this;
+  }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    void 0 === PromiseImpl && (PromiseImpl = Promise);
+    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+    return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) {
+      return result.done ? result.value : iter.next();
+    });
+  }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () {
+    return this;
+  }), define(Gp, "toString", function () {
+    return "[object Generator]";
+  }), exports.keys = function (object) {
     var keys = [];
     for (var key in object) {
       keys.push(key);
     }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
+    return keys.reverse(), function next() {
+      for (; keys.length;) {
         var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
+        if (key in object) return next.value = key, next.done = !1, next;
       }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
+      return next.done = !0, next;
     };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined$1;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined$1, done: true };
-  }
-
-  Context.prototype = {
+  }, exports.values = values, Context.prototype = {
     constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined$1;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined$1;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined$1;
-          }
-        }
+    reset: function reset(skipTempReset) {
+      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) {
+        "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
       }
     },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
+    stop: function stop() {
+      this.done = !0;
+      var rootRecord = this.tryEntries[0].completion;
+      if ("throw" === rootRecord.type) throw rootRecord.arg;
       return this.rval;
     },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
+    dispatchException: function dispatchException(exception) {
+      if (this.done) throw exception;
       var context = this;
       function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined$1;
-        }
-
-        return !! caught;
+        return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
       }
-
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
+        var entry = this.tryEntries[i],
+          record = entry.completion;
+        if ("root" === entry.tryLoc) return handle("end");
         if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
+          var hasCatch = hasOwn.call(entry, "catchLoc"),
+            hasFinally = hasOwn.call(entry, "finallyLoc");
           if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
+            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
+            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
           } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
+            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
           } else {
-            throw new Error("try statement without catch or finally");
+            if (!hasFinally) throw new Error("try statement without catch or finally");
+            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
           }
         }
       }
     },
-
-    abrupt: function(type, arg) {
+    abrupt: function abrupt(type, arg) {
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
+        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
           var finallyEntry = entry;
           break;
         }
       }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
+      finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
       var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
+      return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
     },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
+    complete: function complete(record, afterLoc) {
+      if ("throw" === record.type) throw record.arg;
+      return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
     },
-
-    finish: function(finallyLoc) {
+    finish: function finish(finallyLoc) {
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
+        if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
       }
     },
-
-    "catch": function(tryLoc) {
+    "catch": function _catch(tryLoc) {
       for (var i = this.tryEntries.length - 1; i >= 0; --i) {
         var entry = this.tryEntries[i];
         if (entry.tryLoc === tryLoc) {
           var record = entry.completion;
-          if (record.type === "throw") {
+          if ("throw" === record.type) {
             var thrown = record.arg;
             resetTryEntry(entry);
           }
           return thrown;
         }
       }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
       throw new Error("illegal catch attempt");
     },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
+    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+      return this.delegate = {
         iterator: values(iterable),
         resultName: resultName,
         nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined$1;
-      }
-
-      return ContinueSentinel;
+      }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
     }
-  };
+  }, exports;
+}
+module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
+}(regeneratorRuntime$1));
 
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
+// TODO(Babel 8): Remove this file.
 
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-  module.exports 
-));
+var runtime = regeneratorRuntime$1.exports();
+var regenerator = runtime;
 
+// Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
 try {
   regeneratorRuntime = runtime;
 } catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, in modern engines
-  // we can explicitly access globalThis. In older engines we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
   if (typeof globalThis === "object") {
     globalThis.regeneratorRuntime = runtime;
   } else {
     Function("r", "regeneratorRuntime = r")(runtime);
   }
 }
-}(runtime));
-
-var regenerator = runtime.exports;
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -1146,11 +705,11 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$e = ".Stage_wrapper__1X5K_{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1X5K_ *{box-sizing:border-box}.Stage_wrapper__1X5K_ input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__3CfIp{transform-origin:center center}.Stage_scaleWrapper__2Y7Ck,.Stage_transformWrapper__3CfIp{height:0;left:50%;position:absolute;top:50%;width:0}";
-var styles$b = {"wrapper":"Stage_wrapper__1X5K_","transformWrapper":"Stage_transformWrapper__3CfIp","scaleWrapper":"Stage_scaleWrapper__2Y7Ck"};
+var css_248z$e = ".Stage_wrapper__1-MnH{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1-MnH *{box-sizing:border-box}.Stage_wrapper__1-MnH input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__15k8U{transform-origin:center center}.Stage_scaleWrapper__Svldl,.Stage_transformWrapper__15k8U{height:0;left:50%;position:absolute;top:50%;width:0}";
+var styles$b = {"wrapper":"Stage_wrapper__1-MnH","transformWrapper":"Stage_transformWrapper__15k8U","scaleWrapper":"Stage_scaleWrapper__Svldl"};
 styleInject(css_248z$e);
 
-var propTypes$1 = {exports: {}};
+var propTypes = {exports: {}};
 
 var reactIs = {exports: {}};
 
@@ -1454,11 +1013,11 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
  * LICENSE file in the root directory of this source tree.
  */
 
-var ReactPropTypesSecret$7 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+var ReactPropTypesSecret$3 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
-var ReactPropTypesSecret_1$1 = ReactPropTypesSecret$7;
+var ReactPropTypesSecret_1 = ReactPropTypesSecret$3;
 
-var has$5 = Function.call.bind(Object.prototype.hasOwnProperty);
+var has$3 = Function.call.bind(Object.prototype.hasOwnProperty);
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1467,14 +1026,14 @@ var has$5 = Function.call.bind(Object.prototype.hasOwnProperty);
  * LICENSE file in the root directory of this source tree.
  */
 
-var printWarning$3 = function() {};
+var printWarning$1 = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret$6 = ReactPropTypesSecret_1$1;
-  var loggedTypeFailures$1 = {};
-  var has$4 = has$5;
+  var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
+  var loggedTypeFailures = {};
+  var has$2 = has$3;
 
-  printWarning$3 = function(text) {
+  printWarning$1 = function(text) {
     var message = 'Warning: ' + text;
     if (typeof console !== 'undefined') {
       console.error(message);
@@ -1499,10 +1058,10 @@ if (process.env.NODE_ENV !== 'production') {
  * @param {?Function} getStack Returns the component stack.
  * @private
  */
-function checkPropTypes$3(typeSpecs, values, location, componentName, getStack) {
+function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
   if (process.env.NODE_ENV !== 'production') {
     for (var typeSpecName in typeSpecs) {
-      if (has$4(typeSpecs, typeSpecName)) {
+      if (has$2(typeSpecs, typeSpecName)) {
         var error;
         // Prop type validation may throw. In case they do, we don't want to
         // fail the render phase where it didn't fail before. So we log it.
@@ -1519,12 +1078,12 @@ function checkPropTypes$3(typeSpecs, values, location, componentName, getStack) 
             err.name = 'Invariant Violation';
             throw err;
           }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$6);
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$2);
         } catch (ex) {
           error = ex;
         }
         if (error && !(error instanceof Error)) {
-          printWarning$3(
+          printWarning$1(
             (componentName || 'React class') + ': type specification of ' +
             location + ' `' + typeSpecName + '` is invalid; the type checker ' +
             'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
@@ -1533,14 +1092,14 @@ function checkPropTypes$3(typeSpecs, values, location, componentName, getStack) 
             'shape all require an argument).'
           );
         }
-        if (error instanceof Error && !(error.message in loggedTypeFailures$1)) {
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
           // same error.
-          loggedTypeFailures$1[error.message] = true;
+          loggedTypeFailures[error.message] = true;
 
           var stack = getStack ? getStack() : '';
 
-          printWarning$3(
+          printWarning$1(
             'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
           );
         }
@@ -1554,13 +1113,13 @@ function checkPropTypes$3(typeSpecs, values, location, componentName, getStack) 
  *
  * @private
  */
-checkPropTypes$3.resetWarningCache = function() {
+checkPropTypes$1.resetWarningCache = function() {
   if (process.env.NODE_ENV !== 'production') {
-    loggedTypeFailures$1 = {};
+    loggedTypeFailures = {};
   }
 };
 
-var checkPropTypes_1$1 = checkPropTypes$3;
+var checkPropTypes_1 = checkPropTypes$1;
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1569,17 +1128,17 @@ var checkPropTypes_1$1 = checkPropTypes$3;
  * LICENSE file in the root directory of this source tree.
  */
 
-var ReactIs$3 = reactIs.exports;
-var assign$2 = objectAssign;
+var ReactIs$1 = reactIs.exports;
+var assign$1 = objectAssign;
 
-var ReactPropTypesSecret$5 = ReactPropTypesSecret_1$1;
-var has$3 = has$5;
-var checkPropTypes$2 = checkPropTypes_1$1;
+var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+var has$1 = has$3;
+var checkPropTypes = checkPropTypes_1;
 
-var printWarning$2 = function() {};
+var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  printWarning$2 = function(text) {
+  printWarning = function(text) {
     var message = 'Warning: ' + text;
     if (typeof console !== 'undefined') {
       console.error(message);
@@ -1593,11 +1152,11 @@ if (process.env.NODE_ENV !== 'production') {
   };
 }
 
-function emptyFunctionThatReturnsNull$1() {
+function emptyFunctionThatReturnsNull() {
   return null;
 }
 
-var factoryWithTypeCheckers$1 = function(isValidElement, throwOnDirectAccess) {
+var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
   var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
   var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
@@ -1739,7 +1298,7 @@ var factoryWithTypeCheckers$1 = function(isValidElement, throwOnDirectAccess) {
       componentName = componentName || ANONYMOUS;
       propFullName = propFullName || propName;
 
-      if (secret !== ReactPropTypesSecret$5) {
+      if (secret !== ReactPropTypesSecret$1) {
         if (throwOnDirectAccess) {
           // New behavior only for users of `prop-types` package
           var err = new Error(
@@ -1757,7 +1316,7 @@ var factoryWithTypeCheckers$1 = function(isValidElement, throwOnDirectAccess) {
             // Avoid spamming the console because they are often not actionable except for lib authors
             manualPropTypeWarningCount < 3
           ) {
-            printWarning$2(
+            printWarning(
               'You are manually calling a React.PropTypes validation ' +
               'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
@@ -1802,944 +1361,6 @@ var factoryWithTypeCheckers$1 = function(isValidElement, throwOnDirectAccess) {
           'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
           {expectedType: expectedType}
         );
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunctionThatReturnsNull$1);
-  }
-
-  function createArrayOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
-      }
-      var propValue = props[propName];
-      if (!Array.isArray(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
-      }
-      for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret$5);
-        if (error instanceof Error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!isValidElement(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!ReactIs$3.isValidElementType(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createInstanceTypeChecker(expectedClass) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!(props[propName] instanceof expectedClass)) {
-        var expectedClassName = expectedClass.name || ANONYMOUS;
-        var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createEnumTypeChecker(expectedValues) {
-    if (!Array.isArray(expectedValues)) {
-      if (process.env.NODE_ENV !== 'production') {
-        if (arguments.length > 1) {
-          printWarning$2(
-            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
-            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
-          );
-        } else {
-          printWarning$2('Invalid argument supplied to oneOf, expected an array.');
-        }
-      }
-      return emptyFunctionThatReturnsNull$1;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      for (var i = 0; i < expectedValues.length; i++) {
-        if (is(propValue, expectedValues[i])) {
-          return null;
-        }
-      }
-
-      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
-        var type = getPreciseType(value);
-        if (type === 'symbol') {
-          return String(value);
-        }
-        return value;
-      });
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createObjectOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
-      }
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
-      }
-      for (var key in propValue) {
-        if (has$3(propValue, key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$5);
-          if (error instanceof Error) {
-            return error;
-          }
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createUnionTypeChecker(arrayOfTypeCheckers) {
-    if (!Array.isArray(arrayOfTypeCheckers)) {
-      process.env.NODE_ENV !== 'production' ? printWarning$2('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
-      return emptyFunctionThatReturnsNull$1;
-    }
-
-    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-      var checker = arrayOfTypeCheckers[i];
-      if (typeof checker !== 'function') {
-        printWarning$2(
-          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
-        );
-        return emptyFunctionThatReturnsNull$1;
-      }
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var expectedTypes = [];
-      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-        var checker = arrayOfTypeCheckers[i];
-        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$5);
-        if (checkerResult == null) {
-          return null;
-        }
-        if (checkerResult.data && has$3(checkerResult.data, 'expectedType')) {
-          expectedTypes.push(checkerResult.data.expectedType);
-        }
-      }
-      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createNodeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function invalidValidatorError(componentName, location, propFullName, key, type) {
-    return new PropTypeError(
-      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
-      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
-    );
-  }
-
-  function createShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      for (var key in shapeTypes) {
-        var checker = shapeTypes[key];
-        if (typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$5);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createStrictShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      // We need to check all keys in case some are required but missing from props.
-      var allKeys = assign$2({}, props[propName], shapeTypes);
-      for (var key in allKeys) {
-        var checker = shapeTypes[key];
-        if (has$3(shapeTypes, key) && typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
-        }
-        if (!checker) {
-          return new PropTypeError(
-            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
-            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
-          );
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$5);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-
-    return createChainableTypeChecker(validate);
-  }
-
-  function isNode(propValue) {
-    switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
-        return true;
-      case 'boolean':
-        return !propValue;
-      case 'object':
-        if (Array.isArray(propValue)) {
-          return propValue.every(isNode);
-        }
-        if (propValue === null || isValidElement(propValue)) {
-          return true;
-        }
-
-        var iteratorFn = getIteratorFn(propValue);
-        if (iteratorFn) {
-          var iterator = iteratorFn.call(propValue);
-          var step;
-          if (iteratorFn !== propValue.entries) {
-            while (!(step = iterator.next()).done) {
-              if (!isNode(step.value)) {
-                return false;
-              }
-            }
-          } else {
-            // Iterator will provide entry [k,v] tuples rather than values.
-            while (!(step = iterator.next()).done) {
-              var entry = step.value;
-              if (entry) {
-                if (!isNode(entry[1])) {
-                  return false;
-                }
-              }
-            }
-          }
-        } else {
-          return false;
-        }
-
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  function isSymbol(propType, propValue) {
-    // Native Symbol.
-    if (propType === 'symbol') {
-      return true;
-    }
-
-    // falsy value can't be a Symbol
-    if (!propValue) {
-      return false;
-    }
-
-    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
-      return true;
-    }
-
-    // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // Equivalent of `typeof` but with special handling for array and regexp.
-  function getPropType(propValue) {
-    var propType = typeof propValue;
-    if (Array.isArray(propValue)) {
-      return 'array';
-    }
-    if (propValue instanceof RegExp) {
-      // Old webkits (at least until Android 4.0) return 'function' rather than
-      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-      // passes PropTypes.object.
-      return 'object';
-    }
-    if (isSymbol(propType, propValue)) {
-      return 'symbol';
-    }
-    return propType;
-  }
-
-  // This handles more types than `getPropType`. Only used for error messages.
-  // See `createPrimitiveTypeChecker`.
-  function getPreciseType(propValue) {
-    if (typeof propValue === 'undefined' || propValue === null) {
-      return '' + propValue;
-    }
-    var propType = getPropType(propValue);
-    if (propType === 'object') {
-      if (propValue instanceof Date) {
-        return 'date';
-      } else if (propValue instanceof RegExp) {
-        return 'regexp';
-      }
-    }
-    return propType;
-  }
-
-  // Returns a string that is postfixed to a warning about an invalid type.
-  // For example, "undefined" or "of type array"
-  function getPostfixForTypeWarning(value) {
-    var type = getPreciseType(value);
-    switch (type) {
-      case 'array':
-      case 'object':
-        return 'an ' + type;
-      case 'boolean':
-      case 'date':
-      case 'regexp':
-        return 'a ' + type;
-      default:
-        return type;
-    }
-  }
-
-  // Returns class name of the object, if any.
-  function getClassName(propValue) {
-    if (!propValue.constructor || !propValue.constructor.name) {
-      return ANONYMOUS;
-    }
-    return propValue.constructor.name;
-  }
-
-  ReactPropTypes.checkPropTypes = checkPropTypes$2;
-  ReactPropTypes.resetWarningCache = checkPropTypes$2.resetWarningCache;
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var ReactPropTypesSecret$4 = ReactPropTypesSecret_1$1;
-
-function emptyFunction$1() {}
-function emptyFunctionWithReset$1() {}
-emptyFunctionWithReset$1.resetWarningCache = emptyFunction$1;
-
-var factoryWithThrowingShims$1 = function() {
-  function shim(props, propName, componentName, location, propFullName, secret) {
-    if (secret === ReactPropTypesSecret$4) {
-      // It is still safe when called from React.
-      return;
-    }
-    var err = new Error(
-      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-      'Use PropTypes.checkPropTypes() to call them. ' +
-      'Read more at http://fb.me/use-check-prop-types'
-    );
-    err.name = 'Invariant Violation';
-    throw err;
-  }  shim.isRequired = shim;
-  function getShim() {
-    return shim;
-  }  // Important!
-  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-  var ReactPropTypes = {
-    array: shim,
-    bigint: shim,
-    bool: shim,
-    func: shim,
-    number: shim,
-    object: shim,
-    string: shim,
-    symbol: shim,
-
-    any: shim,
-    arrayOf: getShim,
-    element: shim,
-    elementType: shim,
-    instanceOf: getShim,
-    node: shim,
-    objectOf: getShim,
-    oneOf: getShim,
-    oneOfType: getShim,
-    shape: getShim,
-    exact: getShim,
-
-    checkPropTypes: emptyFunctionWithReset$1,
-    resetWarningCache: emptyFunction$1
-  };
-
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (process.env.NODE_ENV !== 'production') {
-  var ReactIs$2 = reactIs.exports;
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess$1 = true;
-  propTypes$1.exports = factoryWithTypeCheckers$1(ReactIs$2.isElement, throwOnDirectAccess$1);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  propTypes$1.exports = factoryWithThrowingShims$1();
-}
-
-var PropTypes$1 = propTypes$1.exports;
-
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn$2(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Portal$3 = function (_React$Component) {
-  _inherits$2(Portal, _React$Component);
-
-  function Portal() {
-    _classCallCheck$2(this, Portal);
-
-    return _possibleConstructorReturn$2(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
-  }
-
-  _createClass$2(Portal, [{
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (this.defaultNode) {
-        document.body.removeChild(this.defaultNode);
-      }
-      this.defaultNode = null;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      if (!canUseDOM) {
-        return null;
-      }
-      if (!this.props.node && !this.defaultNode) {
-        this.defaultNode = document.createElement('div');
-        document.body.appendChild(this.defaultNode);
-      }
-      return ReactDOM__default["default"].createPortal(this.props.children, this.props.node || this.defaultNode);
-    }
-  }]);
-
-  return Portal;
-}(React__default["default"].Component);
-
-Portal$3.propTypes = {
-  children: PropTypes$1.node.isRequired,
-  node: PropTypes$1.any
-};
-
-var Portalv4 = Portal$3;
-
-var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn$1(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Portal$2 = function (_React$Component) {
-  _inherits$1(Portal, _React$Component);
-
-  function Portal() {
-    _classCallCheck$1(this, Portal);
-
-    return _possibleConstructorReturn$1(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
-  }
-
-  _createClass$1(Portal, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.renderPortal();
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(props) {
-      this.renderPortal();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      ReactDOM__default["default"].unmountComponentAtNode(this.defaultNode || this.props.node);
-      if (this.defaultNode) {
-        document.body.removeChild(this.defaultNode);
-      }
-      this.defaultNode = null;
-      this.portal = null;
-    }
-  }, {
-    key: 'renderPortal',
-    value: function renderPortal(props) {
-      if (!this.props.node && !this.defaultNode) {
-        this.defaultNode = document.createElement('div');
-        document.body.appendChild(this.defaultNode);
-      }
-
-      var children = this.props.children;
-      // https://gist.github.com/jimfb/d99e0678e9da715ccf6454961ef04d1b
-      if (typeof this.props.children.type === 'function') {
-        children = React__default["default"].cloneElement(this.props.children);
-      }
-
-      this.portal = ReactDOM__default["default"].unstable_renderSubtreeIntoContainer(this, children, this.props.node || this.defaultNode);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return null;
-    }
-  }]);
-
-  return Portal;
-}(React__default["default"].Component);
-
-var LegacyPortal = Portal$2;
-
-
-Portal$2.propTypes = {
-  children: PropTypes$1.node.isRequired,
-  node: PropTypes$1.any
-};
-
-var Portal = void 0;
-
-if (ReactDOM__default["default"].createPortal) {
-  Portal = Portalv4;
-} else {
-  Portal = LegacyPortal;
-}
-
-var Portal$1 = Portal;
-
-var lib = {exports: {}};
-
-var scrollbar = {exports: {}};
-
-var propTypes = {exports: {}};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var ReactPropTypesSecret$3 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-var ReactPropTypesSecret_1 = ReactPropTypesSecret$3;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var printWarning$1 = function() {};
-
-if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
-  var loggedTypeFailures = {};
-  var has$2 = Function.call.bind(Object.prototype.hasOwnProperty);
-
-  printWarning$1 = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
-  if (process.env.NODE_ENV !== 'production') {
-    for (var typeSpecName in typeSpecs) {
-      if (has$2(typeSpecs, typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          if (typeof typeSpecs[typeSpecName] !== 'function') {
-            var err = Error(
-              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
-            );
-            err.name = 'Invariant Violation';
-            throw err;
-          }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$2);
-        } catch (ex) {
-          error = ex;
-        }
-        if (error && !(error instanceof Error)) {
-          printWarning$1(
-            (componentName || 'React class') + ': type specification of ' +
-            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
-            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
-            'You may have forgotten to pass an argument to the type checker ' +
-            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-            'shape all require an argument).'
-          );
-        }
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          printWarning$1(
-            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
-          );
-        }
-      }
-    }
-  }
-}
-
-/**
- * Resets warning cache when testing.
- *
- * @private
- */
-checkPropTypes$1.resetWarningCache = function() {
-  if (process.env.NODE_ENV !== 'production') {
-    loggedTypeFailures = {};
-  }
-};
-
-var checkPropTypes_1 = checkPropTypes$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var ReactIs$1 = reactIs.exports;
-var assign$1 = objectAssign;
-
-var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
-var checkPropTypes = checkPropTypes_1;
-
-var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
-var printWarning = function() {};
-
-if (process.env.NODE_ENV !== 'production') {
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-function emptyFunctionThatReturnsNull() {
-  return null;
-}
-
-var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-  /**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
-  function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
-      return iteratorFn;
-    }
-  }
-
-  /**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
-
-  var ANONYMOUS = '<<anonymous>>';
-
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
-  var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    elementType: createElementTypeTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker,
-    exact: createStrictShapeTypeChecker,
-  };
-
-  /**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
-  /*eslint-disable no-self-compare*/
-  function is(x, y) {
-    // SameValue algorithm
-    if (x === y) {
-      // Steps 1-5, 7-10
-      // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
-    }
-  }
-  /*eslint-enable no-self-compare*/
-
-  /**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
-  function PropTypeError(message) {
-    this.message = message;
-    this.stack = '';
-  }
-  // Make `instanceof Error` still work for returned errors.
-  PropTypeError.prototype = Error.prototype;
-
-  function createChainableTypeChecker(validate) {
-    if (process.env.NODE_ENV !== 'production') {
-      var manualPropTypeCallCache = {};
-      var manualPropTypeWarningCount = 0;
-    }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-      componentName = componentName || ANONYMOUS;
-      propFullName = propFullName || propName;
-
-      if (secret !== ReactPropTypesSecret$1) {
-        if (throwOnDirectAccess) {
-          // New behavior only for users of `prop-types` package
-          var err = new Error(
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
-          );
-          err.name = 'Invariant Violation';
-          throw err;
-        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
-          // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
-          if (
-            !manualPropTypeCallCache[cacheKey] &&
-            // Avoid spamming the console because they are often not actionable except for lib authors
-            manualPropTypeWarningCount < 3
-          ) {
-            printWarning(
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
-            );
-            manualPropTypeCallCache[cacheKey] = true;
-            manualPropTypeWarningCount++;
-          }
-        }
-      }
-      if (props[propName] == null) {
-        if (isRequired) {
-          if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
-          }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
-        }
-        return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
-      }
-    }
-
-    var chainedCheckType = checkType.bind(null, false);
-    chainedCheckType.isRequired = checkType.bind(null, true);
-
-    return chainedCheckType;
-  }
-
-  function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== expectedType) {
-        // `propValue` being instance of, say, date/regexp, pass the 'object'
-        // check, but we can offer a more precise error message here rather than
-        // 'of type `object`'.
-        var preciseType = getPreciseType(propValue);
-
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
       }
       return null;
     }
@@ -2883,14 +1504,19 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     }
 
     function validate(props, propName, componentName, location, propFullName) {
+      var expectedTypes = [];
       for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
         var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1) == null) {
+        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1);
+        if (checkerResult == null) {
           return null;
         }
+        if (checkerResult.data && has$1(checkerResult.data, 'expectedType')) {
+          expectedTypes.push(checkerResult.data.expectedType);
+        }
       }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
     }
     return createChainableTypeChecker(validate);
   }
@@ -2905,6 +1531,13 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     return createChainableTypeChecker(validate);
   }
 
+  function invalidValidatorError(componentName, location, propFullName, key, type) {
+    return new PropTypeError(
+      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
+      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
+    );
+  }
+
   function createShapeTypeChecker(shapeTypes) {
     function validate(props, propName, componentName, location, propFullName) {
       var propValue = props[propName];
@@ -2914,8 +1547,8 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       }
       for (var key in shapeTypes) {
         var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
+        if (typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
         if (error) {
@@ -2934,16 +1567,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       if (propType !== 'object') {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
       }
-      // We need to check all keys in case some are required but missing from
-      // props.
+      // We need to check all keys in case some are required but missing from props.
       var allKeys = assign$1({}, props[propName], shapeTypes);
       for (var key in allKeys) {
         var checker = shapeTypes[key];
+        if (has$1(shapeTypes, key) && typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+        }
         if (!checker) {
           return new PropTypeError(
             'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
             '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
           );
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
@@ -3128,6 +1763,7 @@ var factoryWithThrowingShims = function() {
   // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
   var ReactPropTypes = {
     array: shim,
+    bigint: shim,
     bool: shim,
     func: shim,
     number: shim,
@@ -3177,6 +1813,142 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 var PropTypes = propTypes.exports;
+
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+var _createClass$2 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn$2(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Portal$3 = function (_React$Component) {
+  _inherits$2(Portal, _React$Component);
+
+  function Portal() {
+    _classCallCheck$2(this, Portal);
+
+    return _possibleConstructorReturn$2(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
+  }
+
+  _createClass$2(Portal, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (this.defaultNode) {
+        document.body.removeChild(this.defaultNode);
+      }
+      this.defaultNode = null;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (!canUseDOM) {
+        return null;
+      }
+      if (!this.props.node && !this.defaultNode) {
+        this.defaultNode = document.createElement('div');
+        document.body.appendChild(this.defaultNode);
+      }
+      return ReactDOM__default["default"].createPortal(this.props.children, this.props.node || this.defaultNode);
+    }
+  }]);
+
+  return Portal;
+}(React__default["default"].Component);
+
+Portal$3.propTypes = {
+  children: PropTypes.node.isRequired,
+  node: PropTypes.any
+};
+
+var Portalv4 = Portal$3;
+
+var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn$1(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Portal$2 = function (_React$Component) {
+  _inherits$1(Portal, _React$Component);
+
+  function Portal() {
+    _classCallCheck$1(this, Portal);
+
+    return _possibleConstructorReturn$1(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).apply(this, arguments));
+  }
+
+  _createClass$1(Portal, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.renderPortal();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(props) {
+      this.renderPortal();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      ReactDOM__default["default"].unmountComponentAtNode(this.defaultNode || this.props.node);
+      if (this.defaultNode) {
+        document.body.removeChild(this.defaultNode);
+      }
+      this.defaultNode = null;
+      this.portal = null;
+    }
+  }, {
+    key: 'renderPortal',
+    value: function renderPortal(props) {
+      if (!this.props.node && !this.defaultNode) {
+        this.defaultNode = document.createElement('div');
+        document.body.appendChild(this.defaultNode);
+      }
+
+      var children = this.props.children;
+      // https://gist.github.com/jimfb/d99e0678e9da715ccf6454961ef04d1b
+      if (typeof this.props.children.type === 'function') {
+        children = React__default["default"].cloneElement(this.props.children);
+      }
+
+      this.portal = ReactDOM__default["default"].unstable_renderSubtreeIntoContainer(this, children, this.props.node || this.defaultNode);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return null;
+    }
+  }]);
+
+  return Portal;
+}(React__default["default"].Component);
+
+var LegacyPortal = Portal$2;
+
+
+Portal$2.propTypes = {
+  children: PropTypes.node.isRequired,
+  node: PropTypes.any
+};
+
+var Portal = void 0;
+
+if (ReactDOM__default["default"].createPortal) {
+  Portal = Portalv4;
+} else {
+  Portal = LegacyPortal;
+}
+
+var Portal$1 = Portal;
+
+var lib = {exports: {}};
+
+var scrollbar = {exports: {}};
 
 /*!
  * perfect-scrollbar v1.5.3
@@ -4784,8 +3556,8 @@ module.exports = exports['default'];
 
 var ScrollBar = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
 
-var css_248z$d = ".ContextMenu_menuWrapper__1BheJ{background:#161a30;border:1px solid #242b45;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(23,26,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__1Cw58{border-bottom:1px solid #2e3a59;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__158Pv{color:#c6cee0;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__2YK_z{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__1goBp{background:none;border:none;color:#c6cee0;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__1goBp::placeholder{font-style:italic}.ContextMenu_option__33MDL{border-bottom:1px solid #2e3a59;color:#c6cee0;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__33MDL:last-child{border-bottom:none}.ContextMenu_option__33MDL:hover{background:#242b45}.ContextMenu_option__33MDL label{margin-bottom:3px;user-select:none}.ContextMenu_option__33MDL label:last-child{margin-bottom:0}.ContextMenu_option__33MDL p{color:#8a8b93;font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__33MDL[data-selected=true]{background:#242b45}.ContextMenu_emptyText__2rcXy{color:#c6cee0;padding:6px}";
-var styles$a = {"menuWrapper":"ContextMenu_menuWrapper__1BheJ","menuHeader":"ContextMenu_menuHeader__1Cw58","menuLabel":"ContextMenu_menuLabel__158Pv","optionsWrapper":"ContextMenu_optionsWrapper__2YK_z","menuFilter":"ContextMenu_menuFilter__1goBp","option":"ContextMenu_option__33MDL","emptyText":"ContextMenu_emptyText__2rcXy"};
+var css_248z$d = ".ContextMenu_menuWrapper__Z9z6u{background:#161a30;border:1px solid #242b45;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(23,26,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__YueK-{border-bottom:1px solid #2e3a59;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__s8v-E{color:#c6cee0;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__KHbqz{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__mcwO6{background:none;border:none;color:#c6cee0;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__mcwO6::placeholder{font-style:italic}.ContextMenu_option__vWtA9{border-bottom:1px solid #2e3a59;color:#c6cee0;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__vWtA9:last-child{border-bottom:none}.ContextMenu_option__vWtA9:hover{background:#242b45}.ContextMenu_option__vWtA9 label{margin-bottom:3px;user-select:none}.ContextMenu_option__vWtA9 label:last-child{margin-bottom:0}.ContextMenu_option__vWtA9 p{color:#8a8b93;font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__vWtA9[data-selected=true]{background:#242b45}.ContextMenu_emptyText__lDw6a{color:#c6cee0;padding:6px}";
+var styles$a = {"menuWrapper":"ContextMenu_menuWrapper__Z9z6u","menuHeader":"ContextMenu_menuHeader__YueK-","menuLabel":"ContextMenu_menuLabel__s8v-E","optionsWrapper":"ContextMenu_optionsWrapper__KHbqz","menuFilter":"ContextMenu_menuFilter__mcwO6","option":"ContextMenu_option__vWtA9","emptyText":"ContextMenu_emptyText__lDw6a"};
 styleInject(css_248z$d);
 
 /**
@@ -5222,36 +3994,34 @@ var nanoid = nonSecure;
 
 var ContextMenu = function ContextMenu(_ref) {
   var x = _ref.x,
-      y = _ref.y,
-      _ref$options = _ref.options,
-      options = _ref$options === void 0 ? [] : _ref$options,
-      onRequestClose = _ref.onRequestClose,
-      onOptionSelected = _ref.onOptionSelected,
-      label = _ref.label,
-      hideHeader = _ref.hideHeader,
-      hideFilter = _ref.hideFilter,
-      emptyText = _ref.emptyText;
+    y = _ref.y,
+    _ref$options = _ref.options,
+    options = _ref$options === void 0 ? [] : _ref$options,
+    onRequestClose = _ref.onRequestClose,
+    onOptionSelected = _ref.onOptionSelected,
+    label = _ref.label,
+    hideHeader = _ref.hideHeader,
+    hideFilter = _ref.hideFilter,
+    emptyText = _ref.emptyText;
   var menuWrapper = React.useRef();
   var menuOptionsWrapper = React.useRef();
   var menuOptionsScroll = React.useRef();
   var filterInput = React.useRef();
-
   var _useState = React.useState(""),
-      _useState2 = _slicedToArray(_useState, 2),
-      filter = _useState2[0],
-      setFilter = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    filter = _useState2[0],
+    setFilter = _useState2[1];
   var _useState3 = React.useState(0),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuWidth = _useState4[0],
-      setMenuWidth = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    menuWidth = _useState4[0],
+    setMenuWidth = _useState4[1];
   var _useState5 = React.useState(0),
-      _useState6 = _slicedToArray(_useState5, 2),
-      selectedIndex = _useState6[0],
-      setSelectedIndex = _useState6[1];
+    _useState6 = _slicedToArray(_useState5, 2),
+    selectedIndex = _useState6[0],
+    setSelectedIndex = _useState6[1];
+  var menuId = React.useRef(nanoid(10));
 
-  var menuId = React.useRef(nanoid(10)); // function handleWheel(e) {
+  // function handleWheel(e) {
   //   console.log(e);
   //   e.wheelDelta < e.preventDefault();
   // }
@@ -5268,7 +4038,6 @@ var ContextMenu = function ContextMenu(_ref) {
     onOptionSelected(option);
     onRequestClose();
   };
-
   var testClickOutside = React.useCallback(function (e) {
     if (menuWrapper.current && !menuWrapper.current.contains(e.target)) {
       onRequestClose();
@@ -5292,7 +4061,6 @@ var ContextMenu = function ContextMenu(_ref) {
     if (filterInput.current) {
       filterInput.current.focus();
     }
-
     setMenuWidth(menuWrapper.current.getBoundingClientRect().width);
     document.addEventListener("keydown", testEscape, {
       capture: true
@@ -5322,22 +4090,18 @@ var ContextMenu = function ContextMenu(_ref) {
       return opt.label.toLowerCase().includes(lowerFilter);
     });
   }, [filter, options]);
-
   var handleFilterChange = function handleFilterChange(e) {
     var value = e.target.value;
     setFilter(value);
     setSelectedIndex(0);
   };
-
   React.useLayoutEffect(function () {
     menuOptionsScroll.current.updateScroll();
   });
-
   var handleKeyDown = function handleKeyDown(e) {
     // Up pressed
     if (e.which === 38) {
       e.preventDefault();
-
       if (selectedIndex === null) {
         setSelectedIndex(0);
       } else if (selectedIndex > 0) {
@@ -5345,12 +4109,10 @@ var ContextMenu = function ContextMenu(_ref) {
           return i - 1;
         });
       }
-    } // Down pressed
-
-
+    }
+    // Down pressed
     if (e.which === 40) {
       e.preventDefault();
-
       if (selectedIndex === null) {
         setSelectedIndex(0);
       } else if (selectedIndex < filteredOptions.length - 1) {
@@ -5358,18 +4120,15 @@ var ContextMenu = function ContextMenu(_ref) {
           return i + 1;
         });
       }
-    } // Enter pressed
-
-
+    }
+    // Enter pressed
     if (e.which === 13 && selectedIndex !== null) {
       var option = filteredOptions[selectedIndex];
-
       if (option) {
         handleOptionSelected(option);
       }
     }
   };
-
   React.useEffect(function () {
     if (hideFilter || hideHeader) {
       menuWrapper.current.focus();
@@ -5377,11 +4136,9 @@ var ContextMenu = function ContextMenu(_ref) {
   }, [hideFilter, hideHeader]);
   React.useEffect(function () {
     var menuOption = document.getElementById("".concat(menuId.current, "-").concat(selectedIndex));
-
     if (menuOption) {
       var menuRect = menuOptionsWrapper.current.getBoundingClientRect();
       var optionRect = menuOption.getBoundingClientRect();
-
       if (optionRect.y + optionRect.height > menuRect.y + menuRect.height || optionRect.y < menuRect.y) {
         menuOption.scrollIntoView({
           block: "nearest"
@@ -5449,14 +4206,13 @@ var ContextMenu = function ContextMenu(_ref) {
     className: styles$a.emptyText
   }, emptyText) : null)));
 };
-
 var ContextOption = function ContextOption(_ref2) {
   var menuId = _ref2.menuId,
-      index = _ref2.index,
-      children = _ref2.children,
-      onClick = _ref2.onClick,
-      selected = _ref2.selected,
-      onMouseEnter = _ref2.onMouseEnter;
+    index = _ref2.index,
+    children = _ref2.children,
+    onClick = _ref2.onClick,
+    selected = _ref2.selected,
+    onMouseEnter = _ref2.onMouseEnter;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$a.option,
     role: "menuitem",
@@ -5477,195 +4233,6 @@ var CacheContext = /*#__PURE__*/React.createContext();
 var RecalculateStageRectContext = /*#__PURE__*/React.createContext();
 var EditorIdContext = /*#__PURE__*/React.createContext();
 var ControllerOptionsContext = /*#__PURE__*/React.createContext();
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
-var Draggable = (function (_ref) {
-  var children = _ref.children,
-      stageState = _ref.stageState;
-      _ref.stageRect;
-      var onDragDelayStart = _ref.onDragDelayStart,
-      onDragStart = _ref.onDragStart,
-      onDrag = _ref.onDrag,
-      onDragEnd = _ref.onDragEnd,
-      _onMouseDown = _ref.onMouseDown,
-      _onTouchStart = _ref.onTouchStart,
-      disabled = _ref.disabled,
-      _ref$delay = _ref.delay,
-      delay = _ref$delay === void 0 ? 6 : _ref$delay,
-      innerRef = _ref.innerRef,
-      rest = _objectWithoutProperties(_ref, _excluded$2);
-
-  var startCoordinates = React__default["default"].useRef(null);
-  var offset = React__default["default"].useRef();
-  var wrapper = React__default["default"].useRef();
-
-  var byScale = function byScale(value) {
-    return value / stageState.scale;
-  };
-
-  var getScaledCoordinates = function getScaledCoordinates(e) {
-    var x = byScale(e.clientX - offset.current.x - stageState.translate.x);
-    var y = byScale(e.clientY - offset.current.y - stageState.translate.y - 52);
-    return {
-      x: x,
-      y: y
-    };
-  };
-
-  var updateCoordinates = function updateCoordinates(e) {
-    var coordinates = getScaledCoordinates(e);
-
-    if (onDrag) {
-      onDrag(coordinates, e);
-    }
-  };
-
-  var stopDrag = function stopDrag(e) {
-    var coordinates = getScaledCoordinates(e);
-
-    if (onDragEnd) {
-      onDragEnd(e, coordinates);
-    }
-
-    window.removeEventListener("mouseup", stopDrag);
-    window.removeEventListener("mousemove", updateCoordinates);
-  };
-
-  var startDrag = function startDrag(e) {
-    if (onDragStart) {
-      onDragStart(e);
-    }
-
-    var nodeRect = wrapper.current.getBoundingClientRect();
-    offset.current = {
-      x: startCoordinates.current.x - nodeRect.left,
-      y: startCoordinates.current.y - nodeRect.top
-    };
-    window.addEventListener("mouseup", stopDrag);
-    window.addEventListener("mousemove", updateCoordinates);
-  };
-
-  var checkDragDelay = function checkDragDelay(e) {
-    var x;
-    var y;
-
-    if ("ontouchstart" in window && e.touches) {
-      x = e.touches[0].clientX;
-      y = e.touches[0].clientY;
-    } else {
-      e.preventDefault();
-      x = e.clientX;
-      y = e.clientY;
-    }
-
-    var a = Math.abs(startCoordinates.current.x - x);
-    var b = Math.abs(startCoordinates.current.y - y);
-    var distance = Math.round(Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2)));
-
-    if (distance >= delay) {
-      startDrag(e);
-      endDragDelay();
-    }
-  };
-
-  var endDragDelay = function endDragDelay() {
-    document.removeEventListener("mouseup", endDragDelay);
-    document.removeEventListener("mousemove", checkDragDelay);
-    startCoordinates.current = null;
-  };
-
-  var startDragDelay = function startDragDelay(e) {
-    if (onDragDelayStart) {
-      onDragDelayStart(e);
-    }
-
-    e.stopPropagation();
-    var x;
-    var y;
-
-    if ("ontouchstart" in window && e.touches) {
-      x = e.touches[0].clientX;
-      y = e.touches[0].clientY;
-    } else {
-      e.preventDefault();
-      x = e.clientX;
-      y = e.clientY;
-    }
-
-    startCoordinates.current = {
-      x: x,
-      y: y
-    };
-    document.addEventListener("mouseup", endDragDelay);
-    document.addEventListener("mousemove", checkDragDelay);
-  };
-
-  return /*#__PURE__*/React__default["default"].createElement("div", _extends$3({
-    onMouseDown: function onMouseDown(e) {
-      if (!disabled || e.button === 1) {
-        startDragDelay(e);
-      }
-
-      if (_onMouseDown) {
-        _onMouseDown(e);
-      }
-    },
-    onTouchStart: function onTouchStart(e) {
-      if (!disabled) {
-        startDragDelay(e);
-      }
-
-      if (_onTouchStart) {
-        _onTouchStart(e);
-      }
-    },
-    onDragStart: function onDragStart(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    ref: function ref(_ref2) {
-      wrapper.current = _ref2;
-
-      if (innerRef) {
-        innerRef.current = _ref2;
-      }
-    }
-  }, rest), children);
-});
 
 /**
  * A specialized version of `_.map` for arrays without support for iteratee
@@ -11770,6 +10337,8 @@ Transform.prototype = {
 
 var identity$4 = new Transform(1, 0, 0);
 
+Transform.prototype;
+
 function nopropagation(event) {
   event.stopImmediatePropagation();
 }
@@ -12223,48 +10792,26 @@ var CONNECTIONS_ID = "__node_editor_connections__";
 
 var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   var scale = _ref.scale,
-      translate = _ref.translate,
-      editorId = _ref.editorId,
-      dispatchStageState = _ref.dispatchStageState,
-      children = _ref.children,
-      outerStageChildren = _ref.outerStageChildren;
-      _ref.numNodes;
-      _ref.stageRef;
-      _ref.spaceToPan;
-      var dispatchComments = _ref.dispatchComments,
-      disableComments = _ref.disableComments;
-      _ref.disablePan;
-      _ref.disableZoom;
-      var toggleVisibility = _ref.toggleVisibility,
-      spaceIsPressed = _ref.spaceIsPressed;
-      _ref.onMouseDown;
-      _ref.onMouseUp;
-      var focusNode = _ref.focusNode,
-      onFocusChange = _ref.onFocusChange;
-  React.useEffect(function () {
+    translate = _ref.translate,
+    editorId = _ref.editorId,
+    dispatchStageState = _ref.dispatchStageState,
+    children = _ref.children,
+    outerStageChildren = _ref.outerStageChildren,
+    dispatchComments = _ref.dispatchComments,
+    disableComments = _ref.disableComments,
+    toggleVisibility = _ref.toggleVisibility,
+    spaceIsPressed = _ref.spaceIsPressed,
+    focusNode = _ref.focusNode,
+    onFocusChange = _ref.onFocusChange;
+  React.useLayoutEffect(function () {
     var d3Zoom = zoom().scaleExtent([0.3, 3]);
     var d3Selection = select(wrapper.current);
     d3Zoom.transform(d3Selection, identity$4.translate(translate.x, translate.y).scale(scale));
     d3Zoom.filter(function (e) {
-      if (e.type === "mousedown") {
-        if (spaceIsPressed) {
-          return e;
-        } else {
-          return false;
-        }
-      }
-
+      if (e.type === "mousedown") return spaceIsPressed ? e : false;
       return e;
     });
-    d3Zoom.on("zoom", function (event) {
-      translateWrapper.current.style.transition = "0.055s";
-      requestAnimationFrame(function () {
-        translateWrapper.current.style.transform = "translate3d(" + event.transform.x + "px," + event.transform.y + "px, 0px) scale(" + event.transform.k + ")";
-      });
-    });
-    d3Zoom.on("end", function (event) {
-      translateWrapper.current.style.transition = "0.5s";
-      toggleVisibility();
+    d3Zoom.on("start", function (event) {
       dispatchStageState(function () {
         return {
           type: "SET_TRANSLATE",
@@ -12281,42 +10828,70 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
         };
       });
     });
-
+    d3Zoom.on("zoom", function (event) {
+      requestAnimationFrame(function () {
+        var _event$transform = event.transform,
+          x = _event$transform.x,
+          y = _event$transform.y,
+          k = _event$transform.k;
+        translateWrapper.current.style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px) scale3d(").concat(k, ", ").concat(k, ", ").concat(k, ")");
+      });
+    });
+    d3Zoom.on("end", function (event) {
+      dispatchStageState(function () {
+        return {
+          type: "SET_TRANSLATE",
+          translate: {
+            x: event.transform.x,
+            y: event.transform.y
+          }
+        };
+      });
+      dispatchStageState(function () {
+        return {
+          type: "SET_SCALE",
+          scale: event.transform.k
+        };
+      });
+      toggleVisibility();
+    });
     if (focusNode) {
+      translateWrapper.current.style.transition = "0.5s";
       var node = document.getElementById(focusNode);
       var oldPositions = node.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
       d3Zoom.translateTo(d3Selection, oldPositions[1], oldPositions[2]);
       onFocusChange && onFocusChange(focusNode);
-
       translateWrapper.current.ontransitionend = function () {
         toggleVisibility();
+        document.getElementById(focusNode).style.boxShadow = "0 0 0 ".concat(2 / scale, "px red");
+        setTimeout(function () {
+          document.getElementById(focusNode).style.boxShadow = "none";
+        }, 1000);
+        translateWrapper.current.style.transition = "0.055s";
         translateWrapper.current.ontransitionend = null;
       };
     }
-
     d3Selection.call(d3Zoom).on("dblclick.zoom", null);
     return function () {
       d3Zoom.on("zoom", null);
       d3Zoom.on("end", null);
+      d3Zoom.on("start", null);
     };
   }, [focusNode, spaceIsPressed]);
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
   var translateWrapper = React.useRef();
-
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      menuOpen = _useState2[0],
-      setMenuOpen = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    menuOpen = _useState2[0],
+    setMenuOpen = _useState2[1];
   var _useState3 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuCoordinates = _useState4[0],
-      setMenuCoordinates = _useState4[1];
-
+      x: 0,
+      y: 0
+    }),
+    _useState4 = _slicedToArray(_useState3, 2),
+    menuCoordinates = _useState4[0],
+    setMenuCoordinates = _useState4[1];
   var handleContextMenu = function handleContextMenu(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -12327,22 +10902,18 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     setMenuOpen(true);
     return false;
   };
-
   var closeContextMenu = function closeContextMenu() {
     setMenuOpen(false);
   };
-
   var byScale = function byScale(value) {
     return value / scale;
   };
-
   var addNode = function addNode(_ref2) {
     var node = _ref2.node,
-        internalType = _ref2.internalType;
+      internalType = _ref2.internalType;
     var wrapperRect = wrapper.current.getBoundingClientRect();
     var x = byScale(menuCoordinates.x - wrapperRect.left - translate.x);
     var y = byScale(menuCoordinates.y - wrapperRect.top - translate.y);
-
     if (internalType === "comment") {
       dispatchComments({
         type: "ADD_COMMENT",
@@ -12358,7 +10929,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       });
     }
   };
-
   var menuOptions = React.useMemo(function () {
     var options = orderBy_1(Object.values(nodeTypes).filter(function (node) {
       return node.addable !== false;
@@ -12371,7 +10941,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
         node: node
       };
     }), ["sortIndex", "label"]);
-
     if (!disableComments) {
       options.push({
         value: "comment",
@@ -12380,7 +10949,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
         internalType: "comment"
       });
     }
-
     return options;
   }, [nodeTypes, disableComments]);
   return /*#__PURE__*/React__default["default"].createElement("div", {
@@ -12398,8 +10966,8 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   })) : null, /*#__PURE__*/React__default["default"].createElement("div", {
     ref: translateWrapper,
     style: {
-      transition: "1s",
-      transform: "translate(" + translate.x + "px," + translate.y + "px) scale(" + scale + ")",
+      transition: "0.055s",
+      transform: "translate3d(".concat(translate.x, "px, ").concat(translate.y, "px, 0px) scale3d(").concat(scale, ", ").concat(scale, ", ").concat(scale, ")"),
       transformOrigin: "0 0"
     }
   }, children), outerStageChildren);
@@ -12431,9 +10999,7 @@ var usePrevious = function usePrevious(value) {
 };
 
 function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray$4(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$4(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen); }
-
 function _arrayLikeToArray$4(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 var useTransputs = (function (transputsFn, transputType, nodeId, inputData, connections) {
   var nodesDispatch = React.useContext(NodeDispatchContext);
@@ -12445,10 +11011,8 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   var prevTransputs = usePrevious(transputs);
   React.useEffect(function () {
     if (!prevTransputs || Array.isArray(transputsFn)) return;
-
     var _iterator = _createForOfIteratorHelper$4(prevTransputs),
-        _step;
-
+      _step;
     try {
       var _loop = function _loop() {
         var transput = _step.value;
@@ -12456,7 +11020,6 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
           var name = _ref.name;
           return transput.name === name;
         });
-
         if (!current) {
           nodesDispatch({
             type: "DESTROY_TRANSPUT",
@@ -12468,7 +11031,6 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
           });
         }
       };
-
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         _loop();
       }
@@ -12481,8 +11043,8 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$c = ".Node_wrapper__3SmT7{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:0}.Node_body__3Pwq7{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_body__3Pwq7 *{color:#c5cee0}.Node_header__3epFg{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__2Oiuo{align-items:center;display:flex;padding:4px}.Node_headerMeta__2Oiuo>*+*{margin-left:4px}.Node_title__YTBiU{align-items:center;display:flex;justify-content:center}.Node_title__YTBiU>*+*{margin-left:2px}.Node_title__YTBiU>img{height:10px;object-fit:contain;width:10px}.Node_title__YTBiU>span.Node_label__3MmhF{font-size:10px;font-weight:700;line-height:16px}.Node_id__2CRrg{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5}.Node_id__2CRrg:hover{font-weight:700;opacity:1}.Node_headerActions__gTIxf{align-items:center;display:flex;padding:4px}.Node_headerActions__gTIxf>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__3r_VO{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
-var nodeStyles = {"wrapper":"Node_wrapper__3SmT7","body":"Node_body__3Pwq7","header":"Node_header__3epFg","headerMeta":"Node_headerMeta__2Oiuo","title":"Node_title__YTBiU","label":"Node_label__3MmhF","id":"Node_id__2CRrg","headerActions":"Node_headerActions__gTIxf","description":"Node_description__3r_VO"};
+var css_248z$c = ".Node_wrapper__S8Vij{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:0}.Node_body__1-BJC{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;width:max-content}.Node_body__1-BJC *{color:#c5cee0}.Node_header__RNCw9{align-items:center;display:flex;justify-content:space-between;white-space:nowrap!important;width:100%}.Node_headerMeta__Pjkgx{align-items:center;display:flex;padding:4px}.Node_headerMeta__Pjkgx>*+*{margin-left:4px}.Node_title__Bf6Fu{align-items:center;display:flex;justify-content:center}.Node_title__Bf6Fu>*+*{margin-left:2px}.Node_title__Bf6Fu>img{height:10px;object-fit:contain;width:10px}.Node_title__Bf6Fu>span.Node_label__v7h4v{font-size:10px;font-weight:700;line-height:16px}.Node_id__w7BN0{cursor:copy;font-size:10px;font-style:italic;line-height:16px;opacity:.5}.Node_id__w7BN0:hover{font-weight:700;opacity:1}.Node_headerActions__HrHJZ{align-items:center;display:flex;padding:4px}.Node_headerActions__HrHJZ>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__pEph6{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}";
+var nodeStyles = {"wrapper":"Node_wrapper__S8Vij","body":"Node_body__1-BJC","header":"Node_header__RNCw9","headerMeta":"Node_headerMeta__Pjkgx","title":"Node_title__Bf6Fu","label":"Node_label__v7h4v","id":"Node_id__w7BN0","headerActions":"Node_headerActions__HrHJZ","description":"Node_description__pEph6"};
 styleInject(css_248z$c);
 
 const pi = Math.PI,
@@ -12821,29 +11383,23 @@ var curveBundle = (function custom(beta) {
   return bundle;
 })(0.85);
 
-var css_248z$b = ".Connection_svg__-fKLY{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
-var styles$9 = {"svg":"Connection_svg__-fKLY"};
+var css_248z$b = ".Connection_svg__dY13y{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
+var styles$9 = {"svg":"Connection_svg__dY13y"};
 styleInject(css_248z$b);
 
 function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
-
 function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 var getPort = function getPort(nodeId, portName) {
   var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
   return document.querySelector("[data-node-id=\"".concat(nodeId, "\"] [data-port-name=\"").concat(portName, "\"][data-port-transput-type=\"").concat(transputType, "\"]"));
 };
-
 var getPortRect = function getPortRect(nodeId, portName) {
   var transputType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "input";
   var cache = arguments.length > 3 ? arguments[3] : undefined;
-
   if (cache) {
     var portCacheName = nodeId + portName + transputType;
     var cachedPort = cache.current.ports[portCacheName];
-
     if (cachedPort) {
       return cachedPort.getBoundingClientRect();
     } else {
@@ -12853,7 +11409,6 @@ var getPortRect = function getPortRect(nodeId, portName) {
     }
   } else {
     var _port = getPort(nodeId, portName, transputType);
-
     return _port && _port.getBoundingClientRect();
   }
 };
@@ -12873,14 +11428,11 @@ var deleteConnection = function deleteConnection(_ref3) {
 };
 var clearConnections = function clearConnections() {
   var lines = document.querySelectorAll("[data-output-node-id], [data-input-node-id]");
-
   var _iterator = _createForOfIteratorHelper$3(lines),
-      _step;
-
+    _step;
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var _line = _step.value;
-
       _line.parentNode.remove();
     }
   } catch (err) {
@@ -12891,14 +11443,11 @@ var clearConnections = function clearConnections() {
 };
 var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
   var lines = document.querySelectorAll("[data-output-node-id=\"".concat(nodeId, "\"], [data-input-node-id=\"").concat(nodeId, "\"]"));
-
   var _iterator2 = _createForOfIteratorHelper$3(lines),
-      _step2;
-
+    _step2;
   try {
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var _line2 = _step2.value;
-
       _line2.parentNode.remove();
     }
   } catch (err) {
@@ -12909,19 +11458,19 @@ var deleteConnectionsByNodeId = function deleteConnectionsByNodeId(nodeId) {
 };
 var updateConnection = function updateConnection(_ref4) {
   var line = _ref4.line,
-      from = _ref4.from,
-      to = _ref4.to;
+    from = _ref4.from,
+    to = _ref4.to;
   line.setAttribute("d", calculateCurve(from, to));
 };
 var createSVG = function createSVG(_ref5) {
   var from = _ref5.from,
-      to = _ref5.to,
-      stage = _ref5.stage,
-      id = _ref5.id,
-      outputNodeId = _ref5.outputNodeId,
-      outputPortName = _ref5.outputPortName,
-      inputNodeId = _ref5.inputNodeId,
-      inputPortName = _ref5.inputPortName;
+    to = _ref5.to,
+    stage = _ref5.stage,
+    id = _ref5.id,
+    outputNodeId = _ref5.outputNodeId,
+    outputPortName = _ref5.outputPortName,
+    inputNodeId = _ref5.inputNodeId,
+    inputPortName = _ref5.inputPortName;
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", styles$9.svg);
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -12946,34 +11495,28 @@ var getStageRef = function getStageRef(editorId) {
 };
 var createConnections = function createConnections(nodes, _ref6, editorId) {
   var scale = _ref6.scale;
-      _ref6.stageId;
+    _ref6.stageId;
   var stageRef = getStageRef(editorId);
-
   if (stageRef) {
     var stage = stageRef.getBoundingClientRect();
     var stageHalfWidth = stage.width / 2;
     var stageHalfHeight = stage.height / 2;
-
     var byScale = function byScale(value) {
       return value / scale;
     };
-
     Object.values(nodes).forEach(function (node) {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
           var _ref8 = _slicedToArray(_ref7, 2),
-              inputName = _ref8[0],
-              outputs = _ref8[1];
-
+            inputName = _ref8[0],
+            outputs = _ref8[1];
           outputs.forEach(function (output) {
             var fromPort = getPortRect(output.nodeId, output.portName, "output");
             var toPort = getPortRect(node.id, inputName, "input");
             var portHalf = fromPort ? fromPort.width / 2 : 0;
-
             if (fromPort && toPort) {
               var id = output.nodeId + output.portName + node.id + inputName;
               var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
-
               if (existingLine) {
                 updateConnection({
                   line: existingLine,
@@ -13012,13 +11555,13 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
   }
 };
 
-var css_248z$a = ".index_wrapper__3LoG0{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.index_wrapper__3LoG0>*{line-height:normal}.index_button__1mmZb{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__1mmZb:focus,.index_button__1mmZb:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__1mmZb:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
-var styles$8 = {"wrapper":"index_wrapper__3LoG0","button":"index_button__1mmZb"};
+var css_248z$a = ".index_wrapper__kDZ3U{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.index_wrapper__kDZ3U>*{line-height:normal}.index_button__HB4GI{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__HB4GI:focus,.index_button__HB4GI:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__HB4GI:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
+var styles$8 = {"wrapper":"index_wrapper__kDZ3U","button":"index_button__HB4GI"};
 styleInject(css_248z$a);
 
 var Button = function Button(_ref) {
   var onPress = _ref.onPress,
-      label = _ref.label;
+    label = _ref.label;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$8.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("button", {
@@ -13028,31 +11571,27 @@ var Button = function Button(_ref) {
   }, label));
 };
 
-var css_248z$9 = ".TextInput_wrapper__1cN0c{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__1cN0c>*{line-height:normal}.TextInput_expander__2z4-N{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__2z4-N:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__ujVG-{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__ujVG-[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__ujVG-[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__ujVG-::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__ujVG-:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__ujVG-[type=number]:active,.TextInput_input__ujVG-[type=number]:focus,.TextInput_input__ujVG-[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__ujVG-:not([type=number]):focus+button{display:block}.TextInput_input__ujVG-:not([type=number]):focus{padding-right:13px}";
-var styles$7 = {"wrapper":"TextInput_wrapper__1cN0c","expander":"TextInput_expander__2z4-N","input":"TextInput_input__ujVG-"};
+var css_248z$9 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
+var styles$7 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
 styleInject(css_248z$9);
 
 var NumberInput = function NumberInput(_ref) {
   var placeholder = _ref.placeholder,
-      onChange = _ref.onChange,
-      data = _ref.data,
-      step = _ref.step,
-      validate = _ref.validate;
+    onChange = _ref.onChange,
+    data = _ref.data,
+    step = _ref.step,
+    validate = _ref.validate;
   var numberInput = React.useRef();
-
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
   };
-
   var parseNumber = function parseNumber(_ref2) {
     var target = _ref2.target,
-        type = _ref2.type;
-
+      type = _ref2.type;
     if (validate(target.value)) {
       var inputValue = target.value.replace(",", ".").replace(/[^0-9.]+/g, "");
       if (!inputValue) return onChange(null);
       var value = parseFloat(inputValue, 10);
-
       if (Number.isNaN(value)) {
         if (type === "blur") numberInput.current.value = data;
       } else {
@@ -13060,7 +11599,6 @@ var NumberInput = function NumberInput(_ref) {
       }
     } else if (type === "blur") numberInput.current.value = data;
   };
-
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$7.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("input", {
@@ -13083,18 +11621,16 @@ var NumberInput = function NumberInput(_ref) {
   }));
 };
 
-var css_248z$8 = ".Control_wrapper__VZIiC{padding:1px 2px 1px 1px;width:100%}";
-var styles$6 = {"wrapper":"Control_wrapper__VZIiC"};
+var css_248z$8 = ".Control_wrapper__-SFsk{padding:1px 2px 1px 1px;width:100%}";
+var styles$6 = {"wrapper":"Control_wrapper__-SFsk"};
 styleInject(css_248z$8);
 
-var css_248z$7 = ".Checkbox_wrapper__aSqyY{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__Qv5gn{display:none}.Checkbox_checkboxMark__3pZi7{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__3pZi7>*{display:none}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__Qv5gn:checked+.Checkbox_checkboxMark__3pZi7>*{display:block}";
-var styles$5 = {"wrapper":"Checkbox_wrapper__aSqyY","checkbox":"Checkbox_checkbox__Qv5gn","checkboxMark":"Checkbox_checkboxMark__3pZi7"};
+var css_248z$7 = ".Checkbox_wrapper__KYSY7{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__-WxSv{display:none}.Checkbox_checkboxMark__qj3ov{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__qj3ov>*{display:none}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov>*{display:block}";
+var styles$5 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
 styleInject(css_248z$7);
 
 var _path$2;
-
-function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
-
+function _extends$2() { _extends$2 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 function SvgOkTick(props) {
   return /*#__PURE__*/React__namespace.createElement("svg", _extends$2({
     width: 6,
@@ -13111,8 +11647,8 @@ function SvgOkTick(props) {
 
 var Checkbox = function Checkbox(_ref) {
   var label = _ref.label,
-      data = _ref.data,
-      _onChange = _ref.onChange;
+    data = _ref.data,
+    _onChange = _ref.onChange;
   return /*#__PURE__*/React__default["default"].createElement("label", {
     className: styles$5.wrapper,
     title: label
@@ -13131,19 +11667,16 @@ var Checkbox = function Checkbox(_ref) {
 
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
-      _onChange = _ref.onChange,
-      data = _ref.data,
-      nodeData = _ref.nodeData,
-      validate = _ref.validate;
-
+    _onChange = _ref.onChange,
+    data = _ref.data,
+    nodeData = _ref.nodeData,
+    validate = _ref.validate;
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
   };
-
   var _useContext = React.useContext(ControllerOptionsContext),
-      openEditor = _useContext.openEditor,
-      isRightBarOpened = _useContext.isRightBarOpened;
-
+    openEditor = _useContext.openEditor,
+    isRightBarOpened = _useContext.isRightBarOpened;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$7.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("input", {
@@ -13156,8 +11689,7 @@ var TextInput = function TextInput(_ref) {
     onMouseDown: preventPropagation,
     onClick: function onClick(e) {
       e.stopPropagation();
-
-      if (isRightBarOpened()) {
+      if (isRightBarOpened && isRightBarOpened()) {
         openEditor(data, _onChange, nodeData);
       }
     },
@@ -13173,44 +11705,37 @@ var TextInput = function TextInput(_ref) {
   }));
 };
 
-var css_248z$6 = ".Select_wrapper__eAPoQ{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u,.Select_wrapper__eAPoQ:active,.Select_wrapper__eAPoQ:focus,.Select_wrapper__eAPoQ:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__3hK2u{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__3hK2u:nth-child(3n){margin-right:0}.Select_deleteButton__1FnLK{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__1FnLK:active,.Select_deleteButton__1FnLK:focus,.Select_deleteButton__1FnLK:hover{color:inherit}";
-var styles$4 = {"wrapper":"Select_wrapper__eAPoQ","chipWrapper":"Select_chipWrapper__3hK2u","deleteButton":"Select_deleteButton__1FnLK"};
+var css_248z$6 = ".Select_wrapper__LU8xp{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R,.Select_wrapper__LU8xp:active,.Select_wrapper__LU8xp:focus,.Select_wrapper__LU8xp:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__zZu-R{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R:nth-child(3n){margin-right:0}.Select_deleteButton__K7AfO{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__K7AfO:active,.Select_deleteButton__K7AfO:focus,.Select_deleteButton__K7AfO:hover{color:inherit}";
+var styles$4 = {"wrapper":"Select_wrapper__LU8xp","chipWrapper":"Select_chipWrapper__zZu-R","deleteButton":"Select_deleteButton__K7AfO"};
 styleInject(css_248z$6);
 
-function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$g(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$g(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var MAX_LABEL_LENGTH = 50;
-
 var Select = function Select(_ref) {
   var _ref$options = _ref.options,
-      options = _ref$options === void 0 ? [] : _ref$options,
-      _ref$placeholder = _ref.placeholder,
-      placeholder = _ref$placeholder === void 0 ? "[Select an option]" : _ref$placeholder,
-      onChange = _ref.onChange,
-      defaultValue = _ref.defaultValue,
-      data = _ref.data,
-      allowMultiple = _ref.allowMultiple;
-
+    options = _ref$options === void 0 ? [] : _ref$options,
+    _ref$placeholder = _ref.placeholder,
+    placeholder = _ref$placeholder === void 0 ? "[Select an option]" : _ref$placeholder,
+    onChange = _ref.onChange,
+    defaultValue = _ref.defaultValue,
+    data = _ref.data,
+    allowMultiple = _ref.allowMultiple;
   var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      drawerOpen = _React$useState2[0],
-      setDrawerOpen = _React$useState2[1];
-
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    drawerOpen = _React$useState2[0],
+    setDrawerOpen = _React$useState2[1];
   var _React$useState3 = React__default["default"].useState({
-    x: 0,
-    y: 0
-  }),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      drawerCoordinates = _React$useState4[0],
-      setDrawerCoordinates = _React$useState4[1];
-
+      x: 0,
+      y: 0
+    }),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    drawerCoordinates = _React$useState4[0],
+    setDrawerCoordinates = _React$useState4[1];
   var wrapper = React__default["default"].useRef();
-
   var closeDrawer = function closeDrawer() {
     setDrawerOpen(false);
   };
-
   var openDrawer = function openDrawer() {
     if (!drawerOpen) {
       var wrapperRect = wrapper.current.getBoundingClientRect();
@@ -13221,7 +11746,6 @@ var Select = function Select(_ref) {
       setDrawerOpen(true);
     }
   };
-
   var handleOptionSelected = function handleOptionSelected(option) {
     if (allowMultiple) {
       onChange([].concat(_toConsumableArray(data), [option.value]));
@@ -13229,26 +11753,21 @@ var Select = function Select(_ref) {
       onChange(option.value);
     }
   };
-
   React__default["default"].useEffect(function () {
     if (!data) onChange(defaultValue);
   }, [defaultValue]);
-
   var handleOptionDeleted = function handleOptionDeleted(optionIndex) {
     onChange([].concat(_toConsumableArray(data.slice(0, optionIndex)), _toConsumableArray(data.slice(optionIndex + 1))));
   };
-
   var getFilteredOptions = function getFilteredOptions() {
     return allowMultiple ? options.filter(function (opt) {
       return !data.includes(opt.value);
     }) : options;
   };
-
   var selectedOption = React__default["default"].useMemo(function () {
     var option = options.find(function (o) {
       return o.value === data;
     });
-
     if (option) {
       return _objectSpread$g(_objectSpread$g({}, option), {}, {
         label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + "..." : option.label
@@ -13283,14 +11802,13 @@ var Select = function Select(_ref) {
     onRequestClose: closeDrawer
   })));
 };
-
 var SelectedOption = function SelectedOption(_ref2) {
   var _ref2$option = _ref2.option;
   _ref2$option = _ref2$option === void 0 ? {} : _ref2$option;
   var label = _ref2$option.label;
-      _ref2$option.description;
-      var wrapperRef = _ref2.wrapperRef,
-      onClick = _ref2.onClick;
+    _ref2$option.description;
+    var wrapperRef = _ref2.wrapperRef,
+    onClick = _ref2.onClick;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$4.wrapper,
     onClick: onClick,
@@ -13298,10 +11816,9 @@ var SelectedOption = function SelectedOption(_ref2) {
     title: label
   }, label);
 };
-
 var OptionChip = function OptionChip(_ref3) {
   var children = _ref3.children,
-      onRequestDelete = _ref3.onRequestDelete;
+    onRequestDelete = _ref3.onRequestDelete;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$4.chipWrapper,
     title: children.toString()
@@ -13314,40 +11831,37 @@ var OptionChip = function OptionChip(_ref3) {
   }, "\u2715"));
 };
 
-function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$f(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$f(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var Control = function Control(_ref) {
   var type = _ref.type,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      portName = _ref.portName,
-      label = _ref.label,
-      inputLabel = _ref.inputLabel,
-      data = _ref.data,
-      allData = _ref.allData,
-      render = _ref.render,
-      predicate = _ref.predicate,
-      step = _ref.step,
-      _ref$options = _ref.options,
-      options = _ref$options === void 0 ? [] : _ref$options,
-      placeholder = _ref.placeholder,
-      validate = _ref.validate,
-      inputData = _ref.inputData,
-      triggerRecalculation = _ref.triggerRecalculation,
-      updateNodeConnections = _ref.updateNodeConnections,
-      getOptions = _ref.getOptions,
-      setValue = _ref.setValue;
-      _ref.value;
-      var defaultValue = _ref.defaultValue,
-      isMonoControl = _ref.isMonoControl,
-      nodeData = _ref.nodeData,
-      _onPress = _ref.onPress;
+    name = _ref.name,
+    nodeId = _ref.nodeId,
+    portName = _ref.portName,
+    label = _ref.label,
+    inputLabel = _ref.inputLabel,
+    data = _ref.data,
+    allData = _ref.allData,
+    render = _ref.render,
+    predicate = _ref.predicate,
+    step = _ref.step,
+    _ref$options = _ref.options,
+    options = _ref$options === void 0 ? [] : _ref$options,
+    placeholder = _ref.placeholder,
+    validate = _ref.validate,
+    inputData = _ref.inputData,
+    triggerRecalculation = _ref.triggerRecalculation,
+    updateNodeConnections = _ref.updateNodeConnections,
+    getOptions = _ref.getOptions,
+    setValue = _ref.setValue;
+    _ref.value;
+    var defaultValue = _ref.defaultValue,
+    isMonoControl = _ref.isMonoControl,
+    nodeData = _ref.nodeData,
+    _onPress = _ref.onPress;
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var executionContext = React.useContext(ContextContext);
   var calculatedLabel = isMonoControl ? inputLabel : label;
-
   var onChange = function onChange(data) {
     nodesDispatch({
       type: "SET_PORT_DATA",
@@ -13359,7 +11873,6 @@ var Control = function Control(_ref) {
     });
     triggerRecalculation();
   };
-
   var onPressButton = function onPressButton(data, cName, pName, nId) {
     nodesDispatch({
       type: "SET_PORT_DATA",
@@ -13371,7 +11884,6 @@ var Control = function Control(_ref) {
     });
     triggerRecalculation();
   };
-
   var getControlByType = function getControlByType(type) {
     var commonProps = {
       triggerRecalculation: triggerRecalculation,
@@ -13379,7 +11891,6 @@ var Control = function Control(_ref) {
       onChange: onChange,
       data: data
     };
-
     switch (type) {
       case "select":
         return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({}, commonProps, {
@@ -13387,7 +11898,6 @@ var Control = function Control(_ref) {
           placeholder: placeholder,
           defaultValue: defaultValue
         }));
-
       case "text":
         return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
           predicate: predicate,
@@ -13395,7 +11905,6 @@ var Control = function Control(_ref) {
           validate: validate,
           nodeData: nodeData
         }));
-
       case "number":
         return /*#__PURE__*/React__default["default"].createElement(NumberInput, _extends$3({}, commonProps, {
           step: step,
@@ -13403,12 +11912,10 @@ var Control = function Control(_ref) {
           validate: validate,
           placeholder: placeholder
         }));
-
       case "checkbox":
         return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$3({}, commonProps, {
           label: calculatedLabel
         }));
-
       case "multiselect":
         return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({
           allowMultiple: true
@@ -13417,7 +11924,6 @@ var Control = function Control(_ref) {
           placeholder: placeholder,
           label: label
         }));
-
       case "button":
         return /*#__PURE__*/React__default["default"].createElement(Button, _extends$3({}, commonProps, {
           label: label,
@@ -13425,7 +11931,6 @@ var Control = function Control(_ref) {
             _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
           }
         }));
-
       case "custom":
         return render(data, onChange, executionContext, triggerRecalculation, {
           label: label,
@@ -13434,12 +11939,10 @@ var Control = function Control(_ref) {
           inputLabel: inputLabel,
           defaultValue: defaultValue
         }, allData);
-
       default:
         return /*#__PURE__*/React__default["default"].createElement("div", null, "Control");
     }
   };
-
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$6.wrapper,
     style: _objectSpread$f({}, type.match(/^multiselect$/) && {
@@ -13448,19 +11951,19 @@ var Control = function Control(_ref) {
   }, getControlByType(type));
 };
 
-var css_248z$5 = ".IoPorts_outputs__3JGh-,.IoPorts_wrapper__3d2hh{display:flex;flex-direction:column}.IoPorts_outputs__3JGh-{align-items:center;background:#000;border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__3JGh->*+*{margin-top:4px}.IoPorts_outputs__3JGh->.IoPorts_transput__1wbHA{height:16px;width:7px}.IoPorts_inputs__2etkb{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__2etkb>*+*{margin-top:4px}.IoPorts_inputs__2etkb>.IoPorts_transput__1wbHA{height:16px;width:7px}table.IoPorts_inner__3UgDB{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__3UgDB>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_portLabel__qOE7y{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__3UgDB>tbody>tr>td.IoPorts_controls__1dKFt>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__1_a6J{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__1_a6J *{pointer-events:none}";
-var styles$3 = {"wrapper":"IoPorts_wrapper__3d2hh","outputs":"IoPorts_outputs__3JGh-","transput":"IoPorts_transput__1wbHA","inputs":"IoPorts_inputs__2etkb","inner":"IoPorts_inner__3UgDB","portLabel":"IoPorts_portLabel__qOE7y","controls":"IoPorts_controls__1dKFt","port":"IoPorts_port__1_a6J"};
+var css_248z$5 = ".IoPorts_outputs__hqc88,.IoPorts_wrapper__4jboF{display:flex;flex-direction:column}.IoPorts_outputs__hqc88{align-items:center;background:#000;border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__hqc88>*+*{margin-top:4px}.IoPorts_outputs__hqc88>.IoPorts_transput__5JT3i{height:16px;width:7px}.IoPorts_inputs__M7xAH{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__M7xAH>*+*{margin-top:4px}.IoPorts_inputs__M7xAH>.IoPorts_transput__5JT3i{height:16px;width:7px}table.IoPorts_inner__NsCyd{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__NsCyd>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_portLabel__XY5gi{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__ZC6Mw{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__ZC6Mw *{pointer-events:none}";
+var styles$3 = {"wrapper":"IoPorts_wrapper__4jboF","outputs":"IoPorts_outputs__hqc88","transput":"IoPorts_transput__5JT3i","inputs":"IoPorts_inputs__M7xAH","inner":"IoPorts_inner__NsCyd","portLabel":"IoPorts_portLabel__XY5gi","controls":"IoPorts_controls__J4rPJ","port":"IoPorts_port__ZC6Mw"};
 styleInject(css_248z$5);
 
 var Connection = function Connection(_ref) {
   var from = _ref.from,
-      to = _ref.to,
-      id = _ref.id,
-      lineRef = _ref.lineRef,
-      outputNodeId = _ref.outputNodeId,
-      outputPortName = _ref.outputPortName,
-      inputNodeId = _ref.inputNodeId,
-      inputPortName = _ref.inputPortName;
+    to = _ref.to,
+    id = _ref.id,
+    lineRef = _ref.lineRef,
+    outputNodeId = _ref.outputNodeId,
+    outputPortName = _ref.outputPortName,
+    inputNodeId = _ref.inputNodeId,
+    inputPortName = _ref.inputPortName;
   var curve = calculateCurve(from, to);
   return /*#__PURE__*/React__default["default"].createElement("svg", {
     className: styles$9.svg
@@ -13482,43 +11985,37 @@ var Connection = function Connection(_ref) {
 
 var Port = function Port(_ref) {
   var color = _ref.color,
-      _ref$name = _ref.name,
-      name = _ref$name === void 0 ? "" : _ref$name,
-      type = _ref.type,
-      isInput = _ref.isInput,
-      nodeId = _ref.nodeId,
-      triggerRecalculation = _ref.triggerRecalculation;
+    _ref$name = _ref.name,
+    name = _ref$name === void 0 ? "" : _ref$name,
+    type = _ref.type,
+    isInput = _ref.isInput,
+    nodeId = _ref.nodeId,
+    triggerRecalculation = _ref.triggerRecalculation;
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var stageState = React.useContext(StageContext);
   var editorId = React.useContext(EditorIdContext);
   var stageId = "".concat(STAGE_ID).concat(editorId);
   var inputTypes = React.useContext(PortTypesContext);
-
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      isDragging = _useState2[0],
-      setIsDragging = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    isDragging = _useState2[0],
+    setIsDragging = _useState2[1];
   var _useState3 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      dragStartCoordinates = _useState4[0],
-      setDragStartCoordinates = _useState4[1];
-
+      x: 0,
+      y: 0
+    }),
+    _useState4 = _slicedToArray(_useState3, 2),
+    dragStartCoordinates = _useState4[0],
+    setDragStartCoordinates = _useState4[1];
   var dragStartCoordinatesCache = React.useRef(dragStartCoordinates);
   var port = React.useRef();
   var line = React.useRef();
   var lineInToPort = React.useRef();
-
   var byScale = function byScale(value) {
     return value / stageState.scale;
   };
-
   var handleDrag = function handleDrag(e) {
     var stage = document.getElementById(stageId).getBoundingClientRect();
-
     if (isInput) {
       var to = {
         x: byScale(e.clientX - stage.x - stageState.translate.x),
@@ -13532,18 +12029,17 @@ var Port = function Port(_ref) {
       };
       line.current.setAttribute("d", calculateCurve(_to, dragStartCoordinatesCache.current));
     }
-  }; // TODO: Refactor onDragEnd method (input -> output part)
+  };
 
-
+  // TODO: Refactor onDragEnd method (input -> output part)
   var handleDragEnd = function handleDragEnd(e) {
     var droppedOnPort = !!e.target.dataset.portName;
-
     if (isInput && lineInToPort.current) {
       var _lineInToPort$current = lineInToPort.current.dataset,
-          inputNodeId = _lineInToPort$current.inputNodeId,
-          inputPortName = _lineInToPort$current.inputPortName,
-          outputNodeId = _lineInToPort$current.outputNodeId,
-          outputPortName = _lineInToPort$current.outputPortName;
+        inputNodeId = _lineInToPort$current.inputNodeId,
+        inputPortName = _lineInToPort$current.inputPortName,
+        outputNodeId = _lineInToPort$current.outputNodeId,
+        outputPortName = _lineInToPort$current.outputPortName;
       nodesDispatch({
         type: "REMOVE_CONNECTION",
         input: {
@@ -13555,18 +12051,15 @@ var Port = function Port(_ref) {
           portName: outputPortName
         }
       });
-
       if (droppedOnPort) {
         var _e$target$dataset = e.target.dataset,
-            connectToPortName = _e$target$dataset.portName,
-            connectToNodeId = _e$target$dataset.nodeId,
-            connectToPortType = _e$target$dataset.portType,
-            connectToTransputType = _e$target$dataset.portTransputType;
+          connectToPortName = _e$target$dataset.portName,
+          connectToNodeId = _e$target$dataset.nodeId,
+          connectToPortType = _e$target$dataset.portType,
+          connectToTransputType = _e$target$dataset.portTransputType;
         var isNotSameNode = outputNodeId !== connectToNodeId;
-
         if (isNotSameNode && connectToTransputType !== "output") {
           var inputWillAcceptConnection = inputTypes[connectToPortType].acceptTypes.includes(type);
-
           if (inputWillAcceptConnection) {
             nodesDispatch({
               type: "ADD_CONNECTION",
@@ -13586,16 +12079,13 @@ var Port = function Port(_ref) {
       if (droppedOnPort) {
         if (!isInput) {
           var _e$target$dataset2 = e.target.dataset,
-              _inputPortName = _e$target$dataset2.portName,
-              _inputNodeId = _e$target$dataset2.nodeId,
-              inputNodeType = _e$target$dataset2.portType,
-              inputTransputType = _e$target$dataset2.portTransputType;
-
+            _inputPortName = _e$target$dataset2.portName,
+            _inputNodeId = _e$target$dataset2.nodeId,
+            inputNodeType = _e$target$dataset2.portType,
+            inputTransputType = _e$target$dataset2.portTransputType;
           var _isNotSameNode = _inputNodeId !== nodeId;
-
           if (_isNotSameNode && inputTransputType !== "output") {
             var _inputWillAcceptConnection = inputTypes[inputNodeType].acceptTypes.includes(type);
-
             if (_inputWillAcceptConnection) {
               nodesDispatch({
                 type: "ADD_CONNECTION",
@@ -13613,16 +12103,13 @@ var Port = function Port(_ref) {
           }
         } else {
           var _e$target$dataset3 = e.target.dataset,
-              _inputPortName2 = _e$target$dataset3.portName,
-              _inputNodeId2 = _e$target$dataset3.nodeId,
-              _inputNodeType = _e$target$dataset3.portType,
-              _inputTransputType = _e$target$dataset3.portTransputType;
-
+            _inputPortName2 = _e$target$dataset3.portName,
+            _inputNodeId2 = _e$target$dataset3.nodeId,
+            _inputNodeType = _e$target$dataset3.portType,
+            _inputTransputType = _e$target$dataset3.portTransputType;
           var _isNotSameNode2 = _inputNodeId2 !== nodeId;
-
           if (_isNotSameNode2 && _inputTransputType === "output") {
             var _inputWillAcceptConnection2 = inputTypes[_inputNodeType].acceptTypes.includes(type);
-
             if (_inputWillAcceptConnection2) {
               nodesDispatch({
                 type: "ADD_CONNECTION",
@@ -13641,22 +12128,18 @@ var Port = function Port(_ref) {
         }
       }
     }
-
     setIsDragging(false);
     document.removeEventListener("mouseup", handleDragEnd);
     document.removeEventListener("mousemove", handleDrag);
   };
-
   var handleDragStart = function handleDragStart(e) {
     e.preventDefault();
     e.stopPropagation();
     var startPort = port.current.getBoundingClientRect();
     var stage = document.getElementById(stageId).getBoundingClientRect();
-
     if (isInput) {
       lineInToPort.current = document.querySelector("[data-input-node-id=\"".concat(nodeId, "\"][data-input-port-name=\"").concat(name, "\"]"));
       var portIsConnected = !!lineInToPort.current;
-
       if (portIsConnected) {
         lineInToPort.current.parentNode.style.zIndex = 9999;
         var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
@@ -13692,7 +12175,6 @@ var Port = function Port(_ref) {
       document.addEventListener("mousemove", handleDrag);
     }
   };
-
   return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
     onMouseDown: handleDragStart,
     className: styles$3.port,
@@ -13729,23 +12211,21 @@ var Port = function Port(_ref) {
 
 var Inner = function Inner(_ref) {
   var type = _ref.type,
-      label = _ref.label,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      data = _ref.data,
-      localControls = _ref.controls,
-      inputTypes = _ref.inputTypes,
-      noControls = _ref.noControls,
-      triggerRecalculation = _ref.triggerRecalculation,
-      updateNodeConnections = _ref.updateNodeConnections,
-      inputData = _ref.inputData,
-      nodeData = _ref.nodeData;
-
+    label = _ref.label,
+    name = _ref.name,
+    nodeId = _ref.nodeId,
+    data = _ref.data,
+    localControls = _ref.controls,
+    inputTypes = _ref.inputTypes,
+    noControls = _ref.noControls,
+    triggerRecalculation = _ref.triggerRecalculation,
+    updateNodeConnections = _ref.updateNodeConnections,
+    inputData = _ref.inputData,
+    nodeData = _ref.nodeData;
   var _ref2 = inputTypes[type] || {},
-      defaultLabel = _ref2.label,
-      _ref2$controls = _ref2.controls,
-      defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
-
+    defaultLabel = _ref2.label,
+    _ref2$controls = _ref2.controls,
+    defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
   var controls = localControls || defaultControls;
   return /*#__PURE__*/React__default["default"].createElement("tr", {
     "data-controlless": noControls || !controls.length,
@@ -13778,22 +12258,21 @@ var Inner = function Inner(_ref) {
 
 var Input = function Input(_ref) {
   var _ref2;
-
   var type = _ref.type,
-      name = _ref.name,
-      nodeId = _ref.nodeId,
-      localControls = _ref.controls,
-      inputTypes = _ref.inputTypes,
-      noControls = _ref.noControls,
-      triggerRecalculation = _ref.triggerRecalculation,
-      optColor = _ref.optColor,
-      isConnected = _ref.isConnected,
-      c = _ref.color;
+    name = _ref.name,
+    nodeId = _ref.nodeId,
+    localControls = _ref.controls,
+    inputTypes = _ref.inputTypes,
+    noControls = _ref.noControls,
+    triggerRecalculation = _ref.triggerRecalculation,
+    optColor = _ref.optColor,
+    isConnected = _ref.isConnected,
+    c = _ref.color;
   var _inputTypes$type = inputTypes[type];
-      _inputTypes$type.label;
-      var color = _inputTypes$type.color,
-      _inputTypes$type$cont = _inputTypes$type.controls,
-      defaultControls = _inputTypes$type$cont === void 0 ? [] : _inputTypes$type$cont;
+    _inputTypes$type.label;
+    var color = _inputTypes$type.color,
+    _inputTypes$type$cont = _inputTypes$type.controls,
+    defaultControls = _inputTypes$type$cont === void 0 ? [] : _inputTypes$type$cont;
   var prevConnected = usePrevious(isConnected);
   var controls = localControls || defaultControls;
   React.useEffect(function () {
@@ -13820,14 +12299,13 @@ var Input = function Input(_ref) {
 
 var Output = function Output(_ref) {
   var _ref2;
-
   var name = _ref.name,
-      nodeId = _ref.nodeId,
-      type = _ref.type,
-      inputTypes = _ref.inputTypes,
-      triggerRecalculation = _ref.triggerRecalculation,
-      optColor = _ref.optColor,
-      c = _ref.color;
+    nodeId = _ref.nodeId,
+    type = _ref.type,
+    inputTypes = _ref.inputTypes,
+    triggerRecalculation = _ref.triggerRecalculation,
+    optColor = _ref.optColor,
+    c = _ref.color;
   var color = inputTypes[type].color;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$3.transput,
@@ -13847,20 +12325,19 @@ var Output = function Output(_ref) {
 
 var IoPorts = function IoPorts(_ref) {
   var nodeId = _ref.nodeId,
-      _ref$show = _ref.show,
-      show = _ref$show === void 0 ? "innerOnly" : _ref$show,
-      _ref$resolvedInputs = _ref.resolvedInputs,
-      resolvedInputs = _ref$resolvedInputs === void 0 ? [] : _ref$resolvedInputs,
-      _ref$resolvedOutputs = _ref.resolvedOutputs,
-      resolvedOutputs = _ref$resolvedOutputs === void 0 ? [] : _ref$resolvedOutputs,
-      connections = _ref.connections,
-      color = _ref.color,
-      inputData = _ref.inputData,
-      updateNodeConnections = _ref.updateNodeConnections,
-      nodeData = _ref.nodeData;
+    _ref$show = _ref.show,
+    show = _ref$show === void 0 ? "innerOnly" : _ref$show,
+    _ref$resolvedInputs = _ref.resolvedInputs,
+    resolvedInputs = _ref$resolvedInputs === void 0 ? [] : _ref$resolvedInputs,
+    _ref$resolvedOutputs = _ref.resolvedOutputs,
+    resolvedOutputs = _ref$resolvedOutputs === void 0 ? [] : _ref$resolvedOutputs,
+    connections = _ref.connections,
+    color = _ref.color,
+    inputData = _ref.inputData,
+    updateNodeConnections = _ref.updateNodeConnections,
+    nodeData = _ref.nodeData;
   var inputTypes = React.useContext(PortTypesContext);
   var triggerRecalculation = React.useContext(ConnectionRecalculateContext);
-
   switch (show) {
     case "outputsOnly":
       return (resolvedOutputs.length || null) && /*#__PURE__*/React__default["default"].createElement("div", {
@@ -13879,7 +12356,6 @@ var IoPorts = function IoPorts(_ref) {
           key: output.name
         }));
       }));
-
     case "inputsOnly":
       return resolvedInputs.some(function (_ref2) {
         var hidePort = _ref2.hidePort;
@@ -13904,7 +12380,6 @@ var IoPorts = function IoPorts(_ref) {
           key: input.name
         }));
       }));
-
     default:
       return resolvedInputs.some(function (_ref4) {
         var hidePort = _ref4.hidePort;
@@ -13930,10 +12405,169 @@ var IoPorts = function IoPorts(_ref) {
   }
 };
 
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
+var Draggable = (function (_ref) {
+  var children = _ref.children,
+    stageState = _ref.stageState;
+    _ref.stageRect;
+    var onDragDelayStart = _ref.onDragDelayStart,
+    onDragStart = _ref.onDragStart,
+    onDrag = _ref.onDrag,
+    onDragEnd = _ref.onDragEnd,
+    _onMouseDown = _ref.onMouseDown,
+    _onTouchStart = _ref.onTouchStart,
+    disabled = _ref.disabled,
+    _ref$delay = _ref.delay,
+    delay = _ref$delay === void 0 ? 6 : _ref$delay,
+    innerRef = _ref.innerRef,
+    rest = _objectWithoutProperties(_ref, _excluded$2);
+  var startCoordinates = React__default["default"].useRef(null);
+  var offset = React__default["default"].useRef();
+  var wrapper = React__default["default"].useRef();
+  var byScale = function byScale(value) {
+    return value / stageState.scale;
+  };
+  var getScaledCoordinates = function getScaledCoordinates(e) {
+    var x = byScale(e.clientX - offset.current.x - stageState.translate.x);
+    var y = byScale(e.clientY - offset.current.y - stageState.translate.y - 52);
+    return {
+      x: x,
+      y: y
+    };
+  };
+  var updateCoordinates = function updateCoordinates(e) {
+    var coordinates = getScaledCoordinates(e);
+    if (onDrag) {
+      onDrag(coordinates, e);
+    }
+  };
+  var stopDrag = function stopDrag(e) {
+    var coordinates = getScaledCoordinates(e);
+    if (onDragEnd) {
+      onDragEnd(e, coordinates);
+    }
+    window.removeEventListener("mouseup", stopDrag);
+    window.removeEventListener("mousemove", updateCoordinates);
+  };
+  var startDrag = function startDrag(e) {
+    if (onDragStart) {
+      onDragStart(e);
+    }
+    var nodeRect = wrapper.current.getBoundingClientRect();
+    offset.current = {
+      x: startCoordinates.current.x - nodeRect.left,
+      y: startCoordinates.current.y - nodeRect.top
+    };
+    window.addEventListener("mouseup", stopDrag);
+    window.addEventListener("mousemove", updateCoordinates);
+  };
+  var checkDragDelay = function checkDragDelay(e) {
+    var x;
+    var y;
+    if ("ontouchstart" in window && e.touches) {
+      x = e.touches[0].clientX;
+      y = e.touches[0].clientY;
+    } else {
+      e.preventDefault();
+      x = e.clientX;
+      y = e.clientY;
+    }
+    var a = Math.abs(startCoordinates.current.x - x);
+    var b = Math.abs(startCoordinates.current.y - y);
+    var distance = Math.round(Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2)));
+    if (distance >= delay) {
+      startDrag(e);
+      endDragDelay();
+    }
+  };
+  var endDragDelay = function endDragDelay() {
+    document.removeEventListener("mouseup", endDragDelay);
+    document.removeEventListener("mousemove", checkDragDelay);
+    startCoordinates.current = null;
+  };
+  var startDragDelay = function startDragDelay(e) {
+    if (onDragDelayStart) {
+      onDragDelayStart(e);
+    }
+    e.stopPropagation();
+    var x;
+    var y;
+    if ("ontouchstart" in window && e.touches) {
+      x = e.touches[0].clientX;
+      y = e.touches[0].clientY;
+    } else {
+      e.preventDefault();
+      x = e.clientX;
+      y = e.clientY;
+    }
+    startCoordinates.current = {
+      x: x,
+      y: y
+    };
+    document.addEventListener("mouseup", endDragDelay);
+    document.addEventListener("mousemove", checkDragDelay);
+  };
+  return /*#__PURE__*/React__default["default"].createElement("div", _extends$3({
+    onMouseDown: function onMouseDown(e) {
+      if (!disabled || e.button === 1) {
+        startDragDelay(e);
+      }
+      if (_onMouseDown) {
+        _onMouseDown(e);
+      }
+    },
+    onTouchStart: function onTouchStart(e) {
+      if (!disabled) {
+        startDragDelay(e);
+      }
+      if (_onTouchStart) {
+        _onTouchStart(e);
+      }
+    },
+    onDragStart: function onDragStart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    ref: function ref(_ref2) {
+      wrapper.current = _ref2;
+      if (innerRef) {
+        innerRef.current = _ref2;
+      }
+    }
+  }, rest), children);
+});
+
 var _path$1;
-
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-
+function _extends$1() { _extends$1 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 function SvgTicker(props) {
   return /*#__PURE__*/React__namespace.createElement("svg", _extends$1({
     width: 8,
@@ -13949,9 +12583,7 @@ function SvgTicker(props) {
 }
 
 var _path;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function SvgCommentIcon(props) {
   return /*#__PURE__*/React__namespace.createElement("svg", _extends({
     "data-name": "Layer 1",
@@ -13968,18 +12600,16 @@ function SvgCommentIcon(props) {
 
 var Comment = function Comment(_ref) {
   var onOutsideClick = _ref.onOutsideClick,
-      onChange = _ref.onChange,
-      value = _ref.value,
-      border = _ref.border;
+    onChange = _ref.onChange,
+    value = _ref.value,
+    border = _ref.border;
   var ref = React.useRef();
-
   var handleOutsideClick = function handleOutsideClick(e) {
     if (ref.current && !ref.current.contains(e.target)) {
       onChange(ref.current.value);
       onOutsideClick && onOutsideClick(e);
     }
   };
-
   React.useEffect(function () {
     document.addEventListener("mousedown", handleOutsideClick);
     return function () {
@@ -14011,70 +12641,59 @@ var Comment = function Comment(_ref) {
     }
   });
 };
-
 var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
-  var id = _ref2.id;
-      _ref2.width;
-      _ref2.height;
-      var x = _ref2.x,
-      isSelected = _ref2.isSelected,
-      comment = _ref2.comment,
-      y = _ref2.y,
-      expanded = _ref2.expanded;
-      _ref2.delay;
-      var stageRect = _ref2.stageRect,
-      connections = _ref2.connections,
-      type = _ref2.type,
-      inputData = _ref2.inputData,
-      onDragStart = _ref2.onDragStart,
-      _onDragEnd = _ref2.onDragEnd,
-      onDragHandle = _ref2.onDragHandle;
-      _ref2.onDrag;
-      var hideControls = _ref2.hideControls,
-      _ref2$actions = _ref2.actions;
+  var id = _ref2.id,
+    x = _ref2.x,
+    y = _ref2.y,
+    isSelected = _ref2.isSelected,
+    comment = _ref2.comment,
+    expanded = _ref2.expanded,
+    stageRect = _ref2.stageRect,
+    connections = _ref2.connections,
+    type = _ref2.type,
+    inputData = _ref2.inputData,
+    onDragStart = _ref2.onDragStart,
+    _onDragEnd = _ref2.onDragEnd,
+    onDragHandle = _ref2.onDragHandle,
+    hideControls = _ref2.hideControls,
+    _ref2$actions = _ref2.actions;
   _ref2$actions = _ref2$actions === void 0 ? {} : _ref2$actions;
   var actionsData = _ref2$actions.data;
-      _ref2.setSelected;
-
   var _useState = React.useState(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      commentVisibile = _useState2[0],
-      toggleCommentVisibility = _useState2[1]; // const cache = useContext(CacheContext);
-
-
+    _useState2 = _slicedToArray(_useState, 2),
+    commentVisibile = _useState2[0],
+    toggleCommentVisibility = _useState2[1];
+  // const cache = useContext(CacheContext);
   var nodeTypes = React.useContext(NodeTypesContext);
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var stageState = React.useContext(StageContext);
   var recalculateConnections = React.useContext(ConnectionRecalculateContext);
   var _nodeTypes$type = nodeTypes[type],
-      label = _nodeTypes$type.label,
-      deletable = _nodeTypes$type.deletable,
-      _nodeTypes$type$input = _nodeTypes$type.inputs,
-      inputs = _nodeTypes$type$input === void 0 ? [] : _nodeTypes$type$input,
-      _nodeTypes$type$outpu = _nodeTypes$type.outputs,
-      outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
-      icon = _nodeTypes$type.icon,
-      description = _nodeTypes$type.description,
-      buttons = _nodeTypes$type.actions.buttons,
-      _nodeTypes$type$categ = _nodeTypes$type.category,
-      _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
-      tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
-      _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
-      tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
-
+    label = _nodeTypes$type.label,
+    deletable = _nodeTypes$type.deletable,
+    _nodeTypes$type$input = _nodeTypes$type.inputs,
+    inputs = _nodeTypes$type$input === void 0 ? [] : _nodeTypes$type$input,
+    _nodeTypes$type$outpu = _nodeTypes$type.outputs,
+    outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
+    icon = _nodeTypes$type.icon,
+    description = _nodeTypes$type.description,
+    buttons = _nodeTypes$type.actions.buttons,
+    _nodeTypes$type$categ = _nodeTypes$type.category,
+    _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
+    tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
+    _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
+    tileBackground = _nodeTypes$type$categ3 === void 0 ? "rgba(89, 89, 102, 0.9)" : _nodeTypes$type$categ3;
   var _useState3 = React.useState(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      menuOpen = _useState4[0],
-      setMenuOpen = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    menuOpen = _useState4[0],
+    setMenuOpen = _useState4[1];
   var _useState5 = React.useState({
-    x: 0,
-    y: 0
-  }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      menuCoordinates = _useState6[0],
-      setMenuCoordinates = _useState6[1];
-
+      x: 0,
+      y: 0
+    }),
+    _useState6 = _slicedToArray(_useState5, 2),
+    menuCoordinates = _useState6[0],
+    setMenuCoordinates = _useState6[1];
   var resolvedInputs = useTransputs(inputs, "input", id, inputData, connections);
   var resolvedOutputs = useTransputs(outputs, "output", id, inputData, connections);
   var nodeData = {
@@ -14085,70 +12704,66 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     tileFontColor: tileFontColor,
     tileBackground: tileBackground
   };
-
   var byScale = function byScale(value) {
     return value / stageState.scale;
   };
-
   var updateConnectionsByTransput = function updateConnectionsByTransput() {
     var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var isOutput = arguments.length > 1 ? arguments[1] : undefined;
     Object.entries(transput).forEach(function (_ref3) {
       var _ref4 = _slicedToArray(_ref3, 2),
-          portName = _ref4[0],
-          outputs = _ref4[1];
-
+        portName = _ref4[0],
+        outputs = _ref4[1];
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? "output" : "input" // cache
-        );
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output" // cache
-        );
-        var portHalf = fromRect.width / 2;
-        var combined;
+        if (stageRect.current) {
+          var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
+          // cache
+          );
 
-        if (isOutput) {
-          combined = id + portName + output.nodeId + output.portName;
-        } else {
-          combined = output.nodeId + output.portName + id + portName;
-        } // const cachedConnection = null; /* cache.current.connections[combined] */
+          var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
+          // cache
+          );
 
-
-        var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
-        var from = {
-          x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
-          y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
-        };
-        var to = {
-          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageState.translate.x),
-          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageState.translate.y)
-        };
-        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
+          var portHalf = fromRect.width / 2;
+          var combined;
+          if (isOutput) {
+            combined = id + portName + output.nodeId + output.portName;
+          } else {
+            combined = output.nodeId + output.portName + id + portName;
+          }
+          // const cachedConnection = null; /* cache.current.connections[combined] */
+          var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
+          var from = {
+            x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
+            y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
+          };
+          var to = {
+            x: byScale(fromRect.x - stageRect.current.x + portHalf - stageState.translate.x),
+            y: byScale(fromRect.y - stageRect.current.y + portHalf - stageState.translate.y)
+          };
+          cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
+        }
       });
     });
   };
-
   var updateNodeConnections = function updateNodeConnections() {
     if (connections) {
       updateConnectionsByTransput(connections.inputs);
       updateConnectionsByTransput(connections.outputs, true);
     }
   };
-
   var handleDrag = function handleDrag(_ref5) {
     var x = _ref5.x,
-        y = _ref5.y;
+      y = _ref5.y;
     var nWrapper = document.getElementById(id);
     var oldPositions = nWrapper.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
     nWrapper.style.transition = "0s";
-
     if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
       onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
     }
-
     nWrapper.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
     updateNodeConnections();
   };
-
   var handleContextMenu = function handleContextMenu(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -14159,14 +12774,11 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     setMenuOpen(true);
     return false;
   };
-
   var closeContextMenu = function closeContextMenu() {
     setMenuOpen(false);
   };
-
   var handleMenuOption = function handleMenuOption(_ref6) {
     var value = _ref6.value;
-
     switch (value) {
       case "deleteNode":
         nodesDispatch({
@@ -14174,15 +12786,12 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
           nodeId: id
         });
         break;
-
       default:
         return;
     }
   };
-
   var hasInner = React.useMemo(function () {
     var _resolvedInputs$some;
-
     return !!(resolvedInputs !== null && resolvedInputs !== void 0 && (_resolvedInputs$some = resolvedInputs.some) !== null && _resolvedInputs$some !== void 0 && _resolvedInputs$some.call(resolvedInputs, function (_ref7) {
       var hidePort = _ref7.hidePort;
       return hidePort;
@@ -14336,26 +12945,20 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
 });
 Node.displayName = "Node";
 
-var css_248z$4 = ".Comment_wrapper__1Pnbd{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__1Pnbd[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__1Pnbd[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__1Pnbd[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__1Pnbd[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__1Pnbd[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__1Pnbd[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__1Pnbd[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__Ie2nX{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__20KWn{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__20KWn:after,.Comment_resizeThumb__20KWn:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__20KWn:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__2Rze3{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__2Rze3::placeholder{color:rgba(0,0,0,.5)}";
+var css_248z$4 = ".Comment_wrapper__2CG3I{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__2CG3I[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__2CG3I[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__2CG3I[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__2CG3I[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__2CG3I[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__2CG3I[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__2CG3I[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__wBsGB{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__e-57p{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__e-57p:after,.Comment_resizeThumb__e-57p:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__e-57p:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__i7qnk{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__i7qnk::placeholder{color:rgba(0,0,0,.5)}";
 styleInject(css_248z$4);
 
-var css_248z$3 = ".ColorPicker_wrapper__1M1j2{background:rgba(29,32,34,.95);border:1px solid rgba(0,0,0,.4);border-radius:5px;box-shadow:0 6px 7px rgba(0,0,0,.3);color:#fff;display:flex;flex-wrap:wrap;padding:2px;position:fixed;width:102px;z-index:9999}@supports (backdrop-filter:blur(6px)){.ColorPicker_wrapper__1M1j2{backdrop-filter:blur(6px);background:rgba(29,32,34,.8)}}.ColorPicker_colorButtonWrapper__1ijdj{align-items:center;display:flex;justify-content:center;padding:2px}.ColorPicker_colorButton__1Qcuq{background:#ccc;border:none;border-radius:3px;height:20px;width:20px}.ColorPicker_colorButton__1Qcuq[data-color=red]{background:#d2656f}.ColorPicker_colorButton__1Qcuq[data-color=purple]{background:#9f65d2}.ColorPicker_colorButton__1Qcuq[data-color=blue]{background:#6597d2}.ColorPicker_colorButton__1Qcuq[data-color=green]{background:#65d2a8}.ColorPicker_colorButton__1Qcuq[data-color=orange]{background:#d28965}.ColorPicker_colorButton__1Qcuq[data-color=yellow]{background:#d2c465}.ColorPicker_colorButton__1Qcuq[data-color=pink]{background:#f17ce2}.ColorPicker_colorButton__1Qcuq:hover{opacity:.8}";
+var css_248z$3 = ".ColorPicker_wrapper__MW540{background:rgba(29,32,34,.95);border:1px solid rgba(0,0,0,.4);border-radius:5px;box-shadow:0 6px 7px rgba(0,0,0,.3);color:#fff;display:flex;flex-wrap:wrap;padding:2px;position:fixed;width:102px;z-index:9999}@supports (backdrop-filter:blur(6px)){.ColorPicker_wrapper__MW540{backdrop-filter:blur(6px);background:rgba(29,32,34,.8)}}.ColorPicker_colorButtonWrapper__Z123Z{align-items:center;display:flex;justify-content:center;padding:2px}.ColorPicker_colorButton__A82sm{background:#ccc;border:none;border-radius:3px;height:20px;width:20px}.ColorPicker_colorButton__A82sm[data-color=red]{background:#d2656f}.ColorPicker_colorButton__A82sm[data-color=purple]{background:#9f65d2}.ColorPicker_colorButton__A82sm[data-color=blue]{background:#6597d2}.ColorPicker_colorButton__A82sm[data-color=green]{background:#65d2a8}.ColorPicker_colorButton__A82sm[data-color=orange]{background:#d28965}.ColorPicker_colorButton__A82sm[data-color=yellow]{background:#d2c465}.ColorPicker_colorButton__A82sm[data-color=pink]{background:#f17ce2}.ColorPicker_colorButton__A82sm:hover{opacity:.8}";
 styleInject(css_248z$3);
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 function _classCallCheck(instance, Constructor) {
@@ -14373,10 +12976,12 @@ function _defineProperties(target, props) {
     Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
 
@@ -31584,31 +30189,22 @@ var lodash = {exports: {}};
 var _ = lodash.exports;
 
 function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
-
 function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   var isCircular = false;
-
   var walk = function walk(nodeId) {
     var outputs = Object.values(nodes[nodeId].connections.outputs);
-
     for (var _i = 0, _outputs = outputs; _i < _outputs.length; _i++) {
       var outputConnections = _outputs[_i];
-
       if (isCircular) {
         break;
       }
-
       var _iterator = _createForOfIteratorHelper$2(outputConnections),
-          _step;
-
+        _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var connectedTo = _step.value;
-
           if (connectedTo.nodeId === startNodeId) {
             isCircular = true;
             break;
@@ -31623,7 +30219,6 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
       }
     }
   };
-
   walk(startNodeId);
   return isCircular;
 };
@@ -31648,18 +30243,14 @@ var getPortBuilders = function getPortBuilders(ports) {
         controls: define(config.controls, port.controls)
       };
     };
-
     return obj;
   }, {});
 };
 
 function _toPropertyKey$3(arg) { var key = _toPrimitive$3(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-
 function _toPrimitive$3(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
-function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$e(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var Colors = {
   yellow: "yellow",
   orange: "orange",
@@ -31670,11 +30261,9 @@ var Colors = {
   green: "green",
   grey: "grey"
 };
-
 var FlumeConfig = /*#__PURE__*/function () {
   function FlumeConfig(config) {
     _classCallCheck(this, FlumeConfig);
-
     if (config) {
       this.nodeTypes = _objectSpread$e({}, config.nodeTypes);
       this.portTypes = _objectSpread$e({}, config.portTypes);
@@ -31683,7 +30272,6 @@ var FlumeConfig = /*#__PURE__*/function () {
       this.portTypes = {};
     }
   }
-
   _createClass(FlumeConfig, [{
     key: "addRootNodeType",
     value: function addRootNodeType(config) {
@@ -31699,46 +30287,45 @@ var FlumeConfig = /*#__PURE__*/function () {
     value: function addNodeType(config) {
       if (_typeof(config) !== "object" && config !== null) {
         throw new Error("You must provide a configuration object when calling addNodeType.");
-      } // noinspection JSObjectNullOrUndefined
+      }
 
-
+      // noinspection JSObjectNullOrUndefined
       if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addNodeType.");
       }
-
       if (typeof config.initialWidth !== "undefined" && typeof config.initialWidth !== "number") {
         throw new Error("Optional key, \"initialWidth\" must be a number when calling addNodeType.");
       }
-
       if (this.nodeTypes[config.type] !== undefined) {
         throw new Error("A node with type \"".concat(config.type, "\" has already been declared."));
       }
-
       var node = {
         type: config.type,
         label: define(config.label, ""),
         description: define(config.description, ""),
         addable: define(config.addable, true),
         deletable: define(config.deletable, true)
-      }; // Validating category data of flume action that is used to render action
-      // header and label info
+      };
 
+      // Validating category data of flume action that is used to render action
+      // header and label info
       node.category = {};
       var category = config.category;
       node.category.id = (category === null || category === void 0 ? void 0 : category.id) || -1;
       node.category.label = category !== null && category !== void 0 && category.label && typeof config.label === "string" ? category.label : "Other";
       node.category.description = category !== null && category !== void 0 && category.description && typeof config.description === "string" ? category.description : "Ungrouped actions are stored here";
-      node.category.icon = category !== null && category !== void 0 && category.icon && typeof category.icon === 'string' ? category.icon : 'no icon'; // Optionally supplying action header color
+      node.category.icon = category !== null && category !== void 0 && category.icon && typeof category.icon === "string" ? category.icon : "no icon";
 
-      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor; // Optionally supplying action header color
+      // Optionally supplying action header color
+      if (category !== null && category !== void 0 && category.tileFontColor && typeof category.tileFontColor === "string" && checkColor(category.tileFontColor)) node.category.tileFontColor = category.tileFontColor;
 
+      // Optionally supplying action header color
       if (category !== null && category !== void 0 && category.tileBackground && typeof category.tileBackground === "string" && checkColor(category.tileBackground)) node.category.tileBackground = category.tileBackground;
       if (typeof config.icon === "string") node.icon = config.icon;
       if (typeof config.comment === "string") node.comment = config.comment;
       node.expanded = config.expanded || true;
       if (config.initialWidth) node.initialWidth = config.initialWidth;
       if (config.sortIndex !== undefined) node.sortIndex = config.sortIndex;
-
       if (config.actions) {
         node.actions = config.actions;
         node.actions.data = config.actions.data || {};
@@ -31749,7 +30336,6 @@ var FlumeConfig = /*#__PURE__*/function () {
         data: {},
         buttons: []
       };
-
       if (typeof config.inputs === "function") {
         var inputs = config.inputs(getPortBuilders(this.portTypes));
         if (!Array.isArray(inputs) && typeof config.inputs !== "function") throw new Error("When providing a function to the \"inputs\" key, you must return either an array or a function.");
@@ -31761,14 +30347,11 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         node.inputs = config.inputs;
       }
-
       if (typeof config.outputs === "function") {
         var outputs = config.outputs(getPortBuilders(this.portTypes));
-
         if (!Array.isArray(outputs) && typeof config.outputs !== "function") {
           throw new Error("When providing a function to the \"outputs\" key, you must return either an array or a function.");
         }
-
         node.outputs = outputs;
       } else if (config.outputs === undefined) {
         node.outputs = [];
@@ -31777,7 +30360,6 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         node.outputs = config.outputs;
       }
-
       if (config.root !== undefined) {
         if (typeof config.root !== "boolean") {
           throw new Error("Optional key, \"root\" must be a boolean.");
@@ -31785,7 +30367,6 @@ var FlumeConfig = /*#__PURE__*/function () {
           node.root = config.root;
         }
       }
-
       this.nodeTypes[config.type] = node;
       return this;
     }
@@ -31796,12 +30377,10 @@ var FlumeConfig = /*#__PURE__*/function () {
         console.error("Non-existent node type \"".concat(type, "\" cannot be removed."));
       } else {
         var _this$nodeTypes = this.nodeTypes;
-            _this$nodeTypes[type];
-            var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$3));
-
+          _this$nodeTypes[type];
+          var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$3));
         this.nodeTypes = nodeTypes;
       }
-
       return this;
     }
   }, {
@@ -31809,28 +30388,24 @@ var FlumeConfig = /*#__PURE__*/function () {
     value: function addPortType(config) {
       if (_typeof(config) !== "object" && config !== null) {
         throw new Error("You must provide a configuration object when calling addPortType");
-      } // noinspection JSObjectNullOrUndefined
+      }
 
-
+      // noinspection JSObjectNullOrUndefined
       if (typeof config.type !== "string") {
         throw new Error("Required key, \"type\" must be a string when calling addPortType.");
       }
-
       if (this.portTypes[config.type] !== undefined) {
         throw new Error("A port with type \"".concat(config.type, "\" has already been declared."));
       }
-
       if (typeof config.name !== "string") {
         throw new Error("Required key, \"name\" must be a string when calling addPortType.");
       }
-
       var port = {
         type: config.type,
         name: config.name,
         label: define(config.label, ""),
         hidePort: define(config.hidePort, true)
       };
-
       if (config.acceptTypes === undefined) {
         port.acceptTypes = [config.type];
       } else if (!Array.isArray(config.acceptTypes)) {
@@ -31838,7 +30413,6 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         port.acceptTypes = config.acceptTypes;
       }
-
       if (config.controls === undefined) {
         port.controls = [];
       } else if (!Array.isArray(config.controls)) {
@@ -31846,7 +30420,6 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         port.controls = config.controls;
       }
-
       if (!port.color && config.color && typeof config.color === "string" && checkColor(config.color)) port.color = config.color;
       this.portTypes[config.type] = port;
       return this;
@@ -31855,9 +30428,8 @@ var FlumeConfig = /*#__PURE__*/function () {
     key: "removePortType",
     value: function removePortType(type) {
       var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref$skipDynamicNodes = _ref.skipDynamicNodesCheck,
-          skipDynamicNodesCheck = _ref$skipDynamicNodes === void 0 ? false : _ref$skipDynamicNodes;
-
+        _ref$skipDynamicNodes = _ref.skipDynamicNodesCheck,
+        skipDynamicNodesCheck = _ref$skipDynamicNodes === void 0 ? false : _ref$skipDynamicNodes;
       if (!this.portTypes[type]) {
         console.error("Non-existent port type \"".concat(type, "\" cannot be removed."));
       } else {
@@ -31865,12 +30437,10 @@ var FlumeConfig = /*#__PURE__*/function () {
           var dynamicNodes = Object.values(this.nodeTypes).filter(function (node) {
             return typeof node.inputs === "function" || typeof node.outputs === "function";
           });
-
           if (dynamicNodes.length) {
             console.warn("We've detected that one or more of your nodes is using dynamic inputs/outputs. This is a potentially dangerous operation as we are unable to detect if this portType is being used in one of those nodes. You can quiet this message by passing { skipDynamicNodesCheck: true } in as the second argument.");
           }
         }
-
         var affectedNodes = Object.values(this.nodeTypes).filter(function (node) {
           return Array.isArray(node.inputs) && node.inputs.find(function (p) {
             return p.type === type;
@@ -31878,35 +30448,31 @@ var FlumeConfig = /*#__PURE__*/function () {
             return p.type === type;
           });
         });
-
         if (affectedNodes.length) {
           throw new Error("Cannot delete port type \"".concat(type, "\" without first deleting all node types using these ports: [").concat(affectedNodes.map(function (n) {
             return "".concat(n.type);
           }).join(", "), "]"));
         } else {
           var _this$portTypes = this.portTypes;
-              _this$portTypes[type];
-              var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$3));
-
+            _this$portTypes[type];
+            var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$3));
           this.portTypes = portTypes;
         }
       }
-
       return this;
     }
   }]);
-
   return FlumeConfig;
 }();
 
-var css_248z$2 = ".Toaster_toaster__1eC3T{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__3YHVS{animation:Toaster_fade-in__2526Y .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__3YHVS[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__3YHVS[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__3YHVS[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__3YHVS[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__3YHVS[data-exiting=true]{animation:Toaster_fade-out__2lM6E .15s;animation-fill-mode:forwards}.Toaster_toast__3YHVS p{margin:0}.Toaster_title__4InNr{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__3dGzF{animation:Toaster_timer__3dGzF 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__1S_Ks{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__1S_Ks:hover{opacity:.9}@keyframes Toaster_fade-in__2526Y{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__2lM6E{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__3dGzF{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
-var styles$2 = {"toaster":"Toaster_toaster__1eC3T","toast":"Toaster_toast__3YHVS","fade-in":"Toaster_fade-in__2526Y","fade-out":"Toaster_fade-out__2lM6E","title":"Toaster_title__4InNr","timer":"Toaster_timer__3dGzF","exitButton":"Toaster_exitButton__1S_Ks"};
+var css_248z$2 = ".Toaster_toaster__E5R8O{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__2wgPt{animation:Toaster_fade-in__y8znw .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__2wgPt[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__2wgPt[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__2wgPt[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__2wgPt[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__2wgPt[data-exiting=true]{animation:Toaster_fade-out__XANRE .15s;animation-fill-mode:forwards}.Toaster_toast__2wgPt p{margin:0}.Toaster_title__UqwtP{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__P6Wpm{animation:Toaster_timer__P6Wpm 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__8SpPt{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__8SpPt:hover{opacity:.9}@keyframes Toaster_fade-in__y8znw{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__XANRE{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__P6Wpm{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
+var styles$2 = {"toaster":"Toaster_toaster__E5R8O","toast":"Toaster_toast__2wgPt","fade-in":"Toaster_fade-in__y8znw","fade-out":"Toaster_fade-out__XANRE","title":"Toaster_title__UqwtP","timer":"Toaster_timer__P6Wpm","exitButton":"Toaster_exitButton__8SpPt"};
 styleInject(css_248z$2);
 
 var Toaster = (function (_ref) {
   var _ref$toasts = _ref.toasts,
-      toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
-      dispatchToasts = _ref.dispatchToasts;
+    toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
+    dispatchToasts = _ref.dispatchToasts;
   var setHeight = React__default["default"].useCallback(function (id, height) {
     dispatchToasts({
       type: "SET_HEIGHT",
@@ -31940,24 +30506,21 @@ var Toaster = (function (_ref) {
     }));
   }));
 });
-
 var Toast = function Toast(_ref2) {
   var id = _ref2.id,
-      title = _ref2.title,
-      message = _ref2.message,
-      duration = _ref2.duration,
-      type = _ref2.type,
-      exiting = _ref2.exiting,
-      y = _ref2.y,
-      onHeightReceived = _ref2.onHeightReceived,
-      onExitRequested = _ref2.onExitRequested,
-      onRemoveRequested = _ref2.onRemoveRequested;
-
+    title = _ref2.title,
+    message = _ref2.message,
+    duration = _ref2.duration,
+    type = _ref2.type,
+    exiting = _ref2.exiting,
+    y = _ref2.y,
+    onHeightReceived = _ref2.onHeightReceived,
+    onExitRequested = _ref2.onExitRequested,
+    onRemoveRequested = _ref2.onRemoveRequested;
   var _React$useState = React__default["default"].useState(false),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      paused = _React$useState2[0],
-      setPaused = _React$useState2[1];
-
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    paused = _React$useState2[0],
+    setPaused = _React$useState2[1];
   var wrapper = React__default["default"].useRef();
   var timer = React__default["default"].useRef();
   var stopTimer = React__default["default"].useCallback(function () {
@@ -31972,21 +30535,18 @@ var Toast = function Toast(_ref2) {
   }, [id, duration, onExitRequested]);
   React__default["default"].useLayoutEffect(function () {
     var _wrapper$current$getB = wrapper.current.getBoundingClientRect(),
-        height = _wrapper$current$getB.height;
-
+      height = _wrapper$current$getB.height;
     onHeightReceived(id, height);
   }, [onHeightReceived, id]);
   React__default["default"].useEffect(function () {
     resumeTimer();
     return stopTimer;
   }, [resumeTimer, stopTimer]);
-
   var handleAnimationEnd = function handleAnimationEnd() {
     if (exiting) {
       onRemoveRequested(id);
     }
   };
-
   return /*#__PURE__*/React__default["default"].createElement("div", {
     ref: wrapper,
     className: styles$2.toast,
@@ -32018,13 +30578,13 @@ var Toast = function Toast(_ref2) {
   }, "\u2715"));
 };
 
-var css_248z$1 = ".Connections_svgWrapper__3mXcU{height:0;left:0;position:absolute}";
-var styles$1 = {"svgWrapper":"Connections_svgWrapper__3mXcU"};
+var css_248z$1 = ".Connections_svgWrapper__6Rcg4{height:0;left:0;position:absolute}";
+var styles$1 = {"svgWrapper":"Connections_svgWrapper__6Rcg4"};
 styleInject(css_248z$1);
 
 var Connections = function Connections(_ref) {
   _ref.nodes;
-      var editorId = _ref.editorId;
+    var editorId = _ref.editorId;
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$1.svgWrapper,
     id: "".concat(CONNECTIONS_ID).concat(editorId)
@@ -32033,25 +30593,24 @@ var Connections = function Connections(_ref) {
 
 var useConnectorActions = function useConnectorActions(_ref) {
   var dispatchNodes = _ref.dispatchNodes,
-      _ref$connector = _ref.connector,
-      connectorAction = _ref$connector.action,
-      setNodesState = _ref$connector.setNodesState,
-      _ref$connector$temp = _ref$connector.temp,
-      tempState = _ref$connector$temp.state,
-      dispatchTemp = _ref$connector$temp.dispatch,
-      triggerRecalculation = _ref.triggerRecalculation,
-      selectedNodes = _ref.selectedNodes,
-      stageState = _ref.stageState,
-      dispatchStageState = _ref.dispatchStageState,
-      nodesState = _ref.nodesState,
-      currentStateIndex = _ref.currentStateIndex,
-      setSelectedNodes = _ref.setSelectedNodes;
+    _ref$connector = _ref.connector,
+    connectorAction = _ref$connector.action,
+    setNodesState = _ref$connector.setNodesState,
+    _ref$connector$temp = _ref$connector.temp,
+    tempState = _ref$connector$temp.state,
+    dispatchTemp = _ref$connector$temp.dispatch,
+    triggerRecalculation = _ref.triggerRecalculation,
+    selectedNodes = _ref.selectedNodes,
+    stageState = _ref.stageState,
+    dispatchStageState = _ref.dispatchStageState,
+    nodesState = _ref.nodesState,
+    currentStateIndex = _ref.currentStateIndex,
+    setSelectedNodes = _ref.setSelectedNodes;
   React.useEffect(function () {
     if (connectorAction) {
       var _connectorAction = connectorAction(),
-          type = _connectorAction.type,
-          data = _connectorAction.data;
-
+        type = _connectorAction.type,
+        data = _connectorAction.data;
       switch (type) {
         case "UNDO":
           dispatchNodes({
@@ -32060,7 +30619,6 @@ var useConnectorActions = function useConnectorActions(_ref) {
           clearConnections();
           triggerRecalculation();
           break;
-
         case "REDO":
           dispatchNodes({
             type: "REDO_CHANGES"
@@ -32068,14 +30626,12 @@ var useConnectorActions = function useConnectorActions(_ref) {
           clearConnections();
           triggerRecalculation();
           break;
-
         case "COPY":
           dispatchNodes({
             type: "COPY_NODES",
             selectedNodeIds: selectedNodes
           });
           break;
-
         case "CUT":
           dispatchNodes({
             type: "CUT_NODES",
@@ -32084,7 +30640,6 @@ var useConnectorActions = function useConnectorActions(_ref) {
           clearConnections();
           triggerRecalculation();
           break;
-
         case "DEL":
           dispatchNodes({
             type: "DEL_NODES",
@@ -32093,7 +30648,6 @@ var useConnectorActions = function useConnectorActions(_ref) {
           clearConnections();
           triggerRecalculation();
           break;
-
         case "PASTE":
           dispatchNodes({
             type: "PASTE_NODES"
@@ -32101,11 +30655,10 @@ var useConnectorActions = function useConnectorActions(_ref) {
           clearConnections();
           triggerRecalculation();
           break;
-
         case "TOGGLE_NODES_VIEW":
           {
             var nodeIds = data.nodeIds,
-                doExpand = data.doExpand;
+              doExpand = data.doExpand;
             nodeIds.forEach(function (id) {
               dispatchNodes({
                 type: "TOGGLE_NODE_VIEW",
@@ -32116,12 +30669,11 @@ var useConnectorActions = function useConnectorActions(_ref) {
             triggerRecalculation();
             break;
           }
-
         case "ADD_NODE":
           {
             var _x = data.x,
-                _y = data.y,
-                _type = data.type;
+              _y = data.y,
+              _type = data.type;
             dispatchNodes({
               type: "ADD_NODE",
               x: _x,
@@ -32130,12 +30682,11 @@ var useConnectorActions = function useConnectorActions(_ref) {
             });
             break;
           }
-
         case "HIGHLIGHT_NODE":
           var _data$node = data.node,
-              x = _data$node.x,
-              y = _data$node.y,
-              id = _data$node.id;
+            x = _data$node.x,
+            y = _data$node.y,
+            id = _data$node.id;
           dispatchStageState({
             type: "SET_SCALE",
             scale: 1.2
@@ -32155,9 +30706,9 @@ var useConnectorActions = function useConnectorActions(_ref) {
   React.useEffect(function () {
     if (!_.isEqual(stageState, tempState.stage)) {
       var _stageState$translate = stageState.translate,
-          x = _stageState$translate.x,
-          y = _stageState$translate.y,
-          scale = stageState.scale;
+        x = _stageState$translate.x,
+        y = _stageState$translate.y,
+        scale = stageState.scale;
       dispatchTemp({
         type: "SET_STAGE",
         scale: scale,
@@ -32165,7 +30716,6 @@ var useConnectorActions = function useConnectorActions(_ref) {
         y: y
       });
     }
-
     if (!_.isEqual(selectedNodes, tempState.selectedNodes)) {
       dispatchTemp({
         type: "SELECT_NODES",
@@ -32181,7 +30731,6 @@ var useConnectorActions = function useConnectorActions(_ref) {
   }, [nodesState, currentStateIndex, setNodesState]);
   return null;
 };
-
 useConnectorActions.displayName = "useConnectorActions";
 
 var getNative = _getNative;
@@ -35961,17 +34510,14 @@ var object = {
 var getFilteredTransputs = (function (transputs, nodeId) {
   return Object.entries(transputs).reduce(function (obj, _ref) {
     var _ref2 = _slicedToArray(_ref, 2),
-        portName = _ref2[0],
-        transput = _ref2[1];
-
+      portName = _ref2[0],
+      transput = _ref2[1];
     var newTransputs = transput.filter(function (t) {
       return t.nodeId !== nodeId;
     });
-
     if (newTransputs.length) {
       obj[portName] = newTransputs;
     }
-
     return obj;
   }, {});
 });
@@ -35983,19 +34529,14 @@ var removeConnections = (function (connections, nodeId) {
   };
 });
 
-function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$d(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _toPropertyKey$2(arg) { var key = _toPrimitive$2(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-
 function _toPrimitive$2(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var removeNode = (function (startNodes, nodeId) {
   var clearView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
   startNodes[nodeId];
-      var nodes = _objectWithoutProperties(startNodes, [nodeId].map(_toPropertyKey$2));
-
+    var nodes = _objectWithoutProperties(startNodes, [nodeId].map(_toPropertyKey$2));
   nodes = Object.values(nodes).reduce(function (obj, node) {
     obj[node.id] = _objectSpread$d(_objectSpread$d({}, node), {}, {
       connections: removeConnections(node.connections, nodeId)
@@ -36006,13 +34547,10 @@ var removeNode = (function (startNodes, nodeId) {
   return nodes;
 });
 
-function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$c(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var addConnection = (function (nodes, input, output, portTypes) {
   var _objectSpread4;
-
   return _objectSpread$c(_objectSpread$c({}, nodes), {}, (_objectSpread4 = {}, _defineProperty$1(_objectSpread4, input.nodeId, _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId]), {}, {
     connections: _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId].connections), {}, {
       inputs: _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId].connections.inputs), {}, _defineProperty$1({}, input.portName, [].concat(_toConsumableArray(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
@@ -36030,49 +34568,39 @@ var addConnection = (function (nodes, input, output, portTypes) {
   })), _objectSpread4));
 });
 
-function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$b(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _toPropertyKey$1(arg) { var key = _toPrimitive$1(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-
 function _toPrimitive$1(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
 var removeConnection = (function (nodes, input, output) {
   var _objectSpread3;
-
   var inputNode = nodes[input.nodeId];
-
   var _inputNode$connection = inputNode.connections.inputs,
-      _input$portName = input.portName;
-      _inputNode$connection[_input$portName];
-      var newInputNodeConnectionsInputs = _objectWithoutProperties(_inputNode$connection, [_input$portName].map(_toPropertyKey$1));
-
+    _input$portName = input.portName;
+    _inputNode$connection[_input$portName];
+    var newInputNodeConnectionsInputs = _objectWithoutProperties(_inputNode$connection, [_input$portName].map(_toPropertyKey$1));
   var newInputNode = _objectSpread$b(_objectSpread$b({}, inputNode), {}, {
     connections: _objectSpread$b(_objectSpread$b({}, inputNode.connections), {}, {
       inputs: newInputNodeConnectionsInputs
     })
   });
-
   var outputNode = nodes[output.nodeId];
   var filteredOutputNodes = outputNode.connections.outputs[output.portName].filter(function (cnx) {
     return cnx.nodeId === input.nodeId ? cnx.portName !== input.portName : true;
   });
-
   var newOutputNode = _objectSpread$b(_objectSpread$b({}, outputNode), {}, {
     connections: _objectSpread$b(_objectSpread$b({}, outputNode.connections), {}, {
       outputs: _objectSpread$b(_objectSpread$b({}, outputNode.connections.outputs), {}, _defineProperty$1({}, output.portName, filteredOutputNodes))
     })
   });
-
   return _objectSpread$b(_objectSpread$b({}, nodes), {}, (_objectSpread3 = {}, _defineProperty$1(_objectSpread3, input.nodeId, newInputNode), _defineProperty$1(_objectSpread3, output.nodeId, newOutputNode), _objectSpread3));
 });
 
 var getDefaultData = (function (_ref) {
   var node = _ref.node,
-      nodeType = _ref.nodeType,
-      portTypes = _ref.portTypes,
-      context = _ref.context;
+    nodeType = _ref.nodeType,
+    portTypes = _ref.portTypes,
+    context = _ref.context;
   var inputs = Array.isArray(nodeType.inputs) ? nodeType.inputs : nodeType.inputs(node.inputData, node.connections, context);
   return inputs.reduce(function (obj, input) {
     var inputType = portTypes[input.type];
@@ -36085,26 +34613,17 @@ var getDefaultData = (function (_ref) {
 });
 
 var _excluded$1 = ["id", "defaultNode"];
-
 function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
-
 function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$a(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var copyObj = function copyObj(o) {
   return JSON.parse(JSON.stringify(o));
 };
-
 var copyNodes = function copyNodes(nodes, selectedNodeIds) {
   var clearView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
   var nodesToDelete = _.difference(_.keys(nodes), selectedNodeIds);
-
   var nodesToCopy = nodesToDelete.reduce(function (stayNodes, id) {
     return removeNode(stayNodes, id, clearView);
   }, nodes);
@@ -36113,34 +34632,28 @@ var copyNodes = function copyNodes(nodes, selectedNodeIds) {
     nodes: nodesToCopy
   }));
 };
-
 var nodesReducer = function nodesReducer(_ref) {
   var nodesState = _ref.nodesState,
-      currentStateIndex = _ref.currentStateIndex;
+    currentStateIndex = _ref.currentStateIndex;
   var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
   var _ref2 = arguments.length > 2 ? arguments[2] : undefined,
-      nodeTypes = _ref2.nodeTypes,
-      portTypes = _ref2.portTypes,
-      cache = _ref2.cache,
-      circularBehavior = _ref2.circularBehavior,
-      context = _ref2.context;
-
+    nodeTypes = _ref2.nodeTypes,
+    portTypes = _ref2.portTypes,
+    cache = _ref2.cache,
+    circularBehavior = _ref2.circularBehavior,
+    context = _ref2.context;
   var dispatchToasts = arguments.length > 3 ? arguments[3] : undefined;
   var nodes = nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state || {};
-
   switch (action.type) {
     case "ADD_CONNECTION":
       {
         var input = action.input,
-            output = action.output;
+          output = action.output;
         var inputIsNotConnected = !nodes[input.nodeId].connections.inputs[input.portName];
-
         if (inputIsNotConnected) {
           var allowCircular = circularBehavior === "warn" || circularBehavior === "allow";
           var newNodes = addConnection(nodes, input, output);
           var isCircular = checkForCircularNodes(newNodes, output.nodeId);
-
           if (isCircular && !allowCircular) {
             dispatchToasts({
               type: "ADD_TOAST",
@@ -36160,16 +34673,14 @@ var nodesReducer = function nodesReducer(_ref) {
                 duration: 5000
               });
             }
-
             return newNodes;
           }
         } else return nodes;
       }
-
     case "REMOVE_CONNECTION":
       {
         var _input = action.input,
-            _output = action.output;
+          _output = action.output;
         var id = _output.nodeId + _output.portName + _input.nodeId + _input.portName;
         delete cache.current.connections[id];
         deleteConnection({
@@ -36177,11 +34688,10 @@ var nodesReducer = function nodesReducer(_ref) {
         });
         return removeConnection(nodes, _input, _output);
       }
-
     case "DESTROY_TRANSPUT":
       {
         var transput = action.transput,
-            transputType = action.transputType;
+          transputType = action.transputType;
         var portId = transput.nodeId + transput.portName + transputType;
         delete cache.current.ports[portId];
         var cnxType = transputType === "input" ? "inputs" : "outputs";
@@ -36189,10 +34699,9 @@ var nodesReducer = function nodesReducer(_ref) {
         if (!connections || !connections.length) return nodes;
         return connections.reduce(function (nodes, cnx) {
           var _ref3 = transputType === "input" ? [transput, cnx] : [cnx, transput],
-              _ref4 = _slicedToArray(_ref3, 2),
-              input = _ref4[0],
-              output = _ref4[1];
-
+            _ref4 = _slicedToArray(_ref3, 2),
+            input = _ref4[0],
+            output = _ref4[1];
           var id = output.nodeId + output.portName + input.nodeId + input.portName;
           delete cache.current.connections[id];
           deleteConnection({
@@ -36201,17 +34710,14 @@ var nodesReducer = function nodesReducer(_ref) {
           return removeConnection(nodes, input, output);
         }, nodes);
       }
-
     case "ADD_NODE":
       {
         var x = action.x,
-            y = action.y,
-            nodeType = action.nodeType,
-            _id = action.id,
-            defaultNode = action.defaultNode;
-
+          y = action.y,
+          nodeType = action.nodeType,
+          _id = action.id,
+          defaultNode = action.defaultNode;
         var newNodeId = _id || nanoid(10);
-
         var newNode = {
           id: newNodeId,
           x: x,
@@ -36235,172 +34741,144 @@ var nodesReducer = function nodesReducer(_ref) {
         newNode.actions = object.omit(nodeTypes[nodeType].actions || {}, ["buttons"]);
         return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, newNodeId, newNode));
       }
-
     case "COPY_NODES":
       {
         var selectedNodeIds = _.difference(action.selectedNodeIds, _.keys(_.pickBy(nodes, function (_ref5) {
           var root = _ref5.root;
           return root;
         })));
-
         if (!selectedNodeIds.length) return nodes;
         copyNodes(nodes, selectedNodeIds, false);
         return nodes;
       }
-
     case "CUT_NODES":
       {
         var _selectedNodeIds = _.difference(action.selectedNodeIds, _.keys(_.pickBy(nodes, function (_ref6) {
           var root = _ref6.root;
           return root;
         })));
-
         if (!_selectedNodeIds.length) return nodes;
         copyNodes(nodes, _selectedNodeIds);
         return _selectedNodeIds.reduce(function (stayNodes, id) {
           return removeNode(stayNodes, id);
         }, nodes);
       }
-
     case "DEL_NODES":
       {
         var _selectedNodeIds2 = _.difference(action.selectedNodeIds, _.keys(_.pickBy(nodes, function (_ref7) {
           var root = _ref7.root;
           return root;
         })));
-
         if (!_selectedNodeIds2.length) return nodes;
         return _selectedNodeIds2.reduce(function (stayNodes, id) {
           return removeNode(stayNodes, id);
         }, nodes);
       }
-
     case "PASTE_NODES":
       {
         var JSONString = localStorage.getItem("clipboard");
-
         var _JSON$parse = JSON.parse(JSONString),
-            application = _JSON$parse.application,
-            _newNodes = _JSON$parse.nodes;
-
+          application = _JSON$parse.application,
+          _newNodes = _JSON$parse.nodes;
         if (application === "PythonRPA" && _newNodes) {
           var newJSONString = _.keys(_newNodes).reduce(function (jsonString, id) {
             var newId = nanoid(10);
             return jsonString.replaceAll("\"".concat(id, "\""), "\"".concat(newId, "\""));
           }, JSON.stringify(_newNodes));
-
           var newJSON = JSON.parse(newJSONString);
-
           _.forOwn(newJSON, function (_, key) {
             newJSON[key] = _objectSpread$a(_objectSpread$a({}, newJSON[key]), {}, {
               x: newJSON[key].x + 20,
               y: newJSON[key].y + 20
             });
           });
-
           localStorage.setItem("clipboard", JSON.stringify({
             application: "PythonRPA",
             nodes: newJSON
           }));
           return _objectSpread$a(_objectSpread$a({}, nodes), newJSON);
         }
-
         return nodes;
       }
-
     case "REMOVE_NODE":
       {
         var nodeId = action.nodeId;
         return removeNode(nodes, nodeId);
       }
-
     case "HYDRATE_DEFAULT_NODES":
       {
         var _newNodes2 = _objectSpread$a({}, nodes);
-
         for (var key in _newNodes2) {
           if (_newNodes2[key].defaultNode) {
             var _newNodeId = nanoid(10);
-
             var _newNodes2$key = _newNodes2[key];
-                _newNodes2$key.id;
-                _newNodes2$key.defaultNode;
-                var node = _objectWithoutProperties(_newNodes2$key, _excluded$1);
-
+              _newNodes2$key.id;
+              _newNodes2$key.defaultNode;
+              var node = _objectWithoutProperties(_newNodes2$key, _excluded$1);
             _newNodes2[_newNodeId] = _objectSpread$a(_objectSpread$a({}, node), {}, {
               id: _newNodeId
             });
             delete _newNodes2[key];
           }
         }
-
         return _newNodes2;
       }
-
     case "SET_PORT_DATA":
       {
         var _nodeId = action.nodeId,
-            portName = action.portName,
-            controlName = action.controlName,
-            data = action.data,
-            setValue = action.setValue;
-
+          portName = action.portName,
+          controlName = action.controlName,
+          data = action.data,
+          setValue = action.setValue;
         var newData = _objectSpread$a(_objectSpread$a({}, nodes[_nodeId].inputData), {}, _defineProperty$1({}, portName, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId].inputData[portName]), {}, _defineProperty$1({}, controlName, data))));
-
         if (setValue) {
           newData = setValue(newData, nodes[_nodeId].inputData);
         }
-
         return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId]), {}, {
           inputData: newData
         })));
       }
-
     case "SET_NODE_DATA":
       {
         var comment = action.comment,
-            _nodeId2 = action.nodeId;
+          _nodeId2 = action.nodeId;
         return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId2, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId2]), {}, {
           comment: comment !== null && comment !== void 0 && comment.length ? comment : undefined
         })));
       }
-
     case "SET_NODE_COORDINATES":
       {
         var _x = action.x,
-            _y = action.y,
-            _nodeId3 = action.nodeId;
+          _y = action.y,
+          _nodeId3 = action.nodeId;
         return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId3, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId3]), {}, {
           x: _x,
           y: _y
         })));
       }
-
     case "SET_MULTIPLE_NODES_COORDINATES":
       {
         var nodesInfo = action.nodesInfo;
         return _objectSpread$a(_objectSpread$a({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref8) {
           var nodeId = _ref8.nodeId,
-              x = _ref8.x,
-              y = _ref8.y;
+            x = _ref8.x,
+            y = _ref8.y;
           return _defineProperty$1({}, nodeId, _objectSpread$a(_objectSpread$a({}, nodes[nodeId]), {}, {
             x: x,
             y: y
           }));
         })))));
       }
-
     case "UPDATE_NODE_ACTION_DATA":
       {
         var _data = action.data,
-            _nodeId4 = action.nodeId;
+          _nodeId4 = action.nodeId;
         return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId4, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId4]), {}, {
           actions: _objectSpread$a(_objectSpread$a({}, nodes[_nodeId4].actions), {}, {
             data: _data
           })
         })));
       }
-
     default:
       return nodes;
   }
@@ -36414,11 +34892,9 @@ var nodesReducer$1 = (function () {
   for (var _len = arguments.length, props = new Array(_len), _key = 0; _key < _len; _key++) {
     props[_key] = arguments[_key];
   }
-
   var _props$ = props[0],
-      nodesState = _props$.nodesState,
-      currentStateIndex = _props$.currentStateIndex;
-
+    nodesState = _props$.nodesState,
+    currentStateIndex = _props$.currentStateIndex;
   switch (props[1].type) {
     case "UNDO_CHANGES":
       {
@@ -36427,7 +34903,6 @@ var nodesReducer$1 = (function () {
           nodesState: nodesState
         } : copyObj(props[0]);
       }
-
     case "REDO_CHANGES":
       {
         return currentStateIndex + 1 < nodesState.length ? {
@@ -36435,31 +34910,25 @@ var nodesReducer$1 = (function () {
           nodesState: nodesState
         } : copyObj(props[0]);
       }
-
     case "COPY_NODES":
       {
         nodesReducer.apply(void 0, props);
         return copyObj(props[0]);
       }
-
     case "COMMENT":
       {
         var nodes = props[0].nodesState[props[0].currentStateIndex].state;
         var newState = copyObj(props[0]);
-
         var _iterator = _createForOfIteratorHelper$1(nodesState),
-            _step;
-
+          _step;
         try {
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var node = _step.value;
             var _props$2 = props[1],
-                id = _props$2.id,
-                value = _props$2.value;
-
+              id = _props$2.id,
+              value = _props$2.value;
             for (var _i = 0, _Object$keys = Object.keys(node.state); _i < _Object$keys.length; _i++) {
               var nodeID = _Object$keys[_i];
-
               if (id === nodeID) {
                 newState.nodesState[newState.currentStateIndex].state = _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, nodeID, _objectSpread$a(_objectSpread$a({}, nodes[nodeID]), {}, {
                   comment: value
@@ -36472,31 +34941,24 @@ var nodesReducer$1 = (function () {
         } finally {
           _iterator.f();
         }
-
         return newState;
       }
-
     case "TOGGLE_NODE_VIEW":
       {
         var _props$3 = props[1],
-            nodeId = _props$3.id,
-            doExpand = _props$3.doExpand;
+          nodeId = _props$3.id,
+          doExpand = _props$3.doExpand;
         var _nodes = props[0].nodesState[props[0].currentStateIndex].state;
-
         var _newState = copyObj(props[0]);
-
         _newState.nodesState[_newState.currentStateIndex].state = _objectSpread$a(_objectSpread$a({}, _nodes), {}, _defineProperty$1({}, nodeId, _objectSpread$a(_objectSpread$a({}, _nodes[nodeId]), {}, {
           expanded: doExpand ? doExpand : !_nodes[nodeId].expanded
         })));
         return _newState;
       }
-
     default:
       {
         var _nodesState = props[0].nodesState;
-
         var _nodes2 = nodesReducer.apply(void 0, props);
-
         var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;
         return props[1].type === "HYDRATE_DEFAULT_NODES" ? {
           nodesState: [{
@@ -36516,23 +34978,16 @@ var nodesReducer$1 = (function () {
 });
 
 var _excluded = ["isNew"];
-
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
-function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$9(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var setComment = function setComment(comments, id, merge) {
   return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, id, _objectSpread$9(_objectSpread$9({}, comments[id]), merge)));
 };
-
 var commentsReducer = (function () {
   var comments = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
-
   switch (action.type) {
     case "ADD_COMMENT":
       {
@@ -36548,14 +35003,11 @@ var commentsReducer = (function () {
         };
         return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, _comment.id, _comment));
       }
-
     case "REMOVE_COMMENT_NEW":
       var _comments$action$id = comments[action.id];
-          _comments$action$id.isNew;
-          var comment = _objectWithoutProperties(_comments$action$id, _excluded);
-
+        _comments$action$id.isNew;
+        var comment = _objectWithoutProperties(_comments$action$id, _excluded);
       return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, action.id, comment));
-
     case "SET_COMMENT_COORDINATES":
       {
         return setComment(comments, action.id, {
@@ -36563,7 +35015,6 @@ var commentsReducer = (function () {
           y: action.y
         });
       }
-
     case "SET_COMMENT_DIMENSIONS":
       {
         return setComment(comments, action.id, {
@@ -36571,42 +35022,35 @@ var commentsReducer = (function () {
           height: action.height
         });
       }
-
     case "SET_COMMENT_TEXT":
       {
         return setComment(comments, action.id, {
           text: action.text
         });
       }
-
     case "SET_COMMENT_COLOR":
       {
         return setComment(comments, action.id, {
           color: action.color
         });
       }
-
     case "DELETE_COMMENT":
       {
         var _action$id = action.id;
-            comments[_action$id];
-            var newComments = _objectWithoutProperties(comments, [_action$id].map(_toPropertyKey));
-
+          comments[_action$id];
+          var newComments = _objectWithoutProperties(comments, [_action$id].map(_toPropertyKey));
         return newComments;
       }
-
     default:
       return comments;
   }
 });
 
-function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$8(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var toastsReducer = (function () {
   var toasts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
-
   switch (action.type) {
     case "ADD_TOAST":
       return [{
@@ -36618,7 +35062,6 @@ var toastsReducer = (function () {
         height: 0,
         exiting: false
       }].concat(_toConsumableArray(toasts));
-
     case "SET_HEIGHT":
       {
         var index = toasts.findIndex(function (t) {
@@ -36628,80 +35071,67 @@ var toastsReducer = (function () {
           height: action.height
         })], _toConsumableArray(toasts.slice(index + 1)));
       }
-
     case "SET_EXITING":
       {
         var _index = toasts.findIndex(function (t) {
           return t.id === action.id;
         });
-
         return [].concat(_toConsumableArray(toasts.slice(0, _index)), [_objectSpread$8(_objectSpread$8({}, toasts[_index]), {}, {
           exiting: true
         })], _toConsumableArray(toasts.slice(_index + 1)));
       }
-
     case "REMOVE_TOAST":
       {
         var _index2 = toasts.findIndex(function (t) {
           return t.id === action.id;
         });
-
         return [].concat(_toConsumableArray(toasts.slice(0, _index2)), _toConsumableArray(toasts.slice(_index2 + 1)));
       }
-
     default:
       return toasts;
   }
 });
 
-function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$7(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$7(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var stageReducer = (function (state, incomingAction) {
   var action = typeof incomingAction === "function" ? incomingAction(state) : incomingAction;
-
   switch (action.type) {
     case "SET_SCALE":
       return _objectSpread$7(_objectSpread$7({}, state), {}, {
         scale: action.scale
       });
-
     case "SET_TRANSLATE":
       return _objectSpread$7(_objectSpread$7({}, state), {}, {
         translate: action.translate
       });
-
     default:
       return state;
   }
 });
 
-var Cache = function Cache() {
+var Cache = /*#__PURE__*/_createClass(function Cache() {
   _classCallCheck(this, Cache);
-
   this.ports = {};
   this.connections = {};
-};
+});
 
-var css_248z = ".styles_dragWrapper__1P7RD{left:0;position:absolute;top:0;z-index:9999}.styles_debugWrapper__2OSbY{bottom:10px;display:flex;gap:15px;left:10px;position:absolute}";
-var styles = {"dragWrapper":"styles_dragWrapper__1P7RD","debugWrapper":"styles_debugWrapper__2OSbY"};
+var css_248z = ".styles_dragWrapper__A5S3T{left:0;position:absolute;top:0;z-index:9999}.styles_debugWrapper__LEI-b{bottom:10px;display:flex;gap:15px;left:10px;position:absolute}";
+var styles = {"dragWrapper":"styles_dragWrapper__A5S3T","debugWrapper":"styles_debugWrapper__LEI-b"};
 styleInject(css_248z);
 
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
-
   return self;
 }
 
 function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
-
   return _setPrototypeOf(o, p);
 }
 
@@ -36709,13 +35139,15 @@ function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
   }
-
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
       value: subClass,
       writable: true,
       configurable: true
     }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
   });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
@@ -36726,31 +35158,25 @@ function _possibleConstructorReturn(self, call) {
   } else if (call !== void 0) {
     throw new TypeError("Derived constructors may only return object or undefined");
   }
-
   return _assertThisInitialized(self);
 }
 
 function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
 }
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$6(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$6(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function getOffset(props) {
   var offset = {
     top: 0,
     left: 0
   };
-
   if (props.offset) {
     offset = _objectSpread$6({}, props.offset);
   } else if (props.target) {
@@ -36758,61 +35184,44 @@ function getOffset(props) {
     offset.top = boundingBox.top + window.scrollY;
     offset.left = boundingBox.left + window.scrollX;
   }
-
   return offset;
 }
-
 var Selection = /*#__PURE__*/function (_React$PureComponent) {
   _inherits(Selection, _React$PureComponent);
-
   var _super = _createSuper$1(Selection);
-
   // eslint-disable-line react/prefer-stateless-function
+
   function Selection(props) {
     var _this;
-
     _classCallCheck(this, Selection);
-
     _this = _super.call(this, props);
-
     _defineProperty$1(_assertThisInitialized(_this), "props", void 0);
-
     _defineProperty$1(_assertThisInitialized(_this), "state", void 0);
-
     _defineProperty$1(_assertThisInitialized(_this), "selectedChildren", void 0);
-
     _defineProperty$1(_assertThisInitialized(_this), "highlightedChildren", void 0);
-
     _defineProperty$1(_assertThisInitialized(_this), "bind", function () {
       _this.props.target.addEventListener("mousedown", _this.onMouseDown);
-
       _this.props.target.addEventListener("touchstart", _this.onTouchStart);
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "reset", function () {
       if (_this.props.target) {
         _this.props.target.removeEventListener("mousedown", _this.onMouseDown);
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "init", function (e, x, y) {
       if (_this.props.ignoreTargets) {
         var Target = e.target;
-
         if (!Target.matches) {
           // polyfill matches
           var defaultMatches = function defaultMatches(s) {
             return [].indexOf.call(window.document.querySelectorAll(s), _assertThisInitialized(_this)) !== -1;
           };
-
           Target.matches = Target.matchesSelector || Target.mozMatchesSelector || Target.msMatchesSelector || Target.oMatchesSelector || Target.webkitMatchesSelector || defaultMatches;
         }
-
         if (Target.matches && Target.matches(_this.props.ignoreTargets.join(","))) {
           return false;
         }
       }
-
       var nextState = {};
       nextState.mouseDown = true;
       nextState.startPoint = {
@@ -36823,42 +35232,33 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         x: x - _this.state.offset.left,
         y: y - _this.state.offset.top
       };
-
       _this.setState(nextState);
-
       return true;
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "onMouseDown", function (e) {
       if (_this.props.disabled || e.button === 2 || e.nativeEvent && e.nativeEvent.which === 2) {
         return;
       }
-
       if (_this.init(e, e.pageX, e.pageY)) {
         window.document.addEventListener("mousemove", _this.onMouseMove);
         window.document.addEventListener("mouseup", _this.onMouseUp);
-
         _this.onMouseMove(e);
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "onTouchStart", function (e) {
       if (_this.props.disabled || !e.touches || !e.touches[0] || e.touches.length > 1) {
         return;
       }
-
       if (_this.init(e, e.touches[0].pageX, e.touches[0].pageY)) {
         window.document.addEventListener("touchmove", _this.onTouchMove);
         window.document.addEventListener("touchend", _this.onMouseUp);
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "onMouseUp", function () {
       window.document.removeEventListener("touchmove", _this.onTouchMove);
       window.document.removeEventListener("mousemove", _this.onMouseMove);
       window.document.removeEventListener("mouseup", _this.onMouseUp);
       window.document.removeEventListener("touchend", _this.onMouseUp);
-
       _this.setState({
         mouseDown: false,
         startPoint: null,
@@ -36868,29 +35268,22 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         endWithoutZoom: null,
         selectionBoxWithoutZoom: null
       });
-
       if (_this.props.onSelectionChange) {
         _this.props.onSelectionChange(_this.selectedChildren);
       }
-
       if (_this.props.onHighlightChange) {
         _this.highlightedChildren = [];
-
         _this.props.onHighlightChange(_this.highlightedChildren);
       }
-
       _this.selectedChildren = [];
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "onMouseMove", function (e) {
       e.preventDefault();
-
       if (_this.state.mouseDown) {
         var endPoint = {
           x: (e.pageX - _this.state.offset.left) / _this.props.zoom,
           y: (e.pageY - _this.state.offset.top) / _this.props.zoom
         };
-
         _this.setState({
           endPoint: endPoint,
           selectionBox: _this.calculateSelectionBox(_this.state.startPoint, endPoint),
@@ -36901,16 +35294,13 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         });
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "onTouchMove", function (e) {
       e.preventDefault();
-
       if (_this.state.mouseDown) {
         var endPoint = {
           x: (e.touches[0].pageX - _this.state.offset.left) / _this.props.zoom,
           y: (e.touches[0].pageY - _this.state.offset.top) / _this.props.zoom
         };
-
         _this.setState({
           endPoint: endPoint,
           selectionBox: _this.calculateSelectionBox(_this.state.startPoint, endPoint),
@@ -36921,11 +35311,9 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         });
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "lineIntersects", function (lineA, lineB) {
       return lineA[1] >= lineB[0] && lineB[1] >= lineA[0];
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "boxIntersects", function (boxA, boxB) {
       // calculate coordinates of all points
       var boxAProjection = {
@@ -36938,10 +35326,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       };
       return _this.lineIntersects(boxAProjection.x, boxBProjection.x) && _this.lineIntersects(boxAProjection.y, boxBProjection.y);
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "updateCollidingChildren", function (selectionBox) {
       _this.selectedChildren = [];
-
       if (_this.props.elements) {
         _this.props.elements.forEach(function (ref, $index) {
           if (ref) {
@@ -36952,18 +35338,15 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
               width: ref.clientWidth,
               height: ref.clientHeight
             };
-
             if (_this.boxIntersects(selectionBox, tmpBox)) {
               _this.selectedChildren.push($index);
             }
           }
         });
       }
-
       if (_this.props.onHighlightChange && JSON.stringify(_this.highlightedChildren) !== JSON.stringify(_this.selectedChildren)) {
         var onHighlightChange = _this.props.onHighlightChange;
         _this.highlightedChildren = _toConsumableArray(_this.selectedChildren);
-
         if (window.requestAnimationFrame) {
           window.requestAnimationFrame(function () {
             onHighlightChange(_this.highlightedChildren);
@@ -36973,14 +35356,13 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         }
       }
     });
-
     _defineProperty$1(_assertThisInitialized(_this), "calculateSelectionBox", function (startPoint, endPoint) {
       if (!_this.state.mouseDown || !startPoint || !endPoint) {
         return null;
-      } // The extra 1 pixel is to ensure that the mouse is on top
+      }
+
+      // The extra 1 pixel is to ensure that the mouse is on top
       // of the selection box and avoids triggering clicks on the target.
-
-
       var left = Math.min(startPoint.x, endPoint.x) - 1;
       var top = Math.min(startPoint.y, endPoint.y) - 1;
       var width = Math.abs(startPoint.x - endPoint.x) + 1;
@@ -36992,7 +35374,6 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         height: height
       };
     });
-
     _this.state = {
       mouseDown: false,
       startPoint: null,
@@ -37008,7 +35389,6 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     _this.highlightedChildren = [];
     return _this;
   }
-
   _createClass(Selection, [{
     key: "componentDidMount",
     value: function componentDidMount() {
@@ -37020,7 +35400,6 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     value: function componentDidUpdate() {
       this.reset();
       this.bind();
-
       if (this.state.mouseDown && this.state.selectionBox) {
         this.updateCollidingChildren(this.state.selectionBox);
       }
@@ -37046,15 +35425,12 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
         zIndex: 9,
         cursor: "crosshair"
       }, this.props.style);
-
       if (this.state.selectionBoxWithoutZoom) {
         style = _objectSpread$6(_objectSpread$6({}, style), this.state.selectionBoxWithoutZoom);
       }
-
       if (!this.state.mouseDown) {
         return null;
       }
-
       return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "react-ds-border",
         style: style
@@ -37068,7 +35444,6 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       };
     }
   }]);
-
   return Selection;
 }(React__default["default"].PureComponent);
 Selection.propTypes = {
@@ -37086,19 +35461,16 @@ Selection.propTypes = {
 
 var useSelect = (function (nodes, previousNodes) {
   var _useState = React.useState([]),
-      _useState2 = _slicedToArray(_useState, 2),
-      nodeRefs = _useState2[0],
-      setNodesRef = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    nodeRefs = _useState2[0],
+    setNodesRef = _useState2[1];
   var _useState3 = React.useState([]),
-      _useState4 = _slicedToArray(_useState3, 2),
-      selectedNodes = _useState4[0],
-      setSelectedNodes = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    selectedNodes = _useState4[0],
+    setSelectedNodes = _useState4[1];
   var clearSelection = function clearSelection() {
     return setSelectedNodes([]);
   };
-
   var handleSelection = function handleSelection(indexes) {
     var multiple = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     setSelectedNodes(function (sn) {
@@ -37109,7 +35481,6 @@ var useSelect = (function (nodes, previousNodes) {
       });
     });
   };
-
   React.useMemo(function () {
     if (!nodeRefs.length) {
       setNodesRef(function () {
@@ -37118,7 +35489,6 @@ var useSelect = (function (nodes, previousNodes) {
         }) || [];
       }) && clearSelection();
     }
-
     if (previousNodes && nodes !== previousNodes) {
       Object.values(nodes).every(function (_ref) {
         var id = _ref.id;
@@ -37136,13 +35506,12 @@ var useSelect = (function (nodes, previousNodes) {
   return [selectedNodes, setSelectedNodes, nodeRefs, handleSelection, clearSelection];
 });
 
-function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$5(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$5(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
-  var nodes = _objectSpread$5({}, initialNodes); // Delete extraneous nodes
+  var nodes = _objectSpread$5({}, initialNodes);
 
-
+  // Delete extraneous nodes
   var nodesToDelete = Object.values(nodes).map(function (node) {
     return !nodeTypes[node.type] ? node.id : undefined;
   }).filter(function (x) {
@@ -37157,8 +35526,9 @@ var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
       portTypes: portTypes,
       context: context
     });
-  }); // Reconcile input data for each node
+  });
 
+  // Reconcile input data for each node
   var reconciledNodes = Object.values(nodes).reduce(function (nodesObj, node) {
     var nodeType = nodeTypes[node.type];
     var defaultInputData = getDefaultData({
@@ -37169,29 +35539,24 @@ var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
     });
     var currentInputData = Object.entries(node.inputData).reduce(function (dataObj, _ref) {
       var _ref2 = _slicedToArray(_ref, 2),
-          key = _ref2[0],
-          data = _ref2[1];
-
+        key = _ref2[0],
+        data = _ref2[1];
       if (defaultInputData[key] !== undefined) {
         dataObj[key] = data;
       }
-
       return dataObj;
     }, {});
-
     var newInputData = _objectSpread$5(_objectSpread$5({}, defaultInputData), currentInputData);
-
     nodesObj[node.id] = _objectSpread$5(_objectSpread$5({}, node), {}, {
       inputData: newInputData
     });
     return nodesObj;
-  }, {}); // Reconcile node attributes for each node
+  }, {});
 
+  // Reconcile node attributes for each node
   reconciledNodes = Object.values(reconciledNodes).reduce(function (nodesObj, node) {
     var newNode = _objectSpread$5({}, node);
-
     var nodeType = nodeTypes[node.type];
-
     if (nodeType.root !== node.root) {
       if (nodeType.root && !node.root) {
         newNode.root = nodeType.root;
@@ -37199,16 +35564,14 @@ var reconcileNodes = (function (initialNodes, nodeTypes, portTypes, context) {
         delete newNode.root;
       }
     }
-
     nodesObj[node.id] = newNode;
     return nodesObj;
   }, {});
   return reconciledNodes;
 });
 
-function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$4(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$4(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var getInitialNodes = (function () {
   var initialNodes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var defaultNodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -37220,7 +35583,6 @@ var getInitialNodes = (function () {
     var nodeNotAdded = !Object.values(initialNodes).find(function (n) {
       return n.type === dNode.type;
     });
-
     if (nodeNotAdded) {
       nodes = nodesReducer(nodes, {
         type: "ADD_NODE",
@@ -37235,15 +35597,12 @@ var getInitialNodes = (function () {
         context: context
       });
     }
-
     return nodes;
   }, {}));
 });
 
-function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$3(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$3(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var buildControlType = function buildControlType(defaultConfig) {
   var validate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
   var setup = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {
@@ -37260,7 +35619,6 @@ var buildControlType = function buildControlType(defaultConfig) {
     }, setup(config));
   };
 };
-
 var Controls = {
   text: buildControlType({
     type: "text",
@@ -37345,7 +35703,6 @@ function _isNativeReflectConstruct$1() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
   if (typeof Proxy === "function") return true;
-
   try {
     Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
@@ -37356,7 +35713,7 @@ function _isNativeReflectConstruct$1() {
 
 function _construct(Parent, args, Class) {
   if (_isNativeReflectConstruct$1()) {
-    _construct = Reflect.construct;
+    _construct = Reflect.construct.bind();
   } else {
     _construct = function _construct(Parent, args, Class) {
       var a = [null];
@@ -37367,30 +35724,23 @@ function _construct(Parent, args, Class) {
       return instance;
     };
   }
-
   return _construct.apply(null, arguments);
 }
 
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
-
   _wrapNativeSuper = function _wrapNativeSuper(Class) {
     if (Class === null || !_isNativeFunction(Class)) return Class;
-
     if (typeof Class !== "function") {
       throw new TypeError("Super expression must either be null or a function");
     }
-
     if (typeof _cache !== "undefined") {
       if (_cache.has(Class)) return _cache.get(Class);
-
       _cache.set(Class, Wrapper);
     }
-
     function Wrapper() {
       return _construct(Class, arguments, _getPrototypeOf(this).constructor);
     }
-
     Wrapper.prototype = Object.create(Class.prototype, {
       constructor: {
         value: Wrapper,
@@ -37401,61 +35751,44 @@ function _wrapNativeSuper(Class) {
     });
     return _setPrototypeOf(Wrapper, Class);
   };
-
   return _wrapNativeSuper(Class);
 }
 
-function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var LoopError = /*#__PURE__*/function (_Error) {
   _inherits(LoopError, _Error);
-
   var _super = _createSuper(LoopError);
-
   function LoopError(message, code) {
     var _this;
-
     _classCallCheck(this, LoopError);
-
     _this = _super.call(this, message);
     _this.code = code;
     return _this;
   }
-
-  return LoopError;
+  return _createClass(LoopError);
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-
 _defineProperty$1(LoopError, "maxLoopsExceeded", 1);
-
 var RootEngine = /*#__PURE__*/function () {
   function RootEngine(config, resolveInputControls, fireNodeFunction) {
     _classCallCheck(this, RootEngine);
-
     _defineProperty$1(this, "getRootNode", function (nodes) {
       var roots = Object.values(nodes).filter(function (n) {
         return n.root;
       });
-
       if (roots.length > 1) {
         throw new Error("The root engine must not be called with more than one root node.");
       }
-
       return roots[0];
     });
-
     this.config = config;
     this.fireNodeFunction = fireNodeFunction;
     this.resolveInputControls = resolveInputControls;
     this.loops = 0;
     this.maxLoops = 1000;
   }
-
   _createClass(RootEngine, [{
     key: "resetLoops",
     value: function resetLoops(maxLoops) {
@@ -37483,9 +35816,8 @@ var RootEngine = /*#__PURE__*/function () {
     value: function reduceRootInputs(inputs, callback) {
       return Object.entries(inputs).reduce(function (obj, _ref) {
         var _ref2 = _slicedToArray(_ref, 2),
-            inputName = _ref2[0],
-            connection = _ref2[1];
-
+          inputName = _ref2[0],
+          connection = _ref2[1];
         var input = callback(inputName, connection);
         obj[input.name] = input.value;
         return obj;
@@ -37495,22 +35827,17 @@ var RootEngine = /*#__PURE__*/function () {
     key: "resolveInputValues",
     value: function resolveInputValues(node, nodeType, nodes, context) {
       var _this2 = this;
-
       var inputs = nodeType.inputs;
-
       if (typeof inputs === "function") {
         inputs = inputs(node.inputData, node.connections, context);
       }
-
       return inputs.reduce(function (obj, input) {
         var inputConnections = node.connections.inputs[input.name] || [];
-
         if (inputConnections.length > 0) {
           obj[input.name] = _this2.getValueOfConnection(inputConnections[0], nodes, context);
         } else {
           obj[input.name] = _this2.resolveInputControls(input.type, node.inputData[input.name] || {}, context);
         }
-
         return obj;
       }, {});
     }
@@ -37527,26 +35854,20 @@ var RootEngine = /*#__PURE__*/function () {
     key: "resolveRootNode",
     value: function resolveRootNode(nodes) {
       var _this3 = this;
-
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var rootNode = options.rootNodeId ? nodes[options.rootNodeId] : this.getRootNode(nodes);
-
       if (rootNode) {
         var inputs = this.config.nodeTypes[rootNode.type].inputs;
-
         if (typeof inputs === "function") {
           inputs = inputs(rootNode.inputData, rootNode.connections, options.context);
         }
-
         var controlValues = inputs.reduce(function (obj, input) {
           obj[input.name] = _this3.resolveInputControls(input.type, rootNode.inputData[input.name] || {}, options.context);
           return obj;
         }, {});
         var inputValues = this.reduceRootInputs(rootNode.connections.inputs, function (inputName, connection) {
           _this3.resetLoops(options.maxLoops);
-
           var value;
-
           try {
             value = _this3.getValueOfConnection(connection[0], nodes, options.context);
           } catch (e) {
@@ -37556,13 +35877,11 @@ var RootEngine = /*#__PURE__*/function () {
               console.error(e);
             }
           }
-
           return {
             name: inputName,
             value: value
           };
         });
-
         if (options.onlyResolveConnected) {
           return inputValues;
         } else {
@@ -37574,7 +35893,6 @@ var RootEngine = /*#__PURE__*/function () {
       }
     }
   }]);
-
   return RootEngine;
 }();
 
@@ -37582,22 +35900,19 @@ var u = e=>{var a=React.useRef(e);return React.useEffect(()=>{a.current=e;}),a};
 
 var o=function(n,o,c){function i(){l.current&&clearTimeout(l.current),l.current=void 0;}function a(){l.current=void 0;}void 0===o&&(o=100),void 0===c&&(c=0);var v=u(n),l=React.useRef(),m=[o,c,v];return React.useEffect(()=>i,m),React.useCallback((function(){var r=arguments,{current:t}=l;if(void 0===t&&c)return l.current=setTimeout(a,o),v.current.apply(null,r);t&&clearTimeout(t),l.current=setTimeout(()=>{l.current=void 0,v.current.apply(null,r);},o);}),m)},c=(r,t,e)=>{var u=React.useState(r);return [u[0],o(u[1],t,e),u[1]]};
 
-function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var tempStateReducer = function tempStateReducer(state, action) {
   switch (action.type) {
     case "TOGGLE_MULTISELECT":
       return _objectSpread$1(_objectSpread$1({}, state), {}, {
         multiselect: action.doEnable
       });
-
     case "SET_STAGE":
       {
         var x = action.x,
-            y = action.y,
-            scale = action.scale;
+          y = action.y,
+          scale = action.scale;
         return _objectSpread$1(_objectSpread$1({}, state), {}, {
           stage: {
             scale: scale,
@@ -37608,7 +35923,6 @@ var tempStateReducer = function tempStateReducer(state, action) {
           }
         });
       }
-
     case "SELECT_NODES":
       {
         var selectedNodes = action.selectedNodes;
@@ -37616,75 +35930,65 @@ var tempStateReducer = function tempStateReducer(state, action) {
           selectedNodes: selectedNodes
         });
       }
-
     default:
       return state;
   }
 };
-
 var useNodeEditorController = function useNodeEditorController(_ref) {
   var _ref$initialNodesStat = _ref.initialNodesState,
-      initialNodesState = _ref$initialNodesStat === void 0 ? undefined : _ref$initialNodesStat,
-      _ref$initialTempState = _ref.initialTempState,
-      initialTempState = _ref$initialTempState === void 0 ? {
-    multiselect: false,
-    selectedNodes: [],
-    stage: {
-      scale: 1,
-      translate: {
-        x: 0,
-        y: 0
+    initialNodesState = _ref$initialNodesStat === void 0 ? undefined : _ref$initialNodesStat,
+    _ref$initialTempState = _ref.initialTempState,
+    initialTempState = _ref$initialTempState === void 0 ? {
+      multiselect: false,
+      selectedNodes: [],
+      stage: {
+        scale: 1,
+        translate: {
+          x: 0,
+          y: 0
+        }
       }
-    }
-  } : _ref$initialTempState,
-      _ref$initialNodes = _ref.initialNodes,
-      initialNodes = _ref$initialNodes === void 0 ? undefined : _ref$initialNodes,
-      _ref$defaultNodes = _ref.defaultNodes,
-      defaultNodes = _ref$defaultNodes === void 0 ? undefined : _ref$defaultNodes,
-      _ref$options = _ref.options,
-      options = _ref$options === void 0 ? {} : _ref$options;
-
+    } : _ref$initialTempState,
+    _ref$initialNodes = _ref.initialNodes,
+    initialNodes = _ref$initialNodes === void 0 ? undefined : _ref$initialNodes,
+    _ref$defaultNodes = _ref.defaultNodes,
+    defaultNodes = _ref$defaultNodes === void 0 ? undefined : _ref$defaultNodes,
+    _ref$options = _ref.options,
+    options = _ref$options === void 0 ? {} : _ref$options;
   var _useState = React.useState(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      action = _useState2[0],
-      setAction = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    action = _useState2[0],
+    setAction = _useState2[1];
   var _useState3 = React.useState(initialNodesState || {}),
-      _useState4 = _slicedToArray(_useState3, 2),
-      nodesState = _useState4[0],
-      setNodesState = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    nodesState = _useState4[0],
+    setNodesState = _useState4[1];
   var _useState5 = React.useState({}),
-      _useState6 = _slicedToArray(_useState5, 2),
-      comments = _useState6[0],
-      setComments = _useState6[1];
-
+    _useState6 = _slicedToArray(_useState5, 2),
+    comments = _useState6[0],
+    setComments = _useState6[1];
   var _useReducer = React.useReducer(tempStateReducer, {
-    initialTempState: initialTempState
-  }, function () {
-    return initialTempState;
-  }),
-      _useReducer2 = _slicedToArray(_useReducer, 2),
-      tempState = _useReducer2[0],
-      dispatchTemp = _useReducer2[1];
-
+      initialTempState: initialTempState
+    }, function () {
+      return initialTempState;
+    }),
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    tempState = _useReducer2[0],
+    dispatchTemp = _useReducer2[1];
   var _useDebounce = c(tempState, 1000),
-      _useDebounce2 = _slicedToArray(_useDebounce, 2),
-      tempStateDebounced = _useDebounce2[0],
-      setTempStateDebounced = _useDebounce2[1];
-
+    _useDebounce2 = _slicedToArray(_useDebounce, 2),
+    tempStateDebounced = _useDebounce2[0],
+    setTempStateDebounced = _useDebounce2[1];
   var _useDebounce3 = c(nodesState, 200),
-      _useDebounce4 = _slicedToArray(_useDebounce3, 2),
-      nodesStateDebounced = _useDebounce4[0],
-      setNodesStateDebounced = _useDebounce4[1];
-
+    _useDebounce4 = _slicedToArray(_useDebounce3, 2),
+    nodesStateDebounced = _useDebounce4[0],
+    setNodesStateDebounced = _useDebounce4[1];
   React.useEffect(function () {
     setTempStateDebounced(tempState);
   }, [tempState]);
   React.useEffect(function () {
     setNodesStateDebounced(nodesState);
   }, [nodesState]);
-
   var dispatch = function dispatch(type) {
     var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return setAction(function () {
@@ -37696,7 +36000,6 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
       };
     });
   };
-
   React.useEffect(function () {
     action && setAction(null);
   }, [action]);
@@ -37717,164 +36020,168 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
     dispatch: dispatchTemp
   }];
 };
-
 useNodeEditorController.displayName = "useNodeEditorController";
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var defaultContext = {};
-
+function getTranslate3d(el) {
+  var values = el.style.transform.split(/\w+\(|\);?/);
+  if (!values[1] || !values[1].length) {
+    return [];
+  }
+  return values[1].split(/,\s?/g);
+}
 var checkIntersection = function checkIntersection(boxA, boxB) {
   if (boxA.bottom > boxB.top && boxA.right > boxB.left && boxA.top < boxB.bottom && boxA.left < boxB.right) {
     return true;
   }
-
   return false;
 };
-
 var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var _initialStageParams$t, _initialStageParams$t2;
-
   var initialComments = _ref.comments,
-      _ref$nodeTypes = _ref.nodeTypes,
-      nodeTypes = _ref$nodeTypes === void 0 ? {} : _ref$nodeTypes,
-      _ref$portTypes = _ref.portTypes,
-      portTypes = _ref$portTypes === void 0 ? {} : _ref$portTypes,
-      _ref$context = _ref.context,
-      context = _ref$context === void 0 ? defaultContext : _ref$context,
-      connector = _ref.connector,
-      _initialStageParams = _ref.initialStageParams,
-      _ref$hideComments = _ref.hideComments,
-      hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
-      _ref$disableComments = _ref.disableComments,
-      disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
-      circularBehavior = _ref.circularBehavior,
-      _ref$focusNode = _ref.focusNode,
-      focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode,
-      onFocusChange = _ref.onFocusChange;
-      _ref.debug;
+    _ref$nodeTypes = _ref.nodeTypes,
+    nodeTypes = _ref$nodeTypes === void 0 ? {} : _ref$nodeTypes,
+    _ref$portTypes = _ref.portTypes,
+    portTypes = _ref$portTypes === void 0 ? {} : _ref$portTypes,
+    _ref$context = _ref.context,
+    context = _ref$context === void 0 ? defaultContext : _ref$context,
+    connector = _ref.connector,
+    _initialStageParams = _ref.initialStageParams,
+    _ref$hideComments = _ref.hideComments,
+    hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
+    _ref$disableComments = _ref.disableComments,
+    disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
+    circularBehavior = _ref.circularBehavior,
+    _ref$focusNode = _ref.focusNode,
+    focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode,
+    onFocusChange = _ref.onFocusChange;
+    _ref.debug;
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
-      initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
-      setComments = connector.setComments,
-      defaultNodes = connector.defaultNodes,
-      tempState = connector.temp.state,
-      initialNodesState = connector.initialNodesState;
+    initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod;
+    connector.setComments;
+    var defaultNodes = connector.defaultNodes,
+    tempState = connector.temp.state,
+    initialNodesState = connector.initialNodesState;
   var cache = React.useRef(new Cache());
   var stage = React.useRef();
-
   var _useState = React.useState(),
-      _useState2 = _slicedToArray(_useState, 2),
-      sideEffectToasts = _useState2[0],
-      setSideEffectToasts = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    sideEffectToasts = _useState2[0],
+    setSideEffectToasts = _useState2[1];
   var _useReducer = React.useReducer(toastsReducer, []),
-      _useReducer2 = _slicedToArray(_useReducer, 2),
-      toasts = _useReducer2[0],
-      dispatchToasts = _useReducer2[1];
-
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    toasts = _useReducer2[0],
+    dispatchToasts = _useReducer2[1];
   var editorRef = React.useRef();
-
   var _useState3 = React.useState(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      spaceIsPressed = _useState4[0],
-      setSpaceIsPressed = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    spaceIsPressed = _useState4[0],
+    setSpaceIsPressed = _useState4[1];
   var _useState5 = React.useState([]),
-      _useState6 = _slicedToArray(_useState5, 2),
-      visibleNodes = _useState6[0],
-      setVisibleNodes = _useState6[1];
-
+    _useState6 = _slicedToArray(_useState5, 2),
+    visibleNodes = _useState6[0],
+    setVisibleNodes = _useState6[1];
   var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
-    nodeTypes: nodeTypes,
-    portTypes: portTypes,
-    cache: cache,
-    circularBehavior: circularBehavior,
-    context: context
-  }, setSideEffectToasts), {}, function () {
-    return initialNodesState || {
-      nodesState: [{
-        state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
-        action: {
-          type: "INITIAL"
-        }
-      }],
-      currentStateIndex: 0
-    };
-  }),
-      _useReducer4 = _slicedToArray(_useReducer3, 2),
-      _useReducer4$ = _useReducer4[0],
-      nodesState = _useReducer4$.nodesState,
-      currentStateIndex = _useReducer4$.currentStateIndex,
-      dispatchNodes = _useReducer4[1];
-
+      nodeTypes: nodeTypes,
+      portTypes: portTypes,
+      cache: cache,
+      circularBehavior: circularBehavior,
+      context: context
+    }, setSideEffectToasts), {}, function () {
+      return initialNodesState || {
+        nodesState: [{
+          state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
+          action: {
+            type: "INITIAL"
+          }
+        }],
+        currentStateIndex: 0
+      };
+    }),
+    _useReducer4 = _slicedToArray(_useReducer3, 2),
+    _useReducer4$ = _useReducer4[0],
+    nodesState = _useReducer4$.nodesState,
+    currentStateIndex = _useReducer4$.currentStateIndex,
+    dispatchNodes = _useReducer4[1];
   var _useReducer5 = React.useReducer(commentsReducer, initialComments || {}),
-      _useReducer6 = _slicedToArray(_useReducer5, 2),
-      comments = _useReducer6[0],
-      dispatchComments = _useReducer6[1];
-
+    _useReducer6 = _slicedToArray(_useReducer5, 2),
+    comments = _useReducer6[0],
+    dispatchComments = _useReducer6[1];
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
-      _useSelect2 = _slicedToArray(_useSelect, 5),
-      selectedNodes = _useSelect2[0],
-      setSelectedNodes = _useSelect2[1],
-      nodeRefs = _useSelect2[2],
-      handleSelection = _useSelect2[3],
-      clearSelection = _useSelect2[4];
-
+    _useSelect2 = _slicedToArray(_useSelect, 5),
+    selectedNodes = _useSelect2[0],
+    setSelectedNodes = _useSelect2[1],
+    nodeRefs = _useSelect2[2],
+    handleSelection = _useSelect2[3],
+    clearSelection = _useSelect2[4];
   var handleDocumentKeyUp = function handleDocumentKeyUp(e) {
     if (e.which === 32) {
       setSpaceIsPressed(false);
       document.removeEventListener("keyup", handleDocumentKeyUp);
     }
   };
-
   var handleKeyDown = function handleKeyDown(e) {
     if (e.which === 32) {
       setSpaceIsPressed(true);
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
   };
+  React.useEffect(function () {
+    toggleVisibility();
+  }, [nodesState]);
 
+  // useEffect(() => {
+  //   previousComments &&
+  //     comments !== previousComments &&
+  //     setComments &&
+  //     setComments(comments);
+  // }, [comments, previousComments, setComments]);
+
+  React.useImperativeHandle(ref, function () {
+    return {
+      getNodes: function getNodes() {
+        return nodesState[currentStateIndex].state;
+      },
+      getComments: function getComments() {
+        return comments;
+      }
+    };
+  });
   React.useEffect(function () {
     !currentStateIndex && dispatchNodes({
       type: "HYDRATE_DEFAULT_NODES"
     });
     recalculateConnections();
+    triggerRecalculation();
     document.addEventListener("keydown", handleKeyDown);
     return function () {
       return document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
   var _useState7 = React.useState(true),
-      _useState8 = _slicedToArray(_useState7, 2),
-      shouldRecalculateConnections = _useState8[0],
-      setShouldRecalculateConnections = _useState8[1];
-
+    _useState8 = _slicedToArray(_useState7, 2),
+    shouldRecalculateConnections = _useState8[0],
+    setShouldRecalculateConnections = _useState8[1];
   var initialStageParams = _initialStageParams || tempState.stage;
-
   var _useReducer7 = React.useReducer(stageReducer, {
-    scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
-    translate: {
-      x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
-      y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
-    }
-  }),
-      _useReducer8 = _slicedToArray(_useReducer7, 2),
-      stageState = _useReducer8[0],
-      dispatchStageState = _useReducer8[1];
-
+      scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
+      translate: {
+        x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
+        y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
+      }
+    }),
+    _useReducer8 = _slicedToArray(_useReducer7, 2),
+    stageState = _useReducer8[0],
+    dispatchStageState = _useReducer8[1];
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
-
   useConnectorActions({
     dispatchNodes: dispatchNodes,
     connector: connector,
@@ -37889,7 +36196,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var recalculateConnections = React.useCallback(function () {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);
-
   var recalculateStageRect = function recalculateStageRect() {
     setVisibleNodes(function (prev) {
       return prev.filter(function (nodeid) {
@@ -37898,34 +36204,28 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     });
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
   };
-
   React.useLayoutEffect(function () {
     window.STAGE_ID = "".concat(STAGE_ID).concat(editorId);
-
     if (shouldRecalculateConnections) {
       recalculateConnections();
       setShouldRecalculateConnections(false);
     }
   }, [shouldRecalculateConnections, recalculateConnections]);
-
   var handleDragEnd = function handleDragEnd(e, id, coordinates) {
     toggleVisibility();
-
     if (selectedNodes.length > 0) {
       dispatchNodes({
         type: "SET_MULTIPLE_NODES_COORDINATES",
         nodesInfo: selectedNodes.map(function (id) {
           var nodeRef = document.getElementById(id);
-
           if (nodeRef) {
-            var newPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+            var newPositions = getTranslate3d(nodeRef);
             return {
               nodeId: id,
-              x: newPositions[1],
-              y: newPositions[2]
+              x: newPositions[0].replace("px", ""),
+              y: newPositions[1].replace("px", "")
             };
           }
-
           return undefined;
         }).filter(function (res) {
           return !!res;
@@ -37938,25 +36238,19 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         nodeId: id
       }));
     }
-
     triggerRecalculation();
   };
-
   var toggleVisibility = function toggleVisibility(args) {
     if (args) return setVisibleNodes([]);
     var v = [];
-
     if (editorRef.current) {
       var nodes = document.getElementsByClassName(nodeStyles === null || nodeStyles === void 0 ? void 0 : nodeStyles.wrapper);
-
       var _iterator = _createForOfIteratorHelper(nodes),
-          _step;
-
+        _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var node = _step.value;
           var nodeRef = node;
-
           if (nodeRef) {
             if (!checkIntersection(nodeRef.getBoundingClientRect(), editorRef.current.getBoundingClientRect())) {
               nodeRef.style.visibility = "hidden";
@@ -37971,19 +36265,12 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       } finally {
         _iterator.f();
       }
-
       setVisibleNodes(v);
     }
   };
-
-  React.useEffect(function () {
-    toggleVisibility();
-  }, [nodesState]);
-
   var dragSelectedNodes = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
-      var _iterator2, _step2, id, nodeRef, oldPositions;
-
+      var _iterator2, _step2, _loop;
       return regenerator.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -37991,36 +36278,38 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
               if (selectedNodes.length > 0) {
                 if (selectedNodes.includes(excludedNodeId)) {
                   _iterator2 = _createForOfIteratorHelper(selectedNodes);
-
                   try {
-                    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-                      id = _step2.value;
-
+                    _loop = function _loop() {
+                      var id = _step2.value;
                       if (id !== excludedNodeId) {
-                        nodeRef = document.getElementById(id); // const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-                        //   ?.current;
-
+                        var _nodeRefs$find$;
+                        // const nodeRef = document.getElementById(id);
+                        var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref3) {
+                          var _ref4 = _slicedToArray(_ref3, 1),
+                            nId = _ref4[0].id;
+                          return nId === id;
+                        })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
                         if (nodeRef) {
-                          oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-
+                          var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
                           if (oldPositions && oldPositions.length === 3) {
                             nodeRef.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
                           }
                         }
                       }
+                    };
+                    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                      _loop();
                     }
                   } catch (err) {
                     _iterator2.e(err);
                   } finally {
                     _iterator2.f();
                   }
-
                   recalculateConnections();
                 } else {
                   clearSelection();
                 }
               }
-
             case 1:
             case "end":
               return _context.stop();
@@ -38028,51 +36317,16 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         }
       }, _callee);
     }));
-
     return function dragSelectedNodes(_x, _x2, _x3) {
       return _ref2.apply(this, arguments);
     };
   }();
-
-  React.useImperativeHandle(ref, function () {
-    return {
-      getNodes: function getNodes() {
-        return nodesState[currentStateIndex].state;
-      },
-      getComments: function getComments() {
-        return comments;
-      }
-    };
-  });
-  var previousComments = usePrevious(comments);
-  React.useEffect(function () {
-    previousComments && comments !== previousComments && setComments && setComments(comments);
-  }, [comments, previousComments, setComments]);
   React.useEffect(function () {
     if (sideEffectToasts) {
       dispatchToasts(sideEffectToasts);
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-  React.useMemo(function () {
-    if (focusNode) {
-      var nodes = nodesState[currentStateIndex].state;
-      Object.keys(nodes).forEach(function (node) {
-        if (node === focusNode) {
-          document.getElementById(focusNode).style.border = "2px solid red";
-          setTimeout(function () {
-            document.getElementById(focusNode).style.border = "0";
-          }, 1000);
-          dispatchStageState(function () {
-            return {
-              type: "SET_SCALE",
-              scale: 1
-            };
-          });
-        }
-      });
-    }
-  }, [focusNode]);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {
@@ -38111,13 +36365,12 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       zIndex: 100,
       cursor: "inherit"
     }
-  }), /*#__PURE__*/React__default["default"].createElement(Stage, _defineProperty$1({
+  }), /*#__PURE__*/React__default["default"].createElement(Stage, {
     focusNode: focusNode,
     onFocusChange: onFocusChange,
     ref: editorRef,
     editorId: editorId,
     toggleVisibility: toggleVisibility,
-    setSpaceIsPressed: setSpaceIsPressed,
     spaceIsPressed: spaceIsPressed,
     scale: stageState.scale,
     translate: stageState.translate,
@@ -38133,21 +36386,16 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     }),
     DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
     draggableCanvasSet: context.draggableCanvasSet
-  }, "spaceIsPressed", spaceIsPressed), Object.values(nodesState[currentStateIndex].state).map(function (node) {
+  }, Object.values(nodesState[currentStateIndex].state).map(function (node) {
     return /*#__PURE__*/React__default["default"].createElement(Node, _extends$3({}, node, {
       isSelected: selectedNodes.includes(node.id),
-      setSelected: function setSelected(id) {
-        return setSelectedNodes([id]);
-      },
-      ref: nodeRefs.find(function (_ref3) {
-        var _ref4 = _slicedToArray(_ref3, 1),
-            n = _ref4[0];
-
-        return n.id === node.id;
-      }) ? nodeRefs.find(function (_ref5) {
+      ref: nodeRefs.find(function (_ref5) {
         var _ref6 = _slicedToArray(_ref5, 1),
-            n = _ref6[0];
-
+          n = _ref6[0];
+        return n.id === node.id;
+      }) ? nodeRefs.find(function (_ref7) {
+        var _ref8 = _slicedToArray(_ref7, 1),
+          n = _ref8[0];
         return n.id === node.id;
       })[1] : /*#__PURE__*/React.createRef(),
       stageRect: stage,

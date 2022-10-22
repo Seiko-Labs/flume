@@ -354,9 +354,6 @@ export default (...props) => {
         }
       }
       return newState;
-
-      nodesReducer(...props);
-      return copyObj(props[0]);
     }
     case "TOGGLE_NODE_VIEW": {
       const { id: nodeId, doExpand } = props[1];

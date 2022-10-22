@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -62,14 +63,11 @@ const Node = forwardRef(
   (
     {
       id,
-      width,
-      height,
       x,
+      y,
       isSelected,
       comment,
-      y,
       expanded,
-      delay = 6,
       stageRect,
       connections,
       type,
@@ -77,11 +75,8 @@ const Node = forwardRef(
       onDragStart,
       onDragEnd,
       onDragHandle,
-      onDrag,
       hideControls,
-
       actions: { data: actionsData } = {},
-      setSelected,
     },
     nodeWrapper
   ) => {
@@ -137,55 +132,63 @@ const Node = forwardRef(
     const updateConnectionsByTransput = (transput = {}, isOutput) => {
       Object.entries(transput).forEach(([portName, outputs]) => {
         outputs.forEach((output) => {
-          const toRect = getPortRect(
-            id,
-            portName,
-            isOutput ? "output" : "input"
-            // cache
-          );
-          const fromRect = getPortRect(
-            output.nodeId,
-            output.portName,
-            isOutput ? "input" : "output"
-            // cache
-          );
-          const portHalf = fromRect.width / 2;
-          let combined;
-          if (isOutput) {
-            combined = id + portName + output.nodeId + output.portName;
-          } else {
-            combined = output.nodeId + output.portName + id + portName;
+          if (stageRect.current) {
+            const toRect = getPortRect(
+              id,
+              portName,
+              isOutput ? "output" : "input"
+              // cache
+            );
+            const fromRect = getPortRect(
+              output.nodeId,
+              output.portName,
+              isOutput ? "input" : "output"
+              // cache
+            );
+            const portHalf = fromRect.width / 2;
+            let combined;
+            if (isOutput) {
+              combined = id + portName + output.nodeId + output.portName;
+            } else {
+              combined = output.nodeId + output.portName + id + portName;
+            }
+            // const cachedConnection = null; /* cache.current.connections[combined] */
+            let cnx = document.querySelector(
+              `[data-connection-id="${combined}"]`
+            );
+            const from = {
+              x: byScale(
+                toRect.x -
+                  stageRect.current.x +
+                  portHalf -
+                  stageState.translate.x
+              ),
+              y: byScale(
+                toRect.y -
+                  stageRect.current.y +
+                  portHalf -
+                  stageState.translate.y
+              ),
+            };
+            const to = {
+              x: byScale(
+                fromRect.x -
+                  stageRect.current.x +
+                  portHalf -
+                  stageState.translate.x
+              ),
+              y: byScale(
+                fromRect.y -
+                  stageRect.current.y +
+                  portHalf -
+                  stageState.translate.y
+              ),
+            };
+            cnx.setAttribute(
+              "d",
+              calculateCurve(...(isOutput ? [to, from] : [from, to]))
+            );
           }
-          // const cachedConnection = null; /* cache.current.connections[combined] */
-          let cnx = document.querySelector(
-            `[data-connection-id="${combined}"]`
-          );
-          const from = {
-            x: byScale(
-              toRect.x - stageRect.current.x + portHalf - stageState.translate.x
-            ),
-            y: byScale(
-              toRect.y - stageRect.current.y + portHalf - stageState.translate.y
-            ),
-          };
-          const to = {
-            x: byScale(
-              fromRect.x -
-                stageRect.current.x +
-                portHalf -
-                stageState.translate.x
-            ),
-            y: byScale(
-              fromRect.y -
-                stageRect.current.y +
-                portHalf -
-                stageState.translate.y
-            ),
-          };
-          cnx.setAttribute(
-            "d",
-            calculateCurve(...(isOutput ? [to, from] : [from, to]))
-          );
         });
       });
     };
