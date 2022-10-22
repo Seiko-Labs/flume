@@ -10784,6 +10784,23 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       if (e.type === "mousedown") return spaceIsPressed ? e : false;
       return e;
     });
+    d3Zoom.on("start", function (event) {
+      dispatchStageState(function () {
+        return {
+          type: "SET_TRANSLATE",
+          translate: {
+            x: event.transform.x,
+            y: event.transform.y
+          }
+        };
+      });
+      dispatchStageState(function () {
+        return {
+          type: "SET_SCALE",
+          scale: event.transform.k
+        };
+      });
+    });
     d3Zoom.on("zoom", function (event) {
       requestAnimationFrame(function () {
         var _event$transform = event.transform,
@@ -10812,14 +10829,18 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       toggleVisibility();
     });
     if (focusNode) {
-      translateWrapper.current.style.transition = "1s";
+      translateWrapper.current.style.transition = "0.5s";
       var node = document.getElementById(focusNode);
       var oldPositions = node.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
       d3Zoom.translateTo(d3Selection, oldPositions[1], oldPositions[2]);
       onFocusChange && onFocusChange(focusNode);
       translateWrapper.current.ontransitionend = function () {
-        translateWrapper.current.style.transition = "0.055s";
         toggleVisibility();
+        document.getElementById(focusNode).style.boxShadow = "0 0 0 ".concat(2 / scale, "px red");
+        setTimeout(function () {
+          document.getElementById(focusNode).style.boxShadow = "none";
+        }, 1000);
+        translateWrapper.current.style.transition = "0.055s";
         translateWrapper.current.ontransitionend = null;
       };
     }
@@ -10827,6 +10848,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     return function () {
       d3Zoom.on("zoom", null);
       d3Zoom.on("end", null);
+      d3Zoom.on("start", null);
     };
   }, [focusNode, spaceIsPressed]);
   var nodeTypes = useContext(NodeTypesContext);
@@ -12666,32 +12688,34 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
         portName = _ref4[0],
         outputs = _ref4[1];
       outputs.forEach(function (output) {
-        var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
-        // cache
-        );
+        if (stageRect.current) {
+          var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
+          // cache
+          );
 
-        var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
-        // cache
-        );
+          var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
+          // cache
+          );
 
-        var portHalf = fromRect.width / 2;
-        var combined;
-        if (isOutput) {
-          combined = id + portName + output.nodeId + output.portName;
-        } else {
-          combined = output.nodeId + output.portName + id + portName;
+          var portHalf = fromRect.width / 2;
+          var combined;
+          if (isOutput) {
+            combined = id + portName + output.nodeId + output.portName;
+          } else {
+            combined = output.nodeId + output.portName + id + portName;
+          }
+          // const cachedConnection = null; /* cache.current.connections[combined] */
+          var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
+          var from = {
+            x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
+            y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
+          };
+          var to = {
+            x: byScale(fromRect.x - stageRect.current.x + portHalf - stageState.translate.x),
+            y: byScale(fromRect.y - stageRect.current.y + portHalf - stageState.translate.y)
+          };
+          cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
         }
-        // const cachedConnection = null; /* cache.current.connections[combined] */
-        var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
-        var from = {
-          x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
-          y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
-        };
-        var to = {
-          x: byScale(fromRect.x - stageRect.current.x + portHalf - stageState.translate.x),
-          y: byScale(fromRect.y - stageRect.current.y + portHalf - stageState.translate.y)
-        };
-        cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
       });
     });
   };
@@ -36224,7 +36248,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (selectedNodes.length > 0 && selectedNodes.includes(excludedNodeId)) {
+              if (selectedNodes.length > 0) {
                 if (selectedNodes.includes(excludedNodeId)) {
                   _iterator2 = _createForOfIteratorHelper(selectedNodes);
                   try {
@@ -36232,15 +36256,16 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
                       var id = _step2.value;
                       if (id !== excludedNodeId) {
                         var _nodeRefs$find$;
+                        // const nodeRef = document.getElementById(id);
                         var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref3) {
                           var _ref4 = _slicedToArray(_ref3, 1),
                             nId = _ref4[0].id;
                           return nId === id;
                         })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
                         if (nodeRef) {
-                          var oldPositions = getTranslate3d(nodeRef);
-                          if (oldPositions && oldPositions.length > 1) {
-                            nodeRef.style.transform = "translate3d(".concat(Number(oldPositions[0].replace("px", "")) + deltaX, "px,").concat(Number(oldPositions[1].replace("px", "")) + deltaY, "px, 0px)");
+                          var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+                          if (oldPositions && oldPositions.length === 3) {
+                            nodeRef.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
                           }
                         }
                       }
@@ -36275,25 +36300,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       setSideEffectToasts(null);
     }
   }, [sideEffectToasts]);
-  useMemo(function () {
-    if (focusNode) {
-      var nodes = nodesState[currentStateIndex].state;
-      Object.keys(nodes).forEach(function (node) {
-        if (node === focusNode) {
-          document.getElementById(focusNode).style.border = "2px solid red";
-          setTimeout(function () {
-            document.getElementById(focusNode).style.border = "0";
-          }, 1000);
-          dispatchStageState(function () {
-            return {
-              type: "SET_SCALE",
-              scale: 1
-            };
-          });
-        }
-      });
-    }
-  }, [focusNode]);
   return /*#__PURE__*/React__default.createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default.createElement(NodeTypesContext.Provider, {

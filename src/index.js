@@ -320,21 +320,22 @@ export const NodeEditor = forwardRef(
     };
 
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
-      if (selectedNodes.length > 0 && selectedNodes.includes(excludedNodeId)) {
+      if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
           for (const id of selectedNodes) {
             if (id !== excludedNodeId) {
+              // const nodeRef = document.getElementById(id);
               const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
                 ?.current;
               if (nodeRef) {
-                const oldPositions = getTranslate3d(nodeRef);
+                const oldPositions = nodeRef.style.transform.match(
+                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+                );
 
-                if (oldPositions && oldPositions.length > 1) {
-                  nodeRef.style.transform = `translate3d(${
-                    Number(oldPositions[0].replace("px", "")) + deltaX
-                  }px,${
-                    Number(oldPositions[1].replace("px", "")) + deltaY
-                  }px, 0px)`;
+                if (oldPositions && oldPositions.length === 3) {
+                  nodeRef.style.transform = `translate(${
+                    Number(oldPositions[1]) + deltaX
+                  }px,${Number(oldPositions[2]) + deltaY}px)`;
                 }
               }
             }
@@ -353,25 +354,6 @@ export const NodeEditor = forwardRef(
         setSideEffectToasts(null);
       }
     }, [sideEffectToasts]);
-
-    useMemo(() => {
-      if (focusNode) {
-        const nodes = nodesState[currentStateIndex].state;
-
-        Object.keys(nodes).forEach((node) => {
-          if (node === focusNode) {
-            document.getElementById(focusNode).style.border = "2px solid red";
-            setTimeout(() => {
-              document.getElementById(focusNode).style.border = "0";
-            }, 1000);
-            dispatchStageState(() => ({
-              type: "SET_SCALE",
-              scale: 1,
-            }));
-          }
-        });
-      }
-    }, [focusNode]);
 
     return (
       <PortTypesContext.Provider value={portTypes}>
