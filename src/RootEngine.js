@@ -7,10 +7,11 @@ class LoopError extends Error {
 }
 
 export class RootEngine {
-  constructor(config, resolveInputControls, fireNodeFunction) {
+  constructor(config, resolveInputControls, fireNodeFunction, errorCallback) {
     this.config = config;
     this.fireNodeFunction = fireNodeFunction;
     this.resolveInputControls = resolveInputControls;
+    this.errorCallback = errorCallback;
     this.loops = 0;
     this.maxLoops = 1000;
   }
@@ -133,6 +134,7 @@ export class RootEngine {
               options.context
             );
           } catch (e) {
+            this.errorCallback && this.errorCallback(e);
             if (e.code === LoopError.maxLoopsExceeded) {
               console.error(
                 `${e.message} Circular nodes detected in ${inputName} port.`

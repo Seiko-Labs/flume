@@ -35772,7 +35772,7 @@ var LoopError = /*#__PURE__*/function (_Error) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 _defineProperty$1(LoopError, "maxLoopsExceeded", 1);
 var RootEngine = /*#__PURE__*/function () {
-  function RootEngine(config, resolveInputControls, fireNodeFunction) {
+  function RootEngine(config, resolveInputControls, fireNodeFunction, errorCallback) {
     _classCallCheck(this, RootEngine);
     _defineProperty$1(this, "getRootNode", function (nodes) {
       var roots = Object.values(nodes).filter(function (n) {
@@ -35786,6 +35786,7 @@ var RootEngine = /*#__PURE__*/function () {
     this.config = config;
     this.fireNodeFunction = fireNodeFunction;
     this.resolveInputControls = resolveInputControls;
+    this.errorCallback = errorCallback;
     this.loops = 0;
     this.maxLoops = 1000;
   }
@@ -35871,6 +35872,7 @@ var RootEngine = /*#__PURE__*/function () {
           try {
             value = _this3.getValueOfConnection(connection[0], nodes, options.context);
           } catch (e) {
+            _this3.errorCallback && _this3.errorCallback(e);
             if (e.code === LoopError.maxLoopsExceeded) {
               console.error("".concat(e.message, " Circular nodes detected in ").concat(inputName, " port."));
             } else {
