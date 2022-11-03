@@ -89,9 +89,9 @@ const Stage = forwardRef(
         toggleVisibility();
       });
 
-      if (focusNode) {
+      if (focusNode.node) {
         translateWrapper.current.style.transition = "0.5s";
-        const node = document.getElementById(focusNode);
+        const node = document.getElementById(focusNode.node);
 
         const rect = node.getBoundingClientRect();
         const wrapperRect = translateWrapper.current.getBoundingClientRect();
@@ -104,11 +104,11 @@ const Stage = forwardRef(
 
         translateWrapper.current.ontransitionend = () => {
           toggleVisibility();
-          document.getElementById(focusNode).style.boxShadow = `0 0 0 ${
+          document.getElementById(focusNode.node).style.boxShadow = `0 0 0 ${
             2 / scale
-          }px red`;
+          }px ${focusNode.color}`;
           setTimeout(() => {
-            document.getElementById(focusNode).style.boxShadow = "none";
+            document.getElementById(focusNode.node).style.boxShadow = "none";
           }, 1000);
           translateWrapper.current.style.transition = "0.055s";
 

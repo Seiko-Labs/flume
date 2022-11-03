@@ -46,14 +46,6 @@ import nodeStyles from "./components/Node/Node.css";
 
 const defaultContext = {};
 
-function getTranslate3d(el) {
-  var values = el.style.transform.split(/\w+\(|\);?/);
-  if (!values[1] || !values[1].length) {
-    return [];
-  }
-  return values[1].split(/,\s?/g);
-}
-
 const checkIntersection = (boxA, boxB) => {
   if (
     boxA.bottom > boxB.top &&
@@ -78,7 +70,7 @@ export const NodeEditor = forwardRef(
       hideComments = true,
       disableComments = true,
       circularBehavior,
-      focusNode = null,
+      focusNode = { node: null, color: null },
       onFocusChange,
       debug,
     },

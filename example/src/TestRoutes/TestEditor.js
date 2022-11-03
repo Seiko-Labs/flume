@@ -139,7 +139,7 @@ const TestEditor = () => {
                   <button
                     onClick={() => {
                       console.log(node);
-                      setFocusNode(node);
+                      setFocusNode({ node: node, color: "green" });
                     }}
                   >
                     {node}

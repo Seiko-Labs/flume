@@ -10868,9 +10868,9 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       });
       toggleVisibility();
     });
-    if (focusNode) {
+    if (focusNode.node) {
       translateWrapper.current.style.transition = "0.5s";
-      var node = document.getElementById(focusNode);
+      var node = document.getElementById(focusNode.node);
       var rect = node.getBoundingClientRect();
       var wrapperRect = translateWrapper.current.getBoundingClientRect();
       var _x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
@@ -10879,9 +10879,9 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       onFocusChange && onFocusChange(focusNode);
       translateWrapper.current.ontransitionend = function () {
         toggleVisibility();
-        document.getElementById(focusNode).style.boxShadow = "0 0 0 ".concat(2 / scale, "px red");
+        document.getElementById(focusNode.node).style.boxShadow = "0 0 0 ".concat(2 / scale, "px ").concat(focusNode.color);
         setTimeout(function () {
-          document.getElementById(focusNode).style.boxShadow = "none";
+          document.getElementById(focusNode.node).style.boxShadow = "none";
         }, 1000);
         translateWrapper.current.style.transition = "0.055s";
         translateWrapper.current.ontransitionend = null;
@@ -36074,7 +36074,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
     circularBehavior = _ref.circularBehavior,
     _ref$focusNode = _ref.focusNode,
-    focusNode = _ref$focusNode === void 0 ? null : _ref$focusNode,
+    focusNode = _ref$focusNode === void 0 ? {
+      node: null,
+      color: null
+    } : _ref$focusNode,
     onFocusChange = _ref.onFocusChange;
     _ref.debug;
   var editorId = useId();
