@@ -16,7 +16,7 @@ import orderBy from "lodash/orderBy";
 import * as d3 from "d3-zoom";
 import { select } from "d3-selection";
 import { STAGE_ID } from "../../constants";
-
+let firstRender = true;
 const Stage = forwardRef(
   (
     {
@@ -36,13 +36,18 @@ const Stage = forwardRef(
     wrapper
   ) => {
     useLayoutEffect(() => {
+      const { x, y, k } = d3.zoomTransform(translateWrapper.current);
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
-      d3Zoom.transform(
-        d3Selection,
-        d3.zoomIdentity.translate(translate.x, translate.y).scale(scale)
-      );
-
+      if (x === 0 && y === 0 && k === 1) {
+        firstRender = false;
+        d3Zoom.transform(
+          d3Selection,
+          d3.zoomIdentity.translate(translate.x, translate.y).scale(scale)
+        );
+      } else {
+        d3Zoom.transform(d3Selection, d3.zoomIdentity.translate(x, y).scale(k));
+      }
       d3Zoom.filter((e) => {
         if (e.type === "mousedown") return spaceIsPressed ? e : false;
         return e;
@@ -68,6 +73,7 @@ const Stage = forwardRef(
           translateWrapper.current.style.transform = `translate3d(${x}px, ${y}px, 0px) scale3d(${k}, ${k}, ${k})`;
         });
       });
+
       d3Zoom.on("end", (event) => {
         dispatchStageState(() => ({
           type: "SET_TRANSLATE",
@@ -86,11 +92,13 @@ const Stage = forwardRef(
       if (focusNode) {
         translateWrapper.current.style.transition = "0.5s";
         const node = document.getElementById(focusNode);
-        const oldPositions = node.style.transform.match(
-          /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-        );
 
-        d3Zoom.translateTo(d3Selection, oldPositions[1], oldPositions[2]);
+        const rect = node.getBoundingClientRect();
+        const wrapperRect = translateWrapper.current.getBoundingClientRect();
+
+        const x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
+        const y = (rect.y - wrapperRect.y + rect.height) / scale;
+        d3Zoom.translateTo(d3Selection, x, y);
 
         onFocusChange && onFocusChange(focusNode);
 
@@ -205,6 +213,7 @@ const Stage = forwardRef(
         ) : null}
         <div
           ref={translateWrapper}
+          id="flume_translate_wrapper"
           style={{
             transition: "0.055s",
             transform: `translate3d(${translate.x}px, ${translate.y}px, 0px) scale3d(${scale}, ${scale}, ${scale})`,

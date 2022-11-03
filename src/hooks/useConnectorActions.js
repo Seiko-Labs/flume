@@ -78,12 +78,13 @@ const useConnectorActions = ({
           break;
         }
         case "ADD_NODE": {
-          const { x, y, type } = data;
+          const { x, y, type, info } = data;
 
           dispatchNodes({
             type: "ADD_NODE",
             x,
             y,
+            info,
             nodeType: type,
           });
           break;

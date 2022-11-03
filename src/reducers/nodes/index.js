@@ -103,12 +103,13 @@ export const nodesReducer = (
     }
 
     case "ADD_NODE": {
-      const { x, y, nodeType, id, defaultNode } = action;
+      const { x, y, nodeType, id, defaultNode, info } = action;
       const newNodeId = id || nanoid(10);
       const newNode = {
         id: newNodeId,
         x,
         y,
+        info,
         type: nodeType,
         connections: {
           inputs: {},

@@ -264,19 +264,18 @@ export const NodeEditor = forwardRef(
           type: "SET_MULTIPLE_NODES_COORDINATES",
           nodesInfo: selectedNodes
             .map((id) => {
-              const nodeRef = document.getElementById(id);
-
+              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
               if (nodeRef) {
-                const newPositions = getTranslate3d(nodeRef);
+                const newPositions = nodeRef.current.style.transform.match(
+                  /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/
+                );
 
                 return {
                   nodeId: id,
-                  x: newPositions[0].replace("px", ""),
-                  y: newPositions[1].replace("px", ""),
+                  x: newPositions[1],
+                  y: newPositions[2],
                 };
               }
-
-              return undefined;
             })
             .filter((res) => !!res),
         });

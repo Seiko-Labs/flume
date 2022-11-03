@@ -10310,7 +10310,12 @@ Transform.prototype = {
 
 var identity$4 = new Transform(1, 0, 0);
 
-Transform.prototype;
+transform$1.prototype = Transform.prototype;
+
+function transform$1(node) {
+  while (!node.__zoom) if (!(node = node.parentNode)) return identity$4;
+  return node.__zoom;
+}
 
 function nopropagation(event) {
   event.stopImmediatePropagation();
@@ -10777,9 +10782,17 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     focusNode = _ref.focusNode,
     onFocusChange = _ref.onFocusChange;
   useLayoutEffect(function () {
+    var _d3$zoomTransform = transform$1(translateWrapper.current),
+      x = _d3$zoomTransform.x,
+      y = _d3$zoomTransform.y,
+      k = _d3$zoomTransform.k;
     var d3Zoom = zoom().scaleExtent([0.3, 3]);
     var d3Selection = select(wrapper.current);
-    d3Zoom.transform(d3Selection, identity$4.translate(translate.x, translate.y).scale(scale));
+    if (x === 0 && y === 0 && k === 1) {
+      d3Zoom.transform(d3Selection, identity$4.translate(translate.x, translate.y).scale(scale));
+    } else {
+      d3Zoom.transform(d3Selection, identity$4.translate(x, y).scale(k));
+    }
     d3Zoom.filter(function (e) {
       if (e.type === "mousedown") return spaceIsPressed ? e : false;
       return e;
@@ -10831,8 +10844,11 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     if (focusNode) {
       translateWrapper.current.style.transition = "0.5s";
       var node = document.getElementById(focusNode);
-      var oldPositions = node.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-      d3Zoom.translateTo(d3Selection, oldPositions[1], oldPositions[2]);
+      var rect = node.getBoundingClientRect();
+      var wrapperRect = translateWrapper.current.getBoundingClientRect();
+      var _x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
+      var _y = (rect.y - wrapperRect.y + rect.height) / scale;
+      d3Zoom.translateTo(d3Selection, _x, _y);
       onFocusChange && onFocusChange(focusNode);
       translateWrapper.current.ontransitionend = function () {
         toggleVisibility();
@@ -10938,6 +10954,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     label: "Add Node"
   })) : null, /*#__PURE__*/React__default.createElement("div", {
     ref: translateWrapper,
+    id: "flume_translate_wrapper",
     style: {
       transition: "0.055s",
       transform: "translate3d(".concat(translate.x, "px, ").concat(translate.y, "px, 0px) scale3d(").concat(scale, ", ").concat(scale, ", ").concat(scale, ")"),
@@ -30646,11 +30663,13 @@ var useConnectorActions = function useConnectorActions(_ref) {
           {
             var _x = data.x,
               _y = data.y,
-              _type = data.type;
+              _type = data.type,
+              info = data.info;
             dispatchNodes({
               type: "ADD_NODE",
               x: _x,
               y: _y,
+              info: info,
               nodeType: _type
             });
             break;
@@ -34689,12 +34708,14 @@ var nodesReducer = function nodesReducer(_ref) {
           y = action.y,
           nodeType = action.nodeType,
           _id = action.id,
-          defaultNode = action.defaultNode;
+          defaultNode = action.defaultNode,
+          info = action.info;
         var newNodeId = _id || nanoid(10);
         var newNode = {
           id: newNodeId,
           x: x,
           y: y,
+          info: info,
           type: nodeType,
           connections: {
             inputs: {},
@@ -36003,13 +36024,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var defaultContext = {};
-function getTranslate3d(el) {
-  var values = el.style.transform.split(/\w+\(|\);?/);
-  if (!values[1] || !values[1].length) {
-    return [];
-  }
-  return values[1].split(/,\s?/g);
-}
 var checkIntersection = function checkIntersection(boxA, boxB) {
   if (boxA.bottom > boxB.top && boxA.right > boxB.left && boxA.top < boxB.bottom && boxA.left < boxB.right) {
     return true;
@@ -36192,16 +36206,19 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       dispatchNodes({
         type: "SET_MULTIPLE_NODES_COORDINATES",
         nodesInfo: selectedNodes.map(function (id) {
-          var nodeRef = document.getElementById(id);
+          var nodeRef = nodeRefs.find(function (_ref2) {
+            var _ref3 = _slicedToArray(_ref2, 1),
+              nId = _ref3[0].id;
+            return nId === id;
+          })[1];
           if (nodeRef) {
-            var newPositions = getTranslate3d(nodeRef);
+            var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
             return {
               nodeId: id,
-              x: newPositions[0].replace("px", ""),
-              y: newPositions[1].replace("px", "")
+              x: newPositions[1],
+              y: newPositions[2]
             };
           }
-          return undefined;
         }).filter(function (res) {
           return !!res;
         })
@@ -36244,7 +36261,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     }
   };
   var dragSelectedNodes = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
       var _iterator2, _step2, _loop;
       return regenerator.wrap(function _callee$(_context) {
         while (1) {
@@ -36259,9 +36276,9 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
                       if (id !== excludedNodeId) {
                         var _nodeRefs$find$;
                         // const nodeRef = document.getElementById(id);
-                        var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref3) {
-                          var _ref4 = _slicedToArray(_ref3, 1),
-                            nId = _ref4[0].id;
+                        var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref5) {
+                          var _ref6 = _slicedToArray(_ref5, 1),
+                            nId = _ref6[0].id;
                           return nId === id;
                         })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
                         if (nodeRef) {
@@ -36293,7 +36310,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       }, _callee);
     }));
     return function dragSelectedNodes(_x, _x2, _x3) {
-      return _ref2.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }();
   useEffect(function () {
@@ -36364,13 +36381,13 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   }, Object.values(nodesState[currentStateIndex].state).map(function (node) {
     return /*#__PURE__*/React__default.createElement(Node, _extends$3({}, node, {
       isSelected: selectedNodes.includes(node.id),
-      ref: nodeRefs.find(function (_ref5) {
-        var _ref6 = _slicedToArray(_ref5, 1),
-          n = _ref6[0];
-        return n.id === node.id;
-      }) ? nodeRefs.find(function (_ref7) {
+      ref: nodeRefs.find(function (_ref7) {
         var _ref8 = _slicedToArray(_ref7, 1),
           n = _ref8[0];
+        return n.id === node.id;
+      }) ? nodeRefs.find(function (_ref9) {
+        var _ref10 = _slicedToArray(_ref9, 1),
+          n = _ref10[0];
         return n.id === node.id;
       })[1] : /*#__PURE__*/createRef(),
       stageRect: stage,
