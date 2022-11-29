@@ -10841,7 +10841,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
       });
       toggleVisibility();
     });
-    if (focusNode.node) {
+    if (focusNode && focusNode.node) {
       translateWrapper.current.style.transition = "0.5s";
       var node = document.getElementById(focusNode.node);
       var rect = node.getBoundingClientRect();
@@ -12884,7 +12884,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
   }, label)), /*#__PURE__*/React__default.createElement("span", {
     className: nodeStyles === null || nodeStyles === void 0 ? void 0 : nodeStyles.id,
     onClick: function onClick() {
-      return navigator.clipboard.writeText(id);
+      return navigator.clipboard.writeText("{%".concat(id, "%}"));
     }
   }, "ID: ", id)), /*#__PURE__*/React__default.createElement("div", {
     className: nodeStyles === null || nodeStyles === void 0 ? void 0 : nodeStyles.headerActions

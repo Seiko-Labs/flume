@@ -89,7 +89,7 @@ const Stage = forwardRef(
         toggleVisibility();
       });
 
-      if (focusNode.node) {
+      if (focusNode && focusNode.node) {
         translateWrapper.current.style.transition = "0.5s";
         const node = document.getElementById(focusNode.node);
 

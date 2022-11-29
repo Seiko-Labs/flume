@@ -344,7 +344,7 @@ const Node = forwardRef(
               </div>
               <span
                 className={styles?.id}
-                onClick={() => navigator.clipboard.writeText(id)}
+                onClick={() => navigator.clipboard.writeText( `{%${id}%}`)}
               >
                 ID: {id}
               </span>
