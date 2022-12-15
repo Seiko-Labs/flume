@@ -10971,7 +10971,10 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     id: "".concat(STAGE_ID).concat(editorId),
     className: styles$b.wrapper,
     ref: wrapper,
-    onContextMenu: handleContextMenu
+    onContextMenu: handleContextMenu,
+    onMouseDown: function onMouseDown(e) {
+      document.activeElement.blur();
+    }
   }, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
     x: menuCoordinates.x,
     y: menuCoordinates.y,

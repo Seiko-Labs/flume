@@ -198,6 +198,9 @@ const Stage = forwardRef(
         className={styles.wrapper}
         ref={wrapper}
         onContextMenu={handleContextMenu}
+        onMouseDown={(e) => {
+          document.activeElement.blur();
+        }}
       >
         {menuOpen ? (
           <Portal>
