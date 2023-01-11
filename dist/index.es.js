@@ -12750,6 +12750,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
       y = _ref5.y;
     var nWrapper = document.getElementById(id);
     var oldPositions = nWrapper.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+    if (!nWrapper) return;
     nWrapper.style.transition = "0s";
     if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
       onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
@@ -36217,7 +36218,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
               nId = _ref3[0].id;
             return nId === id;
           })[1];
-          if (nodeRef) {
+          if (nodeRef.current) {
             var newPositions = nodeRef.current.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/);
             return {
               nodeId: id,

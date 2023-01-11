@@ -257,7 +257,7 @@ export const NodeEditor = forwardRef(
           nodesInfo: selectedNodes
             .map((id) => {
               const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
-              if (nodeRef) {
+              if (nodeRef.current) {
                 const newPositions = nodeRef.current.style.transform.match(
                   /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/
                 );

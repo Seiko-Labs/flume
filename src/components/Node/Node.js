@@ -205,8 +205,10 @@ const Node = forwardRef(
       const oldPositions = nWrapper.style.transform.match(
         /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
-      nWrapper.style.transition = "0s";
 
+      if (!nWrapper) return;
+
+      nWrapper.style.transition = "0s";
       if (oldPositions?.length === 3) {
         onDragHandle(
           nWrapper.dataset.nodeId,
@@ -344,7 +346,7 @@ const Node = forwardRef(
               </div>
               <span
                 className={styles?.id}
-                onClick={() => navigator.clipboard.writeText( `{%${id}%}`)}
+                onClick={() => navigator.clipboard.writeText(`{%${id}%}`)}
               >
                 ID: {id}
               </span>
