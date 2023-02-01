@@ -93,12 +93,19 @@ const Control = ({
         );
       case "number":
         return (
-          <NumberInput
+          <TextInput
             {...commonProps}
-            step={step}
+            onChange={(value) => {
+              if (Number.isNaN(+value) || value === "") {
+                commonProps.onChange(value);
+              } else {
+                commonProps.onChange(+value);
+              }
+            }}
             predicate={predicate}
             validate={validate}
             placeholder={placeholder}
+            nodeData={nodeData}
           />
         );
       case "checkbox":
