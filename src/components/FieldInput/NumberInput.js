@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./TextInput.css";
+import { memo } from 'react';
 
 const NumberInput = ({ placeholder, onChange, data, step, validate }) => {
   const numberInput = useRef();
@@ -44,4 +45,4 @@ const NumberInput = ({ placeholder, onChange, data, step, validate }) => {
   );
 };
 
-export default NumberInput;
+export default memo(NumberInput);

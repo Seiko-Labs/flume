@@ -1,6 +1,7 @@
 import React from "react";
 import { CONNECTIONS_ID } from "../../constants";
 import styles from "./Connections.css";
+import { memo } from 'react';
 
 const Connections = ({ nodes, editorId }) => {
   return (
@@ -8,4 +9,4 @@ const Connections = ({ nodes, editorId }) => {
   );
 };
 
-export default Connections;
+export default memo(Connections);

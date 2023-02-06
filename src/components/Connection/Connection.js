@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateCurve } from "../../connectionCalculator";
 import styles from "./Connection.css";
+import { memo } from 'react';
 
 const Connection = ({
   from,
@@ -33,4 +34,4 @@ const Connection = ({
   );
 };
 
-export default Connection;
+export default memo(Connection);

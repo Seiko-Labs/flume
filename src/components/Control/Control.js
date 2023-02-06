@@ -6,6 +6,7 @@ import Checkbox from "../Checkbox/Checkbox";
 import TextInput from "../FieldInput/TextInput";
 import Select from "../Select/Select";
 import { NodeDispatchContext, ContextContext } from "../../context";
+import { memo } from 'react';
 
 const Control = ({
   type,
@@ -172,4 +173,4 @@ const Control = ({
   );
 };
 
-export default Control;
+export default memo(Control);

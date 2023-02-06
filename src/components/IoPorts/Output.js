@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./IoPorts.css";
 import Port from "./Port";
+import { memo } from 'react';
 
 const Output = ({
   name,
@@ -33,4 +34,4 @@ const Output = ({
   );
 };
 
-export default Output;
+export default memo(Output);

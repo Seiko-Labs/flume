@@ -4254,6 +4254,7 @@ var ContextOption = function ContextOption(_ref2) {
     id: "".concat(menuId, "-").concat(index)
   }, children);
 };
+var ContextMenu$1 = /*#__PURE__*/React.memo(ContextMenu);
 
 var NodeTypesContext = /*#__PURE__*/React.createContext();
 var PortTypesContext = /*#__PURE__*/React.createContext();
@@ -11007,7 +11008,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     onMouseDown: function onMouseDown(e) {
       document.activeElement.blur();
     }
-  }, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+  }, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu$1, {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: menuOptions,
@@ -11025,6 +11026,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   }, children), outerStageChildren);
 });
 Stage.displayName = "Stage";
+var Stage$1 = /*#__PURE__*/React.memo(Stage);
 
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray$5(arr);
@@ -11658,6 +11660,7 @@ var Button = function Button(_ref) {
     onClick: onPress
   }, label));
 };
+var Button$1 = /*#__PURE__*/React.memo(Button);
 
 var css_248z$9 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
 var styles$7 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
@@ -11706,6 +11709,7 @@ var Checkbox = function Checkbox(_ref) {
     className: styles$5.checkboxMark
   }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
 };
+var Checkbox$1 = /*#__PURE__*/React.memo(Checkbox);
 
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
@@ -11746,6 +11750,7 @@ var TextInput = function TextInput(_ref) {
     }
   }));
 };
+var TextInput$1 = /*#__PURE__*/React.memo(TextInput);
 
 var css_248z$6 = ".Select_wrapper__LU8xp{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R,.Select_wrapper__LU8xp:active,.Select_wrapper__LU8xp:focus,.Select_wrapper__LU8xp:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__zZu-R{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R:nth-child(3n){margin-right:0}.Select_deleteButton__K7AfO{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__K7AfO:active,.Select_deleteButton__K7AfO:focus,.Select_deleteButton__K7AfO:hover{color:inherit}";
 var styles$4 = {"wrapper":"Select_wrapper__LU8xp","chipWrapper":"Select_chipWrapper__zZu-R","deleteButton":"Select_deleteButton__K7AfO"};
@@ -11835,7 +11840,7 @@ var Select = function Select(_ref) {
     wrapperRef: wrapper,
     option: selectedOption,
     onClick: openDrawer
-  }) : null, drawerOpen && /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+  }) : null, drawerOpen && /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu$1, {
     x: drawerCoordinates.x,
     y: drawerCoordinates.y,
     emptyText: "There are no options",
@@ -11844,6 +11849,7 @@ var Select = function Select(_ref) {
     onRequestClose: closeDrawer
   })));
 };
+var Select$1 = /*#__PURE__*/React.memo(Select);
 var SelectedOption = function SelectedOption(_ref2) {
   var _ref2$option = _ref2.option,
     _ref2$option2 = _ref2$option === void 0 ? {} : _ref2$option,
@@ -11935,20 +11941,20 @@ var Control = function Control(_ref) {
     };
     switch (type) {
       case "select":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(Select$1, _extends$3({}, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
           placeholder: placeholder,
           defaultValue: defaultValue
         }));
       case "text":
-        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$3({}, commonProps, {
           predicate: predicate,
           placeholder: placeholder,
           validate: validate,
           nodeData: nodeData
         }));
       case "number":
-        return /*#__PURE__*/React__default["default"].createElement(TextInput, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$3({}, commonProps, {
           onChange: function onChange(value) {
             if (Number.isNaN(+value) || value === "") {
               commonProps.onChange(value);
@@ -11962,11 +11968,11 @@ var Control = function Control(_ref) {
           nodeData: nodeData
         }));
       case "checkbox":
-        return /*#__PURE__*/React__default["default"].createElement(Checkbox, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(Checkbox$1, _extends$3({}, commonProps, {
           label: calculatedLabel
         }));
       case "multiselect":
-        return /*#__PURE__*/React__default["default"].createElement(Select, _extends$3({
+        return /*#__PURE__*/React__default["default"].createElement(Select$1, _extends$3({
           allowMultiple: true
         }, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
@@ -11974,7 +11980,7 @@ var Control = function Control(_ref) {
           label: label
         }));
       case "button":
-        return /*#__PURE__*/React__default["default"].createElement(Button, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default["default"].createElement(Button$1, _extends$3({}, commonProps, {
           label: label,
           onPress: function onPress() {
             _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
@@ -11999,6 +12005,7 @@ var Control = function Control(_ref) {
     })
   }, getControlByType(type));
 };
+var Control$1 = /*#__PURE__*/React.memo(Control);
 
 var css_248z$5 = ".IoPorts_outputs__hqc88,.IoPorts_wrapper__4jboF{display:flex;flex-direction:column}.IoPorts_outputs__hqc88{align-items:center;background:#000;border-bottom-left-radius:4px;border-top-left-radius:4px;justify-content:center;padding:8px 1px 8px 0;width:9px}.IoPorts_outputs__hqc88>*+*{margin-top:4px}.IoPorts_outputs__hqc88>.IoPorts_transput__5JT3i{height:16px;width:7px}.IoPorts_inputs__M7xAH{align-items:center;background:#101426;border-bottom-right-radius:4px;border-top-right-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 1px;width:9px}.IoPorts_inputs__M7xAH>*+*{margin-top:4px}.IoPorts_inputs__M7xAH>.IoPorts_transput__5JT3i{height:16px;width:7px}table.IoPorts_inner__NsCyd{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__NsCyd>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_portLabel__XY5gi{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__ZC6Mw{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:15px;justify-content:center;margin:0;padding:0;width:15px}.IoPorts_port__ZC6Mw *{pointer-events:none}";
 var styles$3 = {"wrapper":"IoPorts_wrapper__4jboF","outputs":"IoPorts_outputs__hqc88","transput":"IoPorts_transput__5JT3i","inputs":"IoPorts_inputs__M7xAH","inner":"IoPorts_inner__NsCyd","portLabel":"IoPorts_portLabel__XY5gi","controls":"IoPorts_controls__J4rPJ","port":"IoPorts_port__ZC6Mw"};
@@ -12031,6 +12038,7 @@ var Connection = function Connection(_ref) {
     ref: lineRef
   }));
 };
+var Connection$1 = /*#__PURE__*/React.memo(Connection);
 
 var Port = function Port(_ref) {
   var color = _ref.color,
@@ -12251,12 +12259,13 @@ var Port = function Port(_ref) {
     }
   })), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
     node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
-  }, /*#__PURE__*/React__default["default"].createElement(Connection, {
+  }, /*#__PURE__*/React__default["default"].createElement(Connection$1, {
     from: dragStartCoordinates,
     to: dragStartCoordinates,
     lineRef: line
   })) : null);
 };
+var Port$1 = /*#__PURE__*/React.memo(Port);
 
 var Inner = function Inner(_ref) {
   var type = _ref.type,
@@ -12289,7 +12298,7 @@ var Inner = function Inner(_ref) {
   }, label || defaultLabel), /*#__PURE__*/React__default["default"].createElement("td", {
     className: styles$3.controls
   }, controls.map(function (control) {
-    return /*#__PURE__*/React__default["default"].createElement(Control, _extends$3({}, control, {
+    return /*#__PURE__*/React__default["default"].createElement(Control$1, _extends$3({}, control, {
       nodeId: nodeId,
       portName: name,
       triggerRecalculation: triggerRecalculation,
@@ -12304,6 +12313,7 @@ var Inner = function Inner(_ref) {
     }));
   })));
 };
+var Inner$1 = /*#__PURE__*/React.memo(Inner);
 
 var Input = function Input(_ref) {
   var _ref2;
@@ -12336,7 +12346,7 @@ var Input = function Input(_ref) {
       e.preventDefault();
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React__default["default"].createElement(Port, {
+  }, /*#__PURE__*/React__default["default"].createElement(Port$1, {
     type: type,
     color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
     name: name,
@@ -12345,6 +12355,7 @@ var Input = function Input(_ref) {
     triggerRecalculation: triggerRecalculation
   }));
 };
+var Input$1 = /*#__PURE__*/React.memo(Input);
 
 var Output = function Output(_ref) {
   var _ref2;
@@ -12363,7 +12374,7 @@ var Output = function Output(_ref) {
       e.preventDefault();
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React__default["default"].createElement(Port, {
+  }, /*#__PURE__*/React__default["default"].createElement(Port$1, {
     type: type,
     name: name,
     color: (_ref2 = color !== null && color !== void 0 ? color : c) !== null && _ref2 !== void 0 ? _ref2 : optColor,
@@ -12371,6 +12382,7 @@ var Output = function Output(_ref) {
     triggerRecalculation: triggerRecalculation
   }));
 };
+var Output$1 = /*#__PURE__*/React.memo(Output);
 
 var IoPorts = function IoPorts(_ref) {
   var nodeId = _ref.nodeId,
@@ -12396,7 +12408,7 @@ var IoPorts = function IoPorts(_ref) {
         },
         "data-show": show
       }, resolvedOutputs.map(function (output) {
-        return /*#__PURE__*/React__default["default"].createElement(Output, _extends$3({}, output, {
+        return /*#__PURE__*/React__default["default"].createElement(Output$1, _extends$3({}, output, {
           optColor: color,
           triggerRecalculation: triggerRecalculation,
           inputTypes: inputTypes,
@@ -12416,7 +12428,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref3.hidePort;
         return !hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Input, _extends$3({
+        return /*#__PURE__*/React__default["default"].createElement(Input$1, _extends$3({
           optColor: color
         }, input, {
           data: inputData[input.name] || {},
@@ -12439,7 +12451,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref5.hidePort;
         return hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default["default"].createElement(Inner, _extends$3({}, input, {
+        return /*#__PURE__*/React__default["default"].createElement(Inner$1, _extends$3({}, input, {
           data: inputData[input.name] || {},
           isConnected: !!connections.inputs[input.name],
           triggerRecalculation: triggerRecalculation,
@@ -12453,6 +12465,7 @@ var IoPorts = function IoPorts(_ref) {
       })));
   }
 };
+var IoPorts$1 = /*#__PURE__*/React.memo(IoPorts);
 
 function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
@@ -12484,7 +12497,7 @@ function _objectWithoutProperties(source, excluded) {
 }
 
 var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
-var Draggable = (function (_ref) {
+var Draggable = function Draggable(_ref) {
   var children = _ref.children,
     stageState = _ref.stageState;
     _ref.stageRect;
@@ -12613,7 +12626,8 @@ var Draggable = (function (_ref) {
       }
     }
   }, rest), children);
-});
+};
+var Draggable$1 = /*#__PURE__*/React.memo(Draggable);
 
 var _path$1;
 function _extends$1() { _extends$1 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
@@ -12847,7 +12861,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       return hidePort;
     }));
   }, [resolvedInputs]);
-  return /*#__PURE__*/React__default["default"].createElement(Draggable, {
+  return /*#__PURE__*/React__default["default"].createElement(Draggable$1, {
     className: nodeStyles === null || nodeStyles === void 0 ? void 0 : nodeStyles.wrapper,
     style: {
       background: "rgba(46, 58, 89)",
@@ -12867,7 +12881,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     stageState: stageState,
     stageRect: stageRect,
     id: id
-  }, /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+  }, /*#__PURE__*/React__default["default"].createElement(IoPorts$1, {
     nodeId: id,
     resolvedOutputs: resolvedOutputs,
     show: "outputsOnly",
@@ -12960,7 +12974,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     style: {
       visibility: hideControls ? "hidden" : "visible"
     }
-  }, /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+  }, /*#__PURE__*/React__default["default"].createElement(IoPorts$1, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
     show: "innerOnly",
@@ -12970,7 +12984,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     inputData: inputData
   }))) : description && /*#__PURE__*/React__default["default"].createElement("div", {
     className: nodeStyles === null || nodeStyles === void 0 ? void 0 : nodeStyles.description
-  }, description)), /*#__PURE__*/React__default["default"].createElement(IoPorts, {
+  }, description)), /*#__PURE__*/React__default["default"].createElement(IoPorts$1, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
     show: "inputsOnly",
@@ -12978,7 +12992,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     connections: connections,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
-  }), menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu, {
+  }), menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu$1, {
     x: menuCoordinates.x,
     y: menuCoordinates.y,
     options: _toConsumableArray(deletable !== false ? [{
@@ -12994,6 +13008,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
   })) : null);
 });
 Node.displayName = "Node";
+var Node$1 = /*#__PURE__*/React.memo(Node);
 
 var css_248z$4 = ".Comment_wrapper__2CG3I{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__2CG3I[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__2CG3I[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__2CG3I[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__2CG3I[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__2CG3I[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__2CG3I[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__2CG3I[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__wBsGB{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__e-57p{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__e-57p:after,.Comment_resizeThumb__e-57p:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__e-57p:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__i7qnk{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__i7qnk::placeholder{color:rgba(0,0,0,.5)}";
 styleInject(css_248z$4);
@@ -30509,7 +30524,7 @@ var css_248z$2 = ".Toaster_toaster__E5R8O{align-items:center;bottom:0;box-shadow
 var styles$2 = {"toaster":"Toaster_toaster__E5R8O","toast":"Toaster_toast__2wgPt","fade-in":"Toaster_fade-in__y8znw","fade-out":"Toaster_fade-out__XANRE","title":"Toaster_title__UqwtP","timer":"Toaster_timer__P6Wpm","exitButton":"Toaster_exitButton__8SpPt"};
 styleInject(css_248z$2);
 
-var Toaster = (function (_ref) {
+var Toaster = function Toaster(_ref) {
   var _ref$toasts = _ref.toasts,
     toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
     dispatchToasts = _ref.dispatchToasts;
@@ -30545,7 +30560,8 @@ var Toaster = (function (_ref) {
       key: toast.id
     }));
   }));
-});
+};
+var Toaster$1 = /*#__PURE__*/React.memo(Toaster);
 var Toast = function Toast(_ref2) {
   var id = _ref2.id,
     title = _ref2.title,
@@ -30630,6 +30646,7 @@ var Connections = function Connections(_ref) {
     id: "".concat(CONNECTIONS_ID).concat(editorId)
   });
 };
+var Connections$1 = /*#__PURE__*/React.memo(Connections);
 
 var useConnectorActions = function useConnectorActions(_ref) {
   var dispatchNodes = _ref.dispatchNodes,
@@ -36436,7 +36453,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       zIndex: 100,
       cursor: "inherit"
     }
-  }), /*#__PURE__*/React__default["default"].createElement(Stage, {
+  }), /*#__PURE__*/React__default["default"].createElement(Stage$1, {
     focusNode: focusNode,
     onFocusChange: onFocusChange,
     ref: editorRef,
@@ -36451,14 +36468,14 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     disableComments: disableComments || hideComments,
     stageRef: stage,
     numNodes: Object.keys(nodesState[currentStateIndex].state).length,
-    outerStageChildren: /*#__PURE__*/React__default["default"].createElement(Toaster, {
+    outerStageChildren: /*#__PURE__*/React__default["default"].createElement(Toaster$1, {
       toasts: toasts,
       dispatchToasts: dispatchToasts
     }),
     DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
     draggableCanvasSet: context.draggableCanvasSet
   }, Object.values(nodesState[currentStateIndex].state).map(function (node) {
-    return /*#__PURE__*/React__default["default"].createElement(Node, _extends$3({}, node, {
+    return /*#__PURE__*/React__default["default"].createElement(Node$1, _extends$3({}, node, {
       isSelected: selectedNodes.includes(node.id),
       ref: nodeRefs.find(function (_ref7) {
         var _ref8 = _slicedToArray(_ref7, 1),
@@ -36476,7 +36493,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       onDragStart: recalculateStageRect,
       key: node.id
     }));
-  }), /*#__PURE__*/React__default["default"].createElement(Connections, {
+  }), /*#__PURE__*/React__default["default"].createElement(Connections$1, {
     nodes: nodesState[currentStateIndex].state,
     editorId: editorId
   }), /*#__PURE__*/React__default["default"].createElement("div", {

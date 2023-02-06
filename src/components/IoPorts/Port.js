@@ -11,6 +11,7 @@ import {
 import Connection from "../Connection/Connection";
 import styles from "./IoPorts.css";
 import { ReactComponent as PortArrow } from "../../img/port-arrow.svg";
+import { memo } from 'react';
 
 const Port = ({
   color,
@@ -264,4 +265,4 @@ const Port = ({
   );
 };
 
-export default Port;
+export default memo(Port);

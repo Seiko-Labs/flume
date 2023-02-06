@@ -10,6 +10,7 @@ import ScrollBar from "react-perfect-scrollbar";
 import styles from "./ContextMenu.css";
 import clamp from "lodash/clamp";
 import nanoid from "nanoid/non-secure/index";
+import { memo } from 'react';
 
 const ContextMenu = ({
   x,
@@ -247,4 +248,4 @@ const ContextOption = ({
   );
 };
 
-export default ContextMenu;
+export default memo(ContextMenu);

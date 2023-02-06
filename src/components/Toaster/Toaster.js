@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Toaster.css";
+import { memo } from 'react';
 
-export default ({ toasts = [], dispatchToasts }) => {
+const Toaster = ({ toasts = [], dispatchToasts }) => {
   const setHeight = React.useCallback(
     (id, height) => {
       dispatchToasts({
@@ -50,6 +51,8 @@ export default ({ toasts = [], dispatchToasts }) => {
     </div>
   );
 };
+
+export default memo(Toaster);
 
 const Toast = ({
   id,

@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./ColorPicker.css";
 import { Colors } from "../../typeBuilder/FlumeConfig";
+import { memo } from 'react';
 
-export default ({ x, y, onColorPicked, onRequestClose }) => {
+const ColorPicker = ({ x, y, onColorPicked, onRequestClose }) => {
   const wrapper = React.useRef();
 
   const testClickOutside = React.useCallback(
@@ -70,3 +71,5 @@ const ColorButton = ({ color, onSelected }) => (
     />
   </div>
 );
+
+export default memo(ColorPicker);

@@ -4,6 +4,7 @@ import Input from "./Input";
 import styles from "./IoPorts.css";
 import { ConnectionRecalculateContext, PortTypesContext } from "../../context";
 import Output from "./Output";
+import { memo } from 'react';
 
 const IoPorts = ({
   nodeId,
@@ -94,4 +95,4 @@ const IoPorts = ({
   }
 };
 
-export default IoPorts;
+export default memo(IoPorts);

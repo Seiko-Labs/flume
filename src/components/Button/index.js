@@ -1,5 +1,6 @@
 import styles from "./index.css";
 import React from "react";
+import { memo } from 'react';
 
 const Button = ({ onPress, label }) => (
   <div className={styles.wrapper}>
@@ -9,4 +10,4 @@ const Button = ({ onPress, label }) => (
   </div>
 );
 
-export default Button;
+export default memo(Button);

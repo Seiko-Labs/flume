@@ -3,6 +3,7 @@ import selectStyles from "../Select/Select.css";
 import { Portal } from "react-portal";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import styles from "./Select.css";
+import { memo } from 'react';
 
 const MAX_LABEL_LENGTH = 50;
 
@@ -119,7 +120,7 @@ const Select = ({
   );
 };
 
-export default Select;
+export default memo(Select);
 
 const SelectedOption = ({
   option: { label, description } = {},

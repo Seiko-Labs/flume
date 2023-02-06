@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
+import { memo } from 'react';
 
 const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
   const preventPropagation = (e) => e.stopPropagation();
@@ -38,4 +39,4 @@ const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
   );
 };
 
-export default TextInput;
+export default memo(TextInput);

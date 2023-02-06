@@ -16,7 +16,10 @@ import orderBy from "lodash/orderBy";
 import * as d3 from "d3-zoom";
 import { select } from "d3-selection";
 import { STAGE_ID } from "../../constants";
+import { memo } from 'react';
+
 let firstRender = true;
+
 const Stage = forwardRef(
   (
     {
@@ -233,4 +236,4 @@ const Stage = forwardRef(
 
 Stage.displayName = "Stage";
 
-export default Stage;
+export default memo(Stage);

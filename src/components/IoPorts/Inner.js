@@ -3,6 +3,7 @@ import usePrevious from "../../hooks/usePrevious";
 import Control from "../Control/Control";
 import styles from "./IoPorts.css";
 import Port from "./Port";
+import { memo } from 'react';
 
 const Inner = ({
   type,
@@ -56,4 +57,4 @@ const Inner = ({
   );
 };
 
-export default Inner;
+export default memo(Inner);

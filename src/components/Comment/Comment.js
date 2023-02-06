@@ -6,8 +6,9 @@ import ColorPicker from "../ColorPicker/ColorPicker";
 import { StageContext } from "../../context";
 import { Portal } from "react-portal";
 import clamp from "lodash/clamp";
+import { memo } from 'react';
 
-export default ({
+const Comment = ({
   dispatch,
   id,
   x,
@@ -215,3 +216,5 @@ export default ({
     </Draggable>
   );
 };
+
+export default memo(Comment);

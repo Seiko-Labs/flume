@@ -22,6 +22,7 @@ import IoPorts from "../IoPorts/IoPorts";
 import Draggable from "../Draggable/Draggable";
 import { ReactComponent as Ticker } from "../../img/ticker.svg";
 import { ReactComponent as CommentIcon } from "../../img/comment-icon.svg";
+import { memo } from 'react';
 
 const Comment = ({ onOutsideClick, onChange, value, border }) => {
   const ref = useRef();
@@ -434,4 +435,4 @@ const Node = forwardRef(
 
 Node.displayName = "Node";
 
-export default Node;
+export default memo(Node);

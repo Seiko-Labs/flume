@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import usePrevious from "../../hooks/usePrevious";
 import styles from "./IoPorts.css";
 import Port from "./Port";
+import { memo } from 'react';
 
 const Input = ({
   type,
@@ -51,4 +52,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default memo(Input);
