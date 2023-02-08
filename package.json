@@ -7,11 +7,8 @@
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.0.1",
     "d3-zoom": "^3.0.0",
-    "framer-motion": "^7.5.3",
     "lodash": "^4.17.15",
-    "md5": "2.3.0",
     "nanoid": "^2.1.11",
-    "react-ds": "^1.13.0",
     "react-onclickout": "^2.0.8",
     "react-perfect-scrollbar": "^1.5.8",
     "react-portal": "^4.2.1"
