@@ -35833,11 +35833,7 @@ var RootEngine = /*#__PURE__*/function () {
   }, {
     key: "checkLoops",
     value: function checkLoops() {
-      if (this.maxLoops >= 0 && this.loops > this.maxLoops) {
-        throw new LoopError("Max loop count exceeded.", LoopError.maxLoopsExceeded);
-      } else {
-        this.loops++;
-      }
+      this.loops++;
     }
   }, {
     key: "setFireFunction",
