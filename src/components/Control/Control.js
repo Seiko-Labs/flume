@@ -6,7 +6,7 @@ import Checkbox from "../Checkbox/Checkbox";
 import TextInput from "../FieldInput/TextInput";
 import Select from "../Select/Select";
 import { NodeDispatchContext, ContextContext } from "../../context";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Control = ({
   type,
@@ -97,7 +97,9 @@ const Control = ({
           <TextInput
             {...commonProps}
             onChange={(value) => {
-              if (Number.isNaN(+value) || value === "") {
+              const [_, second] = value.split(".");
+              const isFloat = value.includes(".") && !second;
+              if (Number.isNaN(+value) || value === "" || isFloat) {
                 commonProps.onChange(value);
               } else {
                 commonProps.onChange(+value);

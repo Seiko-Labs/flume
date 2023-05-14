@@ -11956,7 +11956,12 @@ var Control = function Control(_ref) {
       case "number":
         return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$3({}, commonProps, {
           onChange: function onChange(value) {
-            if (Number.isNaN(+value) || value === "") {
+            var _value$split = value.split("."),
+              _value$split2 = _slicedToArray(_value$split, 2);
+              _value$split2[0];
+              var second = _value$split2[1];
+            var isFloat = value.includes(".") && !second;
+            if (Number.isNaN(+value) || value === "" || isFloat) {
               commonProps.onChange(value);
             } else {
               commonProps.onChange(+value);
