@@ -1,5 +1,5 @@
 import React from "react";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Draggable = ({
   children,
@@ -24,9 +24,7 @@ const Draggable = ({
 
   const getScaledCoordinates = (e) => {
     const x = byScale(e.clientX - offset.current.x - stageState.translate.x);
-    const y = byScale(
-      e.clientY - offset.current.y - stageState.translate.y - 52
-    );
+    const y = byScale(e.clientY - offset.current.y - stageState.translate.y);
     return { x, y };
   };
 

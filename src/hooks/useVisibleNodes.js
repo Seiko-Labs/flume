@@ -26,6 +26,7 @@ export function useVisibleNodes({
   nodes,
   wrapperRect,
   transform: [tx, ty, tScale],
+  selectedNodes,
 }) {
   return useMemo(() => {
     const visibleNodes = [];
@@ -53,7 +54,7 @@ export function useVisibleNodes({
 
       const overlappingArea = getOverlappingArea(rect, nodeRect);
 
-      if (overlappingArea > 100) {
+      if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
         visibleNodes[i] = v;
         i++;
       }

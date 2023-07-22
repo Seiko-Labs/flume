@@ -252,32 +252,13 @@ export const NodeEditor = forwardRef(
       }
     }, [shouldRecalculateConnections, recalculateConnections]);
 
-    const handleDragEnd = (e, id, coordinates) => {
+    const handleDragEnd = (e, id, coords) => {
       // toggleVisibility();
       if (selectedNodes.length > 0) {
-        dispatchNodes({
-          type: "SET_MULTIPLE_NODES_COORDINATES",
-          nodesInfo: selectedNodes
-            .map((id) => {
-              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1];
-              if (nodeRef.current) {
-                const newPositions = nodeRef.current.style.transform.match(
-                  /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\)?/
-                );
-
-                return {
-                  nodeId: id,
-                  x: newPositions[1],
-                  y: newPositions[2],
-                };
-              }
-            })
-            .filter((res) => !!res),
-        });
       } else {
         dispatchNodes({
           type: "SET_NODE_COORDINATES",
-          ...coordinates,
+          ...coords,
           nodeId: id,
         });
       }
@@ -294,6 +275,7 @@ export const NodeEditor = forwardRef(
         stageState.translate.y,
         stageState.scale,
       ],
+      selectedNodes,
     });
 
     const toggleVisibility = (args) => {
@@ -331,24 +313,38 @@ export const NodeEditor = forwardRef(
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
-          for (const id of selectedNodes) {
-            if (id !== excludedNodeId) {
-              // const nodeRef = document.getElementById(id);
-              const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-                ?.current;
-              if (nodeRef) {
-                const oldPositions = nodeRef.style.transform.match(
-                  /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-                );
+          dispatchNodes({
+            type: "SET_MULTIPLE_NODES_COORDINATES",
+            nodesInfo: selectedNodes
+              .map((id) => {
+                if (id !== excludedNodeId) {
+                  // const nodeRef = document.getElementById(id);
+                  const nodeRef = nodeRefs.find(
+                    ([{ id: nId }]) => nId === id
+                  )[1]?.current;
+                  if (nodeRef) {
+                    const oldPositions = nodeRef.style.transform.match(
+                      /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+                    );
 
-                if (oldPositions && oldPositions.length === 3) {
-                  nodeRef.style.transform = `translate(${
-                    Number(oldPositions[1]) + deltaX
-                  }px,${Number(oldPositions[2]) + deltaY}px)`;
+                    if (oldPositions && oldPositions.length === 3) {
+                      const x = Number(oldPositions[1]) + deltaX;
+                      const y = Number(oldPositions[2]) + deltaY;
+                      nodeRef.style.transform = `translate(${
+                        Number(oldPositions[1]) + deltaX
+                      }px,${Number(oldPositions[2]) + deltaY}px)`;
+
+                      return {
+                        nodeId: id,
+                        x,
+                        y,
+                      };
+                    }
+                  }
                 }
-              }
-            }
-          }
+              })
+              .filter((res) => !!res),
+          });
 
           recalculateConnections();
         } else {
