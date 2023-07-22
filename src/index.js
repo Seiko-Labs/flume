@@ -310,41 +310,41 @@ export const NodeEditor = forwardRef(
       }
     };
 
+    const transformNodes = (excludedNodeId, deltaX, deltaY) => {
+      return selectedNodes
+        .map((id) => {
+          if (id !== excludedNodeId) {
+            // const nodeRef = document.getElementById(id);
+            const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
+              ?.current;
+            if (nodeRef) {
+              const oldPositions = nodeRef.style.transform.match(
+                /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+              );
+
+              if (oldPositions && oldPositions.length === 3) {
+                const x = Number(oldPositions[1]) + deltaX;
+                const y = Number(oldPositions[2]) + deltaY;
+                nodeRef.style.transform = `translate(${
+                  Number(oldPositions[1]) + deltaX
+                }px,${Number(oldPositions[2]) + deltaY}px)`;
+
+                return {
+                  nodeId: id,
+                  x,
+                  y,
+                };
+              }
+            }
+          }
+        })
+        .filter((res) => !!res);
+    };
+
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
-          dispatchNodes({
-            type: "SET_MULTIPLE_NODES_COORDINATES",
-            nodesInfo: selectedNodes
-              .map((id) => {
-                if (id !== excludedNodeId) {
-                  // const nodeRef = document.getElementById(id);
-                  const nodeRef = nodeRefs.find(
-                    ([{ id: nId }]) => nId === id
-                  )[1]?.current;
-                  if (nodeRef) {
-                    const oldPositions = nodeRef.style.transform.match(
-                      /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-                    );
-
-                    if (oldPositions && oldPositions.length === 3) {
-                      const x = Number(oldPositions[1]) + deltaX;
-                      const y = Number(oldPositions[2]) + deltaY;
-                      nodeRef.style.transform = `translate(${
-                        Number(oldPositions[1]) + deltaX
-                      }px,${Number(oldPositions[2]) + deltaY}px)`;
-
-                      return {
-                        nodeId: id,
-                        x,
-                        y,
-                      };
-                    }
-                  }
-                }
-              })
-              .filter((res) => !!res),
-          });
+          transformNodes(excludedNodeId, deltaX, deltaY);
 
           recalculateConnections();
         } else {
@@ -447,10 +447,7 @@ export const NodeEditor = forwardRef(
                                     : createRef()
                                 }
                                 stageRect={stage}
-                                hideControls={
-                                  !visibleNodes.includes(node.id) ||
-                                  stageState.scale < 0.5
-                                }
+                                hideControls={stageState.scale < 0.5}
                                 onDragEnd={handleDragEnd}
                                 onDragHandle={dragSelectedNodes}
                                 onDragStart={recalculateStageRect}

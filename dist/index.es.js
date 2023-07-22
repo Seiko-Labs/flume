@@ -12855,8 +12855,16 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
     },
     onDragStart: onDragStart,
     onDrag: handleDrag,
-    onDragEnd: function onDragEnd(e, coords) {
-      return _onDragEnd(e, id, coords);
+    onDragEnd: function onDragEnd(e, _ref8) {
+      var x = _ref8.x,
+        y = _ref8.y;
+      var nWrapper = document.getElementById(id);
+      var oldPositions = nWrapper.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+      if (!nWrapper) return;
+      nWrapper.style.transition = "0s";
+      if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
+        _onDragEnd(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+      }
     },
     innerRef: nodeWrapper,
     "data-node-id": id,
@@ -36164,9 +36172,9 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     spaceIsPressed = _useState4[0],
     setSpaceIsPressed = _useState4[1];
   var _useState5 = useState([]),
-    _useState6 = _slicedToArray(_useState5, 2),
-    visibleNodes = _useState6[0],
-    setVisibleNodes = _useState6[1];
+    _useState6 = _slicedToArray(_useState5, 2);
+    _useState6[0];
+    var setVisibleNodes = _useState6[1];
   useRef(new Map());
   var _useReducer3 = useReducer(connectNodesReducer(nodesReducer$1, {
       nodeTypes: nodeTypes,
@@ -36313,42 +36321,42 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   var toggleVisibility = function toggleVisibility(args) {
     return;
   };
+  var transformNodes = function transformNodes(excludedNodeId, deltaX, deltaY) {
+    return selectedNodes.map(function (id) {
+      if (id !== excludedNodeId) {
+        var _nodeRefs$find$;
+        // const nodeRef = document.getElementById(id);
+        var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
+          var _ref3 = _slicedToArray(_ref2, 1),
+            nId = _ref3[0].id;
+          return nId === id;
+        })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
+        if (nodeRef) {
+          var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+          if (oldPositions && oldPositions.length === 3) {
+            var x = Number(oldPositions[1]) + deltaX;
+            var y = Number(oldPositions[2]) + deltaY;
+            nodeRef.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+            return {
+              nodeId: id,
+              x: x,
+              y: y
+            };
+          }
+        }
+      }
+    }).filter(function (res) {
+      return !!res;
+    });
+  };
   var dragSelectedNodes = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
       return regenerator.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (selectedNodes.length > 0) {
               if (selectedNodes.includes(excludedNodeId)) {
-                dispatchNodes({
-                  type: "SET_MULTIPLE_NODES_COORDINATES",
-                  nodesInfo: selectedNodes.map(function (id) {
-                    if (id !== excludedNodeId) {
-                      var _nodeRefs$find$;
-                      // const nodeRef = document.getElementById(id);
-                      var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref3) {
-                        var _ref4 = _slicedToArray(_ref3, 1),
-                          nId = _ref4[0].id;
-                        return nId === id;
-                      })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
-                      if (nodeRef) {
-                        var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-                        if (oldPositions && oldPositions.length === 3) {
-                          var x = Number(oldPositions[1]) + deltaX;
-                          var y = Number(oldPositions[2]) + deltaY;
-                          nodeRef.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
-                          return {
-                            nodeId: id,
-                            x: x,
-                            y: y
-                          };
-                        }
-                      }
-                    }
-                  }).filter(function (res) {
-                    return !!res;
-                  })
-                });
+                transformNodes(excludedNodeId, deltaX, deltaY);
                 recalculateConnections();
               } else {
                 clearSelection();
@@ -36361,7 +36369,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       }, _callee);
     }));
     return function dragSelectedNodes(_x, _x2, _x3) {
-      return _ref2.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }();
   useEffect(function () {
@@ -36442,7 +36450,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
         return n.id === node.id;
       })[1] : /*#__PURE__*/createRef(),
       stageRect: stage,
-      hideControls: !visibleNodes.includes(node.id) || stageState.scale < 0.5,
+      hideControls: stageState.scale < 0.5,
       onDragEnd: handleDragEnd,
       onDragHandle: dragSelectedNodes,
       onDragStart: recalculateStageRect,

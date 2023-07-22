@@ -267,7 +267,23 @@ const Node = forwardRef(
         }}
         onDragStart={onDragStart}
         onDrag={handleDrag}
-        onDragEnd={(e, coords) => onDragEnd(e, id, coords)}
+        onDragEnd={(e, { x, y }) => {
+          const nWrapper = document.getElementById(id);
+          const oldPositions = nWrapper.style.transform.match(
+            /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
+          );
+
+          if (!nWrapper) return;
+
+          nWrapper.style.transition = "0s";
+          if (oldPositions?.length === 3) {
+            onDragEnd(
+              nWrapper.dataset.nodeId,
+              x - Number(oldPositions[1]),
+              y - Number(oldPositions[2])
+            );
+          }
+        }}
         innerRef={nodeWrapper}
         data-node-id={id}
         onContextMenu={handleContextMenu}
