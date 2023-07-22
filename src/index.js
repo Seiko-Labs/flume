@@ -252,9 +252,13 @@ export const NodeEditor = forwardRef(
       }
     }, [shouldRecalculateConnections, recalculateConnections]);
 
-    const handleDragEnd = (e, id, coords) => {
+    const handleDragEnd = (excludedNodeId, deltaX, deltaY) => {
       // toggleVisibility();
       if (selectedNodes.length > 0) {
+        dispatchNodes({
+          type: "SET_MULTIPLE_NODES_COORDINATES",
+          nodesInfo: transformNodes(excludedNodeId, deltaX, deltaY),
+        });
       } else {
         dispatchNodes({
           type: "SET_NODE_COORDINATES",
