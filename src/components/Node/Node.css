@@ -18,14 +18,13 @@
   justify-content: center;
   align-items: flex-start;
   width: max-content;
+  min-width: 150px;
   * {
     color: #c5cee0;
   }
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   white-space: nowrap !important;
   width: 100%;
@@ -34,7 +33,10 @@
 .headerMeta {
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: 0 2px 0 2px;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
 }
 
 .headerMeta > * + * {
@@ -66,9 +68,8 @@
 .id {
   font-size: 10px;
   line-height: 16px;
-  font-style: italic;
   cursor: copy;
-
+  width: 100%;
   opacity: 0.5;
 }
 
@@ -96,4 +97,13 @@
   font-size: 10px;
   padding: 4px;
   max-width: 120px;
+}
+
+.nodeInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px 0 10px;
+  margin-bottom: 5px;
 }

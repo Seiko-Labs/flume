@@ -43,6 +43,7 @@ import Selection from "./selection";
 import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 import nodeStyles from "./components/Node/Node.css";
+import { useVisibleNodes } from "./hooks/useVisibleNodes";
 
 const defaultContext = {};
 
@@ -92,6 +93,8 @@ export const NodeEditor = forwardRef(
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
     const [visibleNodes, setVisibleNodes] = useState([]);
+
+    const cachedPositions = useRef(new Map());
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(
@@ -155,9 +158,9 @@ export const NodeEditor = forwardRef(
       }
     };
 
-    useEffect(() => {
-      toggleVisibility();
-    }, [nodesState]);
+    // useEffect(() => {
+    //   toggleVisibility();
+    // }, [nodesState]);
 
     // useEffect(() => {
     //   previousComments &&
@@ -250,7 +253,7 @@ export const NodeEditor = forwardRef(
     }, [shouldRecalculateConnections, recalculateConnections]);
 
     const handleDragEnd = (e, id, coordinates) => {
-      toggleVisibility();
+      // toggleVisibility();
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
@@ -281,15 +284,30 @@ export const NodeEditor = forwardRef(
       triggerRecalculation();
     };
 
+    const visible = useVisibleNodes({
+      nodes: nodesState[currentStateIndex].state,
+      wrapperRect: editorRef.current
+        ? editorRef.current.getBoundingClientRect()
+        : null,
+      transform: [
+        stageState.translate.x,
+        stageState.translate.y,
+        stageState.scale,
+      ],
+    });
+
     const toggleVisibility = (args) => {
+      return;
       if (args) return setVisibleNodes([]);
 
       const v = [];
+
       if (editorRef.current) {
         const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
 
         for (const node of nodes) {
           const nodeRef = node;
+          const nodeinstate = nodesState[currentStateIndex].state[nodeRef.id];
 
           if (nodeRef) {
             if (
@@ -421,9 +439,7 @@ export const NodeEditor = forwardRef(
                                   key={comment.id}
                                 />
                               ))} */}
-                            {Object.values(
-                              nodesState[currentStateIndex].state
-                            ).map((node) => (
+                            {visible.map((node) => (
                               <Node
                                 {...node}
                                 isSelected={selectedNodes.includes(node.id)}

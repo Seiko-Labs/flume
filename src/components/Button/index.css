@@ -4,6 +4,8 @@
   line-height: 0;
   display: flex;
   flex-direction: row-reverse;
+  max-width: 70px;
+  width: 100%;
 
   & > * {
     line-height: normal;

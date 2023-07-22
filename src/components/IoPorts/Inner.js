@@ -3,7 +3,7 @@ import usePrevious from "../../hooks/usePrevious";
 import Control from "../Control/Control";
 import styles from "./IoPorts.css";
 import Port from "./Port";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Inner = ({
   type,
@@ -24,7 +24,8 @@ const Inner = ({
   const controls = localControls || defaultControls;
 
   return (
-    <tr
+    <div
+      className={styles.controlWrapper}
       data-controlless={noControls || !controls.length}
       data-is-inner={true}
       onDragStart={(e) => {
@@ -32,10 +33,19 @@ const Inner = ({
         e.stopPropagation();
       }}
     >
-      <td className={styles.portLabel} title={label || defaultLabel}>
+      <div
+        style={{
+          color: "#C5CEE0",
+          opacity: "0.5",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+        title={label || defaultLabel}
+      >
         {label || defaultLabel}
-      </td>
-      <td className={styles.controls}>
+      </div>
+      <div style={{ display: "flex" }}>
         {controls.map((control) => (
           <Control
             {...control}
@@ -52,8 +62,8 @@ const Inner = ({
             isMonoControl={controls.length === 1}
           />
         ))}
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 

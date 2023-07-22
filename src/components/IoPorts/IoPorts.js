@@ -4,7 +4,7 @@ import Input from "./Input";
 import styles from "./IoPorts.css";
 import { ConnectionRecalculateContext, PortTypesContext } from "../../context";
 import Output from "./Output";
-import { memo } from 'react';
+import { memo } from "react";
 
 const IoPorts = ({
   nodeId,
@@ -24,11 +24,7 @@ const IoPorts = ({
     case "outputsOnly":
       return (
         (resolvedOutputs.length || null) && (
-          <div
-            className={styles.outputs}
-            style={{ backgroundColor: color }}
-            data-show={show}
-          >
+          <div className={styles.outputs} data-show={show}>
             {resolvedOutputs.map((output) => (
               <Output
                 {...output}
@@ -70,26 +66,24 @@ const IoPorts = ({
     default:
       return (
         resolvedInputs.some(({ hidePort }) => hidePort) && (
-          <table className={styles.inner}>
-            <tbody>
-              {resolvedInputs
-                .filter(({ hidePort }) => hidePort)
-                .map((input) => (
-                  <Inner
-                    {...input}
-                    data={inputData[input.name] || {}}
-                    isConnected={!!connections.inputs[input.name]}
-                    triggerRecalculation={triggerRecalculation}
-                    updateNodeConnections={updateNodeConnections}
-                    inputTypes={inputTypes}
-                    nodeId={nodeId}
-                    inputData={inputData}
-                    nodeData={nodeData}
-                    key={input.name}
-                  />
-                ))}
-            </tbody>
-          </table>
+          <div>
+            {resolvedInputs
+              .filter(({ hidePort }) => hidePort)
+              .map((input) => (
+                <Inner
+                  {...input}
+                  data={inputData[input.name] || {}}
+                  isConnected={!!connections.inputs[input.name]}
+                  triggerRecalculation={triggerRecalculation}
+                  updateNodeConnections={updateNodeConnections}
+                  inputTypes={inputTypes}
+                  nodeId={nodeId}
+                  inputData={inputData}
+                  nodeData={nodeData}
+                  key={input.name}
+                />
+              ))}
+          </div>
         )
       );
   }

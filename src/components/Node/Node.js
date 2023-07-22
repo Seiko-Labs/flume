@@ -20,9 +20,9 @@ import { Portal } from "react-portal";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import IoPorts from "../IoPorts/IoPorts";
 import Draggable from "../Draggable/Draggable";
-import { ReactComponent as Ticker } from "../../img/ticker.svg";
-import { ReactComponent as CommentIcon } from "../../img/comment-icon.svg";
-import { memo } from 'react';
+import { ReactComponent as Ticker } from "../../img/arrow.svg";
+import { ReactComponent as CommentIcon } from "../../img/comment.svg";
+import { memo } from "react";
 
 const Comment = ({ onOutsideClick, onChange, value, border }) => {
   const ref = useRef();
@@ -285,29 +285,21 @@ const Node = forwardRef(
           inputData={inputData}
         />
         <div className={styles?.body} id="in_body">
-          {comment && (
-            <div
-              style={{
-                fontSize: 10,
-                margin: 4,
-                overflow: "hidden",
-                wordWrap: "break-word",
-                maxWidth: "150px",
-                borderRadius: 5,
-                background: tileBackground.includes("rgba")
-                  ? tileBackground
-                  : tileBackground + "59",
-                padding: 4,
-              }}
-            >
-              <div style={{ visibility: hideControls ? "hidden" : "visible" }}>
-                <b>Comment: </b>
-                {comment}
-              </div>
-            </div>
-          )}
           <div className={styles?.header}>
             <div className={styles?.headerMeta}>
+              <span
+                className={styles?.id}
+                onClick={() => navigator.clipboard.writeText(`{%${id}%}`)}
+              >
+                ID: {id}
+              </span>
+            </div>
+            <div
+              className={styles.nodeInfo}
+              style={{
+                backgroundColor: tileBackground,
+              }}
+            >
               {!hideControls && hasInner && (
                 <Ticker
                   onClick={() => {
@@ -315,20 +307,14 @@ const Node = forwardRef(
                     recalculateConnections();
                   }}
                   style={{
+                    float: "left",
                     transform: expanded ? "none" : "rotate(-90deg)",
                     cursor: "pointer",
                     stroke: "#C5CEE0",
                   }}
                 />
               )}
-              <CommentIcon
-                fill={tileBackground}
-                onClick={() => toggleCommentVisibility(true)}
-                style={{
-                  cursor: "pointer",
-                  stroke: "#C5CEE0",
-                }}
-              />
+
               {commentVisibile && (
                 <Comment
                   border={tileBackground}
@@ -339,41 +325,33 @@ const Node = forwardRef(
                   }}
                 />
               )}
-              <div className={styles?.title}>
+              <div
+                className={styles?.title}
+                style={{ color: "#fff", margin: "0 auto" }}
+              >
                 {icon && <img src={icon} />}
-                <span className={styles?.label} style={{ color: "#fff" }}>
+                <span
+                  className={styles?.label}
+                  style={{ color: "#fff", margin: "0 auto" }}
+                >
                   {label}
                 </span>
               </div>
-              <span
-                className={styles?.id}
-                onClick={() => navigator.clipboard.writeText(`{%${id}%}`)}
-              >
-                ID: {id}
-              </span>
-            </div>
-            <div className={styles?.headerActions}>
-              {buttons.map((action) =>
-                action(
-                  actionsData,
-                  (getState) =>
-                    nodesDispatch({
-                      type: "UPDATE_NODE_ACTION_DATA",
-                      data: getState(actionsData),
-                      nodeId: id,
-                    }),
-                  inputData,
-                  connections,
-                  nodeData,
-                  nodesDispatch
-                )
-              )}
+              <CommentIcon
+                onClick={() => toggleCommentVisibility(true)}
+                style={{
+                  float: "right",
+                  cursor: "pointer",
+                  stroke: "#C5CEE0",
+                }}
+              />
             </div>
           </div>
           {expanded && hasInner ? (
             <>
               <div
                 style={{
+                  padding: "0 5px 5px 5px",
                   visibility: hideControls ? "hidden" : "visible",
                 }}
               >
@@ -387,6 +365,30 @@ const Node = forwardRef(
                   inputData={inputData}
                 />
               </div>
+
+              {comment && (
+                <div
+                  style={{
+                    fontSize: 10,
+                    margin: 4,
+                    overflow: "hidden",
+                    wordWrap: "break-word",
+                    maxWidth: 250,
+                    borderRadius: 5,
+                    background: tileBackground.includes("rgba")
+                      ? tileBackground
+                      : tileBackground + "59",
+                    padding: 4,
+                  }}
+                >
+                  <div
+                    style={{ visibility: hideControls ? "hidden" : "visible" }}
+                  >
+                    <b>Comment: </b>
+                    {comment}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             description && (

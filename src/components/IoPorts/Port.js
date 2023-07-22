@@ -226,7 +226,7 @@ const Port = ({
         onMouseDown={handleDragStart}
         className={styles.port}
         style={{
-          marginLeft: isInput ? 1 : -9,
+          marginLeft: isInput ? '40%' : -4,
           backgroundColor: "white",
         }}
         data-port-name={name}
@@ -243,8 +243,8 @@ const Port = ({
           style={{
             padding: 0,
             margin: 0,
-            width: 7,
-            height: 7,
+            width: 4,
+            height: 4,
             backgroundColor: color,
             borderRadius: "100%",
           }}
