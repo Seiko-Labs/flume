@@ -252,7 +252,7 @@ export const NodeEditor = forwardRef(
       }
     }, [shouldRecalculateConnections, recalculateConnections]);
 
-    const handleDragEnd = (excludedNodeId, deltaX, deltaY) => {
+    const handleDragEnd = (excludedNodeId, deltaX, deltaY, coords) => {
       // toggleVisibility();
       if (selectedNodes.length > 0) {
         dispatchNodes({
@@ -263,7 +263,7 @@ export const NodeEditor = forwardRef(
         dispatchNodes({
           type: "SET_NODE_COORDINATES",
           ...coords,
-          nodeId: id,
+          nodeId: excludedNodeId,
         });
       }
       triggerRecalculation();

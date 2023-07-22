@@ -146,6 +146,8 @@ const Node = forwardRef(
               isOutput ? "input" : "output"
               // cache
             );
+
+            if (!toRect || !fromRect) return;
             const portHalf = fromRect.width / 2;
             let combined;
             if (isOutput) {
@@ -214,7 +216,8 @@ const Node = forwardRef(
         onDragHandle(
           nWrapper.dataset.nodeId,
           x - Number(oldPositions[1]),
-          y - Number(oldPositions[2])
+          y - Number(oldPositions[2]),
+          { x, y }
         );
       }
 
@@ -280,7 +283,8 @@ const Node = forwardRef(
             onDragEnd(
               nWrapper.dataset.nodeId,
               x - Number(oldPositions[1]),
-              y - Number(oldPositions[2])
+              y - Number(oldPositions[2]),
+              { x, y }
             );
           }
         }}

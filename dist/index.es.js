@@ -12502,7 +12502,7 @@ var Draggable = function Draggable(_ref) {
   };
   var getScaledCoordinates = function getScaledCoordinates(e) {
     var x = byScale(e.clientX - offset.current.x - stageState.translate.x);
-    var y = byScale(e.clientY - offset.current.y - stageState.translate.y);
+    var y = byScale(e.clientY - offset.current.y - stageState.translate.y - 52);
     return {
       x: x,
       y: y
@@ -12770,6 +12770,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
           // cache
           );
 
+          if (!toRect || !fromRect) return;
           var portHalf = fromRect.width / 2;
           var combined;
           if (isOutput) {
@@ -12806,7 +12807,10 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
     if (!nWrapper) return;
     nWrapper.style.transition = "0s";
     if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
-      onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+      onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]), {
+        x: x,
+        y: y
+      });
     }
     nWrapper.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
     updateNodeConnections();
@@ -12863,7 +12867,10 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
       if (!nWrapper) return;
       nWrapper.style.transition = "0s";
       if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
-        _onDragEnd(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]));
+        _onDragEnd(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]), {
+          x: x,
+          y: y
+        });
       }
     },
     innerRef: nodeWrapper,
@@ -36301,13 +36308,18 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       setShouldRecalculateConnections(false);
     }
   }, [shouldRecalculateConnections, recalculateConnections]);
-  var handleDragEnd = function handleDragEnd(e, id, coords) {
+  var handleDragEnd = function handleDragEnd(excludedNodeId, deltaX, deltaY, coords) {
     // toggleVisibility();
-    if (selectedNodes.length > 0) ; else {
+    if (selectedNodes.length > 0) {
+      dispatchNodes({
+        type: "SET_MULTIPLE_NODES_COORDINATES",
+        nodesInfo: transformNodes(excludedNodeId, deltaX, deltaY)
+      });
+    } else {
       dispatchNodes(_objectSpread(_objectSpread({
         type: "SET_NODE_COORDINATES"
       }, coords), {}, {
-        nodeId: id
+        nodeId: excludedNodeId
       }));
     }
     triggerRecalculation();
