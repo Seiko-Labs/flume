@@ -39,12 +39,13 @@ const Port = ({
   const byScale = (value) => value / stageState.scale;
 
   const handleDrag = (e) => {
+    if (!line.current) return;
     const stage = document.getElementById(stageId).getBoundingClientRect();
 
     if (isInput) {
       const to = {
         x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y - 52),
+        y: byScale(e.clientY - stage.y - stageState.translate.y),
       };
       if (lineInToPort.current)
         lineInToPort.current.setAttribute(
@@ -59,7 +60,7 @@ const Port = ({
     } else {
       const to = {
         x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y - 52),
+        y: byScale(e.clientY - stage.y - stageState.translate.y),
       };
       line.current.setAttribute(
         "d",
@@ -180,8 +181,7 @@ const Port = ({
             outputPort.y -
               stage.y +
               outputPort.width / 2 -
-              stageState.translate.y -
-              52
+              stageState.translate.y
           ),
         };
         setDragStartCoordinates(coordinates);
@@ -195,11 +195,7 @@ const Port = ({
             startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
           ),
           y: byScale(
-            startPort.y -
-              stage.y +
-              startPort.width / 2 -
-              stageState.translate.y -
-              52
+            startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
           ),
         };
         setDragStartCoordinates(coordinates);
@@ -214,11 +210,7 @@ const Port = ({
           startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
         ),
         y: byScale(
-          startPort.y -
-            stage.y +
-            startPort.width / 2 -
-            stageState.translate.y -
-            52
+          startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
         ),
       };
       setDragStartCoordinates(coordinates);

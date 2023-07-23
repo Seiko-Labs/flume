@@ -175,6 +175,7 @@ const Node = forwardRef(
             const to = isOutput
               ? cnx.getPointAtLength(0)
               : cnx.getPointAtLength(cnx.getTotalLength());
+
             cnx.setAttribute(
               "d",
               calculateCurve(...(isOutput ? [to, from] : [from, to]))

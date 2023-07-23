@@ -44,6 +44,7 @@ import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 import nodeStyles from "./components/Node/Node.css";
 import { useVisibleNodes } from "./hooks/useVisibleNodes";
+import { createPortal } from "react-dom";
 
 const defaultContext = {};
 
@@ -398,16 +399,6 @@ export const NodeEditor = forwardRef(
                             DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
                             draggableCanvasSet={context.draggableCanvasSet}
                           >
-                            {/* {!hideComments &&
-                              Object.values(comments).map((comment) => (
-                                <Comment
-                                  {...comment}
-                                  stageRect={stage}
-                                  dispatch={dispatchComments}
-                                  onDragStart={recalculateStageRect}
-                                  key={comment.id}
-                                />
-                              ))} */}
                             {visible.map((node) => (
                               <Node
                                 {...node}
@@ -431,6 +422,7 @@ export const NodeEditor = forwardRef(
                               nodes={nodesState[currentStateIndex].state}
                               editorId={editorId}
                             />
+
                             <div
                               className={styles.dragWrapper}
                               id={`${DRAG_CONNECTION_ID}${editorId}`}
