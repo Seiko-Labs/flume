@@ -11575,41 +11575,39 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
             outputs = _ref8[1];
           outputs.forEach(function (output) {
             var fromPort = getPortRect(output.nodeId, output.portName, "output");
+            var portHalf = fromPort ? fromPort.width / 2 : 10;
             var toPort = getPortRect(node.id, inputName, "input");
-            var portHalf = fromPort ? fromPort.width / 2 : 0;
-            if (fromPort && toPort) {
-              var id = output.nodeId + output.portName + node.id + inputName;
-              var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
-              if (existingLine) {
-                updateConnection({
-                  line: existingLine,
-                  to: {
-                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  from: {
-                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
-                  }
-                });
-              } else {
-                createSVG({
-                  id: id,
-                  outputNodeId: output.nodeId,
-                  outputPortName: output.portName,
-                  inputNodeId: node.id,
-                  inputPortName: inputName,
-                  to: {
-                    x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  from: {
-                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
-                  },
-                  stage: stageRef
-                });
-              }
+            var id = output.nodeId + output.portName + node.id + inputName;
+            var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
+            if (existingLine) {
+              updateConnection({
+                line: existingLine,
+                to: fromPort ? {
+                  x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
+                  y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
+                } : existingLine.getPointAtLength(existingLine.getTotalLength()),
+                from: toPort ? {
+                  x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
+                  y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
+                } : existingLine.getPointAtLength(0)
+              });
+            } else {
+              createSVG({
+                id: id,
+                outputNodeId: output.nodeId,
+                outputPortName: output.portName,
+                inputNodeId: node.id,
+                inputPortName: inputName,
+                to: {
+                  x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
+                  y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
+                },
+                from: {
+                  x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
+                  y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight)
+                },
+                stage: stageRef
+              });
             }
           });
         });
@@ -12177,11 +12175,7 @@ var Port = function Port(_ref) {
       var portIsConnected = !!lineInToPort.current;
       if (portIsConnected) {
         lineInToPort.current.parentNode.style.zIndex = 9999;
-        var outputPort = getPortRect(lineInToPort.current.dataset.outputNodeId, lineInToPort.current.dataset.outputPortName, "output");
-        var coordinates = {
-          x: byScale(outputPort.x - stage.x + outputPort.width / 2 - stageState.translate.x),
-          y: byScale(outputPort.y - stage.y + outputPort.width / 2 - stageState.translate.y)
-        };
+        var coordinates = lineInToPort.current.getPointAtLength(lineInToPort.current.getTotalLength());
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
         setIsDragging(true);
@@ -12765,7 +12759,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
           );
 
           if (!toRect) return;
-          var portHalf = 1.5;
+          var portHalf = 10;
           var combined;
           if (isOutput) {
             combined = id + portName + output.nodeId + output.portName;

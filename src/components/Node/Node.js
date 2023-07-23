@@ -143,7 +143,7 @@ const Node = forwardRef(
             );
 
             if (!toRect) return;
-            const portHalf = 1.5;
+            const portHalf = 10;
             let combined;
             if (isOutput) {
               combined = id + portName + output.nodeId + output.portName;

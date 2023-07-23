@@ -164,25 +164,10 @@ const Port = ({
       const portIsConnected = !!lineInToPort.current;
       if (portIsConnected) {
         lineInToPort.current.parentNode.style.zIndex = 9999;
-        const outputPort = getPortRect(
-          lineInToPort.current.dataset.outputNodeId,
-          lineInToPort.current.dataset.outputPortName,
-          "output"
+
+        const coordinates = lineInToPort.current.getPointAtLength(
+          lineInToPort.current.getTotalLength()
         );
-        const coordinates = {
-          x: byScale(
-            outputPort.x -
-              stage.x +
-              outputPort.width / 2 -
-              stageState.translate.x
-          ),
-          y: byScale(
-            outputPort.y -
-              stage.y +
-              outputPort.width / 2 -
-              stageState.translate.y
-          ),
-        };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
         setIsDragging(true);

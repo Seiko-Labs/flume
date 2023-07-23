@@ -48,18 +48,6 @@ import { createPortal } from "react-dom";
 
 const defaultContext = {};
 
-const checkIntersection = (boxA, boxB) => {
-  if (
-    boxA.bottom > boxB.top &&
-    boxA.right > boxB.left &&
-    boxA.top < boxB.bottom &&
-    boxA.left < boxB.right
-  ) {
-    return true;
-  }
-  return false;
-};
-
 export const NodeEditor = forwardRef(
   (
     {

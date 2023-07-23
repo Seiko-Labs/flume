@@ -158,61 +158,59 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
                 output.portName,
                 "output"
               );
-
+              const portHalf = fromPort ? fromPort.width / 2 : 10;
               const toPort = getPortRect(node.id, inputName, "input");
-              const portHalf = fromPort ? fromPort.width / 2 : 0;
-              if (fromPort && toPort) {
-                const id =
-                  output.nodeId + output.portName + node.id + inputName;
-                const existingLine = document.querySelector(
-                  `[data-connection-id="${id}"]`
-                );
-                if (existingLine) {
-                  updateConnection({
-                    line: existingLine,
-                    to: {
-                      x: byScale(
-                        fromPort.x - stage.x + portHalf - stageHalfWidth
+              const id = output.nodeId + output.portName + node.id + inputName;
+              const existingLine = document.querySelector(
+                `[data-connection-id="${id}"]`
+              );
+              if (existingLine) {
+                updateConnection({
+                  line: existingLine,
+                  to: fromPort
+                    ? {
+                        x: byScale(
+                          fromPort.x - stage.x + portHalf - stageHalfWidth
+                        ),
+                        y: byScale(
+                          fromPort.y - stage.y + portHalf - stageHalfHeight
+                        ),
+                      }
+                    : existingLine.getPointAtLength(
+                        existingLine.getTotalLength()
                       ),
-                      y: byScale(
-                        fromPort.y - stage.y + portHalf - stageHalfHeight
-                      ),
-                    },
-                    from: {
-                      x: byScale(
-                        toPort.x - stage.x + portHalf - stageHalfWidth
-                      ),
-                      y: byScale(
-                        toPort.y - stage.y + portHalf - stageHalfHeight
-                      ),
-                    },
-                  });
-                } else {
-                  createSVG({
-                    id,
-                    outputNodeId: output.nodeId,
-                    outputPortName: output.portName,
-                    inputNodeId: node.id,
-                    inputPortName: inputName,
-                    to: {
-                      x: byScale(
-                        fromPort.x - stage.x + portHalf - stageHalfWidth
-                      ),
-                      y: byScale(
-                        fromPort.y - stage.y + portHalf - stageHalfHeight
-                      ),
-                    },
-                    from: {
-                      x: byScale(
-                        toPort.x - stage.x + portHalf - stageHalfWidth
-                      ),
-                      y: byScale(
-                        toPort.y - stage.y + portHalf - stageHalfHeight
-                      ),
-                    },
-                    stage: stageRef,
-                  });
-                }
+                  from: toPort
+                    ? {
+                        x: byScale(
+                          toPort.x - stage.x + portHalf - stageHalfWidth
+                        ),
+                        y: byScale(
+                          toPort.y - stage.y + portHalf - stageHalfHeight
+                        ),
+                      }
+                    : existingLine.getPointAtLength(0),
+                });
+              } else {
+                createSVG({
+                  id,
+                  outputNodeId: output.nodeId,
+                  outputPortName: output.portName,
+                  inputNodeId: node.id,
+                  inputPortName: inputName,
+                  to: {
+                    x: byScale(
+                      fromPort.x - stage.x + portHalf - stageHalfWidth
+                    ),
+                    y: byScale(
+                      fromPort.y - stage.y + portHalf - stageHalfHeight
+                    ),
+                  },
+                  from: {
+                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
+                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight),
+                  },
+                  stage: stageRef,
+                });
               }
             });
           }
