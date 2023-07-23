@@ -140,15 +140,9 @@ const Node = forwardRef(
               isOutput ? "output" : "input"
               // cache
             );
-            const fromRect = getPortRect(
-              output.nodeId,
-              output.portName,
-              isOutput ? "input" : "output"
-              // cache
-            );
 
-            if (!toRect || !fromRect) return;
-            const portHalf = fromRect.width / 2;
+            if (!toRect) return;
+            const portHalf = 1.5;
             let combined;
             if (isOutput) {
               combined = id + portName + output.nodeId + output.portName;
@@ -159,6 +153,7 @@ const Node = forwardRef(
             let cnx = document.querySelector(
               `[data-connection-id="${combined}"]`
             );
+
             const from = {
               x: byScale(
                 toRect.x -
@@ -173,20 +168,10 @@ const Node = forwardRef(
                   stageState.translate.y
               ),
             };
-            const to = {
-              x: byScale(
-                fromRect.x -
-                  stageRect.current.x +
-                  portHalf -
-                  stageState.translate.x
-              ),
-              y: byScale(
-                fromRect.y -
-                  stageRect.current.y +
-                  portHalf -
-                  stageState.translate.y
-              ),
-            };
+
+            const to = isOutput
+              ? cnx.getPointAtLength(0)
+              : cnx.getPointAtLength(cnx.getTotalLength());
             cnx.setAttribute(
               "d",
               calculateCurve(...(isOutput ? [to, from] : [from, to]))

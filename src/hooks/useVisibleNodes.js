@@ -27,6 +27,7 @@ export function useVisibleNodes({
   wrapperRect,
   transform: [tx, ty, tScale],
   selectedNodes,
+  focusNode,
 }) {
   return useMemo(() => {
     const visibleNodes = [];

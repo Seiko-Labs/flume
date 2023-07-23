@@ -12793,12 +12793,8 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
           // cache
           );
 
-          var fromRect = getPortRect(output.nodeId, output.portName, isOutput ? "input" : "output"
-          // cache
-          );
-
-          if (!toRect || !fromRect) return;
-          var portHalf = fromRect.width / 2;
+          if (!toRect) return;
+          var portHalf = 1.5;
           var combined;
           if (isOutput) {
             combined = id + portName + output.nodeId + output.portName;
@@ -12807,14 +12803,12 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
           }
           // const cachedConnection = null; /* cache.current.connections[combined] */
           var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
+          console.log(portHalf);
           var from = {
             x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
             y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
           };
-          var to = {
-            x: byScale(fromRect.x - stageRect.current.x + portHalf - stageState.translate.x),
-            y: byScale(fromRect.y - stageRect.current.y + portHalf - stageState.translate.y)
-          };
+          var to = isOutput ? cnx.getPointAtLength(0) : cnx.getPointAtLength(cnx.getTotalLength());
           cnx.setAttribute("d", calculateCurve.apply(void 0, _toConsumableArray(isOutput ? [to, from] : [from, to])));
         }
       });
@@ -35710,6 +35704,7 @@ function useVisibleNodes(_ref) {
     ty = _ref$transform[1],
     tScale = _ref$transform[2],
     selectedNodes = _ref.selectedNodes;
+    _ref.focusNode;
   return React.useMemo(function () {
     var visibleNodes = [];
     if (!wrapperRect) return visibleNodes;
