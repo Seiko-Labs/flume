@@ -284,41 +284,12 @@ export const NodeEditor = forwardRef(
 
     const toggleVisibility = (args) => {
       return;
-      if (args) return setVisibleNodes([]);
-
-      const v = [];
-
-      if (editorRef.current) {
-        const nodes = document.getElementsByClassName(nodeStyles?.wrapper);
-
-        for (const node of nodes) {
-          const nodeRef = node;
-          const nodeinstate = nodesState[currentStateIndex].state[nodeRef.id];
-
-          if (nodeRef) {
-            if (
-              !checkIntersection(
-                nodeRef.getBoundingClientRect(),
-                editorRef.current.getBoundingClientRect()
-              )
-            ) {
-              nodeRef.style.visibility = "hidden";
-            } else {
-              nodeRef.style.visibility = "visible";
-
-              v.push(nodeRef.id);
-            }
-          }
-        }
-        setVisibleNodes(v);
-      }
     };
 
     const transformNodes = (excludedNodeId, deltaX, deltaY) => {
       return selectedNodes
         .map((id) => {
           if (id !== excludedNodeId) {
-            // const nodeRef = document.getElementById(id);
             const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
               ?.current;
             if (nodeRef) {
@@ -329,9 +300,7 @@ export const NodeEditor = forwardRef(
               if (oldPositions && oldPositions.length === 3) {
                 const x = Number(oldPositions[1]) + deltaX;
                 const y = Number(oldPositions[2]) + deltaY;
-                nodeRef.style.transform = `translate(${
-                  Number(oldPositions[1]) + deltaX
-                }px,${Number(oldPositions[2]) + deltaY}px)`;
+                nodeRef.style.transform = `translate(${x}px,${y}px)`;
 
                 return {
                   nodeId: id,

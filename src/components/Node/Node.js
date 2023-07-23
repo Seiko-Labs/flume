@@ -129,6 +129,7 @@ const Node = forwardRef(
     };
 
     const byScale = (value) => value / stageState.scale;
+    const last = useRef({ x: 0, y: 0 });
 
     const updateConnectionsByTransput = (transput = {}, isOutput) => {
       Object.entries(transput).forEach(([portName, outputs]) => {
@@ -153,6 +154,8 @@ const Node = forwardRef(
             let cnx = document.querySelector(
               `[data-connection-id="${combined}"]`
             );
+
+            if (!cnx) return;
 
             const from = {
               x: byScale(

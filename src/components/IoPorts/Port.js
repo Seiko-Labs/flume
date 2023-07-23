@@ -11,7 +11,7 @@ import {
 import Connection from "../Connection/Connection";
 import styles from "./IoPorts.css";
 import { ReactComponent as PortArrow } from "../../img/port-arrow.svg";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Port = ({
   color,
@@ -44,7 +44,7 @@ const Port = ({
     if (isInput) {
       const to = {
         x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y),
+        y: byScale(e.clientY - stage.y - stageState.translate.y - 52),
       };
       if (lineInToPort.current)
         lineInToPort.current.setAttribute(
@@ -59,7 +59,7 @@ const Port = ({
     } else {
       const to = {
         x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y),
+        y: byScale(e.clientY - stage.y - stageState.translate.y - 52),
       };
       line.current.setAttribute(
         "d",
@@ -180,7 +180,8 @@ const Port = ({
             outputPort.y -
               stage.y +
               outputPort.width / 2 -
-              stageState.translate.y
+              stageState.translate.y -
+              52
           ),
         };
         setDragStartCoordinates(coordinates);
@@ -194,7 +195,11 @@ const Port = ({
             startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
           ),
           y: byScale(
-            startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
+            startPort.y -
+              stage.y +
+              startPort.width / 2 -
+              stageState.translate.y -
+              52
           ),
         };
         setDragStartCoordinates(coordinates);
@@ -209,7 +214,11 @@ const Port = ({
           startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
         ),
         y: byScale(
-          startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
+          startPort.y -
+            stage.y +
+            startPort.width / 2 -
+            stageState.translate.y -
+            52
         ),
       };
       setDragStartCoordinates(coordinates);
@@ -226,7 +235,7 @@ const Port = ({
         onMouseDown={handleDragStart}
         className={styles.port}
         style={{
-          marginLeft: isInput ? '40%' : -4,
+          marginLeft: isInput ? "40%" : -4,
           backgroundColor: "white",
         }}
         data-port-name={name}

@@ -12780,6 +12780,10 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
   var byScale = function byScale(value) {
     return value / stageState.scale;
   };
+  React.useRef({
+    x: 0,
+    y: 0
+  });
   var updateConnectionsByTransput = function updateConnectionsByTransput() {
     var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var isOutput = arguments.length > 1 ? arguments[1] : undefined;
@@ -12803,7 +12807,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
           }
           // const cachedConnection = null; /* cache.current.connections[combined] */
           var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
-          console.log(portHalf);
+          if (!cnx) return;
           var from = {
             x: byScale(toRect.x - stageRect.current.x + portHalf - stageState.translate.x),
             y: byScale(toRect.y - stageRect.current.y + portHalf - stageState.translate.y)
@@ -36359,7 +36363,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     return selectedNodes.map(function (id) {
       if (id !== excludedNodeId) {
         var _nodeRefs$find$;
-        // const nodeRef = document.getElementById(id);
         var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
           var _ref3 = _slicedToArray(_ref2, 1),
             nId = _ref3[0].id;
@@ -36370,7 +36373,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
           if (oldPositions && oldPositions.length === 3) {
             var x = Number(oldPositions[1]) + deltaX;
             var y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = "translate(".concat(Number(oldPositions[1]) + deltaX, "px,").concat(Number(oldPositions[2]) + deltaY, "px)");
+            nodeRef.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
             return {
               nodeId: id,
               x: x,
