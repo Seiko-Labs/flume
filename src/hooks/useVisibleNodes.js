@@ -27,40 +27,37 @@ export function useVisibleNodes({
   wrapperRect,
   transform: [tx, ty, tScale],
   selectedNodes,
-  focusNode,
 }) {
-  return useMemo(() => {
-    const visibleNodes = [];
+  const visibleNodes = [];
 
-    if (!wrapperRect) return visibleNodes;
-    let i = 0;
+  if (!wrapperRect) return visibleNodes;
+  let i = 0;
 
-    const rect = getScaledRect(
-      {
-        x: wrapperRect.x - tx,
-        y: wrapperRect.y - ty,
-        width: wrapperRect.width,
-        height: wrapperRect.height,
-      },
-      tScale
-    );
+  const rect = getScaledRect(
+    {
+      x: wrapperRect.x - tx,
+      y: wrapperRect.y - ty,
+      width: wrapperRect.width,
+      height: wrapperRect.height,
+    },
+    tScale
+  );
 
-    for (const v of Object.values(nodes)) {
-      const nodeRect = {
-        x: v.x,
-        y: v.y,
-        width: 300,
-        height: 300,
-      };
+  for (const v of Object.values(nodes)) {
+    const nodeRect = {
+      x: v.x,
+      y: v.y,
+      width: 300,
+      height: 300,
+    };
 
-      const overlappingArea = getOverlappingArea(rect, nodeRect);
+    const overlappingArea = getOverlappingArea(rect, nodeRect);
 
-      if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
-        visibleNodes[i] = v;
-        i++;
-      }
+    if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
+      visibleNodes[i] = v;
+      i++;
     }
+  }
 
-    return visibleNodes;
-  }, [nodes, tx, ty, tScale]);
+  return visibleNodes;
 }

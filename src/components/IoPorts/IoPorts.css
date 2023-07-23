@@ -68,15 +68,9 @@ table.inner {
 }
 
 .port {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
   width: 8px;
   height: 8px;
 
-  background: #50505c;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 0;

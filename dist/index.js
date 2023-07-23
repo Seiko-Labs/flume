@@ -10926,7 +10926,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       d3Zoom.on("end", null);
       d3Zoom.on("start", null);
     };
-  }, [focusNode, spaceIsPressed]);
+  }, [spaceIsPressed]);
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
   var translateWrapper = React.useRef();
@@ -12012,7 +12012,7 @@ var Control = function Control(_ref) {
 };
 var Control$1 = /*#__PURE__*/React.memo(Control);
 
-var css_248z$5 = ".IoPorts_wrapper__4jboF{display:flex;flex-direction:column}.IoPorts_inputs__M7xAH,.IoPorts_outputs__hqc88{align-items:center;display:flex;flex-direction:column;height:100%;justify-content:center;position:absolute}.IoPorts_inputs__M7xAH{right:0}.IoPorts_inputs__M7xAH>*+*{margin-top:4px}table.IoPorts_inner__NsCyd{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__NsCyd>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_portLabel__XY5gi{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__ZC6Mw{align-items:center;background:#50505c;border-radius:8px;box-sizing:border-box;display:flex;flex-direction:row;height:8px;justify-content:center;margin:0;padding:0;width:8px}.IoPorts_port__ZC6Mw *{pointer-events:none}.IoPorts_controlWrapper__jemED{align-items:center;border:none;border-spacing:0;color:inherit;display:grid;font-size:10px;grid-template-columns:25% 75%;line-height:10px;max-width:250px;min-width:200px;padding:1px 5px}";
+var css_248z$5 = ".IoPorts_wrapper__4jboF{display:flex;flex-direction:column}.IoPorts_inputs__M7xAH,.IoPorts_outputs__hqc88{align-items:center;display:flex;flex-direction:column;height:100%;justify-content:center;position:absolute}.IoPorts_inputs__M7xAH{right:0}.IoPorts_inputs__M7xAH>*+*{margin-top:4px}table.IoPorts_inner__NsCyd{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__NsCyd>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_portLabel__XY5gi{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__ZC6Mw{border-radius:8px;box-sizing:border-box;height:8px;margin:0;padding:0;width:8px}.IoPorts_port__ZC6Mw *{pointer-events:none}.IoPorts_controlWrapper__jemED{align-items:center;border:none;border-spacing:0;color:inherit;display:grid;font-size:10px;grid-template-columns:25% 75%;line-height:10px;max-width:250px;min-width:200px;padding:1px 5px}";
 var styles$3 = {"wrapper":"IoPorts_wrapper__4jboF","outputs":"IoPorts_outputs__hqc88","inputs":"IoPorts_inputs__M7xAH","inner":"IoPorts_inner__NsCyd","portLabel":"IoPorts_portLabel__XY5gi","controls":"IoPorts_controls__J4rPJ","port":"IoPorts_port__ZC6Mw","controlWrapper":"IoPorts_controlWrapper__jemED"};
 styleInject(css_248z$5);
 
@@ -12196,7 +12196,6 @@ var Port = function Port(_ref) {
     document.removeEventListener("mousemove", handleDrag);
   };
   var handleDragStart = function handleDragStart(e) {
-    e.preventDefault();
     e.stopPropagation();
     var startPort = port.current.getBoundingClientRect();
     var stage = document.getElementById(stageId).getBoundingClientRect();
@@ -12243,7 +12242,10 @@ var Port = function Port(_ref) {
     className: styles$3.port,
     style: {
       marginLeft: isInput ? "40%" : -4,
-      backgroundColor: "white"
+      backgroundColor: color,
+      border: "2px solid white",
+      borderRadius: "100%",
+      zIndex: 9999
     },
     "data-port-name": name,
     "data-port-type": type,
@@ -12254,16 +12256,7 @@ var Port = function Port(_ref) {
       e.stopPropagation();
     },
     ref: port
-  }, /*#__PURE__*/React__default["default"].createElement("div", {
-    style: {
-      padding: 0,
-      margin: 0,
-      width: 4,
-      height: 4,
-      backgroundColor: color,
-      borderRadius: "100%"
-    }
-  })), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
+  }), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
     node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
   }, /*#__PURE__*/React__default["default"].createElement(Connection$1, {
     from: dragStartCoordinates,
@@ -35709,33 +35702,30 @@ function useVisibleNodes(_ref) {
     ty = _ref$transform[1],
     tScale = _ref$transform[2],
     selectedNodes = _ref.selectedNodes;
-    _ref.focusNode;
-  return React.useMemo(function () {
-    var visibleNodes = [];
-    if (!wrapperRect) return visibleNodes;
-    var i = 0;
-    var rect = getScaledRect({
-      x: wrapperRect.x - tx,
-      y: wrapperRect.y - ty,
-      width: wrapperRect.width,
-      height: wrapperRect.height
-    }, tScale);
-    for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
-      var v = _Object$values[_i];
-      var nodeRect = {
-        x: v.x,
-        y: v.y,
-        width: 300,
-        height: 300
-      };
-      var overlappingArea = getOverlappingArea(rect, nodeRect);
-      if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
-        visibleNodes[i] = v;
-        i++;
-      }
+  var visibleNodes = [];
+  if (!wrapperRect) return visibleNodes;
+  var i = 0;
+  var rect = getScaledRect({
+    x: wrapperRect.x - tx,
+    y: wrapperRect.y - ty,
+    width: wrapperRect.width,
+    height: wrapperRect.height
+  }, tScale);
+  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
+    var v = _Object$values[_i];
+    var nodeRect = {
+      x: v.x,
+      y: v.y,
+      width: 300,
+      height: 300
+    };
+    var overlappingArea = getOverlappingArea(rect, nodeRect);
+    if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
+      visibleNodes[i] = v;
+      i++;
     }
-    return visibleNodes;
-  }, [nodes, tx, ty, tScale]);
+  }
+  return visibleNodes;
 }
 
 function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -36205,11 +36195,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     spaceIsPressed = _useState4[0],
     setSpaceIsPressed = _useState4[1];
-  var _useState5 = React.useState([]),
-    _useState6 = _slicedToArray(_useState5, 2);
-    _useState6[0];
-    var setVisibleNodes = _useState6[1];
-  React.useRef(new Map());
   var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
       nodeTypes: nodeTypes,
       portTypes: portTypes,
@@ -36255,18 +36240,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
   };
-
-  // useEffect(() => {
-  //   toggleVisibility();
-  // }, [nodesState]);
-
-  // useEffect(() => {
-  //   previousComments &&
-  //     comments !== previousComments &&
-  //     setComments &&
-  //     setComments(comments);
-  // }, [comments, previousComments, setComments]);
-
   React.useImperativeHandle(ref, function () {
     return {
       getNodes: function getNodes() {
@@ -36288,10 +36261,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       return document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  var _useState7 = React.useState(true),
-    _useState8 = _slicedToArray(_useState7, 2),
-    shouldRecalculateConnections = _useState8[0],
-    setShouldRecalculateConnections = _useState8[1];
+  var _useState5 = React.useState(true),
+    _useState6 = _slicedToArray(_useState5, 2),
+    shouldRecalculateConnections = _useState6[0],
+    setShouldRecalculateConnections = _useState6[1];
   var initialStageParams = _initialStageParams || tempState.stage;
   var _useReducer7 = React.useReducer(stageReducer, {
       scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
@@ -36321,11 +36294,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     createConnections(nodesState[currentStateIndex].state, stageState, editorId);
   }, [currentStateIndex, nodesState, editorId, stageState]);
   var recalculateStageRect = function recalculateStageRect() {
-    setVisibleNodes(function (prev) {
-      return prev.filter(function (nodeid) {
-        return !selectedNodes.includes(nodeid);
-      });
-    });
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
   };
   React.useLayoutEffect(function () {

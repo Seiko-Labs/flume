@@ -16,7 +16,7 @@ import orderBy from "lodash/orderBy";
 import * as d3 from "d3-zoom";
 import { select } from "d3-selection";
 import { STAGE_ID } from "../../constants";
-import { memo } from 'react';
+import { memo } from "react";
 
 let firstRender = true;
 
@@ -125,7 +125,7 @@ const Stage = forwardRef(
         d3Zoom.on("end", null);
         d3Zoom.on("start", null);
       };
-    }, [focusNode, spaceIsPressed]);
+    }, [spaceIsPressed]);
 
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);

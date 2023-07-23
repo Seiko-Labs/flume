@@ -93,9 +93,6 @@ export const NodeEditor = forwardRef(
     const [toasts, dispatchToasts] = useReducer(toastsReducer, []);
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
-    const [visibleNodes, setVisibleNodes] = useState([]);
-
-    const cachedPositions = useRef(new Map());
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(
@@ -158,17 +155,6 @@ export const NodeEditor = forwardRef(
         document.addEventListener("keyup", handleDocumentKeyUp);
       }
     };
-
-    // useEffect(() => {
-    //   toggleVisibility();
-    // }, [nodesState]);
-
-    // useEffect(() => {
-    //   previousComments &&
-    //     comments !== previousComments &&
-    //     setComments &&
-    //     setComments(comments);
-    // }, [comments, previousComments, setComments]);
 
     useImperativeHandle(ref, () => ({
       getNodes() {
@@ -236,10 +222,6 @@ export const NodeEditor = forwardRef(
     }, [currentStateIndex, nodesState, editorId, stageState]);
 
     const recalculateStageRect = () => {
-      setVisibleNodes((prev) =>
-        prev.filter((nodeid) => !selectedNodes.includes(nodeid))
-      );
-
       stage.current = document
         .getElementById(`${STAGE_ID}${editorId}`)
         .getBoundingClientRect();

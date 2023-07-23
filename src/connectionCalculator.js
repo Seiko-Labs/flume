@@ -158,6 +158,7 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
                 output.portName,
                 "output"
               );
+
               const toPort = getPortRect(node.id, inputName, "input");
               const portHalf = fromPort ? fromPort.width / 2 : 0;
               if (fromPort && toPort) {

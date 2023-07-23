@@ -153,7 +153,6 @@ const Port = ({
   };
 
   const handleDragStart = (e) => {
-    e.preventDefault();
     e.stopPropagation();
     const startPort = port.current.getBoundingClientRect();
     const stage = document.getElementById(stageId).getBoundingClientRect();
@@ -228,7 +227,10 @@ const Port = ({
         className={styles.port}
         style={{
           marginLeft: isInput ? "40%" : -4,
-          backgroundColor: "white",
+          backgroundColor: color,
+          border: `2px solid white`,
+          borderRadius: "100%",
+          zIndex: 9999,
         }}
         data-port-name={name}
         data-port-type={type}
@@ -240,7 +242,7 @@ const Port = ({
         }}
         ref={port}
       >
-        <div
+        {/* <div
           style={{
             padding: 0,
             margin: 0,
@@ -249,7 +251,7 @@ const Port = ({
             backgroundColor: color,
             borderRadius: "100%",
           }}
-        />
+        /> */}
       </div>
       {isDragging ? (
         <Portal
