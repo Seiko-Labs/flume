@@ -356,6 +356,30 @@ const Node = forwardRef(
               />
             </div>
           </div>
+          {comment && (
+            <div
+              style={{
+                fontSize: 10,
+                marginLeft: 5,
+                marginRight: 5,
+                marginBottom: 5,
+                overflow: "hidden",
+                wordWrap: "break-word",
+                maxWidth: 250,
+
+                borderRadius: 5,
+                background: tileBackground.includes("rgba")
+                  ? tileBackground
+                  : tileBackground + "59",
+                padding: 4,
+              }}
+            >
+              <div style={{ visibility: hideControls ? "hidden" : "visible" }}>
+                <b>Comment: </b>
+                {comment}
+              </div>
+            </div>
+          )}
           {expanded && hasInner ? (
             <>
               <div
@@ -374,30 +398,6 @@ const Node = forwardRef(
                   inputData={inputData}
                 />
               </div>
-
-              {comment && (
-                <div
-                  style={{
-                    fontSize: 10,
-                    margin: 4,
-                    overflow: "hidden",
-                    wordWrap: "break-word",
-                    maxWidth: 250,
-                    borderRadius: 5,
-                    background: tileBackground.includes("rgba")
-                      ? tileBackground
-                      : tileBackground + "59",
-                    padding: 4,
-                  }}
-                >
-                  <div
-                    style={{ visibility: hideControls ? "hidden" : "visible" }}
-                  >
-                    <b>Comment: </b>
-                    {comment}
-                  </div>
-                </div>
-              )}
             </>
           ) : (
             description && (

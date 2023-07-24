@@ -12935,7 +12935,24 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
       cursor: "pointer",
       stroke: "#C5CEE0"
     }
-  }))), expanded && hasInner ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("div", {
+  }))), comment && /*#__PURE__*/React__default.createElement("div", {
+    style: {
+      fontSize: 10,
+      marginLeft: 5,
+      marginRight: 5,
+      marginBottom: 5,
+      overflow: "hidden",
+      wordWrap: "break-word",
+      maxWidth: 250,
+      borderRadius: 5,
+      background: tileBackground.includes("rgba") ? tileBackground : tileBackground + "59",
+      padding: 4
+    }
+  }, /*#__PURE__*/React__default.createElement("div", {
+    style: {
+      visibility: hideControls ? "hidden" : "visible"
+    }
+  }, /*#__PURE__*/React__default.createElement("b", null, "Comment: "), comment)), expanded && hasInner ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("div", {
     style: {
       padding: "0 5px 5px 5px",
       visibility: hideControls ? "hidden" : "visible"
@@ -12948,22 +12965,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
     nodeData: nodeData,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
-  })), comment && /*#__PURE__*/React__default.createElement("div", {
-    style: {
-      fontSize: 10,
-      margin: 4,
-      overflow: "hidden",
-      wordWrap: "break-word",
-      maxWidth: 250,
-      borderRadius: 5,
-      background: tileBackground.includes("rgba") ? tileBackground : tileBackground + "59",
-      padding: 4
-    }
-  }, /*#__PURE__*/React__default.createElement("div", {
-    style: {
-      visibility: hideControls ? "hidden" : "visible"
-    }
-  }, /*#__PURE__*/React__default.createElement("b", null, "Comment: "), comment))) : description && /*#__PURE__*/React__default.createElement("div", {
+  }))) : description && /*#__PURE__*/React__default.createElement("div", {
     className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.description
   }, description)), /*#__PURE__*/React__default.createElement(IoPorts$1, {
     nodeId: id,
