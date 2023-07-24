@@ -260,25 +260,24 @@ export const NodeEditor = forwardRef(
     const transformNodes = (excludedNodeId, deltaX, deltaY) => {
       return selectedNodes
         .map((id) => {
-          if (id !== excludedNodeId) {
-            const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-              ?.current;
-            if (nodeRef) {
-              const oldPositions = nodeRef.style.transform.match(
-                /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-              );
+          const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
+            ?.current;
+          if (nodeRef) {
+            nodeRef.style.transition = "0.1s";
+            const oldPositions = nodeRef.style.transform.match(
+              /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+            );
 
-              if (oldPositions && oldPositions.length === 3) {
-                const x = Number(oldPositions[1]) + deltaX;
-                const y = Number(oldPositions[2]) + deltaY;
-                nodeRef.style.transform = `translate(${x}px,${y}px)`;
+            if (oldPositions && oldPositions.length === 3) {
+              const x = Number(oldPositions[1]) + deltaX;
+              const y = Number(oldPositions[2]) + deltaY;
+              nodeRef.style.transform = `translate(${x}px,${y}px)`;
 
-                return {
-                  nodeId: id,
-                  x,
-                  y,
-                };
-              }
+              return {
+                nodeId: id,
+                x,
+                y,
+              };
             }
           }
         })

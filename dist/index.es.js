@@ -12760,7 +12760,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
           );
 
           if (!toRect) return;
-          var portHalf = 10;
+          var portHalf = toRect.width / 2;
           var combined;
           if (isOutput) {
             combined = id + portName + output.nodeId + output.portName;
@@ -36298,25 +36298,24 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
   };
   var transformNodes = function transformNodes(excludedNodeId, deltaX, deltaY) {
     return selectedNodes.map(function (id) {
-      if (id !== excludedNodeId) {
-        var _nodeRefs$find$;
-        var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
-          var _ref3 = _slicedToArray(_ref2, 1),
-            nId = _ref3[0].id;
-          return nId === id;
-        })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
-        if (nodeRef) {
-          var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-          if (oldPositions && oldPositions.length === 3) {
-            var x = Number(oldPositions[1]) + deltaX;
-            var y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
-            return {
-              nodeId: id,
-              x: x,
-              y: y
-            };
-          }
+      var _nodeRefs$find$;
+      var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 1),
+          nId = _ref3[0].id;
+        return nId === id;
+      })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
+      if (nodeRef) {
+        nodeRef.style.transition = "0.1s";
+        var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
+        if (oldPositions && oldPositions.length === 3) {
+          var x = Number(oldPositions[1]) + deltaX;
+          var y = Number(oldPositions[2]) + deltaY;
+          nodeRef.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
+          return {
+            nodeId: id,
+            x: x,
+            y: y
+          };
         }
       }
     }).filter(function (res) {
