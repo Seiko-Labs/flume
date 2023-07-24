@@ -184,6 +184,7 @@ export const NodeEditor = forwardRef(
             : 0,
       },
     });
+    const lasts = useRef({});
 
     const triggerRecalculation = () => {
       setShouldRecalculateConnections(true);
@@ -224,7 +225,6 @@ export const NodeEditor = forwardRef(
     }, [shouldRecalculateConnections, recalculateConnections]);
 
     const handleDragEnd = (excludedNodeId, deltaX, deltaY, coords) => {
-      // toggleVisibility();
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
@@ -253,17 +253,12 @@ export const NodeEditor = forwardRef(
       selectedNodes,
     });
 
-    const toggleVisibility = (args) => {
-      return;
-    };
-
     const transformNodes = (excludedNodeId, deltaX, deltaY) => {
       return selectedNodes
         .map((id) => {
           const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
             ?.current;
           if (nodeRef) {
-            nodeRef.style.transition = "0.1s";
             const oldPositions = nodeRef.style.transform.match(
               /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
             );
@@ -295,13 +290,6 @@ export const NodeEditor = forwardRef(
         }
       }
     };
-
-    useEffect(() => {
-      if (sideEffectToasts) {
-        dispatchToasts(sideEffectToasts);
-        setSideEffectToasts(null);
-      }
-    }, [sideEffectToasts]);
 
     return (
       <PortTypesContext.Provider value={portTypes}>
@@ -346,7 +334,6 @@ export const NodeEditor = forwardRef(
                             onFocusChange={onFocusChange}
                             ref={editorRef}
                             editorId={editorId}
-                            toggleVisibility={toggleVisibility}
                             spaceIsPressed={spaceIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}

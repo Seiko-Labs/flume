@@ -4,6 +4,8 @@ export default (state, incomingAction) => {
       ? incomingAction(state)
       : incomingAction;
   switch (action.type) {
+    case "SET":
+      return { scale: action.scale, translate: action.translate };
     case "SET_SCALE":
       return { ...state, scale: action.scale };
     case "SET_TRANSLATE":

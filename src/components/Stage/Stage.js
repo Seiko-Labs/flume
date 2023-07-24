@@ -31,7 +31,7 @@ const Stage = forwardRef(
       outerStageChildren,
       dispatchComments,
       disableComments,
-      toggleVisibility,
+
       spaceIsPressed,
       focusNode,
       onFocusChange,
@@ -58,15 +58,12 @@ const Stage = forwardRef(
 
       d3Zoom.on("start", (event) => {
         dispatchStageState(() => ({
-          type: "SET_TRANSLATE",
+          type: "SET",
+          scale: event.transform.k,
           translate: {
             x: event.transform.x,
             y: event.transform.y,
           },
-        }));
-        dispatchStageState(() => ({
-          type: "SET_SCALE",
-          scale: event.transform.k,
         }));
       });
 
@@ -79,17 +76,13 @@ const Stage = forwardRef(
 
       d3Zoom.on("end", (event) => {
         dispatchStageState(() => ({
-          type: "SET_TRANSLATE",
+          type: "SET",
+          scale: event.transform.k,
           translate: {
             x: event.transform.x,
             y: event.transform.y,
           },
         }));
-        dispatchStageState(() => ({
-          type: "SET_SCALE",
-          scale: event.transform.k,
-        }));
-        toggleVisibility();
       });
 
       if (focusNode && focusNode.node) {
@@ -106,7 +99,6 @@ const Stage = forwardRef(
         onFocusChange && onFocusChange(focusNode);
 
         translateWrapper.current.ontransitionend = () => {
-          toggleVisibility();
           document.getElementById(focusNode.node).style.boxShadow = `0 0 0 ${
             2 / scale
           }px ${focusNode.color}`;

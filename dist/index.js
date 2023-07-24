@@ -10837,7 +10837,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     outerStageChildren = _ref.outerStageChildren,
     dispatchComments = _ref.dispatchComments,
     disableComments = _ref.disableComments,
-    toggleVisibility = _ref.toggleVisibility,
     spaceIsPressed = _ref.spaceIsPressed,
     focusNode = _ref.focusNode,
     onFocusChange = _ref.onFocusChange;
@@ -10860,17 +10859,12 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     d3Zoom.on("start", function (event) {
       dispatchStageState(function () {
         return {
-          type: "SET_TRANSLATE",
+          type: "SET",
+          scale: event.transform.k,
           translate: {
             x: event.transform.x,
             y: event.transform.y
           }
-        };
-      });
-      dispatchStageState(function () {
-        return {
-          type: "SET_SCALE",
-          scale: event.transform.k
         };
       });
     });
@@ -10886,20 +10880,14 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     d3Zoom.on("end", function (event) {
       dispatchStageState(function () {
         return {
-          type: "SET_TRANSLATE",
+          type: "SET",
+          scale: event.transform.k,
           translate: {
             x: event.transform.x,
             y: event.transform.y
           }
         };
       });
-      dispatchStageState(function () {
-        return {
-          type: "SET_SCALE",
-          scale: event.transform.k
-        };
-      });
-      toggleVisibility();
     });
     if (focusNode && focusNode.node) {
       translateWrapper.current.style.transition = "0.5s";
@@ -10911,7 +10899,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       d3Zoom.translateTo(d3Selection, _x, _y);
       onFocusChange && onFocusChange(focusNode);
       translateWrapper.current.ontransitionend = function () {
-        toggleVisibility();
         document.getElementById(focusNode.node).style.boxShadow = "0 0 0 ".concat(2 / scale, "px ").concat(focusNode.color);
         setTimeout(function () {
           document.getElementById(focusNode.node).style.boxShadow = "none";
@@ -35172,6 +35159,11 @@ function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { 
 var stageReducer = (function (state, incomingAction) {
   var action = typeof incomingAction === "function" ? incomingAction(state) : incomingAction;
   switch (action.type) {
+    case "SET":
+      return {
+        scale: action.scale,
+        translate: action.translate
+      };
     case "SET_SCALE":
       return _objectSpread$7(_objectSpread$7({}, state), {}, {
         scale: action.scale
@@ -36178,9 +36170,9 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var cache = React.useRef(new Cache());
   var stage = React.useRef();
   var _useState = React.useState(),
-    _useState2 = _slicedToArray(_useState, 2),
-    sideEffectToasts = _useState2[0],
-    setSideEffectToasts = _useState2[1];
+    _useState2 = _slicedToArray(_useState, 2);
+    _useState2[0];
+    var setSideEffectToasts = _useState2[1];
   var _useReducer = React.useReducer(toastsReducer, []),
     _useReducer2 = _slicedToArray(_useReducer, 2),
     toasts = _useReducer2[0],
@@ -36271,6 +36263,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useReducer8 = _slicedToArray(_useReducer7, 2),
     stageState = _useReducer8[0],
     dispatchStageState = _useReducer8[1];
+  React.useRef({});
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
@@ -36299,7 +36292,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     }
   }, [shouldRecalculateConnections, recalculateConnections]);
   var handleDragEnd = function handleDragEnd(excludedNodeId, deltaX, deltaY, coords) {
-    // toggleVisibility();
     if (selectedNodes.length > 0) {
       dispatchNodes({
         type: "SET_MULTIPLE_NODES_COORDINATES",
@@ -36320,9 +36312,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     transform: [stageState.translate.x, stageState.translate.y, stageState.scale],
     selectedNodes: selectedNodes
   });
-  var toggleVisibility = function toggleVisibility(args) {
-    return;
-  };
   var transformNodes = function transformNodes(excludedNodeId, deltaX, deltaY) {
     return selectedNodes.map(function (id) {
       var _nodeRefs$find$;
@@ -36332,7 +36321,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         return nId === id;
       })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
       if (nodeRef) {
-        nodeRef.style.transition = "0.1s";
         var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
         if (oldPositions && oldPositions.length === 3) {
           var x = Number(oldPositions[1]) + deltaX;
@@ -36372,12 +36360,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       return _ref4.apply(this, arguments);
     };
   }();
-  React.useEffect(function () {
-    if (sideEffectToasts) {
-      dispatchToasts(sideEffectToasts);
-      setSideEffectToasts(null);
-    }
-  }, [sideEffectToasts]);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {
@@ -36421,7 +36403,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     onFocusChange: onFocusChange,
     ref: editorRef,
     editorId: editorId,
-    toggleVisibility: toggleVisibility,
     spaceIsPressed: spaceIsPressed,
     scale: stageState.scale,
     translate: stageState.translate,
