@@ -184,7 +184,6 @@ export const NodeEditor = forwardRef(
             : 0,
       },
     });
-    const lasts = useRef({});
 
     const triggerRecalculation = () => {
       setShouldRecalculateConnections(true);

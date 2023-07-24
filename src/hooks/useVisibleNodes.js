@@ -15,7 +15,7 @@ export const getOverlappingArea = (rectA, rectB) => {
   return Math.ceil(xOverlap * yOverlap);
 };
 
-const getScaledRect = (rect, tScale) => ({
+export const getScaledRect = (rect, tScale) => ({
   x: rect.x / tScale,
   y: rect.y / tScale,
   width: rect.width / tScale,
@@ -44,6 +44,7 @@ export function useVisibleNodes({
   );
 
   for (const v of Object.values(nodes)) {
+    console.log(v);
     const nodeRect = {
       x: v.x,
       y: v.y,
@@ -53,7 +54,11 @@ export function useVisibleNodes({
 
     const overlappingArea = getOverlappingArea(rect, nodeRect);
 
-    if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
+    if (
+      overlappingArea > 100 ||
+      selectedNodes.includes(v.id) ||
+      v.type === "start"
+    ) {
       visibleNodes[i] = v;
       i++;
     }

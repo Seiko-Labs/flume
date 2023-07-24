@@ -86,29 +86,29 @@ const Stage = forwardRef(
       });
 
       if (focusNode && focusNode.node) {
-        translateWrapper.current.style.transition = "0.5s";
-        const node = document.getElementById(focusNode.node);
+        // translateWrapper.current.style.transition = "0.5s";
+        // const node = document.getElementById(focusNode.node);
 
-        const rect = node.getBoundingClientRect();
-        const wrapperRect = translateWrapper.current.getBoundingClientRect();
+        // const rect = node.getBoundingClientRect();
+        // const wrapperRect = translateWrapper.current.getBoundingClientRect();
 
-        const x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
-        const y = (rect.y - wrapperRect.y + rect.height) / scale;
-        d3Zoom.translateTo(d3Selection, x, y);
+        // const x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
+        // const y = (rect.y - wrapperRect.y + rect.height) / scale;
+        // d3Zoom.translateTo(d3Selection, x, y);
 
-        onFocusChange && onFocusChange(focusNode);
+        // onFocusChange && onFocusChange(focusNode);
 
-        translateWrapper.current.ontransitionend = () => {
-          document.getElementById(focusNode.node).style.boxShadow = `0 0 0 ${
-            2 / scale
-          }px ${focusNode.color}`;
-          setTimeout(() => {
-            document.getElementById(focusNode.node).style.boxShadow = "none";
-          }, 1000);
-          translateWrapper.current.style.transition = "0.055s";
+        // translateWrapper.current.ontransitionend = () => {
+        //   document.getElementById(focusNode.node).style.boxShadow = `0 0 0 ${
+        //     2 / scale
+        //   }px ${focusNode.color}`;
+        //   setTimeout(() => {
+        //     document.getElementById(focusNode.node).style.boxShadow = "none";
+        //   }, 1000);
+        //   translateWrapper.current.style.transition = "0.055s";
 
-          translateWrapper.current.ontransitionend = null;
-        };
+        //   translateWrapper.current.ontransitionend = null;
+        // };
       }
       d3Selection.call(d3Zoom).on("dblclick.zoom", null);
 

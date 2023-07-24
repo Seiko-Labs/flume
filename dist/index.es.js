@@ -10811,8 +10811,8 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     dispatchComments = _ref.dispatchComments,
     disableComments = _ref.disableComments,
     spaceIsPressed = _ref.spaceIsPressed,
-    focusNode = _ref.focusNode,
-    onFocusChange = _ref.onFocusChange;
+    focusNode = _ref.focusNode;
+    _ref.onFocusChange;
   useLayoutEffect(function () {
     var _d3$zoomTransform = transform$1(translateWrapper.current),
       x = _d3$zoomTransform.x,
@@ -10862,24 +10862,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
         };
       });
     });
-    if (focusNode && focusNode.node) {
-      translateWrapper.current.style.transition = "0.5s";
-      var node = document.getElementById(focusNode.node);
-      var rect = node.getBoundingClientRect();
-      var wrapperRect = translateWrapper.current.getBoundingClientRect();
-      var _x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
-      var _y = (rect.y - wrapperRect.y + rect.height) / scale;
-      d3Zoom.translateTo(d3Selection, _x, _y);
-      onFocusChange && onFocusChange(focusNode);
-      translateWrapper.current.ontransitionend = function () {
-        document.getElementById(focusNode.node).style.boxShadow = "0 0 0 ".concat(2 / scale, "px ").concat(focusNode.color);
-        setTimeout(function () {
-          document.getElementById(focusNode.node).style.boxShadow = "none";
-        }, 1000);
-        translateWrapper.current.style.transition = "0.055s";
-        translateWrapper.current.ontransitionend = null;
-      };
-    }
+    if (focusNode && focusNode.node) ;
     d3Selection.call(d3Zoom).on("dblclick.zoom", null);
     return function () {
       d3Zoom.on("zoom", null);
@@ -35682,6 +35665,7 @@ function useVisibleNodes(_ref) {
   }, tScale);
   for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
     var v = _Object$values[_i];
+    console.log(v);
     var nodeRect = {
       x: v.x,
       y: v.y,
@@ -35689,7 +35673,7 @@ function useVisibleNodes(_ref) {
       height: 300
     };
     var overlappingArea = getOverlappingArea(rect, nodeRect);
-    if (overlappingArea > 100 || selectedNodes.includes(v.id)) {
+    if (overlappingArea > 100 || selectedNodes.includes(v.id) || v.type === "start") {
       visibleNodes[i] = v;
       i++;
     }
@@ -36245,7 +36229,6 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     _useReducer8 = _slicedToArray(_useReducer7, 2),
     stageState = _useReducer8[0],
     dispatchStageState = _useReducer8[1];
-  useRef({});
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
