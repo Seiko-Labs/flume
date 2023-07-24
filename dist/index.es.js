@@ -11416,7 +11416,7 @@ var curveBundle = (function custom(beta) {
   return bundle;
 })(0.85);
 
-var css_248z$b = ".Connection_svg__dY13y{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:0}";
+var css_248z$b = ".Connection_svg__dY13y{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:-1}";
 var styles$9 = {"svg":"Connection_svg__dY13y"};
 styleInject(css_248z$b);
 
@@ -11995,8 +11995,8 @@ var Connection = function Connection(_ref) {
 var Connection$1 = /*#__PURE__*/memo(Connection);
 
 var Port = function Port(_ref) {
-  var color = _ref.color,
-    _ref$name = _ref.name,
+  _ref.color;
+    var _ref$name = _ref.name,
     name = _ref$name === void 0 ? "" : _ref$name,
     type = _ref.type,
     isInput = _ref.isInput,
@@ -12187,10 +12187,9 @@ var Port = function Port(_ref) {
     className: styles$3.port,
     style: {
       marginLeft: isInput ? "40%" : -4,
-      backgroundColor: color,
+      backgroundColor: "grey",
       border: "2px solid white",
-      borderRadius: "100%",
-      zIndex: 9999
+      borderRadius: "100%"
     },
     "data-port-name": name,
     "data-port-type": type,
@@ -30600,7 +30599,7 @@ var Toast = function Toast(_ref2) {
   }, "\u2715"));
 };
 
-var css_248z$1 = ".Connections_svgWrapper__6Rcg4{height:0;left:0;position:absolute;top:0}";
+var css_248z$1 = ".Connections_svgWrapper__6Rcg4{height:0;left:0;position:absolute;top:0;z-index:-1}";
 var styles$1 = {"svgWrapper":"Connections_svgWrapper__6Rcg4"};
 styleInject(css_248z$1);
 
@@ -35665,15 +35664,15 @@ function useVisibleNodes(_ref) {
   }, tScale);
   for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
     var v = _Object$values[_i];
-    console.log(v);
     var nodeRect = {
-      x: v.x,
-      y: v.y,
+      x: v.x - wrapperRect.x,
+      y: v.y - wrapperRect.y,
       width: 300,
       height: 300
     };
     var overlappingArea = getOverlappingArea(rect, nodeRect);
-    if (overlappingArea > 100 || selectedNodes.includes(v.id) || v.type === "start") {
+    console.log(overlappingArea);
+    if (overlappingArea > 0 || selectedNodes.includes(v.id) || v.type === "start") {
       visibleNodes[i] = v;
       i++;
     }

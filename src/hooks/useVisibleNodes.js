@@ -44,18 +44,17 @@ export function useVisibleNodes({
   );
 
   for (const v of Object.values(nodes)) {
-    console.log(v);
     const nodeRect = {
-      x: v.x,
-      y: v.y,
+      x: v.x - wrapperRect.x,
+      y: v.y - wrapperRect.y,
       width: 300,
       height: 300,
     };
 
     const overlappingArea = getOverlappingArea(rect, nodeRect);
-
+    console.log(overlappingArea);
     if (
-      overlappingArea > 100 ||
+      overlappingArea > 0 ||
       selectedNodes.includes(v.id) ||
       v.type === "start"
     ) {

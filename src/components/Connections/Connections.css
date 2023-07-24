@@ -3,4 +3,5 @@
   left: 0px;
   top: 0px;
   height: 0px;
+  z-index: -1;
 }

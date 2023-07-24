@@ -212,10 +212,9 @@ const Port = ({
         className={styles.port}
         style={{
           marginLeft: isInput ? "40%" : -4,
-          backgroundColor: color,
+          backgroundColor: "grey",
           border: `2px solid white`,
           borderRadius: "100%",
-          zIndex: 9999,
         }}
         data-port-name={name}
         data-port-type={type}
