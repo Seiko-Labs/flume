@@ -11057,8 +11057,8 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
   return transputs;
 });
 
-var css_248z$c = ".Node_wrapper__S8Vij{align-items:stretch;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:0}.Node_body__1-BJC{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;min-width:150px;width:max-content}.Node_body__1-BJC *{color:#c5cee0}.Node_header__RNCw9{align-items:center;white-space:nowrap!important;width:100%}.Node_headerMeta__Pjkgx{align-items:center;display:flex;justify-content:center;padding:0 2px;text-align:center;width:100%}.Node_headerMeta__Pjkgx>*+*{margin-left:4px}.Node_title__Bf6Fu{align-items:center;display:flex;justify-content:center}.Node_title__Bf6Fu>*+*{margin-left:2px}.Node_title__Bf6Fu>img{height:10px;object-fit:contain;width:10px}.Node_title__Bf6Fu>span.Node_label__v7h4v{font-size:10px;font-weight:700;line-height:16px}.Node_id__w7BN0{cursor:copy;font-size:10px;line-height:16px;opacity:.5;width:100%}.Node_id__w7BN0:hover{font-weight:700;opacity:1}.Node_headerActions__HrHJZ{align-items:center;display:flex;padding:4px}.Node_headerActions__HrHJZ>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__pEph6{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}.Node_nodeInfo__j0gHK{align-items:center;display:flex;justify-content:center;margin-bottom:5px;padding:0 10px}";
-var styles$a = {"wrapper":"Node_wrapper__S8Vij","body":"Node_body__1-BJC","header":"Node_header__RNCw9","headerMeta":"Node_headerMeta__Pjkgx","title":"Node_title__Bf6Fu","label":"Node_label__v7h4v","id":"Node_id__w7BN0","headerActions":"Node_headerActions__HrHJZ","description":"Node_description__pEph6","nodeInfo":"Node_nodeInfo__j0gHK"};
+var css_248z$c = ".Node_wrapper__S8Vij{align-items:stretch;animation:Node_fadein__sO4b8 .1s;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:0}@keyframes Node_fadein__sO4b8{0%{opacity:0}to{opacity:1}}.Node_body__1-BJC{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;min-width:150px;width:max-content}.Node_body__1-BJC *{color:#c5cee0}.Node_header__RNCw9{align-items:center;white-space:nowrap!important;width:100%}.Node_headerMeta__Pjkgx{align-items:center;display:flex;justify-content:center;padding:0 2px;text-align:center;width:100%}.Node_headerMeta__Pjkgx>*+*{margin-left:4px}.Node_title__Bf6Fu{align-items:center;display:flex;justify-content:center}.Node_title__Bf6Fu>*+*{margin-left:2px}.Node_title__Bf6Fu>img{height:10px;object-fit:contain;width:10px}.Node_title__Bf6Fu>span.Node_label__v7h4v{font-size:10px;font-weight:700;line-height:16px}.Node_id__w7BN0{cursor:copy;font-size:10px;line-height:16px;opacity:.5;width:100%}.Node_id__w7BN0:hover{font-weight:700;opacity:1}.Node_headerActions__HrHJZ{align-items:center;display:flex;padding:4px}.Node_headerActions__HrHJZ>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__pEph6{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}.Node_nodeInfo__j0gHK{align-items:center;display:flex;justify-content:center;margin-bottom:5px;padding:0 10px}";
+var styles$a = {"wrapper":"Node_wrapper__S8Vij","fadein":"Node_fadein__sO4b8","body":"Node_body__1-BJC","header":"Node_header__RNCw9","headerMeta":"Node_headerMeta__Pjkgx","title":"Node_title__Bf6Fu","label":"Node_label__v7h4v","id":"Node_id__w7BN0","headerActions":"Node_headerActions__HrHJZ","description":"Node_description__pEph6","nodeInfo":"Node_nodeInfo__j0gHK"};
 styleInject(css_248z$c);
 
 function constant$3(x) {
@@ -11527,8 +11527,8 @@ var createSVG = function createSVG(_ref5) {
   var curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
   path.setAttribute("stroke", "white");
-  path.setAttribute("stroke-opacity", ".3");
-  path.setAttribute("stroke-width", "1");
+  // path.setAttribute("stroke-opacity", ".3");
+  path.setAttribute("stroke-width", "1.5");
   path.setAttribute("stroke-linecap", "round");
   path.setAttribute("fill", "none");
   path.setAttribute("data-connection-id", id);
@@ -11543,7 +11543,7 @@ var createSVG = function createSVG(_ref5) {
 var getStageRef = function getStageRef(editorId) {
   return document.getElementById("".concat(CONNECTIONS_ID).concat(editorId));
 };
-var createConnections = function createConnections(nodes, _ref6, editorId) {
+var createConnections = function createConnections(nodes, _ref6, editorId, nodeTypes) {
   var scale = _ref6.scale;
     _ref6.stageId;
   var stageRef = getStageRef(editorId);
@@ -11561,12 +11561,16 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
             inputName = _ref8[0],
             outputs = _ref8[1];
           outputs.forEach(function (output) {
+            var nodeInfo = nodeTypes[node.type];
             var fromPort = getPortRect(output.nodeId, output.portName, "output");
             var portHalf = fromPort ? fromPort.width / 2 : 10;
             var toPort = getPortRect(node.id, inputName, "input");
             var id = output.nodeId + output.portName + node.id + inputName;
             var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
             if (existingLine) {
+              if (nodeInfo) {
+                existingLine.setAttribute("stroke", "".concat(nodeInfo.category.tileBackground || "white"));
+              }
               updateConnection({
                 line: existingLine,
                 to: fromPort ? {
@@ -11580,7 +11584,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
               });
             } else {
               if (!fromPort || !toPort) return;
-              createSVG({
+              var svg = createSVG({
                 id: id,
                 outputNodeId: output.nodeId,
                 outputPortName: output.portName,
@@ -11596,6 +11600,9 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
                 },
                 stage: stageRef
               });
+              if (nodeInfo) {
+                svg.setAttribute("stroke", "".concat(nodeInfo.category.tileBackground || "white"));
+              }
             }
           });
         });
@@ -36252,7 +36259,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     setSelectedNodes: setSelectedNodes
   });
   var recalculateConnections = useCallback(function () {
-    createConnections(nodesState[currentStateIndex].state, stageState, editorId);
+    createConnections(nodesState[currentStateIndex].state, stageState, editorId, nodeTypes);
   }, [currentStateIndex, nodesState, editorId, stageState]);
   var recalculateStageRect = function recalculateStageRect() {
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();

@@ -121,8 +121,8 @@ export const createSVG = ({
   const curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
   path.setAttribute("stroke", "white");
-  path.setAttribute("stroke-opacity", ".3");
-  path.setAttribute("stroke-width", "1");
+  // path.setAttribute("stroke-opacity", ".3");
+  path.setAttribute("stroke-width", "1.5");
   path.setAttribute("stroke-linecap", "round");
   path.setAttribute("fill", "none");
   path.setAttribute("data-connection-id", id);
@@ -138,7 +138,12 @@ export const createSVG = ({
 export const getStageRef = (editorId) =>
   document.getElementById(`${CONNECTIONS_ID}${editorId}`);
 
-export const createConnections = (nodes, { scale, stageId }, editorId) => {
+export const createConnections = (
+  nodes,
+  { scale, stageId },
+  editorId,
+  nodeTypes
+) => {
   const stageRef = getStageRef(editorId);
 
   if (stageRef) {
@@ -153,6 +158,8 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
         Object.entries(node.connections.inputs).forEach(
           ([inputName, outputs], k) => {
             outputs.forEach((output) => {
+              const nodeInfo = nodeTypes[node.type];
+
               const fromPort = getPortRect(
                 output.nodeId,
                 output.portName,
@@ -164,7 +171,14 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
               const existingLine = document.querySelector(
                 `[data-connection-id="${id}"]`
               );
+
               if (existingLine) {
+                if (nodeInfo) {
+                  existingLine.setAttribute(
+                    "stroke",
+                    `${nodeInfo.category.tileBackground || "white"}`
+                  );
+                }
                 updateConnection({
                   line: existingLine,
                   to: fromPort
@@ -192,7 +206,7 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
                 });
               } else {
                 if (!fromPort || !toPort) return;
-                createSVG({
+                const svg = createSVG({
                   id,
                   outputNodeId: output.nodeId,
                   outputPortName: output.portName,
@@ -212,6 +226,13 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
                   },
                   stage: stageRef,
                 });
+
+                if (nodeInfo) {
+                  svg.setAttribute(
+                    "stroke",
+                    `${nodeInfo.category.tileBackground || "white"}`
+                  );
+                }
               }
             });
           }

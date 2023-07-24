@@ -10,6 +10,16 @@
   align-items: stretch;
   z-index: 0;
   cursor: default;
+  animation: fadein 0.1s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .body {

@@ -206,7 +206,8 @@ export const NodeEditor = forwardRef(
       createConnections(
         nodesState[currentStateIndex].state,
         stageState,
-        editorId
+        editorId,
+        nodeTypes
       );
     }, [currentStateIndex, nodesState, editorId, stageState]);
 
