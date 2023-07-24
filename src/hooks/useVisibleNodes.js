@@ -52,7 +52,7 @@ export function useVisibleNodes({
     };
 
     const overlappingArea = getOverlappingArea(rect, nodeRect);
-    console.log(overlappingArea);
+
     if (
       overlappingArea > 0 ||
       selectedNodes.includes(v.id) ||
