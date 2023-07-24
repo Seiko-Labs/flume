@@ -35698,7 +35698,6 @@ function useVisibleNodes(_ref) {
       height: 300
     };
     var overlappingArea = getOverlappingArea(rect, nodeRect);
-    console.log(overlappingArea);
     if (overlappingArea > 0 || selectedNodes.includes(v.id) || v.type === "start") {
       visibleNodes[i] = v;
       i++;
