@@ -11592,6 +11592,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId) {
                 } : existingLine.getPointAtLength(0)
               });
             } else {
+              if (!fromPort || !toPort) return;
               createSVG({
                 id: id,
                 outputNodeId: output.nodeId,
@@ -36275,7 +36276,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     if (selectedNodes.length > 0) {
       dispatchNodes({
         type: "SET_MULTIPLE_NODES_COORDINATES",
-        nodesInfo: transformNodes(excludedNodeId, deltaX, deltaY)
+        nodesInfo: transformNodes(null, deltaX, deltaY)
       });
     } else {
       dispatchNodes(_objectSpread(_objectSpread({

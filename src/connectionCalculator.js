@@ -191,6 +191,7 @@ export const createConnections = (nodes, { scale, stageId }, editorId) => {
                     : existingLine.getPointAtLength(0),
                 });
               } else {
+                if (!fromPort || !toPort) return;
                 createSVG({
                   id,
                   outputNodeId: output.nodeId,

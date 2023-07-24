@@ -228,7 +228,7 @@ export const NodeEditor = forwardRef(
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
-          nodesInfo: transformNodes(excludedNodeId, deltaX, deltaY),
+          nodesInfo: transformNodes(null, deltaX, deltaY),
         });
       } else {
         dispatchNodes({
