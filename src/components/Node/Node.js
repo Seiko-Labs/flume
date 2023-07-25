@@ -411,11 +411,7 @@ const Node = forwardRef(
                 />
               </div>
             </>
-          ) : (
-            description && (
-              <div className={styles?.description}>{description}</div>
-            )
-          )}
+          ) : null}
         </div>
         <IoPorts
           nodeId={id}

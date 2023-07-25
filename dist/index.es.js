@@ -12971,9 +12971,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
     nodeData: nodeData,
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
-  }))) : description && /*#__PURE__*/React__default.createElement("div", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.description
-  }, description)), /*#__PURE__*/React__default.createElement(IoPorts$1, {
+  }))) : null), /*#__PURE__*/React__default.createElement(IoPorts$1, {
     nodeId: id,
     resolvedInputs: resolvedInputs,
     show: "inputsOnly",
