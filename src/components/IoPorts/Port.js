@@ -152,6 +152,8 @@ const Port = ({
     document.removeEventListener("mousemove", handleDrag);
   };
 
+  console.log(color);
+
   const handleDragStart = (e) => {
     e.stopPropagation();
     const startPort = port.current.getBoundingClientRect();
@@ -212,7 +214,7 @@ const Port = ({
         className={styles.port}
         style={{
           marginLeft: isInput ? "40%" : -4,
-          backgroundColor: "grey",
+          backgroundColor: color === "#F16969" ? "#F16969" : "grey",
           border: `2px solid white`,
           borderRadius: "100%",
         }}
