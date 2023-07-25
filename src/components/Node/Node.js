@@ -22,6 +22,7 @@ import IoPorts from "../IoPorts/IoPorts";
 import Draggable from "../Draggable/Draggable";
 import { ReactComponent as Ticker } from "../../img/arrow.svg";
 import { ReactComponent as CommentIcon } from "../../img/comment.svg";
+import { ReactComponent as HelpIcon } from "../../img/help.svg";
 import { memo } from "react";
 
 const Comment = ({ onOutsideClick, onChange, value, border }) => {
@@ -301,6 +302,17 @@ const Node = forwardRef(
                 onClick={() => navigator.clipboard.writeText(`{%${id}%}`)}
               >
                 ID: {id}
+              </span>
+              <span
+                title={description}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  marginRight: 5,
+                }}
+              >
+                <HelpIcon />
               </span>
             </div>
             <div

@@ -2,8 +2,8 @@ import * as React from 'react';
 import React__default, { useState, useEffect, memo, useRef, useCallback, useMemo, useLayoutEffect, createContext, forwardRef, useContext, createRef, useReducer, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
 
-function _extends$3() {
-  _extends$3 = Object.assign ? Object.assign.bind() : function (target) {
+function _extends$4() {
+  _extends$4 = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -14,7 +14,7 @@ function _extends$3() {
     }
     return target;
   };
-  return _extends$3.apply(this, arguments);
+  return _extends$4.apply(this, arguments);
 }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -11623,15 +11623,15 @@ var css_248z$7 = ".Checkbox_wrapper__KYSY7{font-size:10px;height:18px;line-heigh
 var styles$5 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
 styleInject(css_248z$7);
 
-var _path$2;
-function _extends$2() { _extends$2 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+var _path$3;
+function _extends$3() { _extends$3 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
 function SvgOkTick(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$2({
+  return /*#__PURE__*/React.createElement("svg", _extends$3({
     width: 6,
     height: 5,
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$2 || (_path$2 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$3 || (_path$3 = /*#__PURE__*/React.createElement("path", {
     d: "M.804 2.34l1.749 1.615L5.497.672",
     stroke: "#fff",
     strokeLinecap: "round",
@@ -11890,20 +11890,20 @@ var Control = function Control(_ref) {
     };
     switch (type) {
       case "select":
-        return /*#__PURE__*/React__default.createElement(Select$1, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default.createElement(Select$1, _extends$4({}, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
           placeholder: placeholder,
           defaultValue: defaultValue
         }));
       case "text":
-        return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
           predicate: predicate,
           placeholder: placeholder,
           validate: validate,
           nodeData: nodeData
         }));
       case "number":
-        return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
           onChange: function onChange(value) {
             var _value$split = value.split("."),
               _value$split2 = _slicedToArray(_value$split, 2);
@@ -11922,11 +11922,11 @@ var Control = function Control(_ref) {
           nodeData: nodeData
         }));
       case "checkbox":
-        return /*#__PURE__*/React__default.createElement(Checkbox$1, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default.createElement(Checkbox$1, _extends$4({}, commonProps, {
           label: calculatedLabel
         }));
       case "multiselect":
-        return /*#__PURE__*/React__default.createElement(Select$1, _extends$3({
+        return /*#__PURE__*/React__default.createElement(Select$1, _extends$4({
           allowMultiple: true
         }, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
@@ -11934,7 +11934,7 @@ var Control = function Control(_ref) {
           label: label
         }));
       case "button":
-        return /*#__PURE__*/React__default.createElement(Button$1, _extends$3({}, commonProps, {
+        return /*#__PURE__*/React__default.createElement(Button$1, _extends$4({}, commonProps, {
           label: label,
           onPress: function onPress() {
             _onPress(inputData, nodeData, onPressButton, executionContext, triggerRecalculation);
@@ -12250,7 +12250,7 @@ var Inner = function Inner(_ref) {
       display: "flex"
     }
   }, controls.map(function (control) {
-    return /*#__PURE__*/React__default.createElement(Control$1, _extends$3({}, control, {
+    return /*#__PURE__*/React__default.createElement(Control$1, _extends$4({}, control, {
       nodeId: nodeId,
       portName: name,
       triggerRecalculation: triggerRecalculation,
@@ -12357,7 +12357,7 @@ var IoPorts = function IoPorts(_ref) {
         className: styles$3.outputs,
         "data-show": show
       }, resolvedOutputs.map(function (output) {
-        return /*#__PURE__*/React__default.createElement(Output$1, _extends$3({}, output, {
+        return /*#__PURE__*/React__default.createElement(Output$1, _extends$4({}, output, {
           optColor: color,
           triggerRecalculation: triggerRecalculation,
           inputTypes: inputTypes,
@@ -12377,7 +12377,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref3.hidePort;
         return !hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default.createElement(Input$1, _extends$3({
+        return /*#__PURE__*/React__default.createElement(Input$1, _extends$4({
           optColor: color
         }, input, {
           data: inputData[input.name] || {},
@@ -12398,7 +12398,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref5.hidePort;
         return hidePort;
       }).map(function (input) {
-        return /*#__PURE__*/React__default.createElement(Inner$1, _extends$3({}, input, {
+        return /*#__PURE__*/React__default.createElement(Inner$1, _extends$4({}, input, {
           data: inputData[input.name] || {},
           isConnected: !!connections.inputs[input.name],
           triggerRecalculation: triggerRecalculation,
@@ -12545,7 +12545,7 @@ var Draggable = function Draggable(_ref) {
     document.addEventListener("mouseup", endDragDelay);
     document.addEventListener("mousemove", checkDragDelay);
   };
-  return /*#__PURE__*/React__default.createElement("div", _extends$3({
+  return /*#__PURE__*/React__default.createElement("div", _extends$4({
     onMouseDown: function onMouseDown(e) {
       if (!disabled || e.button === 1) {
         startDragDelay(e);
@@ -12576,36 +12576,51 @@ var Draggable = function Draggable(_ref) {
 };
 var Draggable$1 = /*#__PURE__*/memo(Draggable);
 
-var _path$1;
-function _extends$1() { _extends$1 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+var _path$2;
+function _extends$2() { _extends$2 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 function SvgArrow(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$1({
+  return /*#__PURE__*/React.createElement("svg", _extends$2({
     width: 10,
     strokeWidth: 0.1,
     height: 6,
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$2 || (_path$2 = /*#__PURE__*/React.createElement("path", {
     d: "M5.013 4.733L9.333.36l.64.64L5.28 5.64h-.587L0 1 .64.36l4.373 4.373z",
     fill: "#fff"
   })));
 }
 
-var _path;
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+var _path$1;
+function _extends$1() { _extends$1 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 function SvgComment(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends({
+  return /*#__PURE__*/React.createElement("svg", _extends$1({
     width: 11,
     height: 11,
     strokeWidth: 0.1,
     viewBox: "0 0 12 12",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
     fillRule: "evenodd",
     clipRule: "evenodd",
     d: "M6.083.981c-2.723 0-4.93 2.196-4.93 4.905 0 .825.203 1.6.564 2.281l.083.158-.482 2.237 1.987-.617.191.117a4.925 4.925 0 002.587.729c2.723 0 4.93-2.196 4.93-4.905S8.807.98 6.084.98zM.166 5.886C.166 2.636 2.816 0 6.083 0 9.351 0 12 2.635 12 5.886c0 3.25-2.65 5.886-5.917 5.886a5.916 5.916 0 01-2.908-.759L0 12l.762-3.537a5.839 5.839 0 01-.596-2.577z",
     fill: "#fff"
+  })));
+}
+
+var _path;
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function SvgHelp(props) {
+  return /*#__PURE__*/React.createElement("svg", _extends({
+    width: 10,
+    height: 10,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+    d: "M5 0c-.902 0-1.735.233-2.5.7A5.082 5.082 0 00.656 2.51 4.989 4.989 0 000 5.02c0 .906.219 1.743.656 2.51A5.082 5.082 0 002.5 9.343 4.937 4.937 0 005 10c.902 0 1.735-.22 2.5-.658A4.772 4.772 0 009.303 7.53 4.763 4.763 0 0010 5.02c0-.906-.232-1.743-.697-2.51A4.772 4.772 0 007.5.7 4.714 4.714 0 005 0zm0 9.26a4.143 4.143 0 01-2.131-.577A4.37 4.37 0 011.31 7.16a4.187 4.187 0 01-.573-2.14 4.805 4.805 0 01.573-2.14A4.266 4.266 0 012.87 1.318 4.143 4.143 0 015 .74a3.93 3.93 0 012.09.576A4.266 4.266 0 018.648 2.88c.382.658.573 1.371.573 2.14 0 .768-.19 1.481-.573 2.14A4.37 4.37 0 017.09 8.682 3.93 3.93 0 015 9.26zm1.189-6.503a1.47 1.47 0 00-.533-.329A1.645 1.645 0 005 2.305a1.85 1.85 0 00-.656.123 1.3 1.3 0 00-.492.37 1.123 1.123 0 00-.286.494 3.07 3.07 0 00-.123.535h.942c0-.137.028-.247.082-.33a.547.547 0 01.246-.205A.658.658 0 015 3.21c.082 0 .15.014.205.041.082 0 .15.027.205.082.054.028.095.083.123.165a.575.575 0 01.04.247c0 .11-.027.233-.081.37-.055.11-.123.22-.205.33l-.574.658c-.082.11-.15.233-.205.37a.563.563 0 00-.04.37v.494h.9v-.37c0-.11.028-.22.083-.33.054-.109.123-.219.205-.328l.287-.33c.109-.11.205-.233.287-.37.081-.137.15-.274.204-.411a1.56 1.56 0 00.082-.494c0-.192-.027-.37-.082-.535a1.034 1.034 0 00-.245-.412zM4.467 6.79h.86v.905h-.86V6.79z",
+    fill: "#C5CEE0",
+    fillOpacity: 0.5
   })));
 }
 
@@ -12862,7 +12877,15 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
     onClick: function onClick() {
       return navigator.clipboard.writeText("{%".concat(id, "%}"));
     }
-  }, "ID: ", id)), /*#__PURE__*/React__default.createElement("div", {
+  }, "ID: ", id), /*#__PURE__*/React__default.createElement("span", {
+    title: description,
+    style: {
+      alignItems: "center",
+      justifyContent: "center",
+      display: "flex",
+      marginRight: 5
+    }
+  }, /*#__PURE__*/React__default.createElement(SvgHelp, null))), /*#__PURE__*/React__default.createElement("div", {
     className: styles$a.nodeInfo,
     style: {
       backgroundColor: tileBackground
@@ -30515,7 +30538,7 @@ var Toaster = function Toaster(_ref) {
   return /*#__PURE__*/React__default.createElement("div", {
     className: styles$2.toaster
   }, toasts.map(function (toast, i) {
-    return /*#__PURE__*/React__default.createElement(Toast, _extends$3({}, toast, {
+    return /*#__PURE__*/React__default.createElement(Toast, _extends$4({}, toast, {
       onHeightReceived: setHeight,
       onExitRequested: startExit,
       onRemoveRequested: removeToast,
@@ -36382,7 +36405,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
     draggableCanvasSet: context.draggableCanvasSet
   }, visible.map(function (node) {
-    return /*#__PURE__*/React__default.createElement(Node$1, _extends$3({}, node, {
+    return /*#__PURE__*/React__default.createElement(Node$1, _extends$4({}, node, {
       isSelected: selectedNodes.includes(node.id),
       ref: nodeRefs.find(function (_ref5) {
         var _ref6 = _slicedToArray(_ref5, 1),
