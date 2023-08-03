@@ -31,7 +31,7 @@ const Stage = forwardRef(
       outerStageChildren,
       dispatchComments,
       disableComments,
-
+      nodes,
       spaceIsPressed,
       focusNode,
       onFocusChange,
@@ -87,28 +87,20 @@ const Stage = forwardRef(
 
       if (focusNode && focusNode.node) {
         // translateWrapper.current.style.transition = "0.5s";
-        // const node = document.getElementById(focusNode.node);
+        const node = Object.values(nodes).find(
+          (node) => node.id === focusNode.node
+        );
 
-        // const rect = node.getBoundingClientRect();
-        // const wrapperRect = translateWrapper.current.getBoundingClientRect();
+        const rect = {
+          x: node.x,
+          y: node.y,
+          width: 300,
+          height: 0,
+        };
 
-        // const x = (rect.x - wrapperRect.x + rect.width / 2) / scale;
-        // const y = (rect.y - wrapperRect.y + rect.height) / scale;
-        // d3Zoom.translateTo(d3Selection, x, y);
+        d3Zoom.translateTo(d3Selection, rect.x, rect.y + 150);
 
-        // onFocusChange && onFocusChange(focusNode);
-
-        // translateWrapper.current.ontransitionend = () => {
-        //   document.getElementById(focusNode.node).style.boxShadow = `0 0 0 ${
-        //     2 / scale
-        //   }px ${focusNode.color}`;
-        //   setTimeout(() => {
-        //     document.getElementById(focusNode.node).style.boxShadow = "none";
-        //   }, 1000);
-        //   translateWrapper.current.style.transition = "0.055s";
-
-        //   translateWrapper.current.ontransitionend = null;
-        // };
+        onFocusChange && onFocusChange(focusNode);
       }
       d3Selection.call(d3Zoom).on("dblclick.zoom", null);
 
@@ -117,7 +109,7 @@ const Stage = forwardRef(
         d3Zoom.on("end", null);
         d3Zoom.on("start", null);
       };
-    }, [spaceIsPressed]);
+    }, [spaceIsPressed, focusNode]);
 
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);

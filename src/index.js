@@ -331,6 +331,7 @@ export const NodeEditor = forwardRef(
 
                           <Stage
                             focusNode={focusNode}
+                            nodes={nodesState[currentStateIndex].state}
                             onFocusChange={onFocusChange}
                             ref={editorRef}
                             editorId={editorId}

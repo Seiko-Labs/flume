@@ -152,8 +152,6 @@ const Port = ({
     document.removeEventListener("mousemove", handleDrag);
   };
 
-  console.log(color);
-
   const handleDragStart = (e) => {
     e.stopPropagation();
     const startPort = port.current.getBoundingClientRect();

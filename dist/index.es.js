@@ -10810,9 +10810,10 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
     outerStageChildren = _ref.outerStageChildren,
     dispatchComments = _ref.dispatchComments,
     disableComments = _ref.disableComments,
+    nodes = _ref.nodes,
     spaceIsPressed = _ref.spaceIsPressed,
-    focusNode = _ref.focusNode;
-    _ref.onFocusChange;
+    focusNode = _ref.focusNode,
+    onFocusChange = _ref.onFocusChange;
   useLayoutEffect(function () {
     var _d3$zoomTransform = transform$1(translateWrapper.current),
       x = _d3$zoomTransform.x,
@@ -10862,14 +10863,27 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref, wrapper) {
         };
       });
     });
-    if (focusNode && focusNode.node) ;
+    if (focusNode && focusNode.node) {
+      // translateWrapper.current.style.transition = "0.5s";
+      var node = Object.values(nodes).find(function (node) {
+        return node.id === focusNode.node;
+      });
+      var rect = {
+        x: node.x,
+        y: node.y,
+        width: 300,
+        height: 0
+      };
+      d3Zoom.translateTo(d3Selection, rect.x, rect.y + 150);
+      onFocusChange && onFocusChange(focusNode);
+    }
     d3Selection.call(d3Zoom).on("dblclick.zoom", null);
     return function () {
       d3Zoom.on("zoom", null);
       d3Zoom.on("end", null);
       d3Zoom.on("start", null);
     };
-  }, [spaceIsPressed]);
+  }, [spaceIsPressed, focusNode]);
   var nodeTypes = useContext(NodeTypesContext);
   var dispatchNodes = useContext(NodeDispatchContext);
   var translateWrapper = useRef();
@@ -12144,7 +12158,6 @@ var Port = function Port(_ref) {
     document.removeEventListener("mouseup", handleDragEnd);
     document.removeEventListener("mousemove", handleDrag);
   };
-  console.log(color);
   var handleDragStart = function handleDragStart(e) {
     e.stopPropagation();
     var startPort = port.current.getBoundingClientRect();
@@ -36385,6 +36398,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     }
   }), /*#__PURE__*/React__default.createElement(Stage$1, {
     focusNode: focusNode,
+    nodes: nodesState[currentStateIndex].state,
     onFocusChange: onFocusChange,
     ref: editorRef,
     editorId: editorId,
