@@ -11559,6 +11559,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
             outputs = _ref8[1];
           outputs.forEach(function (output) {
             var nodeInfo = nodeTypes[node.type];
+            console.log(nodeInfo);
             var fromPort = getPortRect(output.nodeId, output.portName, "output");
             var portHalf = fromPort ? fromPort.width / 2 : 10;
             var toPort = getPortRect(node.id, inputName, "input");
@@ -11566,7 +11567,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
             var existingLine = document.querySelector("[data-connection-id=\"".concat(id, "\"]"));
             if (existingLine) {
               if (nodeInfo) {
-                existingLine.setAttribute("stroke", "".concat(nodeInfo.category.tileBackground || "white"));
+                existingLine.setAttribute("stroke", "".concat(inputName === "errorAction" ? "".concat(inputName === "errorAction" ? "#F16969" : nodeInfo.category.tileBackground || "white") : nodeInfo.category.tileBackground || "white"));
               }
               updateConnection({
                 line: existingLine,
@@ -11581,6 +11582,8 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
               });
             } else {
               if (!fromPort || !toPort) return;
+              console.log(inputName);
+              console.log(output);
               var svg = createSVG({
                 id: id,
                 outputNodeId: output.nodeId,
@@ -11598,7 +11601,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
                 stage: stageRef
               });
               if (nodeInfo) {
-                svg.setAttribute("stroke", "".concat(nodeInfo.category.tileBackground || "white"));
+                svg.setAttribute("stroke", "".concat(inputName === "errorAction" ? "".concat(inputName === "errorAction" ? "#F16969" : nodeInfo.category.tileBackground || "white") : nodeInfo.category.tileBackground || "white"));
               }
             }
           });

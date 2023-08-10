@@ -160,6 +160,8 @@ export const createConnections = (
             outputs.forEach((output) => {
               const nodeInfo = nodeTypes[node.type];
 
+              console.log(nodeInfo);
+
               const fromPort = getPortRect(
                 output.nodeId,
                 output.portName,
@@ -176,7 +178,15 @@ export const createConnections = (
                 if (nodeInfo) {
                   existingLine.setAttribute(
                     "stroke",
-                    `${nodeInfo.category.tileBackground || "white"}`
+                    `${
+                      inputName === "errorAction"
+                        ? `${
+                            inputName === "errorAction"
+                              ? "#F16969"
+                              : nodeInfo.category.tileBackground || "white"
+                          }`
+                        : nodeInfo.category.tileBackground || "white"
+                    }`
                   );
                 }
                 updateConnection({
@@ -206,6 +216,8 @@ export const createConnections = (
                 });
               } else {
                 if (!fromPort || !toPort) return;
+                console.log(inputName);
+                console.log(output);
                 const svg = createSVG({
                   id,
                   outputNodeId: output.nodeId,
@@ -230,7 +242,15 @@ export const createConnections = (
                 if (nodeInfo) {
                   svg.setAttribute(
                     "stroke",
-                    `${nodeInfo.category.tileBackground || "white"}`
+                    `${
+                      inputName === "errorAction"
+                        ? `${
+                            inputName === "errorAction"
+                              ? "#F16969"
+                              : nodeInfo.category.tileBackground || "white"
+                          }`
+                        : nodeInfo.category.tileBackground || "white"
+                    }`
                   );
                 }
               }
