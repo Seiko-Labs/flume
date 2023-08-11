@@ -12012,8 +12012,8 @@ var Connection = function Connection(_ref) {
 var Connection$1 = /*#__PURE__*/memo(Connection);
 
 var Port = function Port(_ref) {
-  var color = _ref.color,
-    _ref$name = _ref.name,
+  _ref.color;
+    var _ref$name = _ref.name,
     name = _ref$name === void 0 ? "" : _ref$name,
     type = _ref.type,
     isInput = _ref.isInput,
@@ -12204,7 +12204,7 @@ var Port = function Port(_ref) {
     className: styles$3.port,
     style: {
       marginLeft: isInput ? "40%" : -4,
-      backgroundColor: color === "#F16969" ? "#F16969" : "grey",
+      backgroundColor: name === "errorAction" ? "#F16969" : "grey",
       border: "2px solid white",
       borderRadius: "100%"
     },

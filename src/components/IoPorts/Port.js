@@ -212,7 +212,7 @@ const Port = ({
         className={styles.port}
         style={{
           marginLeft: isInput ? "40%" : -4,
-          backgroundColor: color === "#F16969" ? "#F16969" : "grey",
+          backgroundColor: name === "errorAction" ? "#F16969" : "grey",
           border: `2px solid white`,
           borderRadius: "100%",
         }}
