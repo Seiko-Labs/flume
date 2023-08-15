@@ -31,10 +31,7 @@ import {
 import { createConnections } from "./connectionCalculator";
 import useConnectorActions from "./hooks/useConnectorActions";
 import nodesReducer, { connectNodesReducer } from "./reducers/nodes";
-import commentsReducer from "./reducers/commentsReducer";
-import toastsReducer from "./reducers/toastsReducer";
 import stageReducer from "./reducers/stageReducer";
-import usePrevious from "./hooks/usePrevious";
 import clamp from "lodash/clamp";
 import Cache from "./Cache";
 import { DRAG_CONNECTION_ID, STAGE_ID } from "./constants";
@@ -42,34 +39,27 @@ import styles from "./styles.css";
 import Selection from "./selection";
 import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
-import nodeStyles from "./components/Node/Node.css";
 import { useVisibleNodes } from "./hooks/useVisibleNodes";
-import { createPortal } from "react-dom";
 
 const defaultContext = {};
 
 export const NodeEditor = forwardRef(
   (
     {
-      comments: initialComments,
       nodeTypes = {},
       portTypes = {},
       context = defaultContext,
       connector,
       initialStageParams: _initialStageParams,
-      hideComments = true,
-      disableComments = true,
       circularBehavior,
       focusNode = { node: null, color: null },
       onFocusChange,
-      debug,
     },
     ref
   ) => {
     const editorId = useId();
     const {
       initialNodes = {},
-      setComments,
       defaultNodes,
       temp: { state: tempState },
       initialNodesState,
@@ -77,23 +67,17 @@ export const NodeEditor = forwardRef(
 
     const cache = useRef(new Cache());
     const stage = useRef();
-    const [sideEffectToasts, setSideEffectToasts] = useState();
-    const [toasts, dispatchToasts] = useReducer(toastsReducer, []);
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
-      connectNodesReducer(
-        nodesReducer,
-        {
-          nodeTypes,
-          portTypes,
-          cache,
-          circularBehavior,
-          context,
-        },
-        setSideEffectToasts
-      ),
+      connectNodesReducer(nodesReducer, {
+        nodeTypes,
+        portTypes,
+        cache,
+        circularBehavior,
+        context,
+      }),
       {},
       () =>
         initialNodesState || {
@@ -111,11 +95,6 @@ export const NodeEditor = forwardRef(
           ],
           currentStateIndex: 0,
         }
-    );
-
-    const [comments, dispatchComments] = useReducer(
-      commentsReducer,
-      initialComments || {}
     );
 
     const [
@@ -147,9 +126,6 @@ export const NodeEditor = forwardRef(
     useImperativeHandle(ref, () => ({
       getNodes() {
         return nodesState[currentStateIndex].state;
-      },
-      getComments() {
-        return comments;
       },
     }));
 
@@ -228,7 +204,7 @@ export const NodeEditor = forwardRef(
       if (selectedNodes.length > 0) {
         dispatchNodes({
           type: "SET_MULTIPLE_NODES_COORDINATES",
-          nodesInfo: transformNodes(null, deltaX, deltaY),
+          nodesInfo: transformNodes(deltaX, deltaY),
         });
       } else {
         dispatchNodes({
@@ -253,7 +229,7 @@ export const NodeEditor = forwardRef(
       selectedNodes,
     });
 
-    const transformNodes = (excludedNodeId, deltaX, deltaY) => {
+    const transformNodes = (deltaX, deltaY) => {
       return selectedNodes
         .map((id) => {
           const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
@@ -282,7 +258,7 @@ export const NodeEditor = forwardRef(
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
         if (selectedNodes.includes(excludedNodeId)) {
-          transformNodes(excludedNodeId, deltaX, deltaY);
+          transformNodes(deltaX, deltaY);
 
           recalculateConnections();
         } else {
@@ -340,21 +316,7 @@ export const NodeEditor = forwardRef(
                             translate={stageState.translate}
                             spaceToPan={true}
                             dispatchStageState={dispatchStageState}
-                            dispatchComments={dispatchComments}
-                            disableComments={disableComments || hideComments}
                             stageRef={stage}
-                            numNodes={
-                              Object.keys(nodesState[currentStateIndex].state)
-                                .length
-                            }
-                            outerStageChildren={
-                              <Toaster
-                                toasts={toasts}
-                                dispatchToasts={dispatchToasts}
-                              />
-                            }
-                            DRAGGABLE_CANVAS={context.DRAGGABLE_CANVAS}
-                            draggableCanvasSet={context.draggableCanvasSet}
                           >
                             {visible.map((node) => (
                               <Node
@@ -385,8 +347,6 @@ export const NodeEditor = forwardRef(
                               id={`${DRAG_CONNECTION_ID}${editorId}`}
                             />
                           </Stage>
-
-                          {/* </HotKeys> */}
                         </RecalculateStageRectContext.Provider>
                       </ControllerOptionsContext.Provider>
                     </EditorIdContext.Provider>

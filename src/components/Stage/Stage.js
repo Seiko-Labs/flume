@@ -28,9 +28,6 @@ const Stage = forwardRef(
       editorId,
       dispatchStageState,
       children,
-      outerStageChildren,
-      dispatchComments,
-      disableComments,
       nodes,
       spaceIsPressed,
       focusNode,
@@ -135,24 +132,17 @@ const Stage = forwardRef(
 
     const byScale = (value) => value / scale;
 
-    const addNode = ({ node, internalType }) => {
+    const addNode = ({ node }) => {
       const wrapperRect = wrapper.current.getBoundingClientRect();
       const x = byScale(menuCoordinates.x - wrapperRect.left - translate.x);
       const y = byScale(menuCoordinates.y - wrapperRect.top - translate.y);
-      if (internalType === "comment") {
-        dispatchComments({
-          type: "ADD_COMMENT",
-          x,
-          y,
-        });
-      } else {
-        dispatchNodes({
-          type: "ADD_NODE",
-          x,
-          y,
-          nodeType: node.type,
-        });
-      }
+
+      dispatchNodes({
+        type: "ADD_NODE",
+        x,
+        y,
+        nodeType: node.type,
+      });
     };
 
     const menuOptions = useMemo(() => {
@@ -168,16 +158,9 @@ const Stage = forwardRef(
           })),
         ["sortIndex", "label"]
       );
-      if (!disableComments) {
-        options.push({
-          value: "comment",
-          label: "Comment",
-          description: "A comment for documenting nodes",
-          internalType: "comment",
-        });
-      }
+
       return options;
-    }, [nodeTypes, disableComments]);
+    }, [nodeTypes]);
 
     return (
       <div
@@ -212,7 +195,6 @@ const Stage = forwardRef(
         >
           {children}
         </div>
-        {outerStageChildren}
       </div>
     );
   }

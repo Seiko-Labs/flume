@@ -78,12 +78,10 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       hideControls,
-      actions: { data: actionsData } = {},
     },
     nodeWrapper
   ) => {
     const [commentVisibile, toggleCommentVisibility] = useState(false);
-    // const cache = useContext(CacheContext);
     const nodeTypes = useContext(NodeTypesContext);
     const nodesDispatch = useContext(NodeDispatchContext);
     const stageState = useContext(StageContext);
@@ -95,7 +93,6 @@ const Node = forwardRef(
       outputs = [],
       icon,
       description,
-      actions: { buttons },
       category: {
         tileFontColor = "#B3B3B3",
         tileBackground = "rgba(89, 89, 102, 0.9)",
@@ -140,7 +137,6 @@ const Node = forwardRef(
               id,
               portName,
               isOutput ? "output" : "input"
-              // cache
             );
 
             if (!toRect) return;
@@ -151,7 +147,7 @@ const Node = forwardRef(
             } else {
               combined = output.nodeId + output.portName + id + portName;
             }
-            // const cachedConnection = null; /* cache.current.connections[combined] */
+
             let cnx = document.querySelector(
               `[data-connection-id="${combined}"]`
             );

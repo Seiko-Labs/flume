@@ -85,7 +85,7 @@ function _typeof$1(obj) {
   }, _typeof$1(obj);
 }
 
-function _toPrimitive$4(input, hint) {
+function _toPrimitive$3(input, hint) {
   if (_typeof$1(input) !== "object" || input === null) return input;
   var prim = input[Symbol.toPrimitive];
   if (prim !== undefined) {
@@ -96,13 +96,13 @@ function _toPrimitive$4(input, hint) {
   return (hint === "string" ? String : Number)(input);
 }
 
-function _toPropertyKey$4(arg) {
-  var key = _toPrimitive$4(arg, "string");
+function _toPropertyKey$3(arg) {
+  var key = _toPrimitive$3(arg, "string");
   return _typeof$1(key) === "symbol" ? key : String(key);
 }
 
 function _defineProperty$1(obj, key, value) {
-  key = _toPropertyKey$4(key);
+  key = _toPropertyKey$3(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -738,7 +738,7 @@ function styleInject(css, ref) {
 }
 
 var css_248z$e = ".Stage_wrapper__1-MnH{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1-MnH *{box-sizing:border-box}.Stage_wrapper__1-MnH input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__15k8U{transform-origin:center center}.Stage_scaleWrapper__Svldl,.Stage_transformWrapper__15k8U{height:0;left:50%;position:absolute;top:50%;width:0}";
-var styles$c = {"wrapper":"Stage_wrapper__1-MnH","transformWrapper":"Stage_transformWrapper__15k8U","scaleWrapper":"Stage_scaleWrapper__Svldl"};
+var styles$b = {"wrapper":"Stage_wrapper__1-MnH","transformWrapper":"Stage_transformWrapper__15k8U","scaleWrapper":"Stage_scaleWrapper__Svldl"};
 styleInject(css_248z$e);
 
 var propTypes = {exports: {}};
@@ -3589,7 +3589,7 @@ module.exports = exports['default'];
 var ScrollBar = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
 
 var css_248z$d = ".ContextMenu_menuWrapper__Z9z6u{background:#161a30;border:1px solid #242b45;border-radius:4px;box-shadow:1px 3px 6px 2px rgba(23,26,48,.35);font-family:Segoe UI,Helvetica,sans-serif;font-size:14px;max-width:300px;min-width:150px;outline:none;position:fixed;touch-action:pan-x pan-y;z-index:9999}.ContextMenu_menuHeader__YueK-{border-bottom:1px solid #2e3a59;display:flex;flex-direction:column;padding:6px}.ContextMenu_menuLabel__s8v-E{color:#c6cee0;font-size:13px;font-weight:600;margin:0}.ContextMenu_optionsWrapper__KHbqz{display:flex;flex-direction:column;overflow-y:auto}.ContextMenu_menuFilter__mcwO6{background:none;border:none;color:#c6cee0;flex:1 1 auto;height:24px;outline:none;width:100%}.ContextMenu_menuFilter__mcwO6::placeholder{font-style:italic}.ContextMenu_option__vWtA9{border-bottom:1px solid #2e3a59;color:#c6cee0;display:flex;flex-direction:column;flex-shrink:0;padding:6px}.ContextMenu_option__vWtA9:last-child{border-bottom:none}.ContextMenu_option__vWtA9:hover{background:#242b45}.ContextMenu_option__vWtA9 label{margin-bottom:3px;user-select:none}.ContextMenu_option__vWtA9 label:last-child{margin-bottom:0}.ContextMenu_option__vWtA9 p{color:#8a8b93;font-size:12px;font-style:italic;margin:0;user-select:none}.ContextMenu_option__vWtA9[data-selected=true]{background:#242b45}.ContextMenu_emptyText__lDw6a{color:#c6cee0;padding:6px}";
-var styles$b = {"menuWrapper":"ContextMenu_menuWrapper__Z9z6u","menuHeader":"ContextMenu_menuHeader__YueK-","menuLabel":"ContextMenu_menuLabel__s8v-E","optionsWrapper":"ContextMenu_optionsWrapper__KHbqz","menuFilter":"ContextMenu_menuFilter__mcwO6","option":"ContextMenu_option__vWtA9","emptyText":"ContextMenu_emptyText__lDw6a"};
+var styles$a = {"menuWrapper":"ContextMenu_menuWrapper__Z9z6u","menuHeader":"ContextMenu_menuHeader__YueK-","menuLabel":"ContextMenu_menuLabel__s8v-E","optionsWrapper":"ContextMenu_optionsWrapper__KHbqz","menuFilter":"ContextMenu_menuFilter__mcwO6","option":"ContextMenu_option__vWtA9","emptyText":"ContextMenu_emptyText__lDw6a"};
 styleInject(css_248z$d);
 
 /**
@@ -4179,7 +4179,7 @@ var ContextMenu = function ContextMenu(_ref) {
     }
   }, [selectedIndex]);
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$b.menuWrapper,
+    className: styles$a.menuWrapper,
     onMouseDown: function onMouseDown(e) {
       return e.stopPropagation();
     },
@@ -4194,15 +4194,15 @@ var ContextMenu = function ContextMenu(_ref) {
     role: "menu",
     "aria-activedescendant": "".concat(menuId.current, "-").concat(selectedIndex)
   }, !hideHeader && (label ? true : !!options.length) ? /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$b.menuHeader
+    className: styles$a.menuHeader
   }, /*#__PURE__*/React__default["default"].createElement("label", {
-    className: styles$b.menuLabel
+    className: styles$a.menuLabel
   }, label), !hideFilter && options.length ? /*#__PURE__*/React__default["default"].createElement("input", {
     type: "text",
     placeholder: "Filter options",
     value: filter,
     onChange: handleFilterChange,
-    className: styles$b.menuFilter,
+    className: styles$a.menuFilter,
     autoFocus: true,
     ref: filterInput
   }) : null) : null, /*#__PURE__*/React__default["default"].createElement(ScrollBar, {
@@ -4219,7 +4219,7 @@ var ContextMenu = function ContextMenu(_ref) {
       maxHeight: clamp_1(window.innerHeight - y - 70, 10, 300)
     }
   }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$b.optionsWrapper,
+    className: styles$a.optionsWrapper,
     role: "menu"
   }, filteredOptions.map(function (option, i) {
     return /*#__PURE__*/React__default["default"].createElement(ContextOption, {
@@ -4235,7 +4235,7 @@ var ContextMenu = function ContextMenu(_ref) {
       key: option.value + i
     }, /*#__PURE__*/React__default["default"].createElement("label", null, option.label), option.description ? /*#__PURE__*/React__default["default"].createElement("p", null, option.description) : null);
   }), !options.length ? /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$b.emptyText
+    className: styles$a.emptyText
   }, emptyText) : null)));
 };
 var ContextOption = function ContextOption(_ref2) {
@@ -4246,7 +4246,7 @@ var ContextOption = function ContextOption(_ref2) {
     selected = _ref2.selected,
     onMouseEnter = _ref2.onMouseEnter;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$b.option,
+    className: styles$a.option,
     role: "menuitem",
     onClick: onClick,
     onMouseEnter: onMouseEnter,
@@ -10834,9 +10834,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     editorId = _ref.editorId,
     dispatchStageState = _ref.dispatchStageState,
     children = _ref.children,
-    outerStageChildren = _ref.outerStageChildren,
-    dispatchComments = _ref.dispatchComments,
-    disableComments = _ref.disableComments,
     nodes = _ref.nodes,
     spaceIsPressed = _ref.spaceIsPressed,
     focusNode = _ref.focusNode,
@@ -10942,25 +10939,16 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     return value / scale;
   };
   var addNode = function addNode(_ref2) {
-    var node = _ref2.node,
-      internalType = _ref2.internalType;
+    var node = _ref2.node;
     var wrapperRect = wrapper.current.getBoundingClientRect();
     var x = byScale(menuCoordinates.x - wrapperRect.left - translate.x);
     var y = byScale(menuCoordinates.y - wrapperRect.top - translate.y);
-    if (internalType === "comment") {
-      dispatchComments({
-        type: "ADD_COMMENT",
-        x: x,
-        y: y
-      });
-    } else {
-      dispatchNodes({
-        type: "ADD_NODE",
-        x: x,
-        y: y,
-        nodeType: node.type
-      });
-    }
+    dispatchNodes({
+      type: "ADD_NODE",
+      x: x,
+      y: y,
+      nodeType: node.type
+    });
   };
   var menuOptions = React.useMemo(function () {
     var options = orderBy_1(Object.values(nodeTypes).filter(function (node) {
@@ -10974,19 +10962,11 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
         node: node
       };
     }), ["sortIndex", "label"]);
-    if (!disableComments) {
-      options.push({
-        value: "comment",
-        label: "Comment",
-        description: "A comment for documenting nodes",
-        internalType: "comment"
-      });
-    }
     return options;
-  }, [nodeTypes, disableComments]);
+  }, [nodeTypes]);
   return /*#__PURE__*/React__default["default"].createElement("div", {
     id: "".concat(STAGE_ID).concat(editorId),
-    className: styles$c.wrapper,
+    className: styles$b.wrapper,
     ref: wrapper,
     onContextMenu: handleContextMenu,
     onMouseDown: function onMouseDown(e) {
@@ -11007,7 +10987,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       transform: "translate3d(".concat(translate.x, "px, ").concat(translate.y, "px, 0px) scale3d(").concat(scale, ", ").concat(scale, ", ").concat(scale, ")"),
       transformOrigin: "0 0"
     }
-  }, children), outerStageChildren);
+  }, children));
 });
 Stage.displayName = "Stage";
 var Stage$1 = /*#__PURE__*/React.memo(Stage);
@@ -11082,7 +11062,7 @@ var useTransputs = (function (transputsFn, transputType, nodeId, inputData, conn
 });
 
 var css_248z$c = ".Node_wrapper__S8Vij{align-items:stretch;animation:Node_fadein__sO4b8 .1s;border-radius:4px;box-sizing:border-box;cursor:default;display:flex;flex-direction:row;left:0;position:absolute;top:0;user-select:none;z-index:0}@keyframes Node_fadein__sO4b8{0%{opacity:0}to{opacity:1}}.Node_body__1-BJC{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;min-width:150px;width:max-content}.Node_body__1-BJC *{color:#c5cee0}.Node_header__RNCw9{align-items:center;white-space:nowrap!important;width:100%}.Node_headerMeta__Pjkgx{align-items:center;display:flex;justify-content:center;padding:0 2px;text-align:center;width:100%}.Node_headerMeta__Pjkgx>*+*{margin-left:4px}.Node_title__Bf6Fu{align-items:center;display:flex;justify-content:center}.Node_title__Bf6Fu>*+*{margin-left:2px}.Node_title__Bf6Fu>img{height:10px;object-fit:contain;width:10px}.Node_title__Bf6Fu>span.Node_label__v7h4v{font-size:10px;font-weight:700;line-height:16px}.Node_id__w7BN0{cursor:copy;font-size:10px;line-height:16px;opacity:.5;width:100%}.Node_id__w7BN0:hover{font-weight:700;opacity:1}.Node_headerActions__HrHJZ{align-items:center;display:flex;padding:4px}.Node_headerActions__HrHJZ>*{max-height:16px;max-width:16px;object-fit:contain}.Node_description__pEph6{font-size:10px;font-style:italic;font-weight:400;max-width:120px;padding:4px}.Node_nodeInfo__j0gHK{align-items:center;display:flex;justify-content:center;margin-bottom:5px;padding:0 10px}";
-var styles$a = {"wrapper":"Node_wrapper__S8Vij","fadein":"Node_fadein__sO4b8","body":"Node_body__1-BJC","header":"Node_header__RNCw9","headerMeta":"Node_headerMeta__Pjkgx","title":"Node_title__Bf6Fu","label":"Node_label__v7h4v","id":"Node_id__w7BN0","headerActions":"Node_headerActions__HrHJZ","description":"Node_description__pEph6","nodeInfo":"Node_nodeInfo__j0gHK"};
+var styles$9 = {"wrapper":"Node_wrapper__S8Vij","fadein":"Node_fadein__sO4b8","body":"Node_body__1-BJC","header":"Node_header__RNCw9","headerMeta":"Node_headerMeta__Pjkgx","title":"Node_title__Bf6Fu","label":"Node_label__v7h4v","id":"Node_id__w7BN0","headerActions":"Node_headerActions__HrHJZ","description":"Node_description__pEph6","nodeInfo":"Node_nodeInfo__j0gHK"};
 styleInject(css_248z$c);
 
 function constant$3(x) {
@@ -11458,7 +11438,7 @@ var curveBundle = (function custom(beta) {
 })(0.85);
 
 var css_248z$b = ".Connection_svg__dY13y{left:0;overflow:visible!important;pointer-events:none;position:absolute;top:0;z-index:-1}";
-var styles$9 = {"svg":"Connection_svg__dY13y"};
+var styles$8 = {"svg":"Connection_svg__dY13y"};
 styleInject(css_248z$b);
 
 function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -11546,7 +11526,7 @@ var createSVG = function createSVG(_ref5) {
     inputNodeId = _ref5.inputNodeId,
     inputPortName = _ref5.inputPortName;
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", styles$9.svg);
+  svg.setAttribute("class", styles$8.svg);
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   var curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
@@ -11639,16 +11619,16 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
 };
 
 var css_248z$a = ".index_wrapper__kDZ3U{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0;max-width:70px;width:100%}.index_wrapper__kDZ3U>*{line-height:normal}.index_button__HB4GI{background:linear-gradient(180deg,hsla(0,0%,100%,.1) 39.58%,hsla(0,0%,100%,.05));border:1px solid rgba(0,0,0,.3);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;overflow:hidden;padding:2px;text-align:center;text-overflow:ellipsis;transition:all .2s ease-out;white-space:nowrap;width:100%}.index_button__HB4GI:focus,.index_button__HB4GI:hover{background:linear-gradient(180deg,hsla(0,0%,100%,.2) 39.58%,hsla(0,0%,100%,.1))}.index_button__HB4GI:active{background:linear-gradient(0deg,rgba(0,0,0,.1) 39.58%,rgba(0,0,0,.05))}";
-var styles$8 = {"wrapper":"index_wrapper__kDZ3U","button":"index_button__HB4GI"};
+var styles$7 = {"wrapper":"index_wrapper__kDZ3U","button":"index_button__HB4GI"};
 styleInject(css_248z$a);
 
 var Button = function Button(_ref) {
   var onPress = _ref.onPress,
     label = _ref.label;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$8.wrapper
+    className: styles$7.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$8.button,
+    className: styles$7.button,
     title: label,
     onClick: onPress
   }, label));
@@ -11656,15 +11636,15 @@ var Button = function Button(_ref) {
 var Button$1 = /*#__PURE__*/React.memo(Button);
 
 var css_248z$9 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
-var styles$7 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
+var styles$6 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
 styleInject(css_248z$9);
 
 var css_248z$8 = ".Control_wrapper__-SFsk{padding:1px 2px 1px 1px;width:100%}";
-var styles$6 = {"wrapper":"Control_wrapper__-SFsk"};
+var styles$5 = {"wrapper":"Control_wrapper__-SFsk"};
 styleInject(css_248z$8);
 
 var css_248z$7 = ".Checkbox_wrapper__KYSY7{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__-WxSv{display:none}.Checkbox_checkboxMark__qj3ov{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__qj3ov>*{display:none}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov>*{display:block}";
-var styles$5 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
+var styles$4 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
 styleInject(css_248z$7);
 
 var _path$3;
@@ -11688,10 +11668,10 @@ var Checkbox = function Checkbox(_ref) {
     data = _ref.data,
     _onChange = _ref.onChange;
   return /*#__PURE__*/React__default["default"].createElement("label", {
-    className: styles$5.wrapper,
+    className: styles$4.wrapper,
     title: label
   }, /*#__PURE__*/React__default["default"].createElement("input", {
-    className: styles$5.checkbox,
+    className: styles$4.checkbox,
     type: "checkbox",
     value: data,
     checked: data,
@@ -11699,7 +11679,7 @@ var Checkbox = function Checkbox(_ref) {
       return _onChange(e.target.checked);
     }
   }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$5.checkboxMark
+    className: styles$4.checkboxMark
   }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
 };
 var Checkbox$1 = /*#__PURE__*/React.memo(Checkbox);
@@ -11717,7 +11697,7 @@ var TextInput = function TextInput(_ref) {
     openEditor = _useContext.openEditor,
     isRightBarOpened = _useContext.isRightBarOpened;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$7.wrapper
+    className: styles$6.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("input", {
     onChange: function onChange(_ref2) {
       var target = _ref2.target;
@@ -11734,9 +11714,9 @@ var TextInput = function TextInput(_ref) {
     },
     type: "text",
     placeholder: placeholder,
-    className: styles$7.input
+    className: styles$6.input
   }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$7.expander,
+    className: styles$6.expander,
     onClick: function onClick() {
       document.activeElement.blur();
       openEditor(data, _onChange, nodeData);
@@ -11746,11 +11726,11 @@ var TextInput = function TextInput(_ref) {
 var TextInput$1 = /*#__PURE__*/React.memo(TextInput);
 
 var css_248z$6 = ".Select_wrapper__LU8xp{background-color:rgba(0,0,0,.1);background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' fill='none' stroke='%23fff' stroke-opacity='.3'%3E%3Cpath d='m1 1.505 2.683 2.993m0 0v-.001m0 .001L6.68 1.502' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-position:calc(100% - 2px);background-repeat:no-repeat;background-size:7px 7px;border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R,.Select_wrapper__LU8xp:active,.Select_wrapper__LU8xp:focus,.Select_wrapper__LU8xp:hover{background-color:rgba(0,0,0,.25)}.Select_chipWrapper__zZu-R{border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;display:inline-block;font-size:10px;height:16px;line-height:10px;margin-right:3px;outline:none;overflow-x:hidden;padding:2px 8px 2px 2px;position:relative;text-overflow:ellipsis;white-space:nowrap;width:57px}.Select_chipWrapper__zZu-R:nth-child(3n){margin-right:0}.Select_deleteButton__K7AfO{align-items:center;background:none;border:none;border-radius:3px;color:hsla(0,0%,100%,.3);display:flex;font-size:8px;font-weight:700;height:100%;justify-content:center;padding:0;position:absolute;right:1px;top:-1px;width:8px}.Select_deleteButton__K7AfO:active,.Select_deleteButton__K7AfO:focus,.Select_deleteButton__K7AfO:hover{color:inherit}";
-var styles$4 = {"wrapper":"Select_wrapper__LU8xp","chipWrapper":"Select_chipWrapper__zZu-R","deleteButton":"Select_deleteButton__K7AfO"};
+var styles$3 = {"wrapper":"Select_wrapper__LU8xp","chipWrapper":"Select_chipWrapper__zZu-R","deleteButton":"Select_deleteButton__K7AfO"};
 styleInject(css_248z$6);
 
-function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$g(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$e(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var MAX_LABEL_LENGTH = 50;
 var Select = function Select(_ref) {
   var _ref$options = _ref.options,
@@ -11809,13 +11789,13 @@ var Select = function Select(_ref) {
       return o.value === data;
     });
     if (option) {
-      return _objectSpread$g(_objectSpread$g({}, option), {}, {
+      return _objectSpread$e(_objectSpread$e({}, option), {}, {
         label: option.label.length > MAX_LABEL_LENGTH ? option.label.slice(0, MAX_LABEL_LENGTH) + "..." : option.label
       });
     }
   }, [options, data]);
   return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, (allowMultiple || !selectedOption) && /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$4.wrapper,
+    className: styles$3.wrapper,
     ref: wrapper,
     onClick: openDrawer,
     title: placeholder
@@ -11851,7 +11831,7 @@ var SelectedOption = function SelectedOption(_ref2) {
     var wrapperRef = _ref2.wrapperRef,
     onClick = _ref2.onClick;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$4.wrapper,
+    className: styles$3.wrapper,
     onClick: onClick,
     ref: wrapperRef,
     title: label
@@ -11861,10 +11841,10 @@ var OptionChip = function OptionChip(_ref3) {
   var children = _ref3.children,
     onRequestDelete = _ref3.onRequestDelete;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$4.chipWrapper,
+    className: styles$3.chipWrapper,
     title: children.toString()
   }, children, /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$4.deleteButton,
+    className: styles$3.deleteButton,
     onMouseDown: function onMouseDown(e) {
       e.stopPropagation();
     },
@@ -11872,8 +11852,8 @@ var OptionChip = function OptionChip(_ref3) {
   }, "\u2715"));
 };
 
-function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$f(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var Control = function Control(_ref) {
   var type = _ref.type,
     name = _ref.name,
@@ -11997,8 +11977,8 @@ var Control = function Control(_ref) {
     }
   };
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$6.wrapper,
-    style: _objectSpread$f({}, type.match(/^multiselect$/) && {
+    className: styles$5.wrapper,
+    style: _objectSpread$d({}, type.match(/^multiselect$/) && {
       width: "auto"
     })
   }, getControlByType(type));
@@ -12006,7 +11986,7 @@ var Control = function Control(_ref) {
 var Control$1 = /*#__PURE__*/React.memo(Control);
 
 var css_248z$5 = ".IoPorts_wrapper__4jboF{display:flex;flex-direction:column}.IoPorts_inputs__M7xAH,.IoPorts_outputs__hqc88{align-items:center;display:flex;flex-direction:column;height:100%;justify-content:center;position:absolute}.IoPorts_inputs__M7xAH{right:0}.IoPorts_inputs__M7xAH>*+*{margin-top:4px}table.IoPorts_inner__NsCyd{border:none;border-spacing:0;color:inherit;margin:0 0 4px;padding:0;width:max-content}table.IoPorts_inner__NsCyd>tbody>tr>td{margin:0;padding:0}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_portLabel__XY5gi{font-size:10px;font-weight:600;line-height:10px;max-width:80px;overflow:hidden;padding-left:4px;text-overflow:ellipsis;white-space:nowrap}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ{display:flex;flex-wrap:wrap;max-width:184px;padding-right:4px}table.IoPorts_inner__NsCyd>tbody>tr>td.IoPorts_controls__J4rPJ>*{display:inline-block;float:left;overflow-x:hidden;width:60px}.IoPorts_port__ZC6Mw{border-radius:8px;box-sizing:border-box;height:8px;margin:0;padding:0;width:8px}.IoPorts_port__ZC6Mw *{pointer-events:none}.IoPorts_controlWrapper__jemED{align-items:center;border:none;border-spacing:0;color:inherit;display:grid;font-size:10px;grid-template-columns:25% 75%;line-height:10px;max-width:250px;min-width:200px;padding:1px 5px}";
-var styles$3 = {"wrapper":"IoPorts_wrapper__4jboF","outputs":"IoPorts_outputs__hqc88","inputs":"IoPorts_inputs__M7xAH","inner":"IoPorts_inner__NsCyd","portLabel":"IoPorts_portLabel__XY5gi","controls":"IoPorts_controls__J4rPJ","port":"IoPorts_port__ZC6Mw","controlWrapper":"IoPorts_controlWrapper__jemED"};
+var styles$2 = {"wrapper":"IoPorts_wrapper__4jboF","outputs":"IoPorts_outputs__hqc88","inputs":"IoPorts_inputs__M7xAH","inner":"IoPorts_inner__NsCyd","portLabel":"IoPorts_portLabel__XY5gi","controls":"IoPorts_controls__J4rPJ","port":"IoPorts_port__ZC6Mw","controlWrapper":"IoPorts_controlWrapper__jemED"};
 styleInject(css_248z$5);
 
 var Connection = function Connection(_ref) {
@@ -12020,7 +12000,7 @@ var Connection = function Connection(_ref) {
     inputPortName = _ref.inputPortName;
   var curve = calculateCurve(from, to);
   return /*#__PURE__*/React__default["default"].createElement("svg", {
-    className: styles$9.svg
+    className: styles$8.svg
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     "data-connection-id": id,
     "data-output-node-id": outputNodeId,
@@ -12228,7 +12208,7 @@ var Port = function Port(_ref) {
   };
   return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
     onMouseDown: handleDragStart,
-    className: styles$3.port,
+    className: styles$2.port,
     style: {
       marginLeft: isInput ? "40%" : -4,
       backgroundColor: name === "errorAction" ? "#F16969" : "grey",
@@ -12273,7 +12253,7 @@ var Inner = function Inner(_ref) {
     defaultControls = _ref2$controls === void 0 ? [] : _ref2$controls;
   var controls = localControls || defaultControls;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$3.controlWrapper,
+    className: styles$2.controlWrapper,
     "data-controlless": noControls || !controls.length,
     "data-is-inner": true,
     onDragStart: function onDragStart(e) {
@@ -12336,7 +12316,7 @@ var Input = function Input(_ref) {
     }
   }, [isConnected, prevConnected, triggerRecalculation]);
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$3.transput,
+    className: styles$2.transput,
     "data-controlless": isConnected || noControls || !controls.length,
     onDragStart: function onDragStart(e) {
       e.preventDefault();
@@ -12364,7 +12344,7 @@ var Output = function Output(_ref) {
     c = _ref.color;
   var color = inputTypes[type].color;
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$3.transput,
+    className: styles$2.transput,
     "data-controlless": true,
     onDragStart: function onDragStart(e) {
       e.preventDefault();
@@ -12398,7 +12378,7 @@ var IoPorts = function IoPorts(_ref) {
   switch (show) {
     case "outputsOnly":
       return (resolvedOutputs.length || null) && /*#__PURE__*/React__default["default"].createElement("div", {
-        className: styles$3.outputs,
+        className: styles$2.outputs,
         "data-show": show
       }, resolvedOutputs.map(function (output) {
         return /*#__PURE__*/React__default["default"].createElement(Output$1, _extends$4({}, output, {
@@ -12415,7 +12395,7 @@ var IoPorts = function IoPorts(_ref) {
         var hidePort = _ref2.hidePort;
         return !hidePort;
       }) && /*#__PURE__*/React__default["default"].createElement("div", {
-        className: styles$3.inputs,
+        className: styles$2.inputs,
         "data-show": show
       }, resolvedInputs.filter(function (_ref3) {
         var hidePort = _ref3.hidePort;
@@ -12487,7 +12467,7 @@ function _objectWithoutProperties(source, excluded) {
   return target;
 }
 
-var _excluded$2 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
+var _excluded$1 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
 var Draggable = function Draggable(_ref) {
   var children = _ref.children,
     stageState = _ref.stageState;
@@ -12502,7 +12482,7 @@ var Draggable = function Draggable(_ref) {
     _ref$delay = _ref.delay,
     delay = _ref$delay === void 0 ? 6 : _ref$delay,
     innerRef = _ref.innerRef,
-    rest = _objectWithoutProperties(_ref, _excluded$2);
+    rest = _objectWithoutProperties(_ref, _excluded$1);
   var startCoordinates = React__default["default"].useRef(null);
   var offset = React__default["default"].useRef();
   var wrapper = React__default["default"].useRef();
@@ -12725,15 +12705,11 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     onDragStart = _ref2.onDragStart,
     _onDragEnd = _ref2.onDragEnd,
     onDragHandle = _ref2.onDragHandle,
-    hideControls = _ref2.hideControls,
-    _ref2$actions = _ref2.actions,
-    _ref2$actions2 = _ref2$actions === void 0 ? {} : _ref2$actions;
-    _ref2$actions2.data;
+    hideControls = _ref2.hideControls;
   var _useState = React.useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     commentVisibile = _useState2[0],
     toggleCommentVisibility = _useState2[1];
-  // const cache = useContext(CacheContext);
   var nodeTypes = React.useContext(NodeTypesContext);
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var stageState = React.useContext(StageContext);
@@ -12746,9 +12722,8 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     _nodeTypes$type$outpu = _nodeTypes$type.outputs,
     outputs = _nodeTypes$type$outpu === void 0 ? [] : _nodeTypes$type$outpu,
     icon = _nodeTypes$type.icon,
-    description = _nodeTypes$type.description;
-    _nodeTypes$type.actions.buttons;
-    var _nodeTypes$type$categ = _nodeTypes$type.category,
+    description = _nodeTypes$type.description,
+    _nodeTypes$type$categ = _nodeTypes$type.category,
     _nodeTypes$type$categ2 = _nodeTypes$type$categ.tileFontColor,
     tileFontColor = _nodeTypes$type$categ2 === void 0 ? "#B3B3B3" : _nodeTypes$type$categ2,
     _nodeTypes$type$categ3 = _nodeTypes$type$categ.tileBackground,
@@ -12790,10 +12765,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
         outputs = _ref4[1];
       outputs.forEach(function (output) {
         if (stageRect.current) {
-          var toRect = getPortRect(id, portName, isOutput ? "output" : "input"
-          // cache
-          );
-
+          var toRect = getPortRect(id, portName, isOutput ? "output" : "input");
           if (!toRect) return;
           var portHalf = toRect.width / 2;
           var combined;
@@ -12802,7 +12774,6 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
           } else {
             combined = output.nodeId + output.portName + id + portName;
           }
-          // const cachedConnection = null; /* cache.current.connections[combined] */
           var cnx = document.querySelector("[data-connection-id=\"".concat(combined, "\"]"));
           if (!cnx) return;
           var from = {
@@ -12871,7 +12842,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     }));
   }, [resolvedInputs]);
   return /*#__PURE__*/React__default["default"].createElement(Draggable$1, {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.wrapper,
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.wrapper,
     style: {
       background: "rgba(46, 58, 89)",
       color: tileFontColor,
@@ -12910,14 +12881,14 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     updateNodeConnections: updateNodeConnections,
     inputData: inputData
   }), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.body,
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.body,
     id: "in_body"
   }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.header
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.header
   }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.headerMeta
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.headerMeta
   }, /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.id,
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.id,
     onClick: function onClick() {
       return navigator.clipboard.writeText("{%".concat(id, "%}"));
     }
@@ -12930,7 +12901,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       marginRight: 5
     }
   }, /*#__PURE__*/React__default["default"].createElement(SvgHelp, null))), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a.nodeInfo,
+    className: styles$9.nodeInfo,
     style: {
       backgroundColor: tileBackground
     }
@@ -12962,7 +12933,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       });
     }
   }), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.title,
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.title,
     style: {
       color: "#fff",
       margin: "0 auto"
@@ -12970,7 +12941,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
   }, icon && /*#__PURE__*/React__default["default"].createElement("img", {
     src: icon
   }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$a === null || styles$a === void 0 ? void 0 : styles$a.label,
+    className: styles$9 === null || styles$9 === void 0 ? void 0 : styles$9.label,
     style: {
       color: "#fff",
       margin: "0 auto"
@@ -13058,7 +13029,7 @@ function _defineProperties(target, props) {
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, _toPropertyKey$4(descriptor.key), descriptor);
+    Object.defineProperty(target, _toPropertyKey$3(descriptor.key), descriptor);
   }
 }
 function _createClass(Constructor, protoProps, staticProps) {
@@ -30332,10 +30303,10 @@ var getPortBuilders = function getPortBuilders(ports) {
   }, {});
 };
 
-function _toPropertyKey$3(arg) { var key = _toPrimitive$3(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
-function _toPrimitive$3(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$e(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _toPropertyKey$2(arg) { var key = _toPrimitive$2(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
+function _toPrimitive$2(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var Colors = {
   yellow: "yellow",
   orange: "orange",
@@ -30350,8 +30321,8 @@ var FlumeConfig = /*#__PURE__*/function () {
   function FlumeConfig(config) {
     _classCallCheck(this, FlumeConfig);
     if (config) {
-      this.nodeTypes = _objectSpread$e({}, config.nodeTypes);
-      this.portTypes = _objectSpread$e({}, config.portTypes);
+      this.nodeTypes = _objectSpread$c({}, config.nodeTypes);
+      this.portTypes = _objectSpread$c({}, config.portTypes);
     } else {
       this.nodeTypes = {};
       this.portTypes = {};
@@ -30360,7 +30331,7 @@ var FlumeConfig = /*#__PURE__*/function () {
   _createClass(FlumeConfig, [{
     key: "addRootNodeType",
     value: function addRootNodeType(config) {
-      this.addNodeType(_objectSpread$e(_objectSpread$e({}, config), {}, {
+      this.addNodeType(_objectSpread$c(_objectSpread$c({}, config), {}, {
         root: true,
         addable: false,
         deletable: false
@@ -30463,7 +30434,7 @@ var FlumeConfig = /*#__PURE__*/function () {
       } else {
         var _this$nodeTypes = this.nodeTypes;
           _this$nodeTypes[type];
-          var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$3));
+          var nodeTypes = _objectWithoutProperties(_this$nodeTypes, [type].map(_toPropertyKey$2));
         this.nodeTypes = nodeTypes;
       }
       return this;
@@ -30540,7 +30511,7 @@ var FlumeConfig = /*#__PURE__*/function () {
         } else {
           var _this$portTypes = this.portTypes;
             _this$portTypes[type];
-            var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$3));
+            var portTypes = _objectWithoutProperties(_this$portTypes, [type].map(_toPropertyKey$2));
           this.portTypes = portTypes;
         }
       }
@@ -30551,118 +30522,7 @@ var FlumeConfig = /*#__PURE__*/function () {
 }();
 
 var css_248z$2 = ".Toaster_toaster__E5R8O{align-items:center;bottom:0;box-shadow:0 5px 10px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;height:1px;left:0;padding-bottom:15px;pointer-events:none;position:absolute;width:100%}.Toaster_toast__2wgPt{animation:Toaster_fade-in__y8znw .15s;background:#e7e7e7;border:1px solid;border-radius:6px;display:flex;flex:0 0 auto;flex-direction:column;font-size:14px;left:calc(50% - 200px);margin-bottom:5px;padding:7px 16px 10px 10px;pointer-events:all;position:absolute;top:0;transition:transform .3s;user-select:none;width:400px;will-change:transform}.Toaster_toast__2wgPt[data-type=danger]{background:#ff7489;border-color:#fe6388;color:#420614}.Toaster_toast__2wgPt[data-type=info]{background:#4cc1fa;border-color:#67b6ff;color:#052440}.Toaster_toast__2wgPt[data-type=success]{background:#51e696;border-color:#55e396;color:#07391e}.Toaster_toast__2wgPt[data-type=warning]{background:#f5d05d;border-color:#f7eb7d;color:#534b08}.Toaster_toast__2wgPt[data-exiting=true]{animation:Toaster_fade-out__XANRE .15s;animation-fill-mode:forwards}.Toaster_toast__2wgPt p{margin:0}.Toaster_title__UqwtP{font-size:16px;font-weight:700;margin-bottom:5px}.Toaster_timer__P6Wpm{animation:Toaster_timer__P6Wpm 1s linear;animation-fill-mode:forwards;background:rgba(0,0,0,.4);bottom:-1px;height:3px;left:-1px;position:absolute;transform-origin:left center;width:calc(100% + 2px);z-index:9}.Toaster_exitButton__8SpPt{align-items:center;background:none;border:none;color:inherit;display:flex;font-size:14px;height:20px;justify-content:center;opacity:.6;padding:0;position:absolute;right:0;top:0;width:20px}.Toaster_exitButton__8SpPt:hover{opacity:.9}@keyframes Toaster_fade-in__y8znw{0%{opacity:0}to{opacity:1}}@keyframes Toaster_fade-out__XANRE{0%{opacity:1}to{opacity:0}}@keyframes Toaster_timer__P6Wpm{0%{transform:scaleX(1)}to{transform:scaleX(0)}}";
-var styles$2 = {"toaster":"Toaster_toaster__E5R8O","toast":"Toaster_toast__2wgPt","fade-in":"Toaster_fade-in__y8znw","fade-out":"Toaster_fade-out__XANRE","title":"Toaster_title__UqwtP","timer":"Toaster_timer__P6Wpm","exitButton":"Toaster_exitButton__8SpPt"};
 styleInject(css_248z$2);
-
-var Toaster = function Toaster(_ref) {
-  var _ref$toasts = _ref.toasts,
-    toasts = _ref$toasts === void 0 ? [] : _ref$toasts,
-    dispatchToasts = _ref.dispatchToasts;
-  var setHeight = React__default["default"].useCallback(function (id, height) {
-    dispatchToasts({
-      type: "SET_HEIGHT",
-      id: id,
-      height: height
-    });
-  }, [dispatchToasts]);
-  var startExit = React__default["default"].useCallback(function (id) {
-    dispatchToasts({
-      type: "SET_EXITING",
-      id: id
-    });
-  }, [dispatchToasts]);
-  var removeToast = React__default["default"].useCallback(function (id) {
-    dispatchToasts({
-      type: "REMOVE_TOAST",
-      id: id
-    });
-  }, [dispatchToasts]);
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$2.toaster
-  }, toasts.map(function (toast, i) {
-    return /*#__PURE__*/React__default["default"].createElement(Toast, _extends$4({}, toast, {
-      onHeightReceived: setHeight,
-      onExitRequested: startExit,
-      onRemoveRequested: removeToast,
-      y: toasts.slice(0, i + 1).reduce(function (y, t) {
-        return t.height + y + 5;
-      }, 0),
-      key: toast.id
-    }));
-  }));
-};
-var Toaster$1 = /*#__PURE__*/React.memo(Toaster);
-var Toast = function Toast(_ref2) {
-  var id = _ref2.id,
-    title = _ref2.title,
-    message = _ref2.message,
-    duration = _ref2.duration,
-    type = _ref2.type,
-    exiting = _ref2.exiting,
-    y = _ref2.y,
-    onHeightReceived = _ref2.onHeightReceived,
-    onExitRequested = _ref2.onExitRequested,
-    onRemoveRequested = _ref2.onRemoveRequested;
-  var _React$useState = React__default["default"].useState(false),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    paused = _React$useState2[0],
-    setPaused = _React$useState2[1];
-  var wrapper = React__default["default"].useRef();
-  var timer = React__default["default"].useRef();
-  var stopTimer = React__default["default"].useCallback(function () {
-    setPaused(true);
-    clearTimeout(timer.current);
-  }, []);
-  var resumeTimer = React__default["default"].useCallback(function () {
-    setPaused(false);
-    timer.current = setTimeout(function () {
-      return onExitRequested(id);
-    }, duration);
-  }, [id, duration, onExitRequested]);
-  React__default["default"].useLayoutEffect(function () {
-    var _wrapper$current$getB = wrapper.current.getBoundingClientRect(),
-      height = _wrapper$current$getB.height;
-    onHeightReceived(id, height);
-  }, [onHeightReceived, id]);
-  React__default["default"].useEffect(function () {
-    resumeTimer();
-    return stopTimer;
-  }, [resumeTimer, stopTimer]);
-  var handleAnimationEnd = function handleAnimationEnd() {
-    if (exiting) {
-      onRemoveRequested(id);
-    }
-  };
-  return /*#__PURE__*/React__default["default"].createElement("div", {
-    ref: wrapper,
-    className: styles$2.toast,
-    "data-type": type,
-    style: {
-      transform: "translateY(-".concat(y, "px)")
-    },
-    "data-exiting": exiting,
-    onAnimationEnd: handleAnimationEnd,
-    onMouseEnter: stopTimer,
-    onMouseLeave: resumeTimer,
-    role: "alert"
-  }, title ? /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$2.title
-  }, title) : null, /*#__PURE__*/React__default["default"].createElement("p", null, message), !paused && /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$2.timer,
-    style: {
-      animationDuration: "".concat(duration, "ms")
-    },
-    onAnimationEnd: function onAnimationEnd(e) {
-      return e.stopPropagation();
-    }
-  }), /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$2.exitButton,
-    onClick: function onClick() {
-      stopTimer();
-      onExitRequested(id);
-    }
-  }, "\u2715"));
-};
 
 var css_248z$1 = ".Connections_svgWrapper__6Rcg4{height:0;left:0;position:absolute;top:0;z-index:-1}";
 var styles$1 = {"svgWrapper":"Connections_svgWrapper__6Rcg4"};
@@ -34618,16 +34478,16 @@ var removeConnections = (function (connections, nodeId) {
   };
 });
 
-function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _toPropertyKey$2(arg) { var key = _toPrimitive$2(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
-function _toPrimitive$2(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _toPropertyKey$1(arg) { var key = _toPrimitive$1(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
+function _toPrimitive$1(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var removeNode = (function (startNodes, nodeId) {
   var clearView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
   startNodes[nodeId];
-    var nodes = _objectWithoutProperties(startNodes, [nodeId].map(_toPropertyKey$2));
+    var nodes = _objectWithoutProperties(startNodes, [nodeId].map(_toPropertyKey$1));
   nodes = Object.values(nodes).reduce(function (obj, node) {
-    obj[node.id] = _objectSpread$d(_objectSpread$d({}, node), {}, {
+    obj[node.id] = _objectSpread$b(_objectSpread$b({}, node), {}, {
       connections: removeConnections(node.connections, nodeId)
     });
     return obj;
@@ -34636,20 +34496,20 @@ var removeNode = (function (startNodes, nodeId) {
   return nodes;
 });
 
-function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var addConnection = (function (nodes, input, output, portTypes) {
   var _objectSpread4;
-  return _objectSpread$c(_objectSpread$c({}, nodes), {}, (_objectSpread4 = {}, _defineProperty$1(_objectSpread4, input.nodeId, _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId]), {}, {
-    connections: _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId].connections), {}, {
-      inputs: _objectSpread$c(_objectSpread$c({}, nodes[input.nodeId].connections.inputs), {}, _defineProperty$1({}, input.portName, [].concat(_toConsumableArray(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
+  return _objectSpread$a(_objectSpread$a({}, nodes), {}, (_objectSpread4 = {}, _defineProperty$1(_objectSpread4, input.nodeId, _objectSpread$a(_objectSpread$a({}, nodes[input.nodeId]), {}, {
+    connections: _objectSpread$a(_objectSpread$a({}, nodes[input.nodeId].connections), {}, {
+      inputs: _objectSpread$a(_objectSpread$a({}, nodes[input.nodeId].connections.inputs), {}, _defineProperty$1({}, input.portName, [].concat(_toConsumableArray(nodes[input.nodeId].connections.inputs[input.portName] || []), [{
         nodeId: output.nodeId,
         portName: output.portName
       }])))
     })
-  })), _defineProperty$1(_objectSpread4, output.nodeId, _objectSpread$c(_objectSpread$c({}, nodes[output.nodeId]), {}, {
-    connections: _objectSpread$c(_objectSpread$c({}, nodes[output.nodeId].connections), {}, {
-      outputs: _objectSpread$c(_objectSpread$c({}, nodes[output.nodeId].connections.outputs), {}, _defineProperty$1({}, output.portName, [].concat(_toConsumableArray(nodes[output.nodeId].connections.outputs[output.portName] || []), [{
+  })), _defineProperty$1(_objectSpread4, output.nodeId, _objectSpread$a(_objectSpread$a({}, nodes[output.nodeId]), {}, {
+    connections: _objectSpread$a(_objectSpread$a({}, nodes[output.nodeId].connections), {}, {
+      outputs: _objectSpread$a(_objectSpread$a({}, nodes[output.nodeId].connections.outputs), {}, _defineProperty$1({}, output.portName, [].concat(_toConsumableArray(nodes[output.nodeId].connections.outputs[output.portName] || []), [{
         nodeId: input.nodeId,
         portName: input.portName
       }])))
@@ -34657,19 +34517,19 @@ var addConnection = (function (nodes, input, output, portTypes) {
   })), _objectSpread4));
 });
 
-function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _toPropertyKey$1(arg) { var key = _toPrimitive$1(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
-function _toPrimitive$1(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var removeConnection = (function (nodes, input, output) {
   var _objectSpread3;
   var inputNode = nodes[input.nodeId];
   var _inputNode$connection = inputNode.connections.inputs,
     _input$portName = input.portName;
     _inputNode$connection[_input$portName];
-    var newInputNodeConnectionsInputs = _objectWithoutProperties(_inputNode$connection, [_input$portName].map(_toPropertyKey$1));
-  var newInputNode = _objectSpread$b(_objectSpread$b({}, inputNode), {}, {
-    connections: _objectSpread$b(_objectSpread$b({}, inputNode.connections), {}, {
+    var newInputNodeConnectionsInputs = _objectWithoutProperties(_inputNode$connection, [_input$portName].map(_toPropertyKey));
+  var newInputNode = _objectSpread$9(_objectSpread$9({}, inputNode), {}, {
+    connections: _objectSpread$9(_objectSpread$9({}, inputNode.connections), {}, {
       inputs: newInputNodeConnectionsInputs
     })
   });
@@ -34677,12 +34537,12 @@ var removeConnection = (function (nodes, input, output) {
   var filteredOutputNodes = outputNode.connections.outputs[output.portName].filter(function (cnx) {
     return cnx.nodeId === input.nodeId ? cnx.portName !== input.portName : true;
   });
-  var newOutputNode = _objectSpread$b(_objectSpread$b({}, outputNode), {}, {
-    connections: _objectSpread$b(_objectSpread$b({}, outputNode.connections), {}, {
-      outputs: _objectSpread$b(_objectSpread$b({}, outputNode.connections.outputs), {}, _defineProperty$1({}, output.portName, filteredOutputNodes))
+  var newOutputNode = _objectSpread$9(_objectSpread$9({}, outputNode), {}, {
+    connections: _objectSpread$9(_objectSpread$9({}, outputNode.connections), {}, {
+      outputs: _objectSpread$9(_objectSpread$9({}, outputNode.connections.outputs), {}, _defineProperty$1({}, output.portName, filteredOutputNodes))
     })
   });
-  return _objectSpread$b(_objectSpread$b({}, nodes), {}, (_objectSpread3 = {}, _defineProperty$1(_objectSpread3, input.nodeId, newInputNode), _defineProperty$1(_objectSpread3, output.nodeId, newOutputNode), _objectSpread3));
+  return _objectSpread$9(_objectSpread$9({}, nodes), {}, (_objectSpread3 = {}, _defineProperty$1(_objectSpread3, input.nodeId, newInputNode), _defineProperty$1(_objectSpread3, output.nodeId, newOutputNode), _objectSpread3));
 });
 
 var getDefaultData = (function (_ref) {
@@ -34701,12 +34561,12 @@ var getDefaultData = (function (_ref) {
   }, {});
 });
 
-var _excluded$1 = ["id", "defaultNode"];
+var _excluded = ["id", "defaultNode"];
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var copyObj = function copyObj(o) {
   return JSON.parse(JSON.stringify(o));
 };
@@ -34731,7 +34591,6 @@ var nodesReducer = function nodesReducer(_ref) {
     cache = _ref2.cache,
     circularBehavior = _ref2.circularBehavior,
     context = _ref2.context;
-  var dispatchToasts = arguments.length > 3 ? arguments[3] : undefined;
   var nodes = nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state || {};
   switch (action.type) {
     case "ADD_CONNECTION":
@@ -34744,24 +34603,8 @@ var nodesReducer = function nodesReducer(_ref) {
           var newNodes = addConnection(nodes, input, output);
           var isCircular = checkForCircularNodes(newNodes, output.nodeId);
           if (isCircular && !allowCircular) {
-            dispatchToasts({
-              type: "ADD_TOAST",
-              title: "Unable to connect",
-              message: "Connecting these nodes would result in an infinite loop.",
-              toastType: "warning",
-              duration: 5000
-            });
             return nodes;
           } else {
-            if (isCircular && circularBehavior === "warn") {
-              dispatchToasts({
-                type: "ADD_TOAST",
-                title: "Circular Connection Detected",
-                message: "Connecting these nodes has created an infinite loop.",
-                toastType: "warning",
-                duration: 5000
-              });
-            }
             return newNodes;
           }
         } else return nodes;
@@ -34830,7 +34673,7 @@ var nodesReducer = function nodesReducer(_ref) {
         newNode.defaultNode = !!defaultNode || undefined;
         newNode.root = !!nodeTypes[nodeType].root || undefined;
         newNode.actions = object.omit(nodeTypes[nodeType].actions || {}, ["buttons"]);
-        return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, newNodeId, newNode));
+        return _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, newNodeId, newNode));
       }
     case "COPY_NODES":
       {
@@ -34878,7 +34721,7 @@ var nodesReducer = function nodesReducer(_ref) {
           }, JSON.stringify(_newNodes));
           var newJSON = JSON.parse(newJSONString);
           _.forOwn(newJSON, function (_, key) {
-            newJSON[key] = _objectSpread$a(_objectSpread$a({}, newJSON[key]), {}, {
+            newJSON[key] = _objectSpread$8(_objectSpread$8({}, newJSON[key]), {}, {
               x: newJSON[key].x + 20,
               y: newJSON[key].y + 20
             });
@@ -34887,7 +34730,7 @@ var nodesReducer = function nodesReducer(_ref) {
             application: "PythonRPA",
             nodes: newJSON
           }));
-          return _objectSpread$a(_objectSpread$a({}, nodes), newJSON);
+          return _objectSpread$8(_objectSpread$8({}, nodes), newJSON);
         }
         return nodes;
       }
@@ -34898,15 +34741,15 @@ var nodesReducer = function nodesReducer(_ref) {
       }
     case "HYDRATE_DEFAULT_NODES":
       {
-        var _newNodes2 = _objectSpread$a({}, nodes);
+        var _newNodes2 = _objectSpread$8({}, nodes);
         for (var key in _newNodes2) {
           if (_newNodes2[key].defaultNode) {
             var _newNodeId = nanoid(10);
             var _newNodes2$key = _newNodes2[key];
               _newNodes2$key.id;
               _newNodes2$key.defaultNode;
-              var node = _objectWithoutProperties(_newNodes2$key, _excluded$1);
-            _newNodes2[_newNodeId] = _objectSpread$a(_objectSpread$a({}, node), {}, {
+              var node = _objectWithoutProperties(_newNodes2$key, _excluded);
+            _newNodes2[_newNodeId] = _objectSpread$8(_objectSpread$8({}, node), {}, {
               id: _newNodeId
             });
             delete _newNodes2[key];
@@ -34921,11 +34764,11 @@ var nodesReducer = function nodesReducer(_ref) {
           controlName = action.controlName,
           data = action.data,
           setValue = action.setValue;
-        var newData = _objectSpread$a(_objectSpread$a({}, nodes[_nodeId].inputData), {}, _defineProperty$1({}, portName, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId].inputData[portName]), {}, _defineProperty$1({}, controlName, data))));
+        var newData = _objectSpread$8(_objectSpread$8({}, nodes[_nodeId].inputData), {}, _defineProperty$1({}, portName, _objectSpread$8(_objectSpread$8({}, nodes[_nodeId].inputData[portName]), {}, _defineProperty$1({}, controlName, data))));
         if (setValue) {
           newData = setValue(newData, nodes[_nodeId].inputData);
         }
-        return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId]), {}, {
+        return _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, _nodeId, _objectSpread$8(_objectSpread$8({}, nodes[_nodeId]), {}, {
           inputData: newData
         })));
       }
@@ -34933,7 +34776,7 @@ var nodesReducer = function nodesReducer(_ref) {
       {
         var comment = action.comment,
           _nodeId2 = action.nodeId;
-        return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId2, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId2]), {}, {
+        return _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, _nodeId2, _objectSpread$8(_objectSpread$8({}, nodes[_nodeId2]), {}, {
           comment: comment !== null && comment !== void 0 && comment.length ? comment : undefined
         })));
       }
@@ -34942,7 +34785,7 @@ var nodesReducer = function nodesReducer(_ref) {
         var _x = action.x,
           _y = action.y,
           _nodeId3 = action.nodeId;
-        return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId3, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId3]), {}, {
+        return _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, _nodeId3, _objectSpread$8(_objectSpread$8({}, nodes[_nodeId3]), {}, {
           x: _x,
           y: _y
         })));
@@ -34950,11 +34793,11 @@ var nodesReducer = function nodesReducer(_ref) {
     case "SET_MULTIPLE_NODES_COORDINATES":
       {
         var nodesInfo = action.nodesInfo;
-        return _objectSpread$a(_objectSpread$a({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref8) {
+        return _objectSpread$8(_objectSpread$8({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref8) {
           var nodeId = _ref8.nodeId,
             x = _ref8.x,
             y = _ref8.y;
-          return _defineProperty$1({}, nodeId, _objectSpread$a(_objectSpread$a({}, nodes[nodeId]), {}, {
+          return _defineProperty$1({}, nodeId, _objectSpread$8(_objectSpread$8({}, nodes[nodeId]), {}, {
             x: x,
             y: y
           }));
@@ -34964,8 +34807,8 @@ var nodesReducer = function nodesReducer(_ref) {
       {
         var _data = action.data,
           _nodeId4 = action.nodeId;
-        return _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, _nodeId4, _objectSpread$a(_objectSpread$a({}, nodes[_nodeId4]), {}, {
-          actions: _objectSpread$a(_objectSpread$a({}, nodes[_nodeId4].actions), {}, {
+        return _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, _nodeId4, _objectSpread$8(_objectSpread$8({}, nodes[_nodeId4]), {}, {
+          actions: _objectSpread$8(_objectSpread$8({}, nodes[_nodeId4].actions), {}, {
             data: _data
           })
         })));
@@ -34974,9 +34817,9 @@ var nodesReducer = function nodesReducer(_ref) {
       return nodes;
   }
 };
-var connectNodesReducer = function connectNodesReducer(reducer, environment, dispatchToasts) {
+var connectNodesReducer = function connectNodesReducer(reducer, environment) {
   return function (state, action) {
-    return reducer(state, action, environment, dispatchToasts);
+    return reducer(state, action, environment);
   };
 };
 var nodesReducer$1 = (function () {
@@ -35021,7 +34864,7 @@ var nodesReducer$1 = (function () {
             for (var _i = 0, _Object$keys = Object.keys(node.state); _i < _Object$keys.length; _i++) {
               var nodeID = _Object$keys[_i];
               if (id === nodeID) {
-                newState.nodesState[newState.currentStateIndex].state = _objectSpread$a(_objectSpread$a({}, nodes), {}, _defineProperty$1({}, nodeID, _objectSpread$a(_objectSpread$a({}, nodes[nodeID]), {}, {
+                newState.nodesState[newState.currentStateIndex].state = _objectSpread$8(_objectSpread$8({}, nodes), {}, _defineProperty$1({}, nodeID, _objectSpread$8(_objectSpread$8({}, nodes[nodeID]), {}, {
                   comment: value
                 })));
               }
@@ -35041,7 +34884,7 @@ var nodesReducer$1 = (function () {
           doExpand = _props$3.doExpand;
         var _nodes = props[0].nodesState[props[0].currentStateIndex].state;
         var _newState = copyObj(props[0]);
-        _newState.nodesState[_newState.currentStateIndex].state = _objectSpread$a(_objectSpread$a({}, _nodes), {}, _defineProperty$1({}, nodeId, _objectSpread$a(_objectSpread$a({}, _nodes[nodeId]), {}, {
+        _newState.nodesState[_newState.currentStateIndex].state = _objectSpread$8(_objectSpread$8({}, _nodes), {}, _defineProperty$1({}, nodeId, _objectSpread$8(_objectSpread$8({}, _nodes[nodeId]), {}, {
           expanded: doExpand ? doExpand : !_nodes[nodeId].expanded
         })));
         return _newState;
@@ -35065,121 +34908,6 @@ var nodesReducer$1 = (function () {
           currentStateIndex: currentStateIndex + 1
         };
       }
-  }
-});
-
-var _excluded = ["isNew"];
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof$1(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof$1(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof$1(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var setComment = function setComment(comments, id, merge) {
-  return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, id, _objectSpread$9(_objectSpread$9({}, comments[id]), merge)));
-};
-var commentsReducer = (function () {
-  var comments = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  switch (action.type) {
-    case "ADD_COMMENT":
-      {
-        var _comment = {
-          id: nanoid(10),
-          text: "",
-          x: action.x,
-          y: action.y,
-          width: 200,
-          height: 30,
-          color: "blue",
-          isNew: true
-        };
-        return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, _comment.id, _comment));
-      }
-    case "REMOVE_COMMENT_NEW":
-      var _comments$action$id = comments[action.id];
-        _comments$action$id.isNew;
-        var comment = _objectWithoutProperties(_comments$action$id, _excluded);
-      return _objectSpread$9(_objectSpread$9({}, comments), {}, _defineProperty$1({}, action.id, comment));
-    case "SET_COMMENT_COORDINATES":
-      {
-        return setComment(comments, action.id, {
-          x: action.x,
-          y: action.y
-        });
-      }
-    case "SET_COMMENT_DIMENSIONS":
-      {
-        return setComment(comments, action.id, {
-          width: action.width,
-          height: action.height
-        });
-      }
-    case "SET_COMMENT_TEXT":
-      {
-        return setComment(comments, action.id, {
-          text: action.text
-        });
-      }
-    case "SET_COMMENT_COLOR":
-      {
-        return setComment(comments, action.id, {
-          color: action.color
-        });
-      }
-    case "DELETE_COMMENT":
-      {
-        var _action$id = action.id;
-          comments[_action$id];
-          var newComments = _objectWithoutProperties(comments, [_action$id].map(_toPropertyKey));
-        return newComments;
-      }
-    default:
-      return comments;
-  }
-});
-
-function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var toastsReducer = (function () {
-  var toasts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  switch (action.type) {
-    case "ADD_TOAST":
-      return [{
-        id: nanoid(5),
-        title: action.title,
-        message: action.message,
-        type: action.toastType || "info",
-        duration: action.duration || 10000,
-        height: 0,
-        exiting: false
-      }].concat(_toConsumableArray(toasts));
-    case "SET_HEIGHT":
-      {
-        var index = toasts.findIndex(function (t) {
-          return t.id === action.id;
-        });
-        return [].concat(_toConsumableArray(toasts.slice(0, index)), [_objectSpread$8(_objectSpread$8({}, toasts[index]), {}, {
-          height: action.height
-        })], _toConsumableArray(toasts.slice(index + 1)));
-      }
-    case "SET_EXITING":
-      {
-        var _index = toasts.findIndex(function (t) {
-          return t.id === action.id;
-        });
-        return [].concat(_toConsumableArray(toasts.slice(0, _index)), [_objectSpread$8(_objectSpread$8({}, toasts[_index]), {}, {
-          exiting: true
-        })], _toConsumableArray(toasts.slice(_index + 1)));
-      }
-    case "REMOVE_TOAST":
-      {
-        var _index2 = toasts.findIndex(function (t) {
-          return t.id === action.id;
-        });
-        return [].concat(_toConsumableArray(toasts.slice(0, _index2)), _toConsumableArray(toasts.slice(_index2 + 1)));
-      }
-    default:
-      return toasts;
   }
 });
 
@@ -36168,8 +35896,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 var defaultContext = {};
 var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var _initialStageParams$t, _initialStageParams$t2;
-  var initialComments = _ref.comments,
-    _ref$nodeTypes = _ref.nodeTypes,
+  var _ref$nodeTypes = _ref.nodeTypes,
     nodeTypes = _ref$nodeTypes === void 0 ? {} : _ref$nodeTypes,
     _ref$portTypes = _ref.portTypes,
     portTypes = _ref$portTypes === void 0 ? {} : _ref$portTypes,
@@ -36177,10 +35904,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     context = _ref$context === void 0 ? defaultContext : _ref$context,
     connector = _ref.connector,
     _initialStageParams = _ref.initialStageParams,
-    _ref$hideComments = _ref.hideComments,
-    hideComments = _ref$hideComments === void 0 ? true : _ref$hideComments,
-    _ref$disableComments = _ref.disableComments,
-    disableComments = _ref$disableComments === void 0 ? true : _ref$disableComments,
     circularBehavior = _ref.circularBehavior,
     _ref$focusNode = _ref.focusNode,
     focusNode = _ref$focusNode === void 0 ? {
@@ -36188,36 +35911,26 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       color: null
     } : _ref$focusNode,
     onFocusChange = _ref.onFocusChange;
-    _ref.debug;
   var editorId = useId();
   var _connector$initialNod = connector.initialNodes,
-    initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod;
-    connector.setComments;
-    var defaultNodes = connector.defaultNodes,
+    initialNodes = _connector$initialNod === void 0 ? {} : _connector$initialNod,
+    defaultNodes = connector.defaultNodes,
     tempState = connector.temp.state,
     initialNodesState = connector.initialNodesState;
   var cache = React.useRef(new Cache());
   var stage = React.useRef();
-  var _useState = React.useState(),
-    _useState2 = _slicedToArray(_useState, 2);
-    _useState2[0];
-    var setSideEffectToasts = _useState2[1];
-  var _useReducer = React.useReducer(toastsReducer, []),
-    _useReducer2 = _slicedToArray(_useReducer, 2),
-    toasts = _useReducer2[0],
-    dispatchToasts = _useReducer2[1];
   var editorRef = React.useRef();
-  var _useState3 = React.useState(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    spaceIsPressed = _useState4[0],
-    setSpaceIsPressed = _useState4[1];
-  var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    spaceIsPressed = _useState2[0],
+    setSpaceIsPressed = _useState2[1];
+  var _useReducer = React.useReducer(connectNodesReducer(nodesReducer$1, {
       nodeTypes: nodeTypes,
       portTypes: portTypes,
       cache: cache,
       circularBehavior: circularBehavior,
       context: context
-    }, setSideEffectToasts), {}, function () {
+    }), {}, function () {
       return initialNodesState || {
         nodesState: [{
           state: getInitialNodes(initialNodes, defaultNodes || [], nodeTypes, portTypes, context),
@@ -36228,15 +35941,11 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         currentStateIndex: 0
       };
     }),
-    _useReducer4 = _slicedToArray(_useReducer3, 2),
-    _useReducer4$ = _useReducer4[0],
-    nodesState = _useReducer4$.nodesState,
-    currentStateIndex = _useReducer4$.currentStateIndex,
-    dispatchNodes = _useReducer4[1];
-  var _useReducer5 = React.useReducer(commentsReducer, initialComments || {}),
-    _useReducer6 = _slicedToArray(_useReducer5, 2),
-    comments = _useReducer6[0],
-    dispatchComments = _useReducer6[1];
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    _useReducer2$ = _useReducer2[0],
+    nodesState = _useReducer2$.nodesState,
+    currentStateIndex = _useReducer2$.currentStateIndex,
+    dispatchNodes = _useReducer2[1];
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
     _useSelect2 = _slicedToArray(_useSelect, 5),
     selectedNodes = _useSelect2[0],
@@ -36260,9 +35969,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     return {
       getNodes: function getNodes() {
         return nodesState[currentStateIndex].state;
-      },
-      getComments: function getComments() {
-        return comments;
       }
     };
   });
@@ -36277,21 +35983,21 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       return document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  var _useState5 = React.useState(true),
-    _useState6 = _slicedToArray(_useState5, 2),
-    shouldRecalculateConnections = _useState6[0],
-    setShouldRecalculateConnections = _useState6[1];
+  var _useState3 = React.useState(true),
+    _useState4 = _slicedToArray(_useState3, 2),
+    shouldRecalculateConnections = _useState4[0],
+    setShouldRecalculateConnections = _useState4[1];
   var initialStageParams = _initialStageParams || tempState.stage;
-  var _useReducer7 = React.useReducer(stageReducer, {
+  var _useReducer3 = React.useReducer(stageReducer, {
       scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
       translate: {
         x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
         y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
       }
     }),
-    _useReducer8 = _slicedToArray(_useReducer7, 2),
-    stageState = _useReducer8[0],
-    dispatchStageState = _useReducer8[1];
+    _useReducer4 = _slicedToArray(_useReducer3, 2),
+    stageState = _useReducer4[0],
+    dispatchStageState = _useReducer4[1];
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
@@ -36323,7 +36029,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     if (selectedNodes.length > 0) {
       dispatchNodes({
         type: "SET_MULTIPLE_NODES_COORDINATES",
-        nodesInfo: transformNodes(null, deltaX, deltaY)
+        nodesInfo: transformNodes(deltaX, deltaY)
       });
     } else {
       dispatchNodes(_objectSpread(_objectSpread({
@@ -36340,7 +36046,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     transform: [stageState.translate.x, stageState.translate.y, stageState.scale],
     selectedNodes: selectedNodes
   });
-  var transformNodes = function transformNodes(excludedNodeId, deltaX, deltaY) {
+  var transformNodes = function transformNodes(deltaX, deltaY) {
     return selectedNodes.map(function (id) {
       var _nodeRefs$find$;
       var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
@@ -36372,7 +36078,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
           case 0:
             if (selectedNodes.length > 0) {
               if (selectedNodes.includes(excludedNodeId)) {
-                transformNodes(excludedNodeId, deltaX, deltaY);
+                transformNodes(deltaX, deltaY);
                 recalculateConnections();
               } else {
                 clearSelection();
@@ -36424,7 +36130,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: {
       zIndex: 100,
-      cursor: "inherit"
+      cursor: "crosshair"
     }
   }), /*#__PURE__*/React__default["default"].createElement(Stage$1, {
     focusNode: focusNode,
@@ -36437,16 +36143,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     translate: stageState.translate,
     spaceToPan: true,
     dispatchStageState: dispatchStageState,
-    dispatchComments: dispatchComments,
-    disableComments: disableComments || hideComments,
-    stageRef: stage,
-    numNodes: Object.keys(nodesState[currentStateIndex].state).length,
-    outerStageChildren: /*#__PURE__*/React__default["default"].createElement(Toaster$1, {
-      toasts: toasts,
-      dispatchToasts: dispatchToasts
-    }),
-    DRAGGABLE_CANVAS: context.DRAGGABLE_CANVAS,
-    draggableCanvasSet: context.draggableCanvasSet
+    stageRef: stage
   }, visible.map(function (node) {
     return /*#__PURE__*/React__default["default"].createElement(Node$1, _extends$4({}, node, {
       isSelected: selectedNodes.includes(node.id),

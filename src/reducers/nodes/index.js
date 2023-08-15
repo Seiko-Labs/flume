@@ -29,8 +29,7 @@ const copyNodes = (nodes, selectedNodeIds, clearView = true) => {
 export const nodesReducer = (
   { nodesState, currentStateIndex },
   action = {},
-  { nodeTypes, portTypes, cache, circularBehavior, context },
-  dispatchToasts
+  { nodeTypes, portTypes, cache, circularBehavior, context }
 ) => {
   const nodes =
     (nodesState &&
@@ -49,24 +48,8 @@ export const nodesReducer = (
         const newNodes = addConnection(nodes, input, output, portTypes);
         const isCircular = checkForCircularNodes(newNodes, output.nodeId);
         if (isCircular && !allowCircular) {
-          dispatchToasts({
-            type: "ADD_TOAST",
-            title: "Unable to connect",
-            message: "Connecting these nodes would result in an infinite loop.",
-            toastType: "warning",
-            duration: 5000,
-          });
           return nodes;
         } else {
-          if (isCircular && circularBehavior === "warn") {
-            dispatchToasts({
-              type: "ADD_TOAST",
-              title: "Circular Connection Detected",
-              message: "Connecting these nodes has created an infinite loop.",
-              toastType: "warning",
-              duration: 5000,
-            });
-          }
           return newNodes;
         }
       } else return nodes;
@@ -314,9 +297,8 @@ export const nodesReducer = (
   }
 };
 
-export const connectNodesReducer =
-  (reducer, environment, dispatchToasts) => (state, action) =>
-    reducer(state, action, environment, dispatchToasts);
+export const connectNodesReducer = (reducer, environment) => (state, action) =>
+  reducer(state, action, environment);
 
 export default (...props) => {
   const { nodesState, currentStateIndex } = props[0];
