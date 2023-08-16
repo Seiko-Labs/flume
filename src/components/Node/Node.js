@@ -23,7 +23,7 @@ import Draggable from "../Draggable/Draggable";
 import { ReactComponent as Ticker } from "../../img/arrow.svg";
 import { ReactComponent as CommentIcon } from "../../img/comment.svg";
 import { ReactComponent as HelpIcon } from "../../img/help.svg";
-import equal from "react-fast-compare";
+
 import { memo } from "react";
 
 const Comment = ({ onOutsideClick, onChange, value, border }) => {
@@ -451,4 +451,4 @@ const Node = forwardRef(
 
 Node.displayName = "Node";
 
-export default memo(Node, equal);
+export default memo(Node);

@@ -230,40 +230,44 @@ export const NodeEditor = forwardRef(
     });
 
     const transformNodes = (deltaX, deltaY) => {
-      return selectedNodes
-        .map((nodeRef) => {
-          if (nodeRef) {
-            const oldPositions = nodeRef.style.transform.match(
-              /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
-            );
+      const result = [];
+      for (const nodeRef of selectedNodes) {
+        if (nodeRef) {
+          const oldPositions = nodeRef.style.transform.match(
+            /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+          );
 
-            if (oldPositions && oldPositions.length === 3) {
-              const x = Number(oldPositions[1]) + deltaX;
-              const y = Number(oldPositions[2]) + deltaY;
-              nodeRef.style.transform = `translate(${x}px,${y}px)`;
+          if (oldPositions && oldPositions.length === 3) {
+            const x = Number(oldPositions[1]) + deltaX;
+            const y = Number(oldPositions[2]) + deltaY;
+            nodeRef.style.transform = `translate(${x}px,${y}px)`;
 
-              return {
-                nodeId: nodeRef.id,
-                x,
-                y,
-              };
-            }
+            result.push({
+              nodeId: nodeRef.id,
+              x,
+              y,
+            });
           }
-        })
-        .filter((res) => !!res);
-    };
-
-    const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
-      if (selectedNodes.length > 0) {
-        if (selectedNodes.find(({ id }) => excludedNodeId === id)) {
-          transformNodes(deltaX, deltaY);
-
-          recalculateConnections();
-        } else {
-          clearSelection();
         }
       }
+
+      return result;
     };
+
+    const dragSelectedNodes = useCallback(
+      (excludedNodeId, deltaX, deltaY) => {
+        if (selectedNodes.length > 0) {
+          if (selectedNodes.find(({ id }) => excludedNodeId === id)) {
+            transformNodes(deltaX, deltaY);
+
+            recalculateConnections();
+          } else {
+            clearSelection();
+          }
+        }
+      },
+      [selectedNodes]
+    );
 
     return (
       <PortTypesContext.Provider value={portTypes}>
