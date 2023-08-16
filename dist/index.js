@@ -29,6 +29,16 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
+
 function _extends$4() {
   _extends$4 = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -44,14 +54,29 @@ function _extends$4() {
   return _extends$4.apply(this, arguments);
 }
 
-function _typeof(obj) {
-  "@babel/helpers - typeof";
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
 
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
+function _inherits$2(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
 }
 
 function _toPrimitive$3(input, hint) {
@@ -1484,10 +1509,10 @@ function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Co
 
 function _possibleConstructorReturn$2(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Portal$3 = function (_React$Component) {
-  _inherits$2(Portal, _React$Component);
+  _inherits$1(Portal, _React$Component);
 
   function Portal() {
     _classCallCheck$2(this, Portal);
@@ -1533,10 +1558,10 @@ function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Co
 
 function _possibleConstructorReturn$1(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Portal$2 = function (_React$Component) {
-  _inherits$1(Portal, _React$Component);
+  _inherits(Portal, _React$Component);
 
   function Portal() {
     _classCallCheck$1(this, Portal);
@@ -6241,15 +6266,15 @@ var getNative$1 = _getNative,
     root$1 = _root;
 
 /* Built-in method references that are verified to be native. */
-var WeakMap$1 = getNative$1(root$1, 'WeakMap');
+var WeakMap$2 = getNative$1(root$1, 'WeakMap');
 
-var _WeakMap = WeakMap$1;
+var _WeakMap = WeakMap$2;
 
 var DataView = _DataView,
     Map$1 = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = _WeakMap,
+    WeakMap$1 = _WeakMap,
     baseGetTag$1 = _baseGetTag,
     toSource = _toSource;
 
@@ -6267,7 +6292,7 @@ var dataViewCtorString = toSource(DataView),
     mapCtorString = toSource(Map$1),
     promiseCtorString = toSource(Promise$1),
     setCtorString = toSource(Set),
-    weakMapCtorString = toSource(WeakMap);
+    weakMapCtorString = toSource(WeakMap$1);
 
 /**
  * Gets the `toStringTag` of `value`.
@@ -6283,7 +6308,7 @@ if ((DataView && getTag$5(new DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
     (Map$1 && getTag$5(new Map$1) != mapTag$4) ||
     (Promise$1 && getTag$5(Promise$1.resolve()) != promiseTag) ||
     (Set && getTag$5(new Set) != setTag$4) ||
-    (WeakMap && getTag$5(new WeakMap) != weakMapTag$1)) {
+    (WeakMap$1 && getTag$5(new WeakMap$1) != weakMapTag$1)) {
   getTag$5 = function(value) {
     var result = baseGetTag$1(value),
         Ctor = result == objectTag$3 ? value.constructor : undefined,
@@ -11196,7 +11221,6 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
             outputs = _ref8[1];
           outputs.forEach(function (output) {
             var nodeInfo = nodeTypes[node.type];
-            console.log(nodeInfo);
             var fromPort = getPortRect(output.nodeId, output.portName, "output");
             var portHalf = fromPort ? fromPort.width / 2 : 10;
             var toPort = getPortRect(node.id, inputName, "input");
@@ -11219,8 +11243,6 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
               });
             } else {
               if (!fromPort || !toPort) return;
-              console.log(inputName);
-              console.log(output);
               var svg = createSVG({
                 id: id,
                 outputNodeId: output.nodeId,
@@ -12278,6 +12300,7 @@ function SvgHelp(props) {
   })));
 }
 
+function _wrapRegExp$1() { _wrapRegExp$1 = function _wrapRegExp(re, groups) { return new BabelRegExp(re, void 0, groups); }; var _super = RegExp.prototype, _groups = new WeakMap(); function BabelRegExp(re, flags, groups) { var _this = new RegExp(re, flags); return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype); } function buildGroups(result, re) { var g = _groups.get(re); return Object.keys(g).reduce(function (groups, name) { var i = g[name]; if ("number" == typeof i) groups[name] = result[i];else { for (var k = 0; void 0 === result[i[k]] && k + 1 < i.length;) k++; groups[name] = result[i[k]]; } return groups; }, Object.create(null)); } return _inherits$2(BabelRegExp, RegExp), BabelRegExp.prototype.exec = function (str) { var result = _super.exec.call(this, str); if (result) { result.groups = buildGroups(result, this); var indices = result.indices; indices && (indices.groups = buildGroups(indices, this)); } return result; }, BabelRegExp.prototype[Symbol.replace] = function (str, substitution) { if ("string" == typeof substitution) { var groups = _groups.get(this); return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) { var group = groups[name]; return "$" + (Array.isArray(group) ? group.join("$") : group); })); } if ("function" == typeof substitution) { var _this = this; return _super[Symbol.replace].call(this, str, function () { var args = arguments; return "object" != _typeof(args[args.length - 1]) && (args = [].slice.call(args)).push(buildGroups(args, _this)), substitution.apply(this, args); }); } return _super[Symbol.replace].call(this, str, substitution); }, _wrapRegExp$1.apply(this, arguments); }
 var Comment = function Comment(_ref) {
   var onOutsideClick = _ref.onOutsideClick,
     onChange = _ref.onChange,
@@ -12426,16 +12449,20 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     var x = _ref5.x,
       y = _ref5.y;
     var nWrapper = document.getElementById(id);
-    var oldPositions = nWrapper.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+    var oldPositions = nWrapper.style.transform.match( /*#__PURE__*/_wrapRegExp$1(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+      x: 1,
+      y: 2,
+      z: 3
+    }));
     if (!nWrapper) return;
     nWrapper.style.transition = "0s";
-    if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
+    if (oldPositions.length) {
       onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]), {
         x: x,
         y: y
       });
     }
-    nWrapper.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
+    nWrapper.style.transform = "translate3d(".concat(x, "px,").concat(y, "px, 0px)");
     updateNodeConnections();
   };
   var handleContextMenu = function handleContextMenu(e) {
@@ -12478,7 +12505,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       color: tileFontColor,
       zIndex: isSelected && 1000,
       boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
-      transform: "translate(".concat(x, "px, ").concat(y, "px)")
+      transform: "translate3d(".concat(x, "px, ").concat(y, "px, 0px)")
     },
     onDragStart: onDragStart,
     onDrag: handleDrag,
@@ -34581,31 +34608,6 @@ function _assertThisInitialized(self) {
   return self;
 }
 
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-  return _setPrototypeOf(o, p);
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  Object.defineProperty(subClass, "prototype", {
-    writable: false
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
@@ -34641,7 +34643,7 @@ function getOffset(props) {
   return offset;
 }
 var Selection = /*#__PURE__*/function (_React$PureComponent) {
-  _inherits(Selection, _React$PureComponent);
+  _inherits$2(Selection, _React$PureComponent);
   var _super = _createSuper$1(Selection);
   // eslint-disable-line react/prefer-stateless-function
 
@@ -35265,7 +35267,7 @@ function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var LoopError = /*#__PURE__*/function (_Error) {
-  _inherits(LoopError, _Error);
+  _inherits$2(LoopError, _Error);
   var _super = _createSuper(LoopError);
   function LoopError(message, code) {
     var _this;
@@ -35526,6 +35528,7 @@ var useNodeEditorController = function useNodeEditorController(_ref) {
 };
 useNodeEditorController.displayName = "useNodeEditorController";
 
+function _wrapRegExp() { _wrapRegExp = function _wrapRegExp(re, groups) { return new BabelRegExp(re, void 0, groups); }; var _super = RegExp.prototype, _groups = new WeakMap(); function BabelRegExp(re, flags, groups) { var _this = new RegExp(re, flags); return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype); } function buildGroups(result, re) { var g = _groups.get(re); return Object.keys(g).reduce(function (groups, name) { var i = g[name]; if ("number" == typeof i) groups[name] = result[i];else { for (var k = 0; void 0 === result[i[k]] && k + 1 < i.length;) k++; groups[name] = result[i[k]]; } return groups; }, Object.create(null)); } return _inherits$2(BabelRegExp, RegExp), BabelRegExp.prototype.exec = function (str) { var result = _super.exec.call(this, str); if (result) { result.groups = buildGroups(result, this); var indices = result.indices; indices && (indices.groups = buildGroups(indices, this)); } return result; }, BabelRegExp.prototype[Symbol.replace] = function (str, substitution) { if ("string" == typeof substitution) { var groups = _groups.get(this); return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) { var group = groups[name]; return "$" + (Array.isArray(group) ? group.join("$") : group); })); } if ("function" == typeof substitution) { var _this = this; return _super[Symbol.replace].call(this, str, function () { var args = arguments; return "object" != _typeof(args[args.length - 1]) && (args = [].slice.call(args)).push(buildGroups(args, _this)), substitution.apply(this, args); }); } return _super[Symbol.replace].call(this, str, substitution); }, _wrapRegExp.apply(this, arguments); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
@@ -35692,11 +35695,15 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var nodeRef = _step.value;
         if (nodeRef) {
-          var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
-          if (oldPositions && oldPositions.length === 3) {
+          var oldPositions = nodeRef.style.transform.match( /*#__PURE__*/_wrapRegExp(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+            x: 1,
+            y: 2,
+            z: 3
+          }));
+          if (oldPositions) {
             var x = Number(oldPositions[1]) + deltaX;
             var y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
+            nodeRef.style.transform = "translate3d(".concat(x, "px,").concat(y, "px,0px)");
             result.push({
               nodeId: nodeRef.id,
               x: x,

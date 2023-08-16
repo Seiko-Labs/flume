@@ -41,6 +41,17 @@ import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 import { useVisibleNodes } from "./hooks/useVisibleNodes";
 
+function getMatrix(element) {
+  const values = element.style.transform.split(/\w+\(|\);?/);
+  const transform = values[1].split(/,\s?/g).map(parseInt);
+
+  return {
+    x: transform[0],
+    y: transform[1],
+    z: transform[2],
+  };
+}
+
 const defaultContext = {};
 
 export const NodeEditor = forwardRef(
@@ -234,13 +245,13 @@ export const NodeEditor = forwardRef(
       for (const nodeRef of selectedNodes) {
         if (nodeRef) {
           const oldPositions = nodeRef.style.transform.match(
-            /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
+            /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
           );
 
-          if (oldPositions && oldPositions.length === 3) {
+          if (oldPositions) {
             const x = Number(oldPositions[1]) + deltaX;
             const y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = `translate(${x}px,${y}px)`;
+            nodeRef.style.transform = `translate3d(${x}px,${y}px,0px)`;
 
             result.push({
               nodeId: nodeRef.id,
