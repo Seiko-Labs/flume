@@ -7,11 +7,11 @@ export default (nodes, previousNodes) => {
   const clearSelection = () => setSelectedNodes([]);
 
   const handleSelection = (indexes, multiple = false) => {
-    setSelectedNodes((sn) =>
-      multiple
-        ? sn.concat(indexes.map((i) => nodeRefs[i][0].id))
-        : indexes.map((i) => nodeRefs[i][0].id)
-    );
+    setSelectedNodes((sn) => {
+      return multiple
+        ? sn.concat(indexes.map((i) => nodeRefs[i][1].current))
+        : indexes.map((i) => nodeRefs[i][1].current);
+    });
   };
 
   useMemo(() => {

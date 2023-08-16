@@ -35272,9 +35272,9 @@ var useSelect = (function (nodes, previousNodes) {
     var multiple = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     setSelectedNodes(function (sn) {
       return multiple ? sn.concat(indexes.map(function (i) {
-        return nodeRefs[i][0].id;
+        return nodeRefs[i][1].current;
       })) : indexes.map(function (i) {
-        return nodeRefs[i][0].id;
+        return nodeRefs[i][1].current;
       });
     });
   };
@@ -35428,7 +35428,7 @@ function useVisibleNodes(_ref) {
     width: wrapperRect.width,
     height: wrapperRect.height
   }, tScale);
-  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
+  var _loop = function _loop() {
     var v = _Object$values[_i];
     var nodeRect = {
       x: v.x - wrapperRect.x,
@@ -35437,10 +35437,15 @@ function useVisibleNodes(_ref) {
       height: 300
     };
     var overlappingArea = getOverlappingArea(rect, nodeRect);
-    if (overlappingArea > 0 || selectedNodes.includes(v.id) || v.type === "start") {
+    if (overlappingArea > 0 || selectedNodes.find(function (ref) {
+      return ref.id === v.id;
+    }) || v.type === "start") {
       visibleNodes[i] = v;
       i++;
     }
+  };
+  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
+    _loop();
   }
   return visibleNodes;
 }
@@ -36020,13 +36025,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     selectedNodes: selectedNodes
   });
   var transformNodes = function transformNodes(deltaX, deltaY) {
-    return selectedNodes.map(function (id) {
-      var _nodeRefs$find$;
-      var nodeRef = (_nodeRefs$find$ = nodeRefs.find(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 1),
-          nId = _ref3[0].id;
-        return nId === id;
-      })[1]) === null || _nodeRefs$find$ === void 0 ? void 0 : _nodeRefs$find$.current;
+    return selectedNodes.map(function (nodeRef) {
       if (nodeRef) {
         var oldPositions = nodeRef.style.transform.match(/^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/);
         if (oldPositions && oldPositions.length === 3) {
@@ -36034,7 +36033,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
           var y = Number(oldPositions[2]) + deltaY;
           nodeRef.style.transform = "translate(".concat(x, "px,").concat(y, "px)");
           return {
-            nodeId: id,
+            nodeId: nodeRef.id,
             x: x,
             y: y
           };
@@ -36045,12 +36044,15 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     });
   };
   var dragSelectedNodes = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(excludedNodeId, deltaX, deltaY) {
       return regenerator.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (selectedNodes.length > 0) {
-              if (selectedNodes.includes(excludedNodeId)) {
+              if (selectedNodes.find(function (_ref3) {
+                var id = _ref3.id;
+                return excludedNodeId === id;
+              })) {
                 transformNodes(deltaX, deltaY);
                 recalculateConnections();
               } else {
@@ -36064,7 +36066,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
       }, _callee);
     }));
     return function dragSelectedNodes(_x, _x2, _x3) {
-      return _ref4.apply(this, arguments);
+      return _ref2.apply(this, arguments);
     };
   }();
   return /*#__PURE__*/React__default.createElement(PortTypesContext.Provider, {
@@ -36103,7 +36105,7 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     ignoreTargets: ['div[class^="Node_wrapper__"]', 'div[class^="Node_wrapper__"] *', 'div[class^="Comment_wrapper__"]', 'div[class^="Comment_wrapper__"] *'],
     style: {
       zIndex: 100,
-      cursor: "crosshair"
+      cursor: "inherit"
     }
   }), /*#__PURE__*/React__default.createElement(Stage$1, {
     focusNode: focusNode,
@@ -36119,7 +36121,10 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     stageRef: stage
   }, visible.map(function (node) {
     return /*#__PURE__*/React__default.createElement(Node$1, _extends$4({}, node, {
-      isSelected: selectedNodes.includes(node.id),
+      isSelected: selectedNodes.find(function (_ref4) {
+        var id = _ref4.id;
+        return id === node.id;
+      }),
       ref: nodeRefs.find(function (_ref5) {
         var _ref6 = _slicedToArray(_ref5, 1),
           n = _ref6[0];

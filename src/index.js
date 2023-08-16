@@ -231,9 +231,7 @@ export const NodeEditor = forwardRef(
 
     const transformNodes = (deltaX, deltaY) => {
       return selectedNodes
-        .map((id) => {
-          const nodeRef = nodeRefs.find(([{ id: nId }]) => nId === id)[1]
-            ?.current;
+        .map((nodeRef) => {
           if (nodeRef) {
             const oldPositions = nodeRef.style.transform.match(
               /^translate\((-?[\d.\\]+)px, ?(-?[\d.\\]+)px\)?/
@@ -245,7 +243,7 @@ export const NodeEditor = forwardRef(
               nodeRef.style.transform = `translate(${x}px,${y}px)`;
 
               return {
-                nodeId: id,
+                nodeId: nodeRef.id,
                 x,
                 y,
               };
@@ -257,7 +255,7 @@ export const NodeEditor = forwardRef(
 
     const dragSelectedNodes = async (excludedNodeId, deltaX, deltaY) => {
       if (selectedNodes.length > 0) {
-        if (selectedNodes.includes(excludedNodeId)) {
+        if (selectedNodes.find(({ id }) => excludedNodeId === id)) {
           transformNodes(deltaX, deltaY);
 
           recalculateConnections();
@@ -321,7 +319,9 @@ export const NodeEditor = forwardRef(
                             {visible.map((node) => (
                               <Node
                                 {...node}
-                                isSelected={selectedNodes.includes(node.id)}
+                                isSelected={selectedNodes.find(
+                                  ({ id }) => id === node.id
+                                )}
                                 ref={
                                   nodeRefs.find(([n]) => n.id === node.id)
                                     ? nodeRefs.find(

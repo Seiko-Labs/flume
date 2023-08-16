@@ -55,7 +55,7 @@ export function useVisibleNodes({
 
     if (
       overlappingArea > 0 ||
-      selectedNodes.includes(v.id) ||
+      selectedNodes.find((ref) => ref.id === v.id) ||
       v.type === "start"
     ) {
       visibleNodes[i] = v;
