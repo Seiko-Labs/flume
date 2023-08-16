@@ -6576,9 +6576,9 @@ var getNative$2 = _getNative,
     root$2 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative$2(root$2, 'Set');
+var Set$2 = getNative$2(root$2, 'Set');
 
-var _Set = Set$1;
+var _Set = Set$2;
 
 var getNative$1 = _getNative,
     root$1 = _root;
@@ -6591,7 +6591,7 @@ var _WeakMap = WeakMap$1;
 var DataView = _DataView,
     Map$1 = _Map,
     Promise$1 = _Promise,
-    Set = _Set,
+    Set$1 = _Set,
     WeakMap = _WeakMap,
     baseGetTag$1 = _baseGetTag,
     toSource = _toSource;
@@ -6609,7 +6609,7 @@ var dataViewTag$2 = '[object DataView]';
 var dataViewCtorString = toSource(DataView),
     mapCtorString = toSource(Map$1),
     promiseCtorString = toSource(Promise$1),
-    setCtorString = toSource(Set),
+    setCtorString = toSource(Set$1),
     weakMapCtorString = toSource(WeakMap);
 
 /**
@@ -6625,7 +6625,7 @@ var getTag$5 = baseGetTag$1;
 if ((DataView && getTag$5(new DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
     (Map$1 && getTag$5(new Map$1) != mapTag$4) ||
     (Promise$1 && getTag$5(Promise$1.resolve()) != promiseTag) ||
-    (Set && getTag$5(new Set) != setTag$4) ||
+    (Set$1 && getTag$5(new Set$1) != setTag$4) ||
     (WeakMap && getTag$5(new WeakMap) != weakMapTag$1)) {
   getTag$5 = function(value) {
     var result = baseGetTag$1(value),
@@ -12621,6 +12621,146 @@ function SvgHelp(props) {
   })));
 }
 
+/* global Map:readonly, Set:readonly, ArrayBuffer:readonly */
+
+var hasElementType = typeof Element !== 'undefined';
+var hasMap = typeof Map === 'function';
+var hasSet = typeof Set === 'function';
+var hasArrayBuffer = typeof ArrayBuffer === 'function' && !!ArrayBuffer.isView;
+
+// Note: We **don't** need `envHasBigInt64Array` in fde es6/index.js
+
+function equal(a, b) {
+  // START: fast-deep-equal es6/index.js 3.1.3
+  if (a === b) return true;
+
+  if (a && b && typeof a == 'object' && typeof b == 'object') {
+    if (a.constructor !== b.constructor) return false;
+
+    var length, i, keys;
+    if (Array.isArray(a)) {
+      length = a.length;
+      if (length != b.length) return false;
+      for (i = length; i-- !== 0;)
+        if (!equal(a[i], b[i])) return false;
+      return true;
+    }
+
+    // START: Modifications:
+    // 1. Extra `has<Type> &&` helpers in initial condition allow es6 code
+    //    to co-exist with es5.
+    // 2. Replace `for of` with es5 compliant iteration using `for`.
+    //    Basically, take:
+    //
+    //    ```js
+    //    for (i of a.entries())
+    //      if (!b.has(i[0])) return false;
+    //    ```
+    //
+    //    ... and convert to:
+    //
+    //    ```js
+    //    it = a.entries();
+    //    while (!(i = it.next()).done)
+    //      if (!b.has(i.value[0])) return false;
+    //    ```
+    //
+    //    **Note**: `i` access switches to `i.value`.
+    var it;
+    if (hasMap && (a instanceof Map) && (b instanceof Map)) {
+      if (a.size !== b.size) return false;
+      it = a.entries();
+      while (!(i = it.next()).done)
+        if (!b.has(i.value[0])) return false;
+      it = a.entries();
+      while (!(i = it.next()).done)
+        if (!equal(i.value[1], b.get(i.value[0]))) return false;
+      return true;
+    }
+
+    if (hasSet && (a instanceof Set) && (b instanceof Set)) {
+      if (a.size !== b.size) return false;
+      it = a.entries();
+      while (!(i = it.next()).done)
+        if (!b.has(i.value[0])) return false;
+      return true;
+    }
+    // END: Modifications
+
+    if (hasArrayBuffer && ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
+      length = a.length;
+      if (length != b.length) return false;
+      for (i = length; i-- !== 0;)
+        if (a[i] !== b[i]) return false;
+      return true;
+    }
+
+    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+    // START: Modifications:
+    // Apply guards for `Object.create(null)` handling. See:
+    // - https://github.com/FormidableLabs/react-fast-compare/issues/64
+    // - https://github.com/epoberezkin/fast-deep-equal/issues/49
+    if (a.valueOf !== Object.prototype.valueOf && typeof a.valueOf === 'function' && typeof b.valueOf === 'function') return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString && typeof a.toString === 'function' && typeof b.toString === 'function') return a.toString() === b.toString();
+    // END: Modifications
+
+    keys = Object.keys(a);
+    length = keys.length;
+    if (length !== Object.keys(b).length) return false;
+
+    for (i = length; i-- !== 0;)
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+    // END: fast-deep-equal
+
+    // START: react-fast-compare
+    // custom handling for DOM elements
+    if (hasElementType && a instanceof Element) return false;
+
+    // custom handling for React/Preact
+    for (i = length; i-- !== 0;) {
+      if ((keys[i] === '_owner' || keys[i] === '__v' || keys[i] === '__o') && a.$$typeof) {
+        // React-specific: avoid traversing React elements' _owner
+        // Preact-specific: avoid traversing Preact elements' __v and __o
+        //    __v = $_original / $_vnode
+        //    __o = $_owner
+        // These properties contain circular references and are not needed when
+        // comparing the actual elements (and not their owners)
+        // .$$typeof and ._store on just reasonable markers of elements
+
+        continue;
+      }
+
+      // all other properties should be traversed as usual
+      if (!equal(a[keys[i]], b[keys[i]])) return false;
+    }
+    // END: react-fast-compare
+
+    // START: fast-deep-equal
+    return true;
+  }
+
+  return a !== a && b !== b;
+}
+// end fast-deep-equal
+
+var reactFastCompare = function isEqual(a, b) {
+  try {
+    return equal(a, b);
+  } catch (error) {
+    if (((error.message || '').match(/stack|recursion/i))) {
+      // warn on circular references, don't crash
+      // browsers give this different errors name and messages:
+      // chrome/safari: "RangeError", "Maximum call stack size exceeded"
+      // firefox: "InternalError", too much recursion"
+      // edge: "Error", "Out of stack space"
+      console.warn('react-fast-compare cannot handle circular refs');
+      return false;
+    }
+    // some other error. we should definitely know about these
+    throw error;
+  }
+};
+
 var Comment = function Comment(_ref) {
   var onOutsideClick = _ref.onOutsideClick,
     onChange = _ref.onChange,
@@ -12982,7 +13122,7 @@ var Node = /*#__PURE__*/forwardRef(function (_ref2, nodeWrapper) {
   })) : null);
 });
 Node.displayName = "Node";
-var Node$1 = /*#__PURE__*/memo(Node);
+var Node$1 = /*#__PURE__*/memo(Node, reactFastCompare);
 
 var css_248z$4 = ".Comment_wrapper__2CG3I{background:hsla(202,5%,60%,.7);border:1px solid rgba(99,104,107,.9);border-radius:4px 4px 2px 4px;display:flex;font-size:14px;left:0;min-width:80px;padding:5px;position:absolute;top:0;user-select:none}.Comment_wrapper__2CG3I[data-color=red]{background:rgba(213,84,103,.65);border-color:rgba(136,50,71,.85)}.Comment_wrapper__2CG3I[data-color=purple]{background:rgba(153,83,196,.65);border-color:rgba(90,49,131,.85)}.Comment_wrapper__2CG3I[data-color=blue]{background:rgba(76,142,203,.65);border-color:rgba(49,93,133,.85)}.Comment_wrapper__2CG3I[data-color=green]{background:rgba(70,200,130,.65);border-color:rgba(49,133,87,.85)}.Comment_wrapper__2CG3I[data-color=yellow]{background:rgba(200,167,63,.65);border-color:rgba(136,128,51,.85)}.Comment_wrapper__2CG3I[data-color=orange]{background:rgba(215,123,64,.65);border-color:rgba(136,90,51,.85)}.Comment_wrapper__2CG3I[data-color=pink]{background:rgba(255,102,208,.65);border-color:rgba(129,70,122,.85)}.Comment_text__wBsGB{cursor:default;height:100%;overflow:auto;white-space:pre-wrap;width:100%}.Comment_resizeThumb__e-57p{border-radius:4px 0 4px 0;bottom:0;cursor:nwse-resize;height:10px;overflow:hidden;position:absolute;right:0;width:10px}.Comment_resizeThumb__e-57p:after,.Comment_resizeThumb__e-57p:before{border-bottom:2px solid hsla(0,0%,100%,.7);border-top:1px solid rgba(0,0,0,.7);content:\"\";height:0;position:absolute;right:0;top:0;transform:rotate(-45deg) scale(.5);transform-origin:center right;width:250%}.Comment_resizeThumb__e-57p:after{transform:rotate(-45deg) translateY(3px) scale(.5)}.Comment_textarea__i7qnk{background:hsla(0,0%,100%,.1);border:none;border-radius:3px;font-size:14px;height:calc(100% + 2px);margin:-1px -2px -2px;outline:none;padding-top:0;resize:none;width:calc(100% + 2px)}.Comment_textarea__i7qnk::placeholder{color:rgba(0,0,0,.5)}";
 styleInject(css_248z$4);
