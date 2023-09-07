@@ -62,17 +62,6 @@ const Comment = ({ onOutsideClick, onChange, value, border }) => {
   );
 };
 
-function getMatrix(element) {
-  const values = element.style.transform.split(/\w+\(|\);?/);
-  const transform = values[1].split(/,\s?/g).map(parseInt);
-
-  return {
-    x: transform[0],
-    y: transform[1],
-    z: transform[2],
-  };
-}
-
 const Node = forwardRef(
   (
     {
@@ -204,13 +193,13 @@ const Node = forwardRef(
     const handleDrag = ({ x, y }) => {
       const nWrapper = document.getElementById(id);
       const oldPositions = nWrapper.style.transform.match(
-        /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
+        /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
       );
 
       if (!nWrapper) return;
 
       nWrapper.style.transition = "0s";
-      if (oldPositions.length) {
+      if (oldPositions?.length === 3) {
         onDragHandle(
           nWrapper.dataset.nodeId,
           x - Number(oldPositions[1]),
@@ -219,7 +208,7 @@ const Node = forwardRef(
         );
       }
 
-      nWrapper.style.transform = `translate3d(${x}px,${y}px, 0px)`;
+      nWrapper.style.transform = `translate(${x}px,${y}px)`;
 
       updateNodeConnections();
     };
@@ -264,7 +253,7 @@ const Node = forwardRef(
           boxShadow: isSelected
             ? `0 0 0 ${2 / stageState.scale}px ${tileBackground}`
             : "none",
-          transform: `translate3d(${x}px, ${y}px, 0px)`,
+          transform: `translate(${x}px, ${y}px)`,
         }}
         onDragStart={onDragStart}
         onDrag={handleDrag}

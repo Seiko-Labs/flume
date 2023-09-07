@@ -160,6 +160,8 @@ export const createConnections = (
             outputs.forEach((output) => {
               const nodeInfo = nodeTypes[node.type];
 
+              console.log(nodeInfo);
+
               const fromPort = getPortRect(
                 output.nodeId,
                 output.portName,
@@ -214,7 +216,8 @@ export const createConnections = (
                 });
               } else {
                 if (!fromPort || !toPort) return;
-
+                console.log(inputName);
+                console.log(output);
                 const svg = createSVG({
                   id,
                   outputNodeId: output.nodeId,
