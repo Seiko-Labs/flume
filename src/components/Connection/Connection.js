@@ -1,7 +1,7 @@
 import React from "react";
 import { calculateCurve } from "../../connectionCalculator";
 import styles from "./Connection.css";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Connection = ({
   from,
@@ -12,6 +12,7 @@ const Connection = ({
   outputPortName,
   inputNodeId,
   inputPortName,
+  color,
 }) => {
   const curve = calculateCurve(from, to);
   return (
@@ -22,7 +23,7 @@ const Connection = ({
         data-output-port-name={outputPortName}
         data-input-node-id={inputNodeId}
         data-input-port-name={inputPortName}
-        stroke="white"
+        stroke={color}
         strokeOpacity={0.3}
         fill="none"
         strokeWidth={1}

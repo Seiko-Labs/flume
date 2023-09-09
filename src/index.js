@@ -80,6 +80,7 @@ export const NodeEditor = forwardRef(
     const stage = useRef();
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
+    const [dragNodes, setDrag] = useState([]);
 
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(nodesReducer, {
@@ -142,8 +143,8 @@ export const NodeEditor = forwardRef(
 
     useEffect(() => {
       !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
-      recalculateConnections();
-      triggerRecalculation();
+      // recalculateConnections();
+      // triggerRecalculation();
 
       document.addEventListener("keydown", handleKeyDown);
 
@@ -188,16 +189,16 @@ export const NodeEditor = forwardRef(
       setSelectedNodes,
     });
 
-    const recalculateConnections = useCallback(() => {
+    const recalculateConnections = () =>
       createConnections(
-        nodesState[currentStateIndex].state,
+        Object.values(nodesState[currentStateIndex].state),
         stageState,
         editorId,
         nodeTypes
       );
-    }, [currentStateIndex, nodesState, editorId, stageState]);
 
     const recalculateStageRect = () => {
+      setDrag(selectedNodes.map((node) => node.id));
       stage.current = document
         .getElementById(`${STAGE_ID}${editorId}`)
         .getBoundingClientRect();
@@ -224,7 +225,7 @@ export const NodeEditor = forwardRef(
           nodeId: excludedNodeId,
         });
       }
-      triggerRecalculation();
+      setDrag([]);
     };
 
     const visible = useVisibleNodes({
@@ -271,7 +272,7 @@ export const NodeEditor = forwardRef(
           if (selectedNodes.find(({ id }) => excludedNodeId === id)) {
             transformNodes(deltaX, deltaY);
 
-            recalculateConnections();
+            // recalculateConnections();
           } else {
             clearSelection();
           }
@@ -334,6 +335,7 @@ export const NodeEditor = forwardRef(
                             {visible.map((node) => (
                               <Node
                                 {...node}
+                                drag={dragNodes.includes(node.id)}
                                 isSelected={selectedNodes.find(
                                   ({ id }) => id === node.id
                                 )}

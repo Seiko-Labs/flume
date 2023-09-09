@@ -311,10 +311,10 @@ if (process.env.NODE_ENV !== "production") ;
  * server hydration and never again, SO BACK OFF ALRIGHT?
  */
 var serverHandoffComplete = false;
-var id$1 = 0;
+var id$2 = 0;
 
 var genId = function genId() {
-  return ++id$1;
+  return ++id$2;
 };
 /**
  * useId
@@ -365,6 +365,35 @@ var useId = function useId(idFromProps) {
   return id != null ? String(id) : undefined;
 };
 
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -392,7 +421,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z$e = ".Stage_wrapper__1-MnH{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;width:100%}.Stage_wrapper__1-MnH *{box-sizing:border-box}.Stage_wrapper__1-MnH input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__15k8U{transform-origin:center center}.Stage_scaleWrapper__Svldl,.Stage_transformWrapper__15k8U{height:0;left:50%;position:absolute;top:50%;width:0}";
+var css_248z$e = ".Stage_wrapper__1-MnH{-webkit-overflow-scrolling:touch;background-color:#192038;color:#000;font-family:Segoe UI,Helvetica,sans-serif;height:100%;line-height:1;min-height:100px;outline:none!important;overflow:hidden;position:relative;text-align:left;transform-origin:0 0;width:100%}.Stage_wrapper__1-MnH *{box-sizing:border-box}.Stage_wrapper__1-MnH input,select,textarea{font-family:Segoe UI,Helvetica,sans-serif}.Stage_transformWrapper__15k8U{transform-origin:center center}.Stage_scaleWrapper__Svldl,.Stage_transformWrapper__15k8U{height:0;left:50%;position:absolute;top:50%;width:0}";
 var styles$b = {"wrapper":"Stage_wrapper__1-MnH","transformWrapper":"Stage_transformWrapper__15k8U","scaleWrapper":"Stage_scaleWrapper__Svldl"};
 styleInject(css_248z$e);
 
@@ -3357,14 +3386,14 @@ var freeGlobal = _freeGlobal;
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
 /** Used as a reference to the global object. */
-var root$9 = freeGlobal || freeSelf || Function('return this')();
+var root$a = freeGlobal || freeSelf || Function('return this')();
 
-var _root = root$9;
+var _root = root$a;
 
-var root$8 = _root;
+var root$9 = _root;
 
 /** Built-in value references. */
-var Symbol$7 = root$8.Symbol;
+var Symbol$7 = root$9.Symbol;
 
 var _Symbol = Symbol$7;
 
@@ -3639,16 +3668,16 @@ var clamp_1 = clamp;
 // -_zyxwvutsrqponmlkjihgfedcba9876543210ZYXWVUTSRQPONMLKJIHGFEDCBA
 var url = '-_';
 // Loop from 36 to 0 (from z to a and 9 to 0 in Base36).
-var i = 36;
-while (i--) {
+var i$1 = 36;
+while (i$1--) {
   // 36 is radix. Number.prototype.toString(36) returns number
   // in Base36 representation. Base36 is like hex, but it uses 0–9 and a-z.
-  url += i.toString(36);
+  url += i$1.toString(36);
 }
 // Loop from 36 to 10 (from Z to A in Base36).
-i = 36;
-while (i-- - 10) {
-  url += i.toString(36).toUpperCase();
+i$1 = 36;
+while (i$1-- - 10) {
+  url += i$1.toString(36).toUpperCase();
 }
 
 /**
@@ -3668,9 +3697,9 @@ while (i-- - 10) {
  */
 var nonSecure = function (size) {
   var id = '';
-  i = size || 21;
+  i$1 = size || 21;
   // Compact alternative for `for (var i = 0; i < size; i++)`
-  while (i--) {
+  while (i$1--) {
     // `| 0` is compact and faster alternative for `Math.floor()`
     id += url[Math.random() * 64 | 0];
   }
@@ -4041,10 +4070,10 @@ function isFunction$6(value) {
 
 var isFunction_1 = isFunction$6;
 
-var root$7 = _root;
+var root$8 = _root;
 
 /** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$7['__core-js_shared__'];
+var coreJsData$1 = root$8['__core-js_shared__'];
 
 var _coreJsData = coreJsData$1;
 
@@ -4542,10 +4571,10 @@ ListCache$4.prototype.set = listCacheSet;
 var _ListCache = ListCache$4;
 
 var getNative$5 = _getNative,
-    root$6 = _root;
+    root$7 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Map$4 = getNative$5(root$6, 'Map');
+var Map$4 = getNative$5(root$7, 'Map');
 
 var _Map = Map$4;
 
@@ -5302,10 +5331,10 @@ function equalArrays$2(array, other, bitmask, customizer, equalFunc, stack) {
 
 var _equalArrays = equalArrays$2;
 
-var root$5 = _root;
+var root$6 = _root;
 
 /** Built-in value references. */
-var Uint8Array$2 = root$5.Uint8Array;
+var Uint8Array$2 = root$6.Uint8Array;
 
 var _Uint8Array = Uint8Array$2;
 
@@ -6239,34 +6268,34 @@ function equalObjects$1(object, other, bitmask, customizer, equalFunc, stack) {
 var _equalObjects = equalObjects$1;
 
 var getNative$4 = _getNative,
-    root$4 = _root;
+    root$5 = _root;
 
 /* Built-in method references that are verified to be native. */
-var DataView$1 = getNative$4(root$4, 'DataView');
+var DataView$1 = getNative$4(root$5, 'DataView');
 
 var _DataView = DataView$1;
 
 var getNative$3 = _getNative,
-    root$3 = _root;
+    root$4 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$3(root$3, 'Promise');
+var Promise$2 = getNative$3(root$4, 'Promise');
 
 var _Promise = Promise$2;
 
 var getNative$2 = _getNative,
-    root$2 = _root;
+    root$3 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative$2(root$2, 'Set');
+var Set$1 = getNative$2(root$3, 'Set');
 
 var _Set = Set$1;
 
 var getNative$1 = _getNative,
-    root$1 = _root;
+    root$2 = _root;
 
 /* Built-in method references that are verified to be native. */
-var WeakMap$2 = getNative$1(root$1, 'WeakMap');
+var WeakMap$2 = getNative$1(root$2, 'WeakMap');
 
 var _WeakMap = WeakMap$2;
 
@@ -8157,7 +8186,7 @@ function* selection_iterator() {
   }
 }
 
-var root = [null];
+var root$1 = [null];
 
 function Selection$2(groups, parents) {
   this._groups = groups;
@@ -8165,7 +8194,7 @@ function Selection$2(groups, parents) {
 }
 
 function selection() {
-  return new Selection$2([[document.documentElement]], root);
+  return new Selection$2([[document.documentElement]], root$1);
 }
 
 function selection_selection() {
@@ -8214,7 +8243,7 @@ Selection$2.prototype = selection.prototype = {
 function select(selector) {
   return typeof selector === "string"
       ? new Selection$2([[document.querySelector(selector)]], [document.documentElement])
-      : new Selection$2([[selector]], root);
+      : new Selection$2([[selector]], root$1);
 }
 
 function sourceEvent(event) {
@@ -8987,7 +9016,7 @@ var frame = 0, // is an animation frame pending?
     clock = typeof performance === "object" && performance.now ? performance : Date,
     setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
 
-function now() {
+function now$1() {
   return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
 }
 
@@ -9005,7 +9034,7 @@ Timer.prototype = timer.prototype = {
   constructor: Timer,
   restart: function(callback, delay, time) {
     if (typeof callback !== "function") throw new TypeError("callback is not a function");
-    time = (time == null ? now() : +time) + (delay == null ? 0 : +delay);
+    time = (time == null ? now$1() : +time) + (delay == null ? 0 : +delay);
     if (!this._next && taskTail !== this) {
       if (taskTail) taskTail._next = this;
       else taskHead = this;
@@ -9031,7 +9060,7 @@ function timer(callback, delay, time) {
 }
 
 function timerFlush() {
-  now(); // Get the current time, if not already set.
+  now$1(); // Get the current time, if not already set.
   ++frame; // Pretend we’ve set an alarm, if we haven’t already.
   var t = taskHead, e;
   while (t) {
@@ -9870,7 +9899,7 @@ function transition_end() {
   });
 }
 
-var id = 0;
+var id$1 = 0;
 
 function Transition(groups, parents, name, id) {
   this._groups = groups;
@@ -9880,7 +9909,7 @@ function Transition(groups, parents, name, id) {
 }
 
 function newId() {
-  return ++id;
+  return ++id$1;
 }
 
 var selection_prototype = selection.prototype;
@@ -9946,7 +9975,7 @@ function selection_transition(name) {
   if (name instanceof Transition) {
     id = name._id, name = name._name;
   } else {
-    id = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+    id = newId(), (timing = defaultTiming).time = now$1(), name = name == null ? null : name + "";
   }
 
   for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
@@ -10483,23 +10512,277 @@ var STAGE_ID = "__node_editor_stage__";
 var DRAG_CONNECTION_ID = "__node_editor_drag_connection__";
 var CONNECTIONS_ID = "__node_editor_connections__";
 
-var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
-  var scale = _ref.scale,
-    translate = _ref.translate,
-    editorId = _ref.editorId,
-    dispatchStageState = _ref.dispatchStageState,
-    children = _ref.children,
-    nodes = _ref.nodes,
-    spaceIsPressed = _ref.spaceIsPressed,
-    focusNode = _ref.focusNode,
-    onFocusChange = _ref.onFocusChange;
+var raf$2 = {exports: {}};
+
+var performanceNow = {exports: {}};
+
+// Generated by CoffeeScript 1.12.2
+(function() {
+  var getNanoSeconds, hrtime, loadTime, moduleLoadTime, nodeLoadTime, upTime;
+
+  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
+    performanceNow.exports = function() {
+      return performance.now();
+    };
+  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
+    performanceNow.exports = function() {
+      return (getNanoSeconds() - nodeLoadTime) / 1e6;
+    };
+    hrtime = process.hrtime;
+    getNanoSeconds = function() {
+      var hr;
+      hr = hrtime();
+      return hr[0] * 1e9 + hr[1];
+    };
+    moduleLoadTime = getNanoSeconds();
+    upTime = process.uptime() * 1e9;
+    nodeLoadTime = moduleLoadTime - upTime;
+  } else if (Date.now) {
+    performanceNow.exports = function() {
+      return Date.now() - loadTime;
+    };
+    loadTime = Date.now();
+  } else {
+    performanceNow.exports = function() {
+      return new Date().getTime() - loadTime;
+    };
+    loadTime = new Date().getTime();
+  }
+
+}).call(commonjsGlobal);
+
+var now = performanceNow.exports
+  , root = typeof window === 'undefined' ? commonjsGlobal : window
+  , vendors = ['moz', 'webkit']
+  , suffix = 'AnimationFrame'
+  , raf = root['request' + suffix]
+  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix];
+
+for(var i = 0; !raf && i < vendors.length; i++) {
+  raf = root[vendors[i] + 'Request' + suffix];
+  caf = root[vendors[i] + 'Cancel' + suffix]
+      || root[vendors[i] + 'CancelRequest' + suffix];
+}
+
+// Some versions of FF have rAF but not cAF
+if(!raf || !caf) {
+  var last$3 = 0
+    , id = 0
+    , queue = []
+    , frameDuration = 1000 / 60;
+
+  raf = function(callback) {
+    if(queue.length === 0) {
+      var _now = now()
+        , next = Math.max(0, frameDuration - (_now - last$3));
+      last$3 = next + _now;
+      setTimeout(function() {
+        var cp = queue.slice(0);
+        // Clear queue here to prevent
+        // callbacks from appending listeners
+        // to the current frame's queue
+        queue.length = 0;
+        for(var i = 0; i < cp.length; i++) {
+          if(!cp[i].cancelled) {
+            try{
+              cp[i].callback(last$3);
+            } catch(e) {
+              setTimeout(function() { throw e }, 0);
+            }
+          }
+        }
+      }, Math.round(next));
+    }
+    queue.push({
+      handle: ++id,
+      callback: callback,
+      cancelled: false
+    });
+    return id
+  };
+
+  caf = function(handle) {
+    for(var i = 0; i < queue.length; i++) {
+      if(queue[i].handle === handle) {
+        queue[i].cancelled = true;
+      }
+    }
+  };
+}
+
+raf$2.exports = function(fn) {
+  // Wrap in a new function to prevent
+  // `cancel` potentially being assigned
+  // to the native rAF function
+  return raf.call(root, fn)
+};
+raf$2.exports.cancel = function() {
+  caf.apply(root, arguments);
+};
+raf$2.exports.polyfill = function(object) {
+  if (!object) {
+    object = root;
+  }
+  object.requestAnimationFrame = raf;
+  object.cancelAnimationFrame = caf;
+};
+
+var raf$1 = raf$2.exports;
+
+/**
+ *
+ * useRaf
+ * Uses a polyfilled version of requestAnimationFrame
+ * @param {function} callback The callback function to be executed
+ * @param {boolean} [isActive=true] The value which while true, keeps the raf running infinitely
+ */
+function useRaf(callback, isActive) {
+    const savedCallback = React.useRef();
+    // Remember the latest function.
+    React.useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+    React.useEffect(() => {
+        let startTime, animationFrame;
+        function tick() {
+            const timeElapsed = Date.now() - startTime;
+            startTime = Date.now();
+            loop();
+            savedCallback.current && savedCallback.current(timeElapsed);
+        }
+        function loop() {
+            animationFrame = raf$1(tick);
+        }
+        if (isActive) {
+            startTime = Date.now();
+            loop();
+            return () => {
+                raf$1.cancel(animationFrame);
+            };
+        }
+    }, [isActive]);
+}
+
+var _excluded$2 = ["x", "y"];
+function _wrapRegExp$2() { _wrapRegExp$2 = function _wrapRegExp(re, groups) { return new BabelRegExp(re, void 0, groups); }; var _super = RegExp.prototype, _groups = new WeakMap(); function BabelRegExp(re, flags, groups) { var _this = new RegExp(re, flags); return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype); } function buildGroups(result, re) { var g = _groups.get(re); return Object.keys(g).reduce(function (groups, name) { var i = g[name]; if ("number" == typeof i) groups[name] = result[i];else { for (var k = 0; void 0 === result[i[k]] && k + 1 < i.length;) k++; groups[name] = result[i[k]]; } return groups; }, Object.create(null)); } return _inherits$2(BabelRegExp, RegExp), BabelRegExp.prototype.exec = function (str) { var result = _super.exec.call(this, str); if (result) { result.groups = buildGroups(result, this); var indices = result.indices; indices && (indices.groups = buildGroups(indices, this)); } return result; }, BabelRegExp.prototype[Symbol.replace] = function (str, substitution) { if ("string" == typeof substitution) { var groups = _groups.get(this); return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) { var group = groups[name]; return "$" + (Array.isArray(group) ? group.join("$") : group); })); } if ("function" == typeof substitution) { var _this = this; return _super[Symbol.replace].call(this, str, function () { var args = arguments; return "object" != _typeof(args[args.length - 1]) && (args = [].slice.call(args)).push(buildGroups(args, _this)), substitution.apply(this, args); }); } return _super[Symbol.replace].call(this, str, substitution); }, _wrapRegExp$2.apply(this, arguments); }
+var getBoundsOfBoxes = function getBoundsOfBoxes(box1, box2) {
+  return {
+    x: Math.min(box1.x, box2.x),
+    y: Math.min(box1.y, box2.y),
+    x2: Math.max(box1.x2, box2.x2),
+    y2: Math.max(box1.y2, box2.y2)
+  };
+};
+var rectToBox = function rectToBox(_ref) {
+  var x = _ref.x,
+    y = _ref.y,
+    width = _ref.width,
+    height = _ref.height;
+  return {
+    x: x,
+    y: y,
+    x2: x + width,
+    y2: y + height
+  };
+};
+var boxToRect = function boxToRect(_ref2) {
+  var x = _ref2.x,
+    y = _ref2.y,
+    x2 = _ref2.x2,
+    y2 = _ref2.y2;
+  return {
+    x: x,
+    y: y,
+    width: x2 - x,
+    height: y2 - y
+  };
+};
+var getRectOfNodes = function getRectOfNodes(nodes) {
+  if (nodes.length === 0) {
+    return {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    };
+  }
+  var box = nodes.reduce(function (currBox, node) {
+    var x = node.x,
+      y = node.y;
+    return getBoundsOfBoxes(currBox, rectToBox({
+      x: x,
+      y: y,
+      width: 100,
+      height: 50
+    }));
+  }, {
+    x: Infinity,
+    y: Infinity,
+    x2: -Infinity,
+    y2: -Infinity
+  });
+  return boxToRect(box);
+};
+var getBoundsOfRects = function getBoundsOfRects(rect1, rect2) {
+  return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)));
+};
+var defaultWidth = 200;
+var defaultHeight = 150;
+var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
+  var scale = _ref3.scale,
+    translate = _ref3.translate,
+    editorId = _ref3.editorId,
+    dispatchStageState = _ref3.dispatchStageState,
+    children = _ref3.children,
+    nodes = _ref3.nodes,
+    spaceIsPressed = _ref3.spaceIsPressed,
+    focusNode = _ref3.focusNode,
+    onFocusChange = _ref3.onFocusChange;
+  var translateWrapper = React.useRef();
+  var svg = React.useRef();
+  var rect = React.useRef();
+  var elementWidth = defaultWidth;
+  var elementHeight = defaultHeight;
+  var size = wrapper.current ? {
+    width: wrapper.current.getBoundingClientRect().width,
+    height: wrapper.current.getBoundingClientRect().height
+  } : {
+    width: 0,
+    height: 0
+  };
+  var _useState = React.useState({
+      x: -translate.x / scale,
+      y: -translate.y / scale,
+      width: size.width / scale,
+      height: size.height / scale
+    }),
+    _useState2 = _slicedToArray(_useState, 2),
+    viewBB = _useState2[0],
+    setViewBB = _useState2[1];
+  var offsetScale = 5;
+  var boundingRect = Object.values(nodes).length > 0 ? getBoundsOfRects(getRectOfNodes(Object.values(nodes)), viewBB) : viewBB;
+  var scaledWidth = boundingRect.width / elementWidth;
+  var scaledHeight = boundingRect.height / elementHeight;
+  var viewScale = Math.max(scaledWidth, scaledHeight);
+  var viewWidth = viewScale * elementWidth;
+  var viewHeight = viewScale * elementHeight;
+  var offset = offsetScale * viewScale;
+  var x = boundingRect.x - (viewWidth - boundingRect.width) / 2 - offset;
+  var y = boundingRect.y - (viewHeight - boundingRect.height) / 2 - offset;
+  var width = viewWidth + offset * 2;
+  var height = viewHeight + offset * 2;
+  var viewScaleRef = React.useRef(0);
+  viewScaleRef.current = viewScale;
   React.useLayoutEffect(function () {
+    if (!translateWrapper.current || !wrapper.current) return;
     var _d3$zoomTransform = transform$1(translateWrapper.current),
       x = _d3$zoomTransform.x,
       y = _d3$zoomTransform.y,
       k = _d3$zoomTransform.k;
     var d3Zoom = zoom().scaleExtent([0.3, 3]);
     var d3Selection = select(wrapper.current);
+    var selection = select(svg.current);
+    var zoomAndPanHandler = zoom();
     if (x === 0 && y === 0 && k === 1) {
       d3Zoom.transform(d3Selection, identity$4.translate(translate.x, translate.y).scale(scale));
     } else {
@@ -10509,28 +10792,24 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
       if (e.type === "mousedown") return spaceIsPressed ? e : false;
       return e;
     });
-    d3Zoom.on("start", function (event) {
-      dispatchStageState(function () {
-        return {
-          type: "SET",
-          scale: event.transform.k,
-          translate: {
-            x: event.transform.x,
-            y: event.transform.y
-          }
-        };
-      });
-    });
     d3Zoom.on("zoom", function (event) {
-      requestAnimationFrame(function () {
-        var _event$transform = event.transform,
-          x = _event$transform.x,
-          y = _event$transform.y,
-          k = _event$transform.k;
-        translateWrapper.current.style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px) scale3d(").concat(k, ", ").concat(k, ", ").concat(k, ")");
+      var _event$transform = event.transform,
+        x = _event$transform.x,
+        y = _event$transform.y,
+        k = _event$transform.k;
+      setViewBB({
+        x: -x / k,
+        y: -y / k,
+        width: size.width / k,
+        height: size.height / k
       });
+      translateWrapper.current.style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px) scale3d(").concat(k, ", ").concat(k, ", ").concat(k, ")");
     });
     d3Zoom.on("end", function (event) {
+      var _event$transform2 = event.transform;
+        _event$transform2.x;
+        _event$transform2.y;
+        _event$transform2.k;
       dispatchStageState(function () {
         return {
           type: "SET",
@@ -10542,41 +10821,88 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
         };
       });
     });
+    if (svg.current && rect.current) {
+      zoomAndPanHandler.on("zoom", function (event) {
+        var transform = translateWrapper.current.style.transform.match( /*#__PURE__*/_wrapRegExp$2(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+          x: 1,
+          y: 2,
+          z: 3
+        }));
+        var moveScale = viewScaleRef.current * Math.max(1, scale) * 1;
+        var position = {
+          x: transform[1] - event.sourceEvent.movementX * moveScale,
+          y: transform[2] - event.sourceEvent.movementY * moveScale
+        };
+        var nextTransform = identity$4.translate(position.x, position.y).scale(scale);
+        setViewBB({
+          x: (-transform[1] - event.sourceEvent.movementX * moveScale) / scale,
+          y: (-transform[2] - event.sourceEvent.movementY * moveScale) / scale,
+          width: size.width / scale,
+          height: size.height / scale
+        });
+        translateWrapper.current.style.transform = "translate3d(".concat(nextTransform.x, "px, ").concat(nextTransform.y, "px, 0px) scale3d(").concat(scale, ", ").concat(scale, ", ").concat(scale, ")");
+      }).on("end", function (event) {
+        var transform = translateWrapper.current.style.transform.match( /*#__PURE__*/_wrapRegExp$2(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+          x: 1,
+          y: 2,
+          z: 3
+        }));
+        var moveScale = viewScaleRef.current * Math.max(1, scale) * 1;
+        var position = {
+          x: transform[1] - event.sourceEvent.movementX * moveScale,
+          y: transform[2] - event.sourceEvent.movementY * moveScale
+        };
+        var nextTransform = identity$4.translate(position.x, position.y).scale(scale);
+        d3Zoom.transform(d3Selection, nextTransform);
+        dispatchStageState(function () {
+          return {
+            type: "SET",
+            scale: scale,
+            translate: {
+              x: nextTransform.x,
+              y: nextTransform.y
+            }
+          };
+        });
+      });
+      selection.call(zoomAndPanHandler);
+    }
     if (focusNode && focusNode.node) {
-      // translateWrapper.current.style.transition = "0.5s";
       var node = Object.values(nodes).find(function (node) {
         return node.id === focusNode.node;
       });
-      var rect = {
+      var _rect = {
         x: node.x,
         y: node.y,
         width: 300,
         height: 0
       };
-      d3Zoom.translateTo(d3Selection, rect.x, rect.y + 150);
+      d3Zoom.translateTo(d3Selection, _rect.x, _rect.y + 150);
       onFocusChange && onFocusChange(focusNode);
     }
     d3Selection.call(d3Zoom).on("dblclick.zoom", null);
     return function () {
+      selection.on("zoom", null);
+      selection.on("end", null);
       d3Zoom.on("zoom", null);
       d3Zoom.on("end", null);
       d3Zoom.on("start", null);
     };
-  }, [spaceIsPressed, focusNode]);
+  }, [spaceIsPressed, focusNode, scale]);
+  console.log("im working ???");
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
-  var translateWrapper = React.useRef();
-  var _useState = React.useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    menuOpen = _useState2[0],
-    setMenuOpen = _useState2[1];
-  var _useState3 = React.useState({
+  var _useState3 = React.useState(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    menuOpen = _useState4[0],
+    setMenuOpen = _useState4[1];
+  var _useState5 = React.useState({
       x: 0,
       y: 0
     }),
-    _useState4 = _slicedToArray(_useState3, 2),
-    menuCoordinates = _useState4[0],
-    setMenuCoordinates = _useState4[1];
+    _useState6 = _slicedToArray(_useState5, 2),
+    menuCoordinates = _useState6[0],
+    setMenuCoordinates = _useState6[1];
   var handleContextMenu = function handleContextMenu(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -10593,11 +10919,14 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
   var byScale = function byScale(value) {
     return value / scale;
   };
-  var addNode = function addNode(_ref2) {
-    var node = _ref2.node;
+  var addNode = function addNode(_ref4) {
+    var node = _ref4.node;
+    var snapGrid = [30, 30];
     var wrapperRect = wrapper.current.getBoundingClientRect();
     var x = byScale(menuCoordinates.x - wrapperRect.left - translate.x);
     var y = byScale(menuCoordinates.y - wrapperRect.top - translate.y);
+    x = snapGrid[0] * Math.round(x / snapGrid[0]);
+    y = snapGrid[1] * Math.round(y / snapGrid[1]);
     dispatchNodes({
       type: "ADD_NODE",
       x: x,
@@ -10638,11 +10967,59 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref, wrapper) {
     ref: translateWrapper,
     id: "flume_translate_wrapper",
     style: {
-      transition: "0.055s",
       transform: "translate3d(".concat(translate.x, "px, ").concat(translate.y, "px, 0px) scale3d(").concat(scale, ", ").concat(scale, ", ").concat(scale, ")"),
-      transformOrigin: "0 0"
+      transformOrigin: "0 0",
+      width: "100%",
+      height: "100%"
     }
-  }, children));
+  }, children), /*#__PURE__*/React__default["default"].createElement("svg", {
+    width: elementWidth,
+    height: elementHeight,
+    viewBox: "".concat(x, " ").concat(y, " ").concat(width, " ").concat(height),
+    role: "img",
+    style: {
+      position: "absolute",
+      right: 0,
+      bottom: 0,
+      margin: 15,
+      borderRadius: 5,
+      marginBottom: 45,
+      background: "#192038",
+      transformOrigin: "0 0"
+    },
+    ref: svg
+  }, Object.values(nodes).map(function (_ref5) {
+    var x = _ref5.x,
+      y = _ref5.y,
+      node = _objectWithoutProperties(_ref5, _excluded$2);
+    var nodeInfo = nodeTypes[node.type];
+    return /*#__PURE__*/React__default["default"].createElement("rect", {
+      x: x,
+      y: y,
+      rx: 10,
+      ry: 10,
+      width: 100,
+      strokeWidth: 1,
+      stroke: "#192038",
+      height: 50,
+      fill: nodeInfo.category.tileBackground,
+      shapeRendering: "crispEdges"
+    });
+  }), /*#__PURE__*/React__default["default"].createElement("path", {
+    className: "react-flow__minimap-mask",
+    ref: rect,
+    d: "M".concat(x - offset, ",").concat(y - offset, "h").concat(width + offset * 2, "v").concat(height + offset * 2, "h").concat(-width - offset * 2, "z\n        M").concat(viewBB.x, ",").concat(viewBB.y, "h").concat(viewBB.width, "v").concat(viewBB.height, "h").concat(-viewBB.width, "z"),
+    fill: "rgba(37, 47, 83, 0.5)",
+    rx: 20,
+    ry: 20,
+    style: {
+      borderRadius: 10
+    },
+    fillRule: "evenodd",
+    strokeWidth: 1,
+    pointerEvents: "none",
+    shapeRendering: "crispEdges"
+  })));
 });
 Stage.displayName = "Stage";
 var Stage$1 = /*#__PURE__*/React.memo(Stage);
@@ -11179,13 +11556,14 @@ var createSVG = function createSVG(_ref5) {
     outputNodeId = _ref5.outputNodeId,
     outputPortName = _ref5.outputPortName,
     inputNodeId = _ref5.inputNodeId,
-    inputPortName = _ref5.inputPortName;
+    inputPortName = _ref5.inputPortName,
+    stroke = _ref5.stroke;
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", styles$8.svg);
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   var curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
-  path.setAttribute("stroke", "white");
+  path.setAttribute("stroke", stroke);
   // path.setAttribute("stroke-opacity", ".3");
   path.setAttribute("stroke-width", "1.5");
   path.setAttribute("stroke-linecap", "round");
@@ -11213,7 +11591,7 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
     var byScale = function byScale(value) {
       return value / scale;
     };
-    Object.values(nodes).forEach(function (node) {
+    nodes.forEach(function (node) {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(function (_ref7, k) {
           var _ref8 = _slicedToArray(_ref7, 2),
@@ -11242,13 +11620,15 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
                 } : existingLine.getPointAtLength(0)
               });
             } else {
+              var _nodeInfo$category, _nodeInfo$category2;
               if (!fromPort || !toPort) return;
-              var svg = createSVG({
+              createSVG({
                 id: id,
                 outputNodeId: output.nodeId,
                 outputPortName: output.portName,
                 inputNodeId: node.id,
                 inputPortName: inputName,
+                stroke: "".concat(inputName === "errorAction" ? "".concat(inputName === "errorAction" ? "#F16969" : (nodeInfo === null || nodeInfo === void 0 ? void 0 : (_nodeInfo$category = nodeInfo.category) === null || _nodeInfo$category === void 0 ? void 0 : _nodeInfo$category.tileBackground) || "white") : (nodeInfo === null || nodeInfo === void 0 ? void 0 : (_nodeInfo$category2 = nodeInfo.category) === null || _nodeInfo$category2 === void 0 ? void 0 : _nodeInfo$category2.tileBackground) || "white"),
                 to: {
                   x: byScale(fromPort.x - stage.x + portHalf - stageHalfWidth),
                   y: byScale(fromPort.y - stage.y + portHalf - stageHalfHeight)
@@ -11259,9 +11639,6 @@ var createConnections = function createConnections(nodes, _ref6, editorId, nodeT
                 },
                 stage: stageRef
               });
-              if (nodeInfo) {
-                svg.setAttribute("stroke", "".concat(inputName === "errorAction" ? "".concat(inputName === "errorAction" ? "#F16969" : nodeInfo.category.tileBackground || "white") : nodeInfo.category.tileBackground || "white"));
-              }
             }
           });
         });
@@ -11649,7 +12026,8 @@ var Connection = function Connection(_ref) {
     outputNodeId = _ref.outputNodeId,
     outputPortName = _ref.outputPortName,
     inputNodeId = _ref.inputNodeId,
-    inputPortName = _ref.inputPortName;
+    inputPortName = _ref.inputPortName,
+    color = _ref.color;
   var curve = calculateCurve(from, to);
   return /*#__PURE__*/React__default["default"].createElement("svg", {
     className: styles$8.svg
@@ -11659,7 +12037,7 @@ var Connection = function Connection(_ref) {
     "data-output-port-name": outputPortName,
     "data-input-node-id": inputNodeId,
     "data-input-port-name": inputPortName,
-    stroke: "white",
+    stroke: color,
     strokeOpacity: 0.3,
     fill: "none",
     strokeWidth: 1,
@@ -11671,8 +12049,8 @@ var Connection = function Connection(_ref) {
 var Connection$1 = /*#__PURE__*/React.memo(Connection);
 
 var Port = function Port(_ref) {
-  _ref.color;
-    var _ref$name = _ref.name,
+  var color = _ref.color,
+    _ref$name = _ref.name,
     name = _ref$name === void 0 ? "" : _ref$name,
     type = _ref.type,
     isInput = _ref.isInput,
@@ -11879,6 +12257,7 @@ var Port = function Port(_ref) {
   }), isDragging ? /*#__PURE__*/React__default["default"].createElement(Portal$1, {
     node: document.getElementById("".concat(DRAG_CONNECTION_ID).concat(editorId))
   }, /*#__PURE__*/React__default["default"].createElement(Connection$1, {
+    color: color,
     from: dragStartCoordinates,
     to: dragStartCoordinates,
     lineRef: line
@@ -12089,35 +12468,6 @@ var IoPorts = function IoPorts(_ref) {
   }
 };
 var IoPorts$1 = /*#__PURE__*/React.memo(IoPorts);
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-  return target;
-}
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
 
 var _excluded$1 = ["children", "stageState", "stageRect", "onDragDelayStart", "onDragStart", "onDrag", "onDragEnd", "onMouseDown", "onTouchStart", "disabled", "delay", "innerRef"];
 var Draggable = function Draggable(_ref) {
@@ -12358,7 +12708,8 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     onDragStart = _ref2.onDragStart,
     _onDragEnd = _ref2.onDragEnd,
     onDragHandle = _ref2.onDragHandle,
-    hideControls = _ref2.hideControls;
+    hideControls = _ref2.hideControls,
+    drag = _ref2.drag;
   var _useState = React.useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     commentVisibile = _useState2[0],
@@ -12405,10 +12756,6 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
   var byScale = function byScale(value) {
     return value / stageState.scale;
   };
-  React.useRef({
-    x: 0,
-    y: 0
-  });
   var updateConnectionsByTransput = function updateConnectionsByTransput() {
     var transput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var isOutput = arguments.length > 1 ? arguments[1] : undefined;
@@ -12445,9 +12792,15 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       updateConnectionsByTransput(connections.outputs, true);
     }
   };
+  useRaf(function () {
+    updateNodeConnections();
+  }, drag);
   var handleDrag = function handleDrag(_ref5) {
     var x = _ref5.x,
       y = _ref5.y;
+    var snapGrid = [30, 30];
+    x = snapGrid[0] * Math.round(x / snapGrid[0]);
+    y = snapGrid[1] * Math.round(y / snapGrid[1]);
     var nWrapper = document.getElementById(id);
     var oldPositions = nWrapper.style.transform.match( /*#__PURE__*/_wrapRegExp$1(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
       x: 1,
@@ -12455,7 +12808,6 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       z: 3
     }));
     if (!nWrapper) return;
-    nWrapper.style.transition = "0s";
     if (oldPositions.length) {
       onDragHandle(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]), {
         x: x,
@@ -12512,11 +12864,17 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
     onDragEnd: function onDragEnd(e, _ref8) {
       var x = _ref8.x,
         y = _ref8.y;
+      var snapGrid = [30, 30];
+      x = snapGrid[0] * Math.round(x / snapGrid[0]);
+      y = snapGrid[1] * Math.round(y / snapGrid[1]);
       var nWrapper = document.getElementById(id);
-      var oldPositions = nWrapper.style.transform.match(/^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/);
+      var oldPositions = nWrapper.style.transform.match( /*#__PURE__*/_wrapRegExp$1(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+        x: 1,
+        y: 2,
+        z: 3
+      }));
       if (!nWrapper) return;
-      nWrapper.style.transition = "0s";
-      if ((oldPositions === null || oldPositions === void 0 ? void 0 : oldPositions.length) === 3) {
+      if (oldPositions.length) {
         _onDragEnd(nWrapper.dataset.nodeId, x - Number(oldPositions[1]), y - Number(oldPositions[2]), {
           x: x,
           y: y
@@ -30210,6 +30568,9 @@ var useConnectorActions = function useConnectorActions(_ref) {
     nodesState = _ref.nodesState,
     currentStateIndex = _ref.currentStateIndex,
     setSelectedNodes = _ref.setSelectedNodes;
+  selectedNodes = selectedNodes.map(function (node) {
+    return node.id;
+  });
   React.useEffect(function () {
     if (connectorAction) {
       var _connectorAction = connectorAction(),
@@ -35565,6 +35926,10 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState2 = _slicedToArray(_useState, 2),
     spaceIsPressed = _useState2[0],
     setSpaceIsPressed = _useState2[1];
+  var _useState3 = React.useState([]),
+    _useState4 = _slicedToArray(_useState3, 2),
+    dragNodes = _useState4[0],
+    setDrag = _useState4[1];
   var _useReducer = React.useReducer(connectNodesReducer(nodesReducer$1, {
       nodeTypes: nodeTypes,
       portTypes: portTypes,
@@ -35617,17 +35982,18 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     !currentStateIndex && dispatchNodes({
       type: "HYDRATE_DEFAULT_NODES"
     });
-    recalculateConnections();
-    triggerRecalculation();
+    // recalculateConnections();
+    // triggerRecalculation();
+
     document.addEventListener("keydown", handleKeyDown);
     return function () {
       return document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  var _useState3 = React.useState(true),
-    _useState4 = _slicedToArray(_useState3, 2),
-    shouldRecalculateConnections = _useState4[0],
-    setShouldRecalculateConnections = _useState4[1];
+  var _useState5 = React.useState(true),
+    _useState6 = _slicedToArray(_useState5, 2),
+    shouldRecalculateConnections = _useState6[0],
+    setShouldRecalculateConnections = _useState6[1];
   var initialStageParams = _initialStageParams || tempState.stage;
   var _useReducer3 = React.useReducer(stageReducer, {
       scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
@@ -35653,10 +36019,13 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     currentStateIndex: currentStateIndex,
     setSelectedNodes: setSelectedNodes
   });
-  var recalculateConnections = React.useCallback(function () {
-    createConnections(nodesState[currentStateIndex].state, stageState, editorId, nodeTypes);
-  }, [currentStateIndex, nodesState, editorId, stageState]);
+  var recalculateConnections = function recalculateConnections() {
+    return createConnections(Object.values(nodesState[currentStateIndex].state), stageState, editorId, nodeTypes);
+  };
   var recalculateStageRect = function recalculateStageRect() {
+    setDrag(selectedNodes.map(function (node) {
+      return node.id;
+    }));
     stage.current = document.getElementById("".concat(STAGE_ID).concat(editorId)).getBoundingClientRect();
   };
   React.useLayoutEffect(function () {
@@ -35679,7 +36048,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         nodeId: excludedNodeId
       }));
     }
-    triggerRecalculation();
+    setDrag([]);
   };
   var visible = useVisibleNodes({
     nodes: nodesState[currentStateIndex].state,
@@ -35726,7 +36095,8 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         return excludedNodeId === id;
       })) {
         transformNodes(deltaX, deltaY);
-        recalculateConnections();
+
+        // recalculateConnections();
       } else {
         clearSelection();
       }
@@ -35784,6 +36154,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     stageRef: stage
   }, visible.map(function (node) {
     return /*#__PURE__*/React__default["default"].createElement(Node$1, _extends$4({}, node, {
+      drag: dragNodes.includes(node.id),
       isSelected: selectedNodes.find(function (_ref3) {
         var id = _ref3.id;
         return id === node.id;

@@ -114,13 +114,14 @@ export const createSVG = ({
   outputPortName,
   inputNodeId,
   inputPortName,
+  stroke,
 }) => {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", styles.svg);
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   const curve = calculateCurve(from, to);
   path.setAttribute("d", curve);
-  path.setAttribute("stroke", "white");
+  path.setAttribute("stroke", stroke);
   // path.setAttribute("stroke-opacity", ".3");
   path.setAttribute("stroke-width", "1.5");
   path.setAttribute("stroke-linecap", "round");
@@ -153,7 +154,7 @@ export const createConnections = (
 
     const byScale = (value) => value / scale;
 
-    Object.values(nodes).forEach((node) => {
+    nodes.forEach((node) => {
       if (node.connections && node.connections.inputs) {
         Object.entries(node.connections.inputs).forEach(
           ([inputName, outputs], k) => {
@@ -221,6 +222,15 @@ export const createConnections = (
                   outputPortName: output.portName,
                   inputNodeId: node.id,
                   inputPortName: inputName,
+                  stroke: `${
+                    inputName === "errorAction"
+                      ? `${
+                          inputName === "errorAction"
+                            ? "#F16969"
+                            : nodeInfo?.category?.tileBackground || "white"
+                        }`
+                      : nodeInfo?.category?.tileBackground || "white"
+                  }`,
                   to: {
                     x: byScale(
                       fromPort.x - stage.x + portHalf - stageHalfWidth
@@ -235,21 +245,6 @@ export const createConnections = (
                   },
                   stage: stageRef,
                 });
-
-                if (nodeInfo) {
-                  svg.setAttribute(
-                    "stroke",
-                    `${
-                      inputName === "errorAction"
-                        ? `${
-                            inputName === "errorAction"
-                              ? "#F16969"
-                              : nodeInfo.category.tileBackground || "white"
-                          }`
-                        : nodeInfo.category.tileBackground || "white"
-                    }`
-                  );
-                }
               }
             });
           }

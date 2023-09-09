@@ -23,6 +23,7 @@ import Draggable from "../Draggable/Draggable";
 import { ReactComponent as Ticker } from "../../img/arrow.svg";
 import { ReactComponent as CommentIcon } from "../../img/comment.svg";
 import { ReactComponent as HelpIcon } from "../../img/help.svg";
+import useRaf from "@rooks/use-raf";
 
 import { memo } from "react";
 
@@ -90,6 +91,7 @@ const Node = forwardRef(
       onDragEnd,
       onDragHandle,
       hideControls,
+      drag,
     },
     nodeWrapper
   ) => {
@@ -139,8 +141,6 @@ const Node = forwardRef(
     };
 
     const byScale = (value) => value / stageState.scale;
-    const last = useRef({ x: 0, y: 0 });
-
     const updateConnectionsByTransput = (transput = {}, isOutput) => {
       Object.entries(transput).forEach(([portName, outputs]) => {
         outputs.forEach((output) => {
@@ -201,7 +201,14 @@ const Node = forwardRef(
       }
     };
 
+    useRaf(() => {
+      updateNodeConnections();
+    }, drag);
+
     const handleDrag = ({ x, y }) => {
+      const snapGrid = [30, 30];
+      x = snapGrid[0] * Math.round(x / snapGrid[0]);
+      y = snapGrid[1] * Math.round(y / snapGrid[1]);
       const nWrapper = document.getElementById(id);
       const oldPositions = nWrapper.style.transform.match(
         /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
@@ -209,7 +216,6 @@ const Node = forwardRef(
 
       if (!nWrapper) return;
 
-      nWrapper.style.transition = "0s";
       if (oldPositions.length) {
         onDragHandle(
           nWrapper.dataset.nodeId,
@@ -269,15 +275,17 @@ const Node = forwardRef(
         onDragStart={onDragStart}
         onDrag={handleDrag}
         onDragEnd={(e, { x, y }) => {
+          const snapGrid = [30, 30];
+          x = snapGrid[0] * Math.round(x / snapGrid[0]);
+          y = snapGrid[1] * Math.round(y / snapGrid[1]);
           const nWrapper = document.getElementById(id);
           const oldPositions = nWrapper.style.transform.match(
-            /^translate\((-?[0-9\\.]+)px, ?(-?[0-9\\.]+)px\);?/
+            /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
           );
 
           if (!nWrapper) return;
 
-          nWrapper.style.transition = "0s";
-          if (oldPositions?.length === 3) {
+          if (oldPositions.length) {
             onDragEnd(
               nWrapper.dataset.nodeId,
               x - Number(oldPositions[1]),

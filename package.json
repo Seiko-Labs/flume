@@ -3,6 +3,7 @@
   "dependencies": {
     "@reach/auto-id": "^0.10.5",
     "@react-hook/debounce": "^4.0.0",
+    "@rooks/use-raf": "^4.11.2",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.0.1",

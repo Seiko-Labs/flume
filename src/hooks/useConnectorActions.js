@@ -17,6 +17,7 @@ const useConnectorActions = ({
   currentStateIndex,
   setSelectedNodes,
 }) => {
+  selectedNodes = selectedNodes.map((node) => node.id);
   useEffect(() => {
     if (connectorAction) {
       const { type, data } = connectorAction();

@@ -6,6 +6,7 @@
   /*noinspection ALL*/
 
   color: #000;
+  transform-origin: 0 0;
   position: relative;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;

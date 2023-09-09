@@ -242,6 +242,7 @@ const Port = ({
           node={document.getElementById(`${DRAG_CONNECTION_ID}${editorId}`)}
         >
           <Connection
+            color={color}
             from={dragStartCoordinates}
             to={dragStartCoordinates}
             lineRef={line}
