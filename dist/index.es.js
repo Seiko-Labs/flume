@@ -10746,7 +10746,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
   var height = viewHeight + offset * 2;
   var viewScaleRef = useRef(0);
   viewScaleRef.current = viewScale;
-  useLayoutEffect(function () {
+  useEffect(function () {
     if (!translateWrapper.current || !wrapper.current) return;
     var _d3$zoomTransform = transform$1(translateWrapper.current),
       x = _d3$zoomTransform.x,
@@ -10862,7 +10862,6 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
       d3Zoom.on("start", null);
     };
   }, [spaceIsPressed, focusNode, scale]);
-  console.log("im working ???");
   var nodeTypes = useContext(NodeTypesContext);
   var dispatchNodes = useContext(NodeDispatchContext);
   var _useState3 = useState(false),

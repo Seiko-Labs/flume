@@ -10773,7 +10773,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
   var height = viewHeight + offset * 2;
   var viewScaleRef = React.useRef(0);
   viewScaleRef.current = viewScale;
-  React.useLayoutEffect(function () {
+  React.useEffect(function () {
     if (!translateWrapper.current || !wrapper.current) return;
     var _d3$zoomTransform = transform$1(translateWrapper.current),
       x = _d3$zoomTransform.x,
@@ -10889,7 +10889,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
       d3Zoom.on("start", null);
     };
   }, [spaceIsPressed, focusNode, scale]);
-  console.log("im working ???");
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
   var _useState3 = React.useState(false),

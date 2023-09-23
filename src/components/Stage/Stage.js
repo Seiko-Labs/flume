@@ -120,8 +120,9 @@ const Stage = forwardRef(
 
     viewScaleRef.current = viewScale;
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (!translateWrapper.current || !wrapper.current) return;
+
       const { x, y, k } = d3.zoomTransform(translateWrapper.current);
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
@@ -252,8 +253,6 @@ const Stage = forwardRef(
         d3Zoom.on("start", null);
       };
     }, [spaceIsPressed, focusNode, scale]);
-
-    console.log("im working ???");
 
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
