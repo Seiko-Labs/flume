@@ -11945,7 +11945,7 @@ var Control = function Control(_ref) {
         return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
           onChange: function onChange(value) {
             if (value === undefined || value === null) {
-              commonProps.onChange("");
+              return commonProps.onChange("");
             }
             var num = parseFloat(value);
             if (Number.isNaN(num)) {

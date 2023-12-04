@@ -107,7 +107,7 @@ const Control = ({
             {...commonProps}
             onChange={(value) => {
               if (value === undefined || value === null) {
-                commonProps.onChange("");
+                return commonProps.onChange("");
               }
 
               const num = parseFloat(value);
