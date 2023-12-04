@@ -45,8 +45,8 @@ export function useVisibleNodes({
 
   for (const v of Object.values(nodes)) {
     const nodeRect = {
-      x: v.x - wrapperRect.x,
-      y: v.y - wrapperRect.y,
+      x: v.x + wrapperRect.x / tScale,
+      y: v.y + wrapperRect.y / tScale,
       width: 300,
       height: 300,
     };

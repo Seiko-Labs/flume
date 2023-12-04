@@ -21,7 +21,6 @@ function getOffset(props) {
 }
 
 export default class Selection extends React.PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
   props;
   state;
   selectedChildren;
@@ -107,13 +106,15 @@ export default class Selection extends React.PureComponent {
     const nextState = {};
 
     nextState.mouseDown = true;
+    const stage = this.props.target.getBoundingClientRect();
+
     nextState.startPoint = {
       x: (x - this.state.offset.left) / this.props.zoom,
       y: (y - this.state.offset.top) / this.props.zoom,
     };
     nextState.startWithoutZoom = {
-      x: x - this.state.offset.left,
-      y: y - this.state.offset.top,
+      x: x - stage.left,
+      y: y - stage.top,
     };
 
     this.setState(nextState);
@@ -192,6 +193,8 @@ export default class Selection extends React.PureComponent {
   onMouseMove = (e) => {
     e.preventDefault();
     if (this.state.mouseDown) {
+      const stage = this.props.target.getBoundingClientRect();
+
       const endPoint = {
         x: (e.pageX - this.state.offset.left) / this.props.zoom,
         y: (e.pageY - this.state.offset.top) / this.props.zoom,
@@ -206,8 +209,8 @@ export default class Selection extends React.PureComponent {
         selectionBoxWithoutZoom: this.calculateSelectionBox(
           this.state.startWithoutZoom,
           {
-            x: e.pageX - this.state.offset.left,
-            y: e.pageY - this.state.offset.top,
+            x: e.pageX - stage.left,
+            y: e.pageY - stage.top,
           }
         ),
       });
@@ -217,6 +220,8 @@ export default class Selection extends React.PureComponent {
   onTouchMove = (e) => {
     e.preventDefault();
     if (this.state.mouseDown) {
+      const stage = this.props.target.getBoundingClientRect();
+
       const endPoint = {
         x: (e.touches[0].pageX - this.state.offset.left) / this.props.zoom,
         y: (e.touches[0].pageY - this.state.offset.top) / this.props.zoom,
@@ -231,8 +236,8 @@ export default class Selection extends React.PureComponent {
         selectionBoxWithoutZoom: this.calculateSelectionBox(
           this.state.startWithoutZoom,
           {
-            x: e.pageX - this.state.offset.left,
-            y: e.pageY - this.state.offset.top,
+            x: e.pageX - stage.left,
+            y: e.pageY - stage.top,
           }
         ),
       });
@@ -374,7 +379,6 @@ Selection.propTypes = {
   onSelectionChange: PropTypes.func.isRequired,
   onHighlightChange: PropTypes.func,
   elements: PropTypes.array.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   offset: PropTypes.object,
   zoom: PropTypes.number,
   style: PropTypes.object,

@@ -63,6 +63,15 @@ const Control = ({
     triggerRecalculation();
   };
 
+  const parseValue = (value) => {
+    try {
+      const parsed = JSON.parse(value);
+      return parsed;
+    } catch {
+      return value;
+    }
+  };
+
   const getControlByType = (type) => {
     const commonProps = {
       triggerRecalculation,
@@ -97,16 +106,19 @@ const Control = ({
           <TextInput
             {...commonProps}
             onChange={(value) => {
-              const [_, second] = value.split(".");
-              const isFloat = value.includes(".") && !second;
-              if (Number.isNaN(+value) || value === "" || isFloat) {
+              if (value === undefined || value === null) {
+                commonProps.onChange("");
+              }
+
+              const num = parseFloat(value);
+
+              if (Number.isNaN(num)) {
                 commonProps.onChange(value);
               } else {
-                commonProps.onChange(+value);
+                commonProps.onChange(num);
               }
             }}
             predicate={predicate}
-            validate={validate}
             placeholder={placeholder}
             nodeData={nodeData}
           />

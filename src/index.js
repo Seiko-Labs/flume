@@ -41,17 +41,6 @@ import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 import { useVisibleNodes } from "./hooks/useVisibleNodes";
 
-function getMatrix(element) {
-  const values = element.style.transform.split(/\w+\(|\);?/);
-  const transform = values[1].split(/,\s?/g).map(parseInt);
-
-  return {
-    x: transform[0],
-    y: transform[1],
-    z: transform[2],
-  };
-}
-
 const defaultContext = {};
 
 export const NodeEditor = forwardRef(
@@ -242,28 +231,35 @@ export const NodeEditor = forwardRef(
     });
 
     const transformNodes = (deltaX, deltaY) => {
-      const result = [];
+      const result = new Array(selectedNodes.length); // Preallocate the result array
+
+      let resultIndex = 0; // Keep track of the result array index
+
       for (const nodeRef of selectedNodes) {
         if (nodeRef) {
-          const oldPositions = nodeRef.style.transform.match(
+          const oldTransform = nodeRef.style.transform;
+          const oldPositions = oldTransform.match(
             /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
           );
 
           if (oldPositions) {
             const x = Number(oldPositions[1]) + deltaX;
             const y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = `translate3d(${x}px,${y}px,0px)`;
 
-            result.push({
+            const newTransform = `translate3d(${x}px,${y}px,0px)`;
+
+            nodeRef.style.transform = newTransform;
+
+            result[resultIndex++] = {
               nodeId: nodeRef.id,
               x,
               y,
-            });
+            };
           }
         }
       }
 
-      return result;
+      return result.slice(0, resultIndex); // Return only the populated part of the result array
     };
 
     const dragSelectedNodes = useCallback(

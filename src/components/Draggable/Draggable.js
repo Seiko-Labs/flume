@@ -1,5 +1,7 @@
 import React from "react";
-import { memo } from "react";
+import { memo, useContext } from "react";
+import { STAGE_ID } from "../../constants";
+import { EditorIdContext } from "../../context";
 
 const Draggable = ({
   children,
@@ -19,6 +21,15 @@ const Draggable = ({
   const startCoordinates = React.useRef(null);
   const offset = React.useRef();
   const wrapper = React.useRef();
+
+  const editorId = useContext(EditorIdContext);
+  const stageId = `${STAGE_ID}${editorId}`;
+
+  const stageElement = document.getElementById(stageId);
+
+  if (!stageElement) return null;
+
+  const stage = stageElement.getBoundingClientRect();
 
   const byScale = (value) => value / stageState.scale;
 
@@ -88,16 +99,18 @@ const Draggable = ({
       onDragDelayStart(e);
     }
     e.stopPropagation();
+
     let x;
     let y;
     if ("ontouchstart" in window && e.touches) {
-      x = e.touches[0].clientX;
-      y = e.touches[0].clientY;
+      x = e.touches[0].clientX + stage.left;
+      y = e.touches[0].clientY + stage.top;
     } else {
       e.preventDefault();
-      x = e.clientX;
-      y = e.clientY;
+      x = e.clientX + stage.left;
+      y = e.clientY + stage.top;
     }
+
     startCoordinates.current = { x, y };
     document.addEventListener("mouseup", endDragDelay);
     document.addEventListener("mousemove", checkDragDelay);

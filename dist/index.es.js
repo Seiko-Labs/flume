@@ -10709,8 +10709,7 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
     children = _ref3.children,
     nodes = _ref3.nodes,
     spaceIsPressed = _ref3.spaceIsPressed,
-    focusNode = _ref3.focusNode,
-    onFocusChange = _ref3.onFocusChange;
+    focusNode = _ref3.focusNode;
   var translateWrapper = useRef();
   var svg = useRef();
   var rect = useRef();
@@ -10746,6 +10745,10 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
   var height = viewHeight + offset * 2;
   var viewScaleRef = useRef(0);
   viewScaleRef.current = viewScale;
+  var d3ZoomRef = useRef(null);
+  var d3SelectionRef = useRef(null);
+  var d3SvgSelectionRef = useRef(null);
+  var zoomAndPanHandlerRef = useRef(null);
   useEffect(function () {
     if (!translateWrapper.current || !wrapper.current) return;
     var _d3$zoomTransform = transform$1(translateWrapper.current),
@@ -10761,6 +10764,18 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
     } else {
       d3Zoom.transform(d3Selection, identity$4.translate(x, y).scale(k));
     }
+    d3ZoomRef.current = d3Zoom;
+    d3SelectionRef.current = d3Selection;
+    d3SvgSelectionRef.current = selection;
+    zoomAndPanHandlerRef.current = zoomAndPanHandler;
+  }, []);
+  useEffect(function () {
+    if (!translateWrapper.current || !wrapper.current) return;
+    var d3Zoom = d3ZoomRef.current;
+    var d3Selection = d3SelectionRef.current;
+    var selection = d3SvgSelectionRef.current;
+    var zoomAndPanHandler = zoomAndPanHandlerRef.current;
+    if (!d3Zoom || !d3Selection || !selection || !zoomAndPanHandler) return;
     d3Zoom.filter(function (e) {
       if (e.type === "mousedown") return spaceIsPressed ? e : false;
       return e;
@@ -10779,10 +10794,6 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
       translateWrapper.current.style.transform = "translate3d(".concat(x, "px, ").concat(y, "px, 0px) scale3d(").concat(k, ", ").concat(k, ", ").concat(k, ")");
     });
     d3Zoom.on("end", function (event) {
-      var _event$transform2 = event.transform;
-        _event$transform2.x;
-        _event$transform2.y;
-        _event$transform2.k;
       dispatchStageState(function () {
         return {
           type: "SET",
@@ -10840,19 +10851,22 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
       });
       selection.call(zoomAndPanHandler);
     }
-    if (focusNode && focusNode.node) {
+    window.editorFocus = function (id) {
       var node = Object.values(nodes).find(function (node) {
-        return node.id === focusNode.node;
+        return node.id === id;
       });
-      var _rect = {
+      if (!node) {
+        console.log(nodes, id);
+        return;
+      }
+      var rect = {
         x: node.x,
         y: node.y,
         width: 300,
         height: 0
       };
-      d3Zoom.translateTo(d3Selection, _rect.x, _rect.y + 150);
-      onFocusChange && onFocusChange(focusNode);
-    }
+      d3Zoom.translateTo(d3Selection, rect.x, rect.y + 150);
+    };
     d3Selection.call(d3Zoom).on("dblclick.zoom", null);
     return function () {
       selection.on("zoom", null);
@@ -10955,17 +10969,17 @@ var Stage = /*#__PURE__*/forwardRef(function (_ref3, wrapper) {
       bottom: 0,
       margin: 15,
       borderRadius: 5,
-      marginBottom: 45,
       background: "#192038",
       transformOrigin: "0 0"
     },
     ref: svg
-  }, Object.values(nodes).map(function (_ref5) {
+  }, Object.values(nodes).map(function (_ref5, i) {
     var x = _ref5.x,
       y = _ref5.y,
       node = _objectWithoutProperties(_ref5, _excluded$2);
     var nodeInfo = nodeTypes[node.type];
     return /*#__PURE__*/React__default.createElement("rect", {
+      key: i,
       x: x,
       y: y,
       rx: 10,
@@ -11689,22 +11703,22 @@ var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
     _onChange = _ref.onChange,
     data = _ref.data,
-    nodeData = _ref.nodeData,
-    validate = _ref.validate;
+    nodeData = _ref.nodeData;
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
   };
   var _useContext = useContext(ControllerOptionsContext),
     openEditor = _useContext.openEditor,
     isRightBarOpened = _useContext.isRightBarOpened;
+  var value = [undefined, null].includes(data) ? "" : data;
   return /*#__PURE__*/React__default.createElement("div", {
     className: styles$6.wrapper
   }, /*#__PURE__*/React__default.createElement("input", {
     onChange: function onChange(_ref2) {
       var target = _ref2.target;
-      if (validate(target.value)) _onChange(target.value);else target.value = data;
+      _onChange(target.value);
     },
-    value: data,
+    value: value,
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
     onClick: function onClick(e) {
@@ -11930,19 +11944,17 @@ var Control = function Control(_ref) {
       case "number":
         return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
           onChange: function onChange(value) {
-            var _value$split = value.split("."),
-              _value$split2 = _slicedToArray(_value$split, 2);
-              _value$split2[0];
-              var second = _value$split2[1];
-            var isFloat = value.includes(".") && !second;
-            if (Number.isNaN(+value) || value === "" || isFloat) {
+            if (value === undefined || value === null) {
+              commonProps.onChange("");
+            }
+            var num = parseFloat(value);
+            if (Number.isNaN(num)) {
               commonProps.onChange(value);
             } else {
-              commonProps.onChange(+value);
+              commonProps.onChange(num);
             }
           },
           predicate: predicate,
-          validate: validate,
           placeholder: placeholder,
           nodeData: nodeData
         }));
@@ -12460,6 +12472,11 @@ var Draggable = function Draggable(_ref) {
   var startCoordinates = React__default.useRef(null);
   var offset = React__default.useRef();
   var wrapper = React__default.useRef();
+  var editorId = useContext(EditorIdContext);
+  var stageId = "".concat(STAGE_ID).concat(editorId);
+  var stageElement = document.getElementById(stageId);
+  if (!stageElement) return null;
+  var stage = stageElement.getBoundingClientRect();
   var byScale = function byScale(value) {
     return value / stageState.scale;
   };
@@ -12529,12 +12546,12 @@ var Draggable = function Draggable(_ref) {
     var x;
     var y;
     if ("ontouchstart" in window && e.touches) {
-      x = e.touches[0].clientX;
-      y = e.touches[0].clientY;
+      x = e.touches[0].clientX + stage.left;
+      y = e.touches[0].clientY + stage.top;
     } else {
       e.preventDefault();
-      x = e.clientX;
-      y = e.clientY;
+      x = e.clientX + stage.left;
+      y = e.clientY + stage.top;
     }
     startCoordinates.current = {
       x: x,
@@ -34978,8 +34995,6 @@ function getOffset(props) {
 var Selection = /*#__PURE__*/function (_React$PureComponent) {
   _inherits$2(Selection, _React$PureComponent);
   var _super = _createSuper$1(Selection);
-  // eslint-disable-line react/prefer-stateless-function
-
   function Selection(props) {
     var _this;
     _classCallCheck(this, Selection);
@@ -35013,13 +35028,14 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       }
       var nextState = {};
       nextState.mouseDown = true;
+      var stage = _this.props.target.getBoundingClientRect();
       nextState.startPoint = {
         x: (x - _this.state.offset.left) / _this.props.zoom,
         y: (y - _this.state.offset.top) / _this.props.zoom
       };
       nextState.startWithoutZoom = {
-        x: x - _this.state.offset.left,
-        y: y - _this.state.offset.top
+        x: x - stage.left,
+        y: y - stage.top
       };
       _this.setState(nextState);
       return true;
@@ -35069,6 +35085,7 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     _defineProperty$1(_assertThisInitialized(_this), "onMouseMove", function (e) {
       e.preventDefault();
       if (_this.state.mouseDown) {
+        var stage = _this.props.target.getBoundingClientRect();
         var endPoint = {
           x: (e.pageX - _this.state.offset.left) / _this.props.zoom,
           y: (e.pageY - _this.state.offset.top) / _this.props.zoom
@@ -35077,8 +35094,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
           endPoint: endPoint,
           selectionBox: _this.calculateSelectionBox(_this.state.startPoint, endPoint),
           selectionBoxWithoutZoom: _this.calculateSelectionBox(_this.state.startWithoutZoom, {
-            x: e.pageX - _this.state.offset.left,
-            y: e.pageY - _this.state.offset.top
+            x: e.pageX - stage.left,
+            y: e.pageY - stage.top
           })
         });
       }
@@ -35086,6 +35103,7 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
     _defineProperty$1(_assertThisInitialized(_this), "onTouchMove", function (e) {
       e.preventDefault();
       if (_this.state.mouseDown) {
+        var stage = _this.props.target.getBoundingClientRect();
         var endPoint = {
           x: (e.touches[0].pageX - _this.state.offset.left) / _this.props.zoom,
           y: (e.touches[0].pageY - _this.state.offset.top) / _this.props.zoom
@@ -35094,8 +35112,8 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
           endPoint: endPoint,
           selectionBox: _this.calculateSelectionBox(_this.state.startPoint, endPoint),
           selectionBoxWithoutZoom: _this.calculateSelectionBox(_this.state.startWithoutZoom, {
-            x: e.pageX - _this.state.offset.left,
-            y: e.pageY - _this.state.offset.top
+            x: e.pageX - stage.left,
+            y: e.pageY - stage.top
           })
         });
       }
@@ -35241,7 +35259,6 @@ Selection.propTypes = {
   onSelectionChange: PropTypes.func.isRequired,
   onHighlightChange: PropTypes.func,
   elements: PropTypes.array.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   offset: PropTypes.object,
   zoom: PropTypes.number,
   style: PropTypes.object,
@@ -35423,8 +35440,8 @@ function useVisibleNodes(_ref) {
   var _loop = function _loop() {
     var v = _Object$values[_i];
     var nodeRect = {
-      x: v.x - wrapperRect.x,
-      y: v.y - wrapperRect.y,
+      x: v.x + wrapperRect.x / tScale,
+      y: v.y + wrapperRect.y / tScale,
       width: 300,
       height: 300
     };
@@ -36029,14 +36046,17 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     selectedNodes: selectedNodes
   });
   var transformNodes = function transformNodes(deltaX, deltaY) {
-    var result = [];
+    var result = new Array(selectedNodes.length); // Preallocate the result array
+
+    var resultIndex = 0; // Keep track of the result array index
     var _iterator = _createForOfIteratorHelper(selectedNodes),
       _step;
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var nodeRef = _step.value;
         if (nodeRef) {
-          var oldPositions = nodeRef.style.transform.match( /*#__PURE__*/_wrapRegExp(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
+          var oldTransform = nodeRef.style.transform;
+          var oldPositions = oldTransform.match( /*#__PURE__*/_wrapRegExp(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
             x: 1,
             y: 2,
             z: 3
@@ -36044,12 +36064,13 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
           if (oldPositions) {
             var x = Number(oldPositions[1]) + deltaX;
             var y = Number(oldPositions[2]) + deltaY;
-            nodeRef.style.transform = "translate3d(".concat(x, "px,").concat(y, "px,0px)");
-            result.push({
+            var newTransform = "translate3d(".concat(x, "px,").concat(y, "px,0px)");
+            nodeRef.style.transform = newTransform;
+            result[resultIndex++] = {
               nodeId: nodeRef.id,
               x: x,
               y: y
-            });
+            };
           }
         }
       }
@@ -36058,8 +36079,9 @@ var NodeEditor = /*#__PURE__*/forwardRef(function (_ref, ref) {
     } finally {
       _iterator.f();
     }
-    return result;
+    return result.slice(0, resultIndex); // Return only the populated part of the result array
   };
+
   var dragSelectedNodes = useCallback(function (excludedNodeId, deltaX, deltaY) {
     if (selectedNodes.length > 0) {
       if (selectedNodes.find(function (_ref2) {

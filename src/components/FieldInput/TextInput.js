@@ -1,19 +1,20 @@
 import React, { useContext } from "react";
 import { ControllerOptionsContext } from "../../context";
 import styles from "./TextInput.css";
-import { memo } from 'react';
+import { memo } from "react";
 
-const TextInput = ({ placeholder, onChange, data, nodeData, validate }) => {
+const TextInput = ({ placeholder, onChange, data, nodeData }) => {
   const preventPropagation = (e) => e.stopPropagation();
   const { openEditor, isRightBarOpened } = useContext(ControllerOptionsContext);
+  const value = [undefined, null].includes(data) ? "" : data;
+
   return (
     <div className={styles.wrapper}>
       <input
         onChange={({ target }) => {
-          if (validate(target.value)) onChange(target.value);
-          else target.value = data;
+          onChange(target.value);
         }}
-        value={data}
+        value={value}
         onDragStart={preventPropagation}
         onMouseDown={preventPropagation}
         onClick={(e) => {

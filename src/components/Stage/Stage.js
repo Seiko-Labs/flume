@@ -77,7 +77,6 @@ const Stage = forwardRef(
       nodes,
       spaceIsPressed,
       focusNode,
-      onFocusChange,
     },
     wrapper
   ) => {
@@ -120,14 +119,21 @@ const Stage = forwardRef(
 
     viewScaleRef.current = viewScale;
 
+    const d3ZoomRef = useRef(null);
+    const d3SelectionRef = useRef(null);
+    const d3SvgSelectionRef = useRef(null);
+    const zoomAndPanHandlerRef = useRef(null);
+
     useEffect(() => {
       if (!translateWrapper.current || !wrapper.current) return;
 
       const { x, y, k } = d3.zoomTransform(translateWrapper.current);
+
       const d3Zoom = d3.zoom().scaleExtent([0.3, 3]);
       const d3Selection = select(wrapper.current);
       const selection = select(svg.current);
       const zoomAndPanHandler = d3.zoom();
+
       if (x === 0 && y === 0 && k === 1) {
         firstRender = false;
         d3Zoom.transform(
@@ -137,6 +143,22 @@ const Stage = forwardRef(
       } else {
         d3Zoom.transform(d3Selection, d3.zoomIdentity.translate(x, y).scale(k));
       }
+
+      d3ZoomRef.current = d3Zoom;
+      d3SelectionRef.current = d3Selection;
+      d3SvgSelectionRef.current = selection;
+      zoomAndPanHandlerRef.current = zoomAndPanHandler;
+    }, []);
+
+    useEffect(() => {
+      if (!translateWrapper.current || !wrapper.current) return;
+
+      const d3Zoom = d3ZoomRef.current;
+      const d3Selection = d3SelectionRef.current;
+      const selection = d3SvgSelectionRef.current;
+      const zoomAndPanHandler = zoomAndPanHandlerRef.current;
+
+      if (!d3Zoom || !d3Selection || !selection || !zoomAndPanHandler) return;
 
       d3Zoom.filter((e) => {
         if (e.type === "mousedown") return spaceIsPressed ? e : false;
@@ -157,8 +179,6 @@ const Stage = forwardRef(
       });
 
       d3Zoom.on("end", (event) => {
-        const { x, y, k } = event.transform;
-
         dispatchStageState(() => ({
           type: "SET",
           scale: event.transform.k,
@@ -227,10 +247,13 @@ const Stage = forwardRef(
         selection.call(zoomAndPanHandler);
       }
 
-      if (focusNode && focusNode.node) {
-        const node = Object.values(nodes).find(
-          (node) => node.id === focusNode.node
-        );
+      window.editorFocus = (id) => {
+        const node = Object.values(nodes).find((node) => node.id === id);
+
+        if (!node) {
+          console.log(nodes, id);
+          return;
+        }
 
         const rect = {
           x: node.x,
@@ -240,9 +263,8 @@ const Stage = forwardRef(
         };
 
         d3Zoom.translateTo(d3Selection, rect.x, rect.y + 150);
+      };
 
-        onFocusChange && onFocusChange(focusNode);
-      }
       d3Selection.call(d3Zoom).on("dblclick.zoom", null);
 
       return () => {
@@ -358,16 +380,16 @@ const Stage = forwardRef(
             bottom: 0,
             margin: 15,
             borderRadius: 5,
-            marginBottom: 45,
             background: "#192038",
             transformOrigin: "0 0",
           }}
           ref={svg}
         >
-          {Object.values(nodes).map(({ x, y, ...node }) => {
+          {Object.values(nodes).map(({ x, y, ...node }, i) => {
             const nodeInfo = nodeTypes[node.type];
             return (
               <rect
+                key={i}
                 x={x}
                 y={y}
                 rx={10}
