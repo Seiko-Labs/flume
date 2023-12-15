@@ -63,7 +63,6 @@ const getRectOfNodes = (nodes) => {
 const getBoundsOfRects = (rect1, rect2) =>
   boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)));
 
-let firstRender = true;
 const defaultWidth = 200;
 const defaultHeight = 150;
 const Stage = forwardRef(
@@ -135,7 +134,6 @@ const Stage = forwardRef(
       const zoomAndPanHandler = d3.zoom();
 
       if (x === 0 && y === 0 && k === 1) {
-        firstRender = false;
         d3Zoom.transform(
           d3Selection,
           d3.zoomIdentity.translate(translate.x, translate.y).scale(scale)
@@ -251,7 +249,6 @@ const Stage = forwardRef(
         const node = Object.values(nodes).find((node) => node.id === id);
 
         if (!node) {
-          console.log(nodes, id);
           return;
         }
 
@@ -394,10 +391,10 @@ const Stage = forwardRef(
                 y={y}
                 rx={10}
                 ry={10}
-                width={100}
+                width={250}
                 strokeWidth={1}
                 stroke={"#192038"}
-                height={50}
+                height={180}
                 fill={nodeInfo.category.tileBackground}
                 shapeRendering={"crispEdges"}
               />

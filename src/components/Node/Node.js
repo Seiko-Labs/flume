@@ -258,7 +258,7 @@ const Node = forwardRef(
           zIndex: isSelected && 1000,
           boxShadow: isSelected
             ? `0 0 0 ${2 / stageState.scale}px ${tileBackground}`
-            : "none",
+            : "0 1px 10px 0 rgba(0, 0, 0, 0.5)",
           transform: `translate3d(${x}px, ${y}px, 0px)`,
         }}
         onDragStart={onDragStart}

@@ -277,6 +277,24 @@ export const NodeEditor = forwardRef(
       [selectedNodes]
     );
 
+    useEffect(() => {
+      const measure = () => {
+        triggerRecalculation();
+      };
+
+      const observer = new ResizeObserver(measure);
+
+      const element = editorRef.current;
+
+      if (!element) return;
+
+      observer.observe(element);
+
+      return () => {
+        observer.disconnect();
+      };
+    }, []);
+
     return (
       <PortTypesContext.Provider value={portTypes}>
         <NodeTypesContext.Provider value={nodeTypes}>

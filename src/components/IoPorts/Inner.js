@@ -45,7 +45,7 @@ const Inner = ({
       >
         {label || defaultLabel}
       </div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {controls.map((control) => (
           <Control
             {...control}

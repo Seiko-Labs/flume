@@ -137,6 +137,17 @@ const Control = ({
             label={label}
           />
         );
+      case "code":
+        return (
+          <TextInput
+            {...commonProps}
+            predicate={predicate}
+            placeholder={placeholder}
+            validate={validate}
+            nodeData={nodeData}
+            code
+          />
+        );
       case "button":
         return (
           <Button

@@ -15,6 +15,18 @@ const buildControlType =
   };
 
 const Controls = {
+  code: buildControlType(
+    {
+      type: "code",
+      name: "code",
+      defaultValue: "",
+    },
+    () => {},
+    (config) => ({
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, () => true),
+    })
+  ),
   text: buildControlType(
     {
       type: "text",

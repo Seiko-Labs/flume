@@ -10883,7 +10883,6 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
         return node.id === id;
       });
       if (!node) {
-        console.log(nodes, id);
         return;
       }
       var rect = {
@@ -11011,10 +11010,10 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
       y: y,
       rx: 10,
       ry: 10,
-      width: 100,
+      width: 250,
       strokeWidth: 1,
       stroke: "#192038",
-      height: 50,
+      height: 180,
       fill: nodeInfo.category.tileBackground,
       shapeRendering: "crispEdges"
     });
@@ -11681,7 +11680,7 @@ var css_248z$9 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:
 var styles$6 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
 styleInject(css_248z$9);
 
-var css_248z$8 = ".Control_wrapper__-SFsk{padding:1px 2px 1px 1px;width:100%}";
+var css_248z$8 = ".Control_wrapper__-SFsk{flex:1;padding:1px 2px 1px 1px;width:100%}";
 var styles$5 = {"wrapper":"Control_wrapper__-SFsk"};
 styleInject(css_248z$8);
 
@@ -11730,7 +11729,8 @@ var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
     _onChange = _ref.onChange,
     data = _ref.data,
-    nodeData = _ref.nodeData;
+    nodeData = _ref.nodeData,
+    code = _ref.code;
   var preventPropagation = function preventPropagation(e) {
     return e.stopPropagation();
   };
@@ -11738,6 +11738,29 @@ var TextInput = function TextInput(_ref) {
     openEditor = _useContext.openEditor,
     isRightBarOpened = _useContext.isRightBarOpened;
   var value = [undefined, null].includes(data) ? "" : data;
+  if (code) {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
+      className: styles$6.wrapper
+    }, /*#__PURE__*/React__default["default"].createElement("input", {
+      value: value,
+      onDragStart: preventPropagation,
+      onMouseDown: preventPropagation,
+      onClick: function onClick(e) {
+        e.stopPropagation();
+        document.activeElement.blur();
+        openEditor(data, _onChange, nodeData);
+      },
+      type: "text",
+      placeholder: placeholder,
+      className: styles$6.input
+    }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
+      className: styles$6.expander,
+      onClick: function onClick() {
+        document.activeElement.blur();
+        openEditor(data, _onChange, nodeData);
+      }
+    }));
+  }
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: styles$6.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("input", {
@@ -11996,6 +12019,14 @@ var Control = function Control(_ref) {
           options: getOptions ? getOptions(inputData, executionContext) : options,
           placeholder: placeholder,
           label: label
+        }));
+      case "code":
+        return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$4({}, commonProps, {
+          predicate: predicate,
+          placeholder: placeholder,
+          validate: validate,
+          nodeData: nodeData,
+          code: true
         }));
       case "button":
         return /*#__PURE__*/React__default["default"].createElement(Button$1, _extends$4({}, commonProps, {
@@ -12313,7 +12344,8 @@ var Inner = function Inner(_ref) {
     title: label || defaultLabel
   }, label || defaultLabel), /*#__PURE__*/React__default["default"].createElement("div", {
     style: {
-      display: "flex"
+      display: "flex",
+      flexWrap: "wrap"
     }
   }, controls.map(function (control) {
     return /*#__PURE__*/React__default["default"].createElement(Control$1, _extends$4({}, control, {
@@ -12872,7 +12904,7 @@ var Node = /*#__PURE__*/React.forwardRef(function (_ref2, nodeWrapper) {
       background: "rgba(46, 58, 89)",
       color: tileFontColor,
       zIndex: isSelected && 1000,
-      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "none",
+      boxShadow: isSelected ? "0 0 0 ".concat(2 / stageState.scale, "px ").concat(tileBackground) : "0 1px 10px 0 rgba(0, 0, 0, 0.5)",
       transform: "translate3d(".concat(x, "px, ").concat(y, "px, 0px)")
     },
     onDragStart: onDragStart,
@@ -35505,6 +35537,18 @@ var buildControlType = function buildControlType(defaultConfig) {
   };
 };
 var Controls = {
+  code: buildControlType({
+    type: "code",
+    name: "code",
+    defaultValue: ""
+  }, function () {}, function (config) {
+    return {
+      placeholder: define(config.placeholder, undefined),
+      validate: define(config.validate, function () {
+        return true;
+      })
+    };
+  }),
   text: buildControlType({
     type: "text",
     name: "text",
@@ -36123,6 +36167,18 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       }
     }
   }, [selectedNodes]);
+  React.useEffect(function () {
+    var measure = function measure() {
+      triggerRecalculation();
+    };
+    var observer = new ResizeObserver(measure);
+    var element = editorRef.current;
+    if (!element) return;
+    observer.observe(element);
+    return function () {
+      observer.disconnect();
+    };
+  }, []);
   return /*#__PURE__*/React__default["default"].createElement(PortTypesContext.Provider, {
     value: portTypes
   }, /*#__PURE__*/React__default["default"].createElement(NodeTypesContext.Provider, {
