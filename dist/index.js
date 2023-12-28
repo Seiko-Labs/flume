@@ -11676,17 +11676,13 @@ var Button = function Button(_ref) {
 };
 var Button$1 = /*#__PURE__*/React.memo(Button);
 
-var css_248z$9 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
-var styles$6 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
+var css_248z$9 = ".Control_wrapper__-SFsk{flex:1;padding:1px 2px 1px 1px;width:100%}";
+var styles$6 = {"wrapper":"Control_wrapper__-SFsk"};
 styleInject(css_248z$9);
 
-var css_248z$8 = ".Control_wrapper__-SFsk{flex:1;padding:1px 2px 1px 1px;width:100%}";
-var styles$5 = {"wrapper":"Control_wrapper__-SFsk"};
+var css_248z$8 = ".Checkbox_wrapper__KYSY7{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__-WxSv{display:none}.Checkbox_checkboxMark__qj3ov{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__qj3ov>*{display:none}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov>*{display:block}";
+var styles$5 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
 styleInject(css_248z$8);
-
-var css_248z$7 = ".Checkbox_wrapper__KYSY7{font-size:10px;height:18px;line-height:10px;margin:0;overflow-x:hidden;padding:4px 2px 1px 0;text-overflow:ellipsis;white-space:nowrap;width:60px}.Checkbox_checkbox__-WxSv{display:none}.Checkbox_checkboxMark__qj3ov{align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;display:inline-flex;flex-direction:row;height:10px;justify-content:center;margin-right:2px;min-width:10px;overflow:hidden;vertical-align:top;width:10px}.Checkbox_checkboxMark__qj3ov>*{display:none}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov{background:#4baefc;border:1px solid rgba(0,0,0,.2)}.Checkbox_checkbox__-WxSv:checked+.Checkbox_checkboxMark__qj3ov>*{display:block}";
-var styles$4 = {"wrapper":"Checkbox_wrapper__KYSY7","checkbox":"Checkbox_checkbox__-WxSv","checkboxMark":"Checkbox_checkboxMark__qj3ov"};
-styleInject(css_248z$7);
 
 var _path$3;
 function _extends$3() { _extends$3 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
@@ -11709,10 +11705,10 @@ var Checkbox = function Checkbox(_ref) {
     data = _ref.data,
     _onChange = _ref.onChange;
   return /*#__PURE__*/React__default["default"].createElement("label", {
-    className: styles$4.wrapper,
+    className: styles$5.wrapper,
     title: label
   }, /*#__PURE__*/React__default["default"].createElement("input", {
-    className: styles$4.checkbox,
+    className: styles$5.checkbox,
     type: "checkbox",
     value: data,
     checked: data,
@@ -11720,10 +11716,14 @@ var Checkbox = function Checkbox(_ref) {
       return _onChange(e.target.checked);
     }
   }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: styles$4.checkboxMark
+    className: styles$5.checkboxMark
   }, /*#__PURE__*/React__default["default"].createElement(SvgOkTick, null)), label);
 };
 var Checkbox$1 = /*#__PURE__*/React.memo(Checkbox);
+
+var css_248z$7 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:block;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
+var styles$4 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
+styleInject(css_248z$7);
 
 var TextInput = function TextInput(_ref) {
   var placeholder = _ref.placeholder,
@@ -11738,31 +11738,8 @@ var TextInput = function TextInput(_ref) {
     openEditor = _useContext.openEditor,
     isRightBarOpened = _useContext.isRightBarOpened;
   var value = [undefined, null].includes(data) ? "" : data;
-  if (code) {
-    return /*#__PURE__*/React__default["default"].createElement("div", {
-      className: styles$6.wrapper
-    }, /*#__PURE__*/React__default["default"].createElement("input", {
-      value: value,
-      onDragStart: preventPropagation,
-      onMouseDown: preventPropagation,
-      onClick: function onClick(e) {
-        e.stopPropagation();
-        document.activeElement.blur();
-        openEditor(data, _onChange, nodeData);
-      },
-      type: "text",
-      placeholder: placeholder,
-      className: styles$6.input
-    }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
-      className: styles$6.expander,
-      onClick: function onClick() {
-        document.activeElement.blur();
-        openEditor(data, _onChange, nodeData);
-      }
-    }));
-  }
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$6.wrapper
+    className: styles$4.wrapper
   }, /*#__PURE__*/React__default["default"].createElement("input", {
     onChange: function onChange(_ref2) {
       var target = _ref2.target;
@@ -11779,9 +11756,10 @@ var TextInput = function TextInput(_ref) {
     },
     type: "text",
     placeholder: placeholder,
-    className: styles$6.input
-  }), openEditor && /*#__PURE__*/React__default["default"].createElement("button", {
-    className: styles$6.expander,
+    className: styles$4.input,
+    disabled: code
+  }), /*#__PURE__*/React__default["default"].createElement("button", {
+    className: styles$4.expander,
     onClick: function onClick() {
       document.activeElement.blur();
       openEditor(data, _onChange, nodeData);
@@ -11929,9 +11907,8 @@ var Control = function Control(_ref) {
     data = _ref.data,
     allData = _ref.allData,
     render = _ref.render,
-    predicate = _ref.predicate;
-    _ref.step;
-    var _ref$options = _ref.options,
+    predicate = _ref.predicate,
+    _ref$options = _ref.options,
     options = _ref$options === void 0 ? [] : _ref$options,
     placeholder = _ref.placeholder,
     validate = _ref.validate,
@@ -11939,12 +11916,12 @@ var Control = function Control(_ref) {
     triggerRecalculation = _ref.triggerRecalculation,
     updateNodeConnections = _ref.updateNodeConnections,
     getOptions = _ref.getOptions,
-    setValue = _ref.setValue;
-    _ref.value;
-    var defaultValue = _ref.defaultValue,
+    setValue = _ref.setValue,
+    defaultValue = _ref.defaultValue,
     isMonoControl = _ref.isMonoControl,
     nodeData = _ref.nodeData,
-    _onPress = _ref.onPress;
+    _onPress = _ref.onPress,
+    code = _ref.code;
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var executionContext = React.useContext(ContextContext);
   var calculatedLabel = isMonoControl ? inputLabel : label;
@@ -11989,7 +11966,8 @@ var Control = function Control(_ref) {
           predicate: predicate,
           placeholder: placeholder,
           validate: validate,
-          nodeData: nodeData
+          nodeData: nodeData,
+          code: code
         }));
       case "number":
         return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$4({}, commonProps, {
@@ -12020,14 +11998,6 @@ var Control = function Control(_ref) {
           placeholder: placeholder,
           label: label
         }));
-      case "code":
-        return /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$4({}, commonProps, {
-          predicate: predicate,
-          placeholder: placeholder,
-          validate: validate,
-          nodeData: nodeData,
-          code: true
-        }));
       case "button":
         return /*#__PURE__*/React__default["default"].createElement(Button$1, _extends$4({}, commonProps, {
           label: label,
@@ -12048,7 +12018,7 @@ var Control = function Control(_ref) {
     }
   };
   return /*#__PURE__*/React__default["default"].createElement("div", {
-    className: styles$5.wrapper,
+    className: styles$6.wrapper,
     style: _objectSpread$d({}, type.match(/^multiselect$/) && {
       width: "auto"
     })
@@ -35537,18 +35507,6 @@ var buildControlType = function buildControlType(defaultConfig) {
   };
 };
 var Controls = {
-  code: buildControlType({
-    type: "code",
-    name: "code",
-    defaultValue: ""
-  }, function () {}, function (config) {
-    return {
-      placeholder: define(config.placeholder, undefined),
-      validate: define(config.validate, function () {
-        return true;
-      })
-    };
-  }),
   text: buildControlType({
     type: "text",
     name: "text",
@@ -35558,7 +35516,8 @@ var Controls = {
       placeholder: define(config.placeholder, undefined),
       validate: define(config.validate, function () {
         return true;
-      })
+      }),
+      code: config.code
     };
   }),
   select: buildControlType({

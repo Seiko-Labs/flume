@@ -8,35 +8,6 @@ const TextInput = ({ placeholder, onChange, data, nodeData, code }) => {
   const { openEditor, isRightBarOpened } = useContext(ControllerOptionsContext);
   const value = [undefined, null].includes(data) ? "" : data;
 
-  if (code) {
-    return (
-      <div className={styles.wrapper}>
-        <input
-          value={value}
-          onDragStart={preventPropagation}
-          onMouseDown={preventPropagation}
-          onClick={(e) => {
-            e.stopPropagation();
-            document.activeElement.blur();
-            openEditor(data, onChange, nodeData);
-          }}
-          type="text"
-          placeholder={placeholder}
-          className={styles.input}
-        />
-        {openEditor && (
-          <button
-            className={styles.expander}
-            onClick={() => {
-              document.activeElement.blur();
-              openEditor(data, onChange, nodeData);
-            }}
-          />
-        )}
-      </div>
-    );
-  }
-
   return (
     <div className={styles.wrapper}>
       <input
@@ -55,16 +26,15 @@ const TextInput = ({ placeholder, onChange, data, nodeData, code }) => {
         type="text"
         placeholder={placeholder}
         className={styles.input}
+        disabled={code}
       />
-      {openEditor && (
-        <button
-          className={styles.expander}
-          onClick={() => {
-            document.activeElement.blur();
-            openEditor(data, onChange, nodeData);
-          }}
-        />
-      )}
+      <button
+        className={styles.expander}
+        onClick={() => {
+          document.activeElement.blur();
+          openEditor(data, onChange, nodeData);
+        }}
+      />
     </div>
   );
 };

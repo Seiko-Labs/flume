@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import Button from "../Button";
-import NumberInput from "../FieldInput/NumberInput";
 import styles from "./Control.css";
 import Checkbox from "../Checkbox/Checkbox";
 import TextInput from "../FieldInput/TextInput";
@@ -19,7 +18,6 @@ const Control = ({
   allData,
   render,
   predicate,
-  step,
   options = [],
   placeholder,
   validate,
@@ -28,11 +26,11 @@ const Control = ({
   updateNodeConnections,
   getOptions,
   setValue,
-  value,
   defaultValue,
   isMonoControl,
   nodeData,
   onPress,
+  code,
 }) => {
   const nodesDispatch = useContext(NodeDispatchContext);
   const executionContext = useContext(ContextContext);
@@ -63,15 +61,6 @@ const Control = ({
     triggerRecalculation();
   };
 
-  const parseValue = (value) => {
-    try {
-      const parsed = JSON.parse(value);
-      return parsed;
-    } catch {
-      return value;
-    }
-  };
-
   const getControlByType = (type) => {
     const commonProps = {
       triggerRecalculation,
@@ -99,6 +88,7 @@ const Control = ({
             placeholder={placeholder}
             validate={validate}
             nodeData={nodeData}
+            code={code}
           />
         );
       case "number":
@@ -135,17 +125,6 @@ const Control = ({
             }
             placeholder={placeholder}
             label={label}
-          />
-        );
-      case "code":
-        return (
-          <TextInput
-            {...commonProps}
-            predicate={predicate}
-            placeholder={placeholder}
-            validate={validate}
-            nodeData={nodeData}
-            code
           />
         );
       case "button":
