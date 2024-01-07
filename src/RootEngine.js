@@ -118,24 +118,14 @@ export class RootEngine {
       const inputValues = this.reduceRootInputs(
         rootNode.connections.inputs,
         (inputName, connection) => {
-          this.resetLoops(options.maxLoops);
           let value;
-          try {
-            value = this.getValueOfConnection(
-              connection[0],
-              nodes,
-              options.context
-            );
-          } catch (e) {
-            this.errorCallback && this.errorCallback(e);
-            if (e.code === LoopError.maxLoopsExceeded) {
-              console.error(
-                `${e.message} Circular nodes detected in ${inputName} port.`
-              );
-            } else {
-              console.error(e);
-            }
-          }
+
+          value = this.getValueOfConnection(
+            connection[0],
+            nodes,
+            options.context
+          );
+
           return {
             name: inputName,
             value,

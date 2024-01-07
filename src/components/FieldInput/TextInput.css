@@ -11,7 +11,7 @@
 }
 
 .expander {
-  display: block;
+  display: none;
   border: none;
   padding: 0;
   width: 10px;

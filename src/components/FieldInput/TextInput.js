@@ -19,14 +19,13 @@ const TextInput = ({ placeholder, onChange, data, nodeData, code }) => {
         onMouseDown={preventPropagation}
         onClick={(e) => {
           e.stopPropagation();
-          if (isRightBarOpened && isRightBarOpened()) {
+          if ((isRightBarOpened && isRightBarOpened()) || code) {
             openEditor(data, onChange, nodeData);
           }
         }}
         type="text"
         placeholder={placeholder}
         className={styles.input}
-        disabled={code}
       />
       <button
         className={styles.expander}
