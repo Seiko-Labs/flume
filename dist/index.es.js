@@ -11713,6 +11713,12 @@ var TextInput = function TextInput(_ref) {
   var value = [undefined, null].includes(data) ? "" : data;
   return /*#__PURE__*/React__default.createElement("div", {
     className: styles$4.wrapper
+  }, /*#__PURE__*/React__default.createElement("span", {
+    onClick: function onClick() {
+      if (code) {
+        openEditor(data, _onChange, nodeData);
+      }
+    }
   }, /*#__PURE__*/React__default.createElement("input", {
     onChange: function onChange(_ref2) {
       var target = _ref2.target;
@@ -11727,10 +11733,11 @@ var TextInput = function TextInput(_ref) {
         openEditor(data, _onChange, nodeData);
       }
     },
+    disabled: code,
     type: "text",
     placeholder: placeholder,
     className: styles$4.input
-  }), /*#__PURE__*/React__default.createElement("button", {
+  })), /*#__PURE__*/React__default.createElement("button", {
     className: styles$4.expander,
     onClick: function onClick() {
       document.activeElement.blur();

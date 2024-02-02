@@ -10,23 +10,32 @@ const TextInput = ({ placeholder, onChange, data, nodeData, code }) => {
 
   return (
     <div className={styles.wrapper}>
-      <input
-        onChange={({ target }) => {
-          onChange(target.value);
-        }}
-        value={value}
-        onDragStart={preventPropagation}
-        onMouseDown={preventPropagation}
-        onClick={(e) => {
-          e.stopPropagation();
-          if ((isRightBarOpened && isRightBarOpened()) || code) {
+      <span
+        onClick={() => {
+          if (code) {
             openEditor(data, onChange, nodeData);
           }
         }}
-        type="text"
-        placeholder={placeholder}
-        className={styles.input}
-      />
+      >
+        <input
+          onChange={({ target }) => {
+            onChange(target.value);
+          }}
+          value={value}
+          onDragStart={preventPropagation}
+          onMouseDown={preventPropagation}
+          onClick={(e) => {
+            e.stopPropagation();
+            if ((isRightBarOpened && isRightBarOpened()) || code) {
+              openEditor(data, onChange, nodeData);
+            }
+          }}
+          disabled={code}
+          type="text"
+          placeholder={placeholder}
+          className={styles.input}
+        />
+      </span>
       <button
         className={styles.expander}
         onClick={() => {
