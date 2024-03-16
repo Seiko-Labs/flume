@@ -11694,7 +11694,7 @@ var Checkbox = function Checkbox(_ref) {
 };
 var Checkbox$1 = /*#__PURE__*/memo(Checkbox);
 
-var css_248z$7 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
+var css_248z$7 = ".TextInput_wrapper__r-pOS{background:none;border:none;display:flex;flex-direction:row-reverse;line-height:0;width:100%}.TextInput_wrapper__r-pOS>*{line-height:normal}.TextInput_expander__Z6nZ0{background-color:transparent;background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.3'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\");background-position:50%;background-repeat:no-repeat;background-size:contain;border:none;display:none;float:right;height:10px;margin:3px 3px 0 0;padding:0;position:absolute;width:10px}.TextInput_expander__Z6nZ0:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='%23fff' fill-opacity='.6'%3E%3Cdefs%3E%3Cmask id='a' x='0' y='0' width='1' height='1'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 4.22V1.395H5.17M.926 5.638v2.827h2.83'/%3E%3Cpath stroke-dasharray='3 3' d='m1.17 8.253 6.364-6.364'/%3E%3C/svg%3E%3C/mask%3E%3C/defs%3E%3Cpath mask='url(%23a)' d='M0 0h9v9H0z'/%3E%3C/svg%3E\")}.TextInput_input__B9oN1{background-color:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.2);border-radius:2px;box-sizing:border-box;color:inherit;font-size:10px;height:16px;line-height:10px;outline:none;padding:3px;width:100%}.TextInput_input__B9oN1[type=number]::-webkit-outer-spin-button{-webkit-appearance:none!important;display:none!important}.TextInput_input__B9oN1[type=number]::-webkit-inner-spin-button{-webkit-appearance:none!important;background:transparent!important;border-width:0;cursor:pointer;height:16px;margin:0;opacity:1!important;width:8px}.TextInput_input__B9oN1::placeholder{color:inherit;font-style:italic;opacity:.3}.TextInput_input__B9oN1:focus{background-color:rgba(0,0,0,.25)}.TextInput_input__B9oN1[type=number]:active,.TextInput_input__B9oN1[type=number]:focus,.TextInput_input__B9oN1[type=number]:hover{background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.95 2.998-1.998-2m0 0V1m0 0L.95 3M.95 7.002l2 2m0 0V9m0 0L4.95 7'/%3E%3C/svg%3E\");background-position:calc(100% - 1px);background-repeat:no-repeat;background-size:7px}.TextInput_input__B9oN1:not([type=number]):focus+button{display:block}.TextInput_input__B9oN1:not([type=number]):focus{padding-right:13px}";
 var styles$4 = {"wrapper":"TextInput_wrapper__r-pOS","expander":"TextInput_expander__Z6nZ0","input":"TextInput_input__B9oN1"};
 styleInject(css_248z$7);
 
@@ -11710,10 +11710,8 @@ var TextInput = function TextInput(_ref) {
   var _useContext = useContext(ControllerOptionsContext),
     openEditor = _useContext.openEditor,
     isRightBarOpened = _useContext.isRightBarOpened;
-  var value = [undefined, null].includes(data) ? "" : data;
   return /*#__PURE__*/React__default.createElement("div", {
-    className: styles$4.wrapper
-  }, /*#__PURE__*/React__default.createElement("span", {
+    className: styles$4.wrapper,
     onClick: function onClick() {
       if (code) {
         openEditor(data, _onChange, nodeData);
@@ -11724,7 +11722,7 @@ var TextInput = function TextInput(_ref) {
       var target = _ref2.target;
       _onChange(target.value);
     },
-    value: value,
+    value: data,
     onDragStart: preventPropagation,
     onMouseDown: preventPropagation,
     onClick: function onClick(e) {
@@ -11737,7 +11735,7 @@ var TextInput = function TextInput(_ref) {
     type: "text",
     placeholder: placeholder,
     className: styles$4.input
-  })), /*#__PURE__*/React__default.createElement("button", {
+  }), /*#__PURE__*/React__default.createElement("button", {
     className: styles$4.expander,
     onClick: function onClick() {
       document.activeElement.blur();
@@ -11951,10 +11949,13 @@ var Control = function Control(_ref) {
       case "number":
         return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
           onChange: function onChange(value) {
-            if (value === undefined || value === null) {
+            if (value === undefined || value === null || value === "") {
               return commonProps.onChange("");
             }
-            var num = parseFloat(value);
+            if (value.split(".").filter(function (n) {
+              return n !== "";
+            }).length === 1) return commonProps.onChange(value);
+            var num = Number(value);
             if (Number.isNaN(num)) {
               commonProps.onChange(value);
             } else {
@@ -34841,6 +34842,10 @@ var nodesReducer$1 = (function () {
   for (var _len = arguments.length, props = new Array(_len), _key = 0; _key < _len; _key++) {
     props[_key] = arguments[_key];
   }
+  if (props[0].length > 50) {
+    props[0].nodesState = props[0].nodesState.slice(0, 40);
+    props[0].currentStateIndex = 39;
+  }
   var _props$ = props[0],
     nodesState = _props$.nodesState,
     currentStateIndex = _props$.currentStateIndex;
@@ -35519,8 +35524,8 @@ var Controls = {
     return {
       step: define(config.step, undefined),
       placeholder: define(config.placeholder, undefined),
-      validate: define(config.validate, function (n) {
-        return RegExp(/^[0-9]*(,|.)*[0-9]*$/g).test(n);
+      validate: define(config.validate, function () {
+        return true;
       })
     };
   }),

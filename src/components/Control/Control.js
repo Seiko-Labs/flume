@@ -96,11 +96,14 @@ const Control = ({
           <TextInput
             {...commonProps}
             onChange={(value) => {
-              if (value === undefined || value === null) {
+              if (value === undefined || value === null || value === "") {
                 return commonProps.onChange("");
               }
 
-              const num = parseFloat(value);
+              if (value.split(".").filter((n) => n !== "").length === 1)
+                return commonProps.onChange(value);
+
+              const num = Number(value);
 
               if (Number.isNaN(num)) {
                 commonProps.onChange(value);

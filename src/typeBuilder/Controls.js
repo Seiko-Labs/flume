@@ -52,9 +52,7 @@ const Controls = {
     (config) => ({
       step: define(config.step, undefined),
       placeholder: define(config.placeholder, undefined),
-      validate: define(config.validate, (n) =>
-        RegExp(/^[0-9]*(,|.)*[0-9]*$/g).test(n)
-      ),
+      validate: define(config.validate, () => true),
     })
   ),
   checkbox: buildControlType({

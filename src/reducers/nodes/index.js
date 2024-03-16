@@ -301,7 +301,11 @@ export const connectNodesReducer = (reducer, environment) => (state, action) =>
   reducer(state, action, environment);
 
 export default (...props) => {
-  const { nodesState, currentStateIndex } = props[0];
+  if (props[0].length > 50) {
+    props[0].nodesState = props[0].nodesState.slice(0, 40);
+    props[0].currentStateIndex = 39;
+  }
+  let { nodesState, currentStateIndex } = props[0];
 
   switch (props[1].type) {
     case "UNDO_CHANGES": {

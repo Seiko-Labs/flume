@@ -6,36 +6,35 @@ import { memo } from "react";
 const TextInput = ({ placeholder, onChange, data, nodeData, code }) => {
   const preventPropagation = (e) => e.stopPropagation();
   const { openEditor, isRightBarOpened } = useContext(ControllerOptionsContext);
-  const value = [undefined, null].includes(data) ? "" : data;
 
   return (
-    <div className={styles.wrapper}>
-      <span
-        onClick={() => {
-          if (code) {
+    <div
+      className={styles.wrapper}
+      onClick={() => {
+        if (code) {
+          openEditor(data, onChange, nodeData);
+        }
+      }}
+    >
+      <input
+        onChange={({ target }) => {
+          onChange(target.value);
+        }}
+        value={data}
+        onDragStart={preventPropagation}
+        onMouseDown={preventPropagation}
+        onClick={(e) => {
+          e.stopPropagation();
+          if ((isRightBarOpened && isRightBarOpened()) || code) {
             openEditor(data, onChange, nodeData);
           }
         }}
-      >
-        <input
-          onChange={({ target }) => {
-            onChange(target.value);
-          }}
-          value={value}
-          onDragStart={preventPropagation}
-          onMouseDown={preventPropagation}
-          onClick={(e) => {
-            e.stopPropagation();
-            if ((isRightBarOpened && isRightBarOpened()) || code) {
-              openEditor(data, onChange, nodeData);
-            }
-          }}
-          disabled={code}
-          type="text"
-          placeholder={placeholder}
-          className={styles.input}
-        />
-      </span>
+        disabled={code}
+        type="text"
+        placeholder={placeholder}
+        className={styles.input}
+      />
+
       <button
         className={styles.expander}
         onClick={() => {
