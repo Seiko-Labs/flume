@@ -95,22 +95,7 @@ const Control = ({
         return (
           <TextInput
             {...commonProps}
-            onChange={(value) => {
-              if (value === undefined || value === null || value === "") {
-                return commonProps.onChange("");
-              }
-
-              if (value.split(".").filter((n) => n !== "").length === 1)
-                return commonProps.onChange(value);
-
-              const num = Number(value);
-
-              if (Number.isNaN(num)) {
-                commonProps.onChange(value);
-              } else {
-                commonProps.onChange(num);
-              }
-            }}
+            onChange={onChange}
             predicate={predicate}
             placeholder={placeholder}
             nodeData={nodeData}

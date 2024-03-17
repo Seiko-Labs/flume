@@ -11948,20 +11948,7 @@ var Control = function Control(_ref) {
         }));
       case "number":
         return /*#__PURE__*/React__default.createElement(TextInput$1, _extends$4({}, commonProps, {
-          onChange: function onChange(value) {
-            if (value === undefined || value === null || value === "") {
-              return commonProps.onChange("");
-            }
-            if (value.split(".").filter(function (n) {
-              return n !== "";
-            }).length === 1) return commonProps.onChange(value);
-            var num = Number(value);
-            if (Number.isNaN(num)) {
-              commonProps.onChange(value);
-            } else {
-              commonProps.onChange(num);
-            }
-          },
+          onChange: onChange,
           predicate: predicate,
           placeholder: placeholder,
           nodeData: nodeData
