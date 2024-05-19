@@ -35453,8 +35453,8 @@ function useVisibleNodes(_ref) {
     _ref$transform = _slicedToArray(_ref.transform, 3),
     tx = _ref$transform[0],
     ty = _ref$transform[1],
-    tScale = _ref$transform[2],
-    selectedNodes = _ref.selectedNodes;
+    tScale = _ref$transform[2];
+    _ref.selectedNodes;
   var visibleNodes = [];
   if (!wrapperRect) return visibleNodes;
   var i = 0;
@@ -35464,7 +35464,7 @@ function useVisibleNodes(_ref) {
     width: wrapperRect.width,
     height: wrapperRect.height
   }, tScale);
-  var _loop = function _loop() {
+  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
     var v = _Object$values[_i];
     var nodeRect = {
       x: v.x + wrapperRect.x / tScale,
@@ -35472,17 +35472,18 @@ function useVisibleNodes(_ref) {
       width: 300,
       height: 300
     };
-    var overlappingArea = getOverlappingArea(rect, nodeRect);
-    if (overlappingArea > 0 || selectedNodes.find(function (ref) {
-      return ref.id === v.id;
-    }) || v.type === "start") {
-      visibleNodes[i] = v;
-      i++;
-    }
-  };
-  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
-    _loop();
+    getOverlappingArea(rect, nodeRect);
+
+    // if (
+    //   overlappingArea > 0 ||
+    //   selectedNodes.find((ref) => ref.id === v.id) ||
+    //   v.type === "start"
+    // ) {
+    visibleNodes[i] = v;
+    i++;
+    // }
   }
+
   return visibleNodes;
 }
 
