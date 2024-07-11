@@ -1,11 +1,9 @@
-import nanoid from "nanoid/non-secure/index";
-
 export default (toasts = [], action) => {
   switch (action.type) {
     case "ADD_TOAST":
       return [
         {
-          id: nanoid(5),
+          id: 5,
           title: action.title,
           message: action.message,
           type: action.toastType || "info",

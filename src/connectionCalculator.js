@@ -116,6 +116,7 @@ export const createSVG = ({
   inputPortName,
   stroke,
 }) => {
+  console.log(from, to);
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", styles.svg);
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -141,115 +142,99 @@ export const getStageRef = (editorId) =>
 
 export const createConnections = (
   nodes,
-  { scale, stageId },
-  editorId,
-  nodeTypes
+  nodeTypes,
+  stageRef,
+  { x, y, zoom }
 ) => {
-  const stageRef = getStageRef(editorId);
+  const stage = stageRef.getBoundingClientRect();
+  const stageHalfWidth = stage.width / 2;
+  const stageHalfHeight = stage.height / 2;
 
-  if (stageRef) {
-    const stage = stageRef.getBoundingClientRect();
-    const stageHalfWidth = stage.width / 2;
-    const stageHalfHeight = stage.height / 2;
+  const byScale = (value) => value;
 
-    const byScale = (value) => value / scale;
+  nodes.forEach((node) => {
+    if (node.connections && node.connections.inputs) {
+      Object.entries(node.connections.inputs).forEach(
+        ([inputName, outputs], k) => {
+          outputs.forEach((output) => {
+            const nodeInfo = nodeTypes[node.type];
 
-    nodes.forEach((node) => {
-      if (node.connections && node.connections.inputs) {
-        Object.entries(node.connections.inputs).forEach(
-          ([inputName, outputs], k) => {
-            outputs.forEach((output) => {
-              const nodeInfo = nodeTypes[node.type];
+            const fromPort = getPortRect(
+              output.nodeId,
+              output.portName,
+              "output"
+            );
+            const portHalf = fromPort ? fromPort.width / 2 : 10;
+            const toPort = getPortRect(node.id, inputName, "input");
+            const id = output.nodeId + output.portName + node.id + inputName;
+            const existingLine = document.querySelector(
+              `[data-connection-id="${id}"]`
+            );
 
-              const fromPort = getPortRect(
-                output.nodeId,
-                output.portName,
-                "output"
-              );
-              const portHalf = fromPort ? fromPort.width / 2 : 10;
-              const toPort = getPortRect(node.id, inputName, "input");
-              const id = output.nodeId + output.portName + node.id + inputName;
-              const existingLine = document.querySelector(
-                `[data-connection-id="${id}"]`
-              );
-
-              if (existingLine) {
-                if (nodeInfo) {
-                  existingLine.setAttribute(
-                    "stroke",
-                    `${
-                      inputName === "errorAction"
-                        ? `${
-                            inputName === "errorAction"
-                              ? "#F16969"
-                              : nodeInfo.category.tileBackground || "white"
-                          }`
-                        : nodeInfo.category.tileBackground || "white"
-                    }`
-                  );
-                }
-                updateConnection({
-                  line: existingLine,
-                  to: fromPort
-                    ? {
-                        x: byScale(
-                          fromPort.x - stage.x + portHalf - stageHalfWidth
-                        ),
-                        y: byScale(
-                          fromPort.y - stage.y + portHalf - stageHalfHeight
-                        ),
-                      }
-                    : existingLine.getPointAtLength(
-                        existingLine.getTotalLength()
-                      ),
-                  from: toPort
-                    ? {
-                        x: byScale(
-                          toPort.x - stage.x + portHalf - stageHalfWidth
-                        ),
-                        y: byScale(
-                          toPort.y - stage.y + portHalf - stageHalfHeight
-                        ),
-                      }
-                    : existingLine.getPointAtLength(0),
-                });
-              } else {
-                if (!fromPort || !toPort) return;
-
-                const svg = createSVG({
-                  id,
-                  outputNodeId: output.nodeId,
-                  outputPortName: output.portName,
-                  inputNodeId: node.id,
-                  inputPortName: inputName,
-                  stroke: `${
+            if (existingLine) {
+              if (nodeInfo) {
+                existingLine.setAttribute(
+                  "stroke",
+                  `${
                     inputName === "errorAction"
                       ? `${
                           inputName === "errorAction"
                             ? "#F16969"
-                            : nodeInfo?.category?.tileBackground || "white"
+                            : nodeInfo.category.tileBackground || "white"
                         }`
-                      : nodeInfo?.category?.tileBackground || "white"
-                  }`,
-                  to: {
-                    x: byScale(
-                      fromPort.x - stage.x + portHalf - stageHalfWidth
-                    ),
-                    y: byScale(
-                      fromPort.y - stage.y + portHalf - stageHalfHeight
-                    ),
-                  },
-                  from: {
-                    x: byScale(toPort.x - stage.x + portHalf - stageHalfWidth),
-                    y: byScale(toPort.y - stage.y + portHalf - stageHalfHeight),
-                  },
-                  stage: stageRef,
-                });
+                      : nodeInfo.category.tileBackground || "white"
+                  }`
+                );
               }
-            });
-          }
-        );
-      }
-    });
-  }
+              updateConnection({
+                line: existingLine,
+                to: fromPort
+                  ? {
+                      x: byScale(fromPort.x),
+                      y: byScale(fromPort.y),
+                    }
+                  : existingLine.getPointAtLength(
+                      existingLine.getTotalLength()
+                    ),
+                from: toPort
+                  ? {
+                      x: byScale(toPort.x),
+                      y: byScale(toPort.y),
+                    }
+                  : existingLine.getPointAtLength(0),
+              });
+            } else {
+              if (!fromPort || !toPort) return;
+
+              const svg = createSVG({
+                id,
+                outputNodeId: output.nodeId,
+                outputPortName: output.portName,
+                inputNodeId: node.id,
+                inputPortName: inputName,
+                stroke: `${
+                  inputName === "errorAction"
+                    ? `${
+                        inputName === "errorAction"
+                          ? "#F16969"
+                          : nodeInfo?.category?.tileBackground || "white"
+                      }`
+                    : nodeInfo?.category?.tileBackground || "white"
+                }`,
+                to: {
+                  x: byScale(fromPort.x),
+                  y: byScale(fromPort.y),
+                },
+                from: {
+                  x: byScale(toPort.x),
+                  y: byScale(toPort.y),
+                },
+                stage: stageRef,
+              });
+            }
+          });
+        }
+      );
+    }
+  });
 };

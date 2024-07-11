@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import usePrevious from "../../hooks/usePrevious";
 import styles from "./IoPorts.css";
 import Port from "./Port";
-import { memo } from 'react';
+import { memo } from "react";
 
 const Input = ({
   type,
@@ -24,12 +24,6 @@ const Input = ({
   const prevConnected = usePrevious(isConnected);
 
   const controls = localControls || defaultControls;
-
-  useEffect(() => {
-    if (isConnected !== prevConnected) {
-      triggerRecalculation();
-    }
-  }, [isConnected, prevConnected, triggerRecalculation]);
 
   return (
     <div

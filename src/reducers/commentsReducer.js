@@ -1,5 +1,3 @@
-import nanoid from "nanoid/non-secure/index";
-
 const setComment = (comments, id, merge) => ({
   ...comments,
   [id]: {
@@ -12,7 +10,7 @@ export default (comments = {}, action) => {
   switch (action.type) {
     case "ADD_COMMENT": {
       const comment = {
-        id: nanoid(10),
+        id: 10,
         text: "",
         x: action.x,
         y: action.y,

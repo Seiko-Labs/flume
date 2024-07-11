@@ -12,6 +12,8 @@ import Connection from "../Connection/Connection";
 import styles from "./IoPorts.css";
 import { ReactComponent as PortArrow } from "../../img/port-arrow.svg";
 import { memo } from "react";
+import { useNodesAPI } from "../../store";
+import { getConfig } from "@testing-library/dom";
 
 const Port = ({
   color,
@@ -21,10 +23,12 @@ const Port = ({
   nodeId,
   triggerRecalculation,
 }) => {
+  const { transform, addConnection } = useNodesAPI();
+
+  const [x, y, zoom] = transform;
+
   const nodesDispatch = useContext(NodeDispatchContext);
-  const stageState = useContext(StageContext);
   const editorId = useContext(EditorIdContext);
-  const stageId = `${STAGE_ID}${editorId}`;
   const inputTypes = useContext(PortTypesContext);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartCoordinates, setDragStartCoordinates] = useState({
@@ -36,17 +40,18 @@ const Port = ({
   const line = useRef();
   const lineInToPort = useRef();
 
-  const byScale = (value) => value / stageState.scale;
+  const byScale = (value) => value / zoom;
+
+  const getCords = (ev) => ({
+    x: byScale(ev.clientX - x),
+    y: byScale(ev.clientY - y),
+  });
 
   const handleDrag = (e) => {
     if (!line.current) return;
-    const stage = document.getElementById(stageId).getBoundingClientRect();
 
+    const to = getCords(e);
     if (isInput) {
-      const to = {
-        x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y),
-      };
       if (lineInToPort.current)
         lineInToPort.current.setAttribute(
           "d",
@@ -58,10 +63,6 @@ const Port = ({
           calculateCurve(dragStartCoordinatesCache.current, to)
         );
     } else {
-      const to = {
-        x: byScale(e.clientX - stage.x - stageState.translate.x),
-        y: byScale(e.clientY - stage.y - stageState.translate.y),
-      };
       line.current.setAttribute(
         "d",
         calculateCurve(to, dragStartCoordinatesCache.current)
@@ -72,6 +73,7 @@ const Port = ({
   // TODO: Refactor onDragEnd method (input -> output part)
   const handleDragEnd = (e) => {
     const droppedOnPort = !!e.target.dataset.portName;
+    console.log(droppedOnPort, e.target.dataset.portName);
 
     if (isInput && lineInToPort.current) {
       const { inputNodeId, inputPortName, outputNodeId, outputPortName } =
@@ -93,8 +95,7 @@ const Port = ({
           const inputWillAcceptConnection =
             inputTypes[connectToPortType].acceptTypes.includes(type);
           if (inputWillAcceptConnection) {
-            nodesDispatch({
-              type: "ADD_CONNECTION",
+            addConnection({
               input: { nodeId: connectToNodeId, portName: connectToPortName },
               output: { nodeId: outputNodeId, portName: outputPortName },
             });
@@ -115,12 +116,10 @@ const Port = ({
             const inputWillAcceptConnection =
               inputTypes[inputNodeType].acceptTypes.includes(type);
             if (inputWillAcceptConnection) {
-              nodesDispatch({
-                type: "ADD_CONNECTION",
+              addConnection({
                 output: { nodeId, portName: name },
                 input: { nodeId: inputNodeId, portName: inputPortName },
               });
-              triggerRecalculation();
             }
           }
         } else {
@@ -135,12 +134,10 @@ const Port = ({
             const inputWillAcceptConnection =
               inputTypes[inputNodeType].acceptTypes.includes(type);
             if (inputWillAcceptConnection) {
-              nodesDispatch({
-                type: "ADD_CONNECTION",
+              addConnection({
                 output: { nodeId: inputNodeId, portName: inputPortName },
                 input: { nodeId, portName: name },
               });
-              triggerRecalculation();
             }
           }
         }
@@ -155,7 +152,6 @@ const Port = ({
   const handleDragStart = (e) => {
     e.stopPropagation();
     const startPort = port.current.getBoundingClientRect();
-    const stage = document.getElementById(stageId).getBoundingClientRect();
 
     if (isInput) {
       lineInToPort.current = document.querySelector(
@@ -175,12 +171,8 @@ const Port = ({
         document.addEventListener("mousemove", handleDrag);
       } else {
         const coordinates = {
-          x: byScale(
-            startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
-          ),
-          y: byScale(
-            startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
-          ),
+          x: byScale(startPort.x - x + startPort.width / 2),
+          y: byScale(startPort.y - y + startPort.width / 2),
         };
         setDragStartCoordinates(coordinates);
         dragStartCoordinatesCache.current = coordinates;
@@ -190,12 +182,8 @@ const Port = ({
       }
     } else {
       const coordinates = {
-        x: byScale(
-          startPort.x - stage.x + startPort.width / 2 - stageState.translate.x
-        ),
-        y: byScale(
-          startPort.y - stage.y + startPort.width / 2 - stageState.translate.y
-        ),
+        x: byScale(startPort.x - x + startPort.width / 2),
+        y: byScale(startPort.y - y + startPort.width / 2),
       };
       setDragStartCoordinates(coordinates);
       dragStartCoordinatesCache.current = coordinates;
@@ -225,18 +213,7 @@ const Port = ({
           e.stopPropagation();
         }}
         ref={port}
-      >
-        {/* <div
-          style={{
-            padding: 0,
-            margin: 0,
-            width: 4,
-            height: 4,
-            backgroundColor: color,
-            borderRadius: "100%",
-          }}
-        /> */}
-      </div>
+      />
       {isDragging ? (
         <Portal
           node={document.getElementById(`${DRAG_CONNECTION_ID}${editorId}`)}

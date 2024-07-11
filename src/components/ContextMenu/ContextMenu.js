@@ -9,8 +9,7 @@ import React, {
 import ScrollBar from "react-perfect-scrollbar";
 import styles from "./ContextMenu.css";
 import clamp from "lodash/clamp";
-import nanoid from "nanoid/non-secure/index";
-import { memo } from 'react';
+import { memo } from "react";
 
 const ContextMenu = ({
   x,
@@ -30,7 +29,7 @@ const ContextMenu = ({
   const [filter, setFilter] = useState("");
   const [menuWidth, setMenuWidth] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const menuId = useRef(nanoid(10));
+  const menuId = useRef(10);
 
   // function handleWheel(e) {
   //   console.log(e);

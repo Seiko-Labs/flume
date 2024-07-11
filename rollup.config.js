@@ -35,8 +35,9 @@ export default {
       plugins: [postcss_nested, postcss_inline_svg()],
     }),
     babel({
-      babelHelpers: "runtime",
+      extensions: [".js", ".ts", ".tsx"],
       exclude: "node_modules/**",
+      babelHelpers: "runtime",
     }),
     resolve(),
     commonjs(),

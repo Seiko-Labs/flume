@@ -26,6 +26,7 @@ import { ReactComponent as HelpIcon } from "../../img/help.svg";
 import useRaf from "@rooks/use-raf";
 
 import { memo } from "react";
+import { useNodesAPI } from "../../store";
 
 const Comment = ({ onOutsideClick, onChange, value, border }) => {
   const ref = useRef();
@@ -84,11 +85,14 @@ const Node = forwardRef(
     },
     nodeWrapper
   ) => {
+    const { nodes } = useNodesAPI();
+
+    const node = nodes[id];
+
     const [commentVisibile, toggleCommentVisibility] = useState(false);
     const nodeTypes = useContext(NodeTypesContext);
     const nodesDispatch = useContext(NodeDispatchContext);
     const stageState = useContext(StageContext);
-    const recalculateConnections = useContext(ConnectionRecalculateContext);
     const {
       label,
       deletable,
@@ -190,35 +194,6 @@ const Node = forwardRef(
       }
     };
 
-    useRaf(() => {
-      updateNodeConnections();
-    }, drag);
-
-    const handleDrag = ({ x, y }) => {
-      const snapGrid = [30, 30];
-      x = snapGrid[0] * Math.round(x / snapGrid[0]);
-      y = snapGrid[1] * Math.round(y / snapGrid[1]);
-      const nWrapper = document.getElementById(id);
-      const oldPositions = nWrapper.style.transform.match(
-        /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
-      );
-
-      if (!nWrapper) return;
-
-      if (oldPositions.length) {
-        onDragHandle(
-          nWrapper.dataset.nodeId,
-          x - Number(oldPositions[1]),
-          y - Number(oldPositions[2]),
-          { x, y }
-        );
-      }
-
-      nWrapper.style.transform = `translate3d(${x}px,${y}px, 0px)`;
-
-      updateNodeConnections();
-    };
-
     const handleContextMenu = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -250,45 +225,17 @@ const Node = forwardRef(
     );
 
     return (
-      <Draggable
-        className={styles?.wrapper}
+      <div
+        className="nodrag nopan"
         style={{
           background: "rgba(46, 58, 89)",
-          color: tileFontColor,
-          zIndex: isSelected && 1000,
-          boxShadow: isSelected
-            ? `0 0 0 ${2 / stageState.scale}px ${tileBackground}`
-            : "0 1px 10px 0 rgba(0, 0, 0, 0.5)",
-          transform: `translate3d(${x}px, ${y}px, 0px)`,
+          position: "relative",
+          display: "flex",
+          width: "fit-content",
+          flexdirection: "column",
+          transform: `translate(${node.x}px, ${node.y}px)`,
         }}
-        onDragStart={onDragStart}
-        onDrag={handleDrag}
-        onDragEnd={(e, { x, y }) => {
-          const snapGrid = [30, 30];
-          x = snapGrid[0] * Math.round(x / snapGrid[0]);
-          y = snapGrid[1] * Math.round(y / snapGrid[1]);
-          const nWrapper = document.getElementById(id);
-          const oldPositions = nWrapper.style.transform.match(
-            /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
-          );
-
-          if (!nWrapper) return;
-
-          if (oldPositions.length) {
-            onDragEnd(
-              nWrapper.dataset.nodeId,
-              x - Number(oldPositions[1]),
-              y - Number(oldPositions[2]),
-              { x, y }
-            );
-          }
-        }}
-        innerRef={nodeWrapper}
         data-node-id={id}
-        onContextMenu={handleContextMenu}
-        stageState={stageState}
-        stageRect={stageRect}
-        id={id}
       >
         <IoPorts
           nodeId={id}
@@ -326,21 +273,6 @@ const Node = forwardRef(
                 backgroundColor: tileBackground,
               }}
             >
-              {!hideControls && hasInner && (
-                <Ticker
-                  onClick={() => {
-                    nodesDispatch({ type: "TOGGLE_NODE_VIEW", id });
-                    recalculateConnections();
-                  }}
-                  style={{
-                    float: "left",
-                    transform: expanded ? "none" : "rotate(-90deg)",
-                    cursor: "pointer",
-                    stroke: "#C5CEE0",
-                  }}
-                />
-              )}
-
               {commentVisibile && (
                 <Comment
                   border={tileBackground}
@@ -373,50 +305,24 @@ const Node = forwardRef(
               />
             </div>
           </div>
-          {comment && (
+          <>
             <div
               style={{
-                fontSize: 10,
-                marginLeft: 5,
-                marginRight: 5,
-                marginBottom: 5,
-                overflow: "hidden",
-                wordWrap: "break-word",
-                maxWidth: 250,
-
-                borderRadius: 5,
-                background: tileBackground.includes("rgba")
-                  ? tileBackground
-                  : tileBackground + "59",
-                padding: 4,
+                padding: "0 5px 5px 5px",
+                visibility: hideControls ? "hidden" : "visible",
               }}
             >
-              <div style={{ visibility: hideControls ? "hidden" : "visible" }}>
-                <b>Comment: </b>
-                {comment}
-              </div>
+              <IoPorts
+                nodeId={id}
+                resolvedInputs={resolvedInputs}
+                show={"innerOnly"}
+                connections={connections}
+                nodeData={nodeData}
+                updateNodeConnections={updateNodeConnections}
+                inputData={inputData}
+              />
             </div>
-          )}
-          {expanded && hasInner ? (
-            <>
-              <div
-                style={{
-                  padding: "0 5px 5px 5px",
-                  visibility: hideControls ? "hidden" : "visible",
-                }}
-              >
-                <IoPorts
-                  nodeId={id}
-                  resolvedInputs={resolvedInputs}
-                  show={"innerOnly"}
-                  connections={connections}
-                  nodeData={nodeData}
-                  updateNodeConnections={updateNodeConnections}
-                  inputData={inputData}
-                />
-              </div>
-            </>
-          ) : null}
+          </>
         </div>
         <IoPorts
           nodeId={id}
@@ -427,32 +333,7 @@ const Node = forwardRef(
           updateNodeConnections={updateNodeConnections}
           inputData={inputData}
         />
-        {menuOpen ? (
-          <Portal>
-            <ContextMenu
-              x={menuCoordinates.x}
-              y={menuCoordinates.y}
-              options={[
-                ...(deletable !== false
-                  ? [
-                      {
-                        label: "Delete Node",
-                        value: "deleteNode",
-                        description:
-                          "Deletes a node and all of its connections.",
-                      },
-                    ]
-                  : []),
-              ]}
-              onRequestClose={closeContextMenu}
-              onOptionSelected={handleMenuOption}
-              hideFilter
-              label="Node Options"
-              emptyText="This node has no options."
-            />
-          </Portal>
-        ) : null}
-      </Draggable>
+      </div>
     );
   }
 );

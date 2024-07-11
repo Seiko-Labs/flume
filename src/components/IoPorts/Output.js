@@ -1,17 +1,9 @@
 import React from "react";
 import styles from "./IoPorts.css";
 import Port from "./Port";
-import { memo } from 'react';
+import { memo } from "react";
 
-const Output = ({
-  name,
-  nodeId,
-  type,
-  inputTypes,
-  triggerRecalculation,
-  optColor,
-  color: c,
-}) => {
+const Output = ({ name, nodeId, type, inputTypes, optColor, color: c }) => {
   const { color } = inputTypes[type];
 
   return (
@@ -28,7 +20,6 @@ const Output = ({
         name={name}
         color={color ?? c ?? optColor}
         nodeId={nodeId}
-        triggerRecalculation={triggerRecalculation}
       />
     </div>
   );

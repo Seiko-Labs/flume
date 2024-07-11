@@ -1,7 +1,6 @@
 import { omit } from "lodash/object";
 import { deleteConnection } from "../../connectionCalculator";
 import { checkForCircularNodes } from "../../utilities";
-import nanoid from "nanoid/non-secure/index";
 import _ from "lodash";
 import removeNode from "./removeNode";
 import addConnection from "./addConnection";
@@ -87,7 +86,7 @@ export const nodesReducer = (
 
     case "ADD_NODE": {
       const { x, y, nodeType, id, defaultNode, info } = action;
-      const newNodeId = id || nanoid(10);
+      const newNodeId = id || 10;
       const newNode = {
         id: newNodeId,
         x,
@@ -165,7 +164,7 @@ export const nodesReducer = (
 
       if (application === "PythonRPA" && newNodes) {
         const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
-          const newId = nanoid(10);
+          const newId = 10;
           return jsonString.replaceAll(`"${id}"`, `"${newId}"`);
         }, JSON.stringify(newNodes));
         const newJSON = JSON.parse(newJSONString);
@@ -205,7 +204,7 @@ export const nodesReducer = (
 
       for (const key in newNodes) {
         if (newNodes[key].defaultNode) {
-          const newNodeId = nanoid(10);
+          const newNodeId = 10;
           const { id, defaultNode, ...node } = newNodes[key];
 
           newNodes[newNodeId] = { ...node, id: newNodeId };

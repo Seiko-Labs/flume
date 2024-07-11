@@ -40,6 +40,7 @@ import Selection from "./selection";
 import useSelect from "./hooks/useSelect";
 import getInitialNodes from "./reducers/nodes/getInitialNodes";
 import { useVisibleNodes } from "./hooks/useVisibleNodes";
+import { useNodesAPI } from "./store";
 
 const defaultContext = {};
 
@@ -58,12 +59,7 @@ export const NodeEditor = forwardRef(
     ref
   ) => {
     const editorId = useId();
-    const {
-      initialNodes = {},
-      defaultNodes,
-      temp: { state: tempState },
-      initialNodesState,
-    } = connector;
+    const { initialNodes = {}, defaultNodes, initialNodesState } = connector;
 
     const cache = useRef(new Cache());
     const stage = useRef();
@@ -71,321 +67,51 @@ export const NodeEditor = forwardRef(
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
     const [dragNodes, setDrag] = useState([]);
 
-    const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
-      connectNodesReducer(nodesReducer, {
-        nodeTypes,
-        portTypes,
-        cache,
-        circularBehavior,
-        context,
-      }),
-      {},
-      () =>
-        initialNodesState || {
-          nodesState: [
-            {
-              state: getInitialNodes(
-                initialNodes,
-                defaultNodes || [],
-                nodeTypes,
-                portTypes,
-                context
-              ),
-              action: { type: "INITIAL" },
-            },
-          ],
-          currentStateIndex: 0,
-        }
-    );
-
-    const [
-      selectedNodes,
-      setSelectedNodes,
-      nodeRefs,
-      handleSelection,
-      clearSelection,
-    ] = useSelect(
-      nodesState[currentStateIndex].state ||
-        initialNodesState.nodesState[initialNodesState.currentStateIndex],
-      nodesState[Math.max(currentStateIndex - 1, 0)].state || {}
-    );
-
-    const handleDocumentKeyUp = (e) => {
-      if (e.which === 32) {
-        setSpaceIsPressed(false);
-        document.removeEventListener("keyup", handleDocumentKeyUp);
-      }
-    };
-
-    const handleKeyDown = (e) => {
-      if (e.which === 32) {
-        setSpaceIsPressed(true);
-        document.addEventListener("keyup", handleDocumentKeyUp);
-      }
-    };
-
-    useImperativeHandle(ref, () => ({
-      getNodes() {
-        return nodesState[currentStateIndex].state;
-      },
-    }));
-
+    const nodesApi = useNodesAPI();
     useEffect(() => {
-      !currentStateIndex && dispatchNodes({ type: "HYDRATE_DEFAULT_NODES" });
-      // recalculateConnections();
-      // triggerRecalculation();
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      nodesApi.setNodeTypes(nodeTypes);
+      nodesApi.setPortTypes(portTypes);
     }, []);
 
-    const [shouldRecalculateConnections, setShouldRecalculateConnections] =
-      useState(true);
-
-    const initialStageParams = _initialStageParams || tempState.stage;
-
-    const [stageState, dispatchStageState] = useReducer(stageReducer, {
-      scale:
-        typeof initialStageParams?.scale === "number"
-          ? clamp(initialStageParams?.scale, 0.1, 7)
-          : 1,
-      translate: {
-        x:
-          typeof initialStageParams?.translate?.x === "number"
-            ? initialStageParams.translate.x
-            : 0,
-        y:
-          typeof initialStageParams?.translate?.y === "number"
-            ? initialStageParams.translate.y
-            : 0,
-      },
-    });
-
-    const triggerRecalculation = () => {
-      setShouldRecalculateConnections(true);
-    };
-
-    useConnectorActions({
-      dispatchNodes,
-      connector,
-      triggerRecalculation,
-      selectedNodes,
-      stageState,
-      dispatchStageState,
-      nodesState,
-      currentStateIndex,
-      setSelectedNodes,
-    });
-
-    const recalculateConnections = () =>
-      createConnections(
-        Object.values(nodesState[currentStateIndex].state),
-        stageState,
-        editorId,
-        nodeTypes
-      );
+    useEffect(() => {
+      defaultNodes?.map((node) => {
+        nodesApi.addNode(node);
+      });
+    }, []);
 
     const recalculateStageRect = () => {
-      setDrag(selectedNodes.map((node) => node.id));
       stage.current = document
         .getElementById(`${STAGE_ID}${editorId}`)
         .getBoundingClientRect();
     };
 
-    useLayoutEffect(() => {
-      window.STAGE_ID = `${STAGE_ID}${editorId}`;
-      if (shouldRecalculateConnections) {
-        recalculateConnections();
-        setShouldRecalculateConnections(false);
-      }
-    }, [shouldRecalculateConnections, recalculateConnections]);
-
-    const handleDragEnd = (excludedNodeId, deltaX, deltaY, coords) => {
-      if (selectedNodes.length > 0) {
-        dispatchNodes({
-          type: "SET_MULTIPLE_NODES_COORDINATES",
-          nodesInfo: transformNodes(deltaX, deltaY),
-        });
-      } else {
-        dispatchNodes({
-          type: "SET_NODE_COORDINATES",
-          ...coords,
-          nodeId: excludedNodeId,
-        });
-      }
-      setDrag([]);
-    };
-
-    const visible = useVisibleNodes({
-      nodes: nodesState[currentStateIndex].state,
-      wrapperRect: editorRef.current
-        ? editorRef.current.getBoundingClientRect()
-        : null,
-      transform: [
-        stageState.translate.x,
-        stageState.translate.y,
-        stageState.scale,
-      ],
-      selectedNodes,
-    });
-
-    const transformNodes = (deltaX, deltaY) => {
-      const result = new Array(selectedNodes.length); // Preallocate the result array
-
-      let resultIndex = 0; // Keep track of the result array index
-
-      for (const nodeRef of selectedNodes) {
-        if (nodeRef) {
-          const oldTransform = nodeRef.style.transform;
-          const oldPositions = oldTransform.match(
-            /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/
-          );
-
-          if (oldPositions) {
-            const x = Number(oldPositions[1]) + deltaX;
-            const y = Number(oldPositions[2]) + deltaY;
-
-            const newTransform = `translate3d(${x}px,${y}px,0px)`;
-
-            nodeRef.style.transform = newTransform;
-
-            result[resultIndex++] = {
-              nodeId: nodeRef.id,
-              x,
-              y,
-            };
-          }
-        }
-      }
-
-      return result.slice(0, resultIndex); // Return only the populated part of the result array
-    };
-
-    const dragSelectedNodes = useCallback(
-      (excludedNodeId, deltaX, deltaY) => {
-        if (selectedNodes.length > 0) {
-          if (selectedNodes.find(({ id }) => excludedNodeId === id)) {
-            transformNodes(deltaX, deltaY);
-
-            // recalculateConnections();
-          } else {
-            clearSelection();
-          }
-        }
-      },
-      [selectedNodes]
-    );
-
-    useEffect(() => {
-      const measure = () => {
-        triggerRecalculation();
-      };
-
-      const observer = new ResizeObserver(measure);
-
-      const element = editorRef.current;
-
-      if (!element) return;
-
-      observer.observe(element);
-
-      return () => {
-        observer.disconnect();
-      };
-    }, []);
-
     return (
       <PortTypesContext.Provider value={portTypes}>
         <NodeTypesContext.Provider value={nodeTypes}>
-          <NodeDispatchContext.Provider value={dispatchNodes}>
-            <ConnectionRecalculateContext.Provider value={triggerRecalculation}>
-              <ContextContext.Provider value={context}>
-                <StageContext.Provider value={stageState}>
-                  <CacheContext.Provider value={cache}>
-                    <EditorIdContext.Provider value={editorId}>
-                      <ControllerOptionsContext.Provider
-                        value={connector.options || {}}
-                      >
-                        <RecalculateStageRectContext.Provider
-                          value={recalculateStageRect}
-                        >
-                          {!spaceIsPressed && editorRef.current && (
-                            <Selection
-                              target={editorRef.current}
-                              elements={nodeRefs.map((n) => n[1].current)}
-                              onSelectionChange={(i) => {
-                                spaceIsPressed ||
-                                  handleSelection(i, tempState.multiselect);
-                              }}
-                              offset={{
-                                top: 0,
-                                left: 0,
-                              }}
-                              zoom={stageState.scale}
-                              ignoreTargets={[
-                                'div[class^="Node_wrapper__"]',
-                                'div[class^="Node_wrapper__"] *',
-                                'div[class^="Comment_wrapper__"]',
-                                'div[class^="Comment_wrapper__"] *',
-                              ]}
-                              style={{ zIndex: 100, cursor: "inherit" }}
-                            />
-                          )}
-
-                          <Stage
-                            focusNode={focusNode}
-                            nodes={nodesState[currentStateIndex].state}
-                            onFocusChange={onFocusChange}
-                            ref={editorRef}
-                            editorId={editorId}
-                            spaceIsPressed={spaceIsPressed}
-                            scale={stageState.scale}
-                            translate={stageState.translate}
-                            spaceToPan={true}
-                            dispatchStageState={dispatchStageState}
-                            stageRef={stage}
-                          >
-                            {visible.map((node) => (
-                              <Node
-                                {...node}
-                                drag={dragNodes.includes(node.id)}
-                                isSelected={selectedNodes.find(
-                                  ({ id }) => id === node.id
-                                )}
-                                ref={
-                                  nodeRefs.find(([n]) => n.id === node.id)
-                                    ? nodeRefs.find(
-                                        ([n]) => n.id === node.id
-                                      )[1]
-                                    : createRef()
-                                }
-                                stageRect={stage}
-                                hideControls={stageState.scale < 0.5}
-                                onDragEnd={handleDragEnd}
-                                onDragHandle={dragSelectedNodes}
-                                onDragStart={recalculateStageRect}
-                                key={node.id}
-                              />
-                            ))}
-                            <Connections
-                              nodes={nodesState[currentStateIndex].state}
-                              editorId={editorId}
-                            />
-
-                            <div
-                              className={styles.dragWrapper}
-                              id={`${DRAG_CONNECTION_ID}${editorId}`}
-                            />
-                          </Stage>
-                        </RecalculateStageRectContext.Provider>
-                      </ControllerOptionsContext.Provider>
-                    </EditorIdContext.Provider>
-                  </CacheContext.Provider>
-                </StageContext.Provider>
-              </ContextContext.Provider>
-            </ConnectionRecalculateContext.Provider>
-          </NodeDispatchContext.Provider>
+          <ContextContext.Provider value={context}>
+            <CacheContext.Provider value={cache}>
+              <EditorIdContext.Provider value={editorId}>
+                <ControllerOptionsContext.Provider
+                  value={connector.options || {}}
+                >
+                  <RecalculateStageRectContext.Provider
+                    value={recalculateStageRect}
+                  >
+                    <Stage>
+                      {Object.values(nodesApi.nodes).map((node) => (
+                        <Node {...node} key={node.id} />
+                      ))}
+                      <Connections nodes={nodesApi.nodes} editorId={editorId} />
+                      <div
+                        className={styles.dragWrapper}
+                        id={`${DRAG_CONNECTION_ID}${editorId}`}
+                      />
+                    </Stage>
+                  </RecalculateStageRectContext.Provider>
+                </ControllerOptionsContext.Provider>
+              </EditorIdContext.Provider>
+            </CacheContext.Provider>
+          </ContextContext.Provider>
         </NodeTypesContext.Provider>
       </PortTypesContext.Provider>
     );
