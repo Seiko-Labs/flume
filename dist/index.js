@@ -30629,6 +30629,14 @@ var useConnectorActions = function useConnectorActions(_ref) {
           dispatchNodes({
             type: "PASTE_NODES"
           });
+          var getNodeIds = function getNodeIds() {
+            var _JSON$parse$nodes, _JSON$parse, _localStorage$getItem;
+            var nodes = Object.values((_JSON$parse$nodes = (_JSON$parse = JSON.parse((_localStorage$getItem = localStorage.getItem("clipboard")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : "{}")) === null || _JSON$parse === void 0 ? void 0 : _JSON$parse.nodes) !== null && _JSON$parse$nodes !== void 0 ? _JSON$parse$nodes : {});
+            return nodes.map(function (node) {
+              return node.id;
+            });
+          };
+          setSelectedNodes(getNodeIds());
           clearConnections();
           triggerRecalculation();
           break;
@@ -34745,22 +34753,31 @@ var nodesReducer = function nodesReducer(_ref) {
           application = _JSON$parse.application,
           _newNodes = _JSON$parse.nodes;
         if (application === "PythonRPA" && _newNodes) {
-          var newJSONString = _.keys(_newNodes).reduce(function (jsonString, id) {
-            var newId = nanoid(10);
-            return jsonString.replaceAll("\"".concat(id, "\""), "\"".concat(newId, "\""));
-          }, JSON.stringify(_newNodes));
-          var newJSON = JSON.parse(newJSONString);
-          _.forOwn(newJSON, function (_, key) {
-            newJSON[key] = _objectSpread$8(_objectSpread$8({}, newJSON[key]), {}, {
-              x: newJSON[key].x + 20,
-              y: newJSON[key].y + 20
+          var oldMap = new Map();
+          var pasteResult = Object.fromEntries(function () {
+            var result = Object.entries(_newNodes).map(function (_ref8) {
+              var _ref9 = _slicedToArray(_ref8, 2),
+                oldId = _ref9[0],
+                body = _ref9[1];
+              var newId = nanoid(10);
+              oldMap.set(oldId, newId);
+              body.connections = {
+                inputs: {},
+                outputs: {}
+              };
+              return [newId, _objectSpread$8(_objectSpread$8({}, body), {}, {
+                id: newId,
+                x: body.x + 20,
+                y: body.y + 20
+              })];
             });
-          });
+            return result;
+          }());
           localStorage.setItem("clipboard", JSON.stringify({
-            application: "PythonRPA",
-            nodes: newJSON
+            application: application,
+            nodes: pasteResult
           }));
-          return _objectSpread$8(_objectSpread$8({}, nodes), newJSON);
+          return _objectSpread$8(_objectSpread$8({}, nodes), pasteResult);
         }
         return nodes;
       }
@@ -34823,10 +34840,10 @@ var nodesReducer = function nodesReducer(_ref) {
     case "SET_MULTIPLE_NODES_COORDINATES":
       {
         var nodesInfo = action.nodesInfo;
-        return _objectSpread$8(_objectSpread$8({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref8) {
-          var nodeId = _ref8.nodeId,
-            x = _ref8.x,
-            y = _ref8.y;
+        return _objectSpread$8(_objectSpread$8({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref10) {
+          var nodeId = _ref10.nodeId,
+            x = _ref10.x,
+            y = _ref10.y;
           return _defineProperty$1({}, nodeId, _objectSpread$8(_objectSpread$8({}, nodes[nodeId]), {}, {
             x: x,
             y: y
@@ -34856,9 +34873,10 @@ var nodesReducer$1 = (function () {
   for (var _len = arguments.length, props = new Array(_len), _key = 0; _key < _len; _key++) {
     props[_key] = arguments[_key];
   }
-  if (props[0].length > 50) {
-    props[0].nodesState = props[0].nodesState.slice(0, 40);
-    props[0].currentStateIndex = 39;
+  if (props[0].nodesState.length > 30) {
+    var truncatedState = [props[0].nodesState[props[0].currentStateIndex]];
+    props[0].nodesState = truncatedState;
+    props[0].currentStateIndex = 0;
   }
   var _props$ = props[0],
     nodesState = _props$.nodesState,
@@ -34928,6 +34946,13 @@ var nodesReducer$1 = (function () {
         var _nodesState = props[0].nodesState;
         var _nodes2 = nodesReducer.apply(void 0, props);
         var isSlice = _nodesState.length > 1 && currentStateIndex < _nodesState.length - 1;
+        if (props[1].type === "SET_PORT_DATA") {
+          _nodesState[currentStateIndex].state = _nodes2;
+          return {
+            nodesState: _nodesState,
+            currentStateIndex: currentStateIndex
+          };
+        }
         return props[1].type === "HYDRATE_DEFAULT_NODES" ? {
           nodesState: [{
             action: props[1],
@@ -35314,13 +35339,20 @@ var useSelect = (function (nodes, previousNodes) {
       });
     });
   };
+  var getNodeIds = function getNodeIds() {
+    var _JSON$parse$nodes, _JSON$parse, _localStorage$getItem;
+    var nodes = Object.values((_JSON$parse$nodes = (_JSON$parse = JSON.parse((_localStorage$getItem = localStorage.getItem("clipboard")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : "{}")) === null || _JSON$parse === void 0 ? void 0 : _JSON$parse.nodes) !== null && _JSON$parse$nodes !== void 0 ? _JSON$parse$nodes : {});
+    return nodes.map(function (node) {
+      return node.id;
+    });
+  };
   React.useMemo(function () {
     if (!nodeRefs.length) {
       setNodesRef(function () {
         return Object.values(nodes).map(function (n) {
           return [n, /*#__PURE__*/React.createRef()];
         }) || [];
-      }) && clearSelection();
+      }) && setSelectedNodes(getNodeIds());
     }
     if (previousNodes && nodes !== previousNodes) {
       Object.values(nodes).every(function (_ref) {
@@ -35333,7 +35365,7 @@ var useSelect = (function (nodes, previousNodes) {
         return Object.values(nodes).map(function (n) {
           return [n, /*#__PURE__*/React.createRef()];
         }) || [];
-      }) && clearSelection();
+      }) && setSelectedNodes(getNodeIds());
     }
   }, [nodes, previousNodes]);
   return [selectedNodes, setSelectedNodes, nodeRefs, handleSelection, clearSelection];
@@ -35453,8 +35485,8 @@ function useVisibleNodes(_ref) {
     _ref$transform = _slicedToArray(_ref.transform, 3),
     tx = _ref$transform[0],
     ty = _ref$transform[1],
-    tScale = _ref$transform[2];
-    _ref.selectedNodes;
+    tScale = _ref$transform[2],
+    selectedNodes = _ref.selectedNodes;
   var visibleNodes = [];
   if (!wrapperRect) return visibleNodes;
   var i = 0;
@@ -35464,7 +35496,7 @@ function useVisibleNodes(_ref) {
     width: wrapperRect.width,
     height: wrapperRect.height
   }, tScale);
-  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
+  var _loop = function _loop() {
     var v = _Object$values[_i];
     var nodeRect = {
       x: v.x + wrapperRect.x / tScale,
@@ -35472,18 +35504,17 @@ function useVisibleNodes(_ref) {
       width: 300,
       height: 300
     };
-    getOverlappingArea(rect, nodeRect);
-
-    // if (
-    //   overlappingArea > 0 ||
-    //   selectedNodes.find((ref) => ref.id === v.id) ||
-    //   v.type === "start"
-    // ) {
-    visibleNodes[i] = v;
-    i++;
-    // }
+    var overlappingArea = getOverlappingArea(rect, nodeRect);
+    if (overlappingArea > 0 || selectedNodes.find(function (ref) {
+      return ref.id === v.id;
+    }) || v.type === "start") {
+      visibleNodes[i] = v;
+      i++;
+    }
+  };
+  for (var _i = 0, _Object$values = Object.values(nodes); _i < _Object$values.length; _i++) {
+    _loop();
   }
-
   return visibleNodes;
 }
 
@@ -36073,7 +36104,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var nodeRef = _step.value;
-        if (nodeRef) {
+        if (nodeRef && nodeRef.style) {
           var oldTransform = nodeRef.style.transform;
           var oldPositions = oldTransform.match( /*#__PURE__*/_wrapRegExp(/translate3d\((.*?)px, (.*?)px, (.*?)px/, {
             x: 1,

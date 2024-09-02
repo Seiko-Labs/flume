@@ -14,11 +14,19 @@ export default (nodes, previousNodes) => {
     });
   };
 
+  const getNodeIds = () => {
+    const nodes = Object.values(
+      JSON.parse(localStorage.getItem("clipboard") ?? "{}")?.nodes ?? {}
+    );
+
+    return nodes.map((node) => node.id);
+  };
+
   useMemo(() => {
     if (!nodeRefs.length) {
       setNodesRef(
         () => Object.values(nodes).map((n) => [n, createRef()]) || []
-      ) && clearSelection();
+      ) && setSelectedNodes(getNodeIds());
     }
     if (previousNodes && nodes !== previousNodes) {
       Object.values(nodes).every(({ id }) =>
@@ -27,7 +35,7 @@ export default (nodes, previousNodes) => {
         (!setNodesRef(
           () => Object.values(nodes).map((n) => [n, createRef()]) || []
         ) &&
-          clearSelection());
+          setSelectedNodes(getNodeIds()));
     }
   }, [nodes, previousNodes]);
 

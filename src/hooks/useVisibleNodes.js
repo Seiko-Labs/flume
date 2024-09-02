@@ -53,14 +53,14 @@ export function useVisibleNodes({
 
     const overlappingArea = getOverlappingArea(rect, nodeRect);
 
-    // if (
-    //   overlappingArea > 0 ||
-    //   selectedNodes.find((ref) => ref.id === v.id) ||
-    //   v.type === "start"
-    // ) {
+    if (
+      overlappingArea > 0 ||
+      selectedNodes.find((ref) => ref.id === v.id) ||
+      v.type === "start"
+    ) {
       visibleNodes[i] = v;
       i++;
-    // }
+    }
   }
 
   return visibleNodes;

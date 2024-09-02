@@ -236,7 +236,7 @@ export const NodeEditor = forwardRef(
       let resultIndex = 0; // Keep track of the result array index
 
       for (const nodeRef of selectedNodes) {
-        if (nodeRef) {
+        if (nodeRef && nodeRef.style) {
           const oldTransform = nodeRef.style.transform;
           const oldPositions = oldTransform.match(
             /translate3d\((?<x>.*?)px, (?<y>.*?)px, (?<z>.*?)px/

@@ -164,30 +164,43 @@ export const nodesReducer = (
       const { application, nodes: newNodes } = JSON.parse(JSONString);
 
       if (application === "PythonRPA" && newNodes) {
-        const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
-          const newId = nanoid(10);
-          return jsonString.replaceAll(`"${id}"`, `"${newId}"`);
-        }, JSON.stringify(newNodes));
-        const newJSON = JSON.parse(newJSONString);
+        const oldMap = new Map();
 
-        _.forOwn(newJSON, (_, key) => {
-          newJSON[key] = {
-            ...newJSON[key],
-            x: newJSON[key].x + 20,
-            y: newJSON[key].y + 20,
-          };
-        });
+        const pasteResult = Object.fromEntries(
+          (() => {
+            const result = Object.entries(newNodes).map(([oldId, body]) => {
+              const newId = nanoid(10);
+
+              oldMap.set(oldId, newId);
+
+              body.connections = {
+                inputs: {},
+                outputs: {},
+              };
+
+              return [
+                newId,
+                {
+                  ...body,
+                  id: newId,
+                  x: body.x + 20,
+                  y: body.y + 20,
+                },
+              ];
+            });
+
+            return result;
+          })()
+        );
+
         localStorage.setItem(
           "clipboard",
-          JSON.stringify({
-            application: "PythonRPA",
-            nodes: newJSON,
-          })
+          JSON.stringify({ application, nodes: pasteResult })
         );
 
         return {
           ...nodes,
-          ...newJSON,
+          ...pasteResult,
         };
       }
 
@@ -301,9 +314,11 @@ export const connectNodesReducer = (reducer, environment) => (state, action) =>
   reducer(state, action, environment);
 
 export default (...props) => {
-  if (props[0].length > 50) {
-    props[0].nodesState = props[0].nodesState.slice(0, 40);
-    props[0].currentStateIndex = 39;
+  if (props[0].nodesState.length > 30) {
+    const truncatedState = [props[0].nodesState[props[0].currentStateIndex]];
+
+    props[0].nodesState = truncatedState;
+    props[0].currentStateIndex = 0;
   }
   let { nodesState, currentStateIndex } = props[0];
 
@@ -362,6 +377,14 @@ export default (...props) => {
       const nodes = nodesReducer(...props);
       const isSlice =
         nodesState.length > 1 && currentStateIndex < nodesState.length - 1;
+
+      if (props[1].type === "SET_PORT_DATA") {
+        nodesState[currentStateIndex].state = nodes;
+        return {
+          nodesState,
+          currentStateIndex,
+        };
+      }
 
       return props[1].type === "HYDRATE_DEFAULT_NODES"
         ? {

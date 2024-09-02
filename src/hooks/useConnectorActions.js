@@ -66,6 +66,16 @@ const useConnectorActions = ({
         case "PASTE":
           dispatchNodes({ type: "PASTE_NODES" });
 
+          const getNodeIds = () => {
+            const nodes = Object.values(
+              JSON.parse(localStorage.getItem("clipboard") ?? "{}")?.nodes ?? {}
+            );
+
+            return nodes.map((node) => node.id);
+          };
+
+          setSelectedNodes(getNodeIds());
+
           clearConnections();
           triggerRecalculation();
           break;
