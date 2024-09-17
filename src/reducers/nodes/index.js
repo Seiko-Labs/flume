@@ -29,7 +29,7 @@ const copyNodes = (nodes, selectedNodeIds, clearView = true) => {
 export const nodesReducer = (
   { nodesState, currentStateIndex },
   action = {},
-  { nodeTypes, portTypes, cache, circularBehavior, context }
+  { nodeTypes, portTypes, cache, circularBehavior, context, stageState }
 ) => {
   const nodes =
     (nodesState &&
@@ -166,36 +166,86 @@ export const nodesReducer = (
       if (application === "PythonRPA" && newNodes) {
         const oldMap = new Map();
 
+        const editorArea = document.getElementById(window.STAGE_ID);
+        const { top, left } = editorArea.getBoundingClientRect();
+        const fc = (positions) => {
+          if (positions.length === 0) return null;
+
+          const { x, y } = positions.reduce(
+            (acc, pos) => ({
+              x: acc.x + pos.x,
+              y: acc.y + pos.y,
+            }),
+            { x: 0, y: 0 }
+          );
+
+          return {
+            x: x / positions.length,
+            y: y / positions.length,
+          };
+        };
+
         const pasteResult = Object.fromEntries(
           (() => {
-            const result = Object.entries(newNodes).map(([oldId, body]) => {
-              const newId = nanoid(10);
+            const entries = Object.entries(newNodes);
+            const center = fc(entries.map(([_, body]) => body));
 
-              oldMap.set(oldId, newId);
+            const replacer = (entry) => {
+              let result = JSON.stringify(entry);
+              oldMap.forEach((newId, oldId) => {
+                result = result.replace(new RegExp(oldId, "g"), newId);
+              });
 
-              body.connections = {
-                inputs: {},
-                outputs: {},
-              };
+              return JSON.parse(result);
+            };
 
-              return [
-                newId,
-                {
-                  ...body,
-                  id: newId,
-                  x: body.x + 20,
-                  y: body.y + 20,
-                },
-              ];
-            });
+            const result = entries
+              .map(([oldId, body]) => {
+                const newId = nanoid(10);
+
+                oldMap.set(oldId, newId);
+
+                return [newId, body];
+              })
+              .map(([newId, body]) => {
+                body.connections = {
+                  inputs: replacer(body.connections.inputs),
+                  outputs: replacer(body.connections.outputs),
+                };
+
+                const lastMousePosition = localStorage.getItem(
+                  "lastMousePosition"
+                )
+                  ? JSON.parse(localStorage.getItem("lastMousePosition"))
+                  : { x: 20, y: 20 };
+
+                const scaledMousePosition = {
+                  x:
+                    (lastMousePosition.x - left - stageState.translate.x) /
+                    stageState.scale,
+                  y:
+                    (lastMousePosition.y - top - stageState.translate.y) /
+                    stageState.scale,
+                };
+
+                const offset = {
+                  x: center.x - body.x,
+                  y: center.y - body.y,
+                };
+
+                return [
+                  newId,
+                  {
+                    ...body,
+                    id: newId,
+                    x: scaledMousePosition.x - offset.x,
+                    y: scaledMousePosition.y - offset.y,
+                  },
+                ];
+              });
 
             return result;
           })()
-        );
-
-        localStorage.setItem(
-          "clipboard",
-          JSON.stringify({ application, nodes: pasteResult })
         );
 
         return {

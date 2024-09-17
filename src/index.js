@@ -71,6 +71,25 @@ export const NodeEditor = forwardRef(
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
     const [dragNodes, setDrag] = useState([]);
 
+    const initialStageParams = _initialStageParams || tempState.stage;
+
+    const [stageState, dispatchStageState] = useReducer(stageReducer, {
+      scale:
+        typeof initialStageParams?.scale === "number"
+          ? clamp(initialStageParams?.scale, 0.1, 7)
+          : 1,
+      translate: {
+        x:
+          typeof initialStageParams?.translate?.x === "number"
+            ? initialStageParams.translate.x
+            : 0,
+        y:
+          typeof initialStageParams?.translate?.y === "number"
+            ? initialStageParams.translate.y
+            : 0,
+      },
+    });
+
     const [{ nodesState, currentStateIndex }, dispatchNodes] = useReducer(
       connectNodesReducer(nodesReducer, {
         nodeTypes,
@@ -78,6 +97,7 @@ export const NodeEditor = forwardRef(
         cache,
         circularBehavior,
         context,
+        stageState,
       }),
       {},
       () =>
@@ -142,25 +162,6 @@ export const NodeEditor = forwardRef(
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =
       useState(true);
-
-    const initialStageParams = _initialStageParams || tempState.stage;
-
-    const [stageState, dispatchStageState] = useReducer(stageReducer, {
-      scale:
-        typeof initialStageParams?.scale === "number"
-          ? clamp(initialStageParams?.scale, 0.1, 7)
-          : 1,
-      translate: {
-        x:
-          typeof initialStageParams?.translate?.x === "number"
-            ? initialStageParams.translate.x
-            : 0,
-        y:
-          typeof initialStageParams?.translate?.y === "number"
-            ? initialStageParams.translate.y
-            : 0,
-      },
-    });
 
     const triggerRecalculation = () => {
       setShouldRecalculateConnections(true);

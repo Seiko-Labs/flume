@@ -34628,7 +34628,8 @@ var nodesReducer = function nodesReducer(_ref) {
     portTypes = _ref2.portTypes,
     cache = _ref2.cache,
     circularBehavior = _ref2.circularBehavior,
-    context = _ref2.context;
+    context = _ref2.context,
+    stageState = _ref2.stageState;
   var nodes = nodesState && nodesState.length && currentStateIndex >= 0 && nodesState[currentStateIndex].state || {};
   switch (action.type) {
     case "ADD_CONNECTION":
@@ -34754,29 +34755,78 @@ var nodesReducer = function nodesReducer(_ref) {
           _newNodes = _JSON$parse.nodes;
         if (application === "PythonRPA" && _newNodes) {
           var oldMap = new Map();
+          var editorArea = document.getElementById(window.STAGE_ID);
+          var _editorArea$getBoundi = editorArea.getBoundingClientRect(),
+            top = _editorArea$getBoundi.top,
+            left = _editorArea$getBoundi.left;
+          var fc = function fc(positions) {
+            if (positions.length === 0) return null;
+            var _positions$reduce = positions.reduce(function (acc, pos) {
+                return {
+                  x: acc.x + pos.x,
+                  y: acc.y + pos.y
+                };
+              }, {
+                x: 0,
+                y: 0
+              }),
+              x = _positions$reduce.x,
+              y = _positions$reduce.y;
+            return {
+              x: x / positions.length,
+              y: y / positions.length
+            };
+          };
           var pasteResult = Object.fromEntries(function () {
-            var result = Object.entries(_newNodes).map(function (_ref8) {
-              var _ref9 = _slicedToArray(_ref8, 2),
-                oldId = _ref9[0],
-                body = _ref9[1];
+            var entries = Object.entries(_newNodes);
+            var center = fc(entries.map(function (_ref8) {
+              var _ref9 = _slicedToArray(_ref8, 2);
+                _ref9[0];
+                var body = _ref9[1];
+              return body;
+            }));
+            var replacer = function replacer(entry) {
+              var result = JSON.stringify(entry);
+              oldMap.forEach(function (newId, oldId) {
+                result = result.replace(new RegExp(oldId, "g"), newId);
+              });
+              return JSON.parse(result);
+            };
+            var result = entries.map(function (_ref10) {
+              var _ref11 = _slicedToArray(_ref10, 2),
+                oldId = _ref11[0],
+                body = _ref11[1];
               var newId = nanoid(10);
               oldMap.set(oldId, newId);
+              return [newId, body];
+            }).map(function (_ref12) {
+              var _ref13 = _slicedToArray(_ref12, 2),
+                newId = _ref13[0],
+                body = _ref13[1];
               body.connections = {
-                inputs: {},
-                outputs: {}
+                inputs: replacer(body.connections.inputs),
+                outputs: replacer(body.connections.outputs)
+              };
+              var lastMousePosition = localStorage.getItem("lastMousePosition") ? JSON.parse(localStorage.getItem("lastMousePosition")) : {
+                x: 20,
+                y: 20
+              };
+              var scaledMousePosition = {
+                x: (lastMousePosition.x - left - stageState.translate.x) / stageState.scale,
+                y: (lastMousePosition.y - top - stageState.translate.y) / stageState.scale
+              };
+              var offset = {
+                x: center.x - body.x,
+                y: center.y - body.y
               };
               return [newId, _objectSpread$8(_objectSpread$8({}, body), {}, {
                 id: newId,
-                x: body.x + 20,
-                y: body.y + 20
+                x: scaledMousePosition.x - offset.x,
+                y: scaledMousePosition.y - offset.y
               })];
             });
             return result;
           }());
-          localStorage.setItem("clipboard", JSON.stringify({
-            application: application,
-            nodes: pasteResult
-          }));
           return _objectSpread$8(_objectSpread$8({}, nodes), pasteResult);
         }
         return nodes;
@@ -34840,10 +34890,10 @@ var nodesReducer = function nodesReducer(_ref) {
     case "SET_MULTIPLE_NODES_COORDINATES":
       {
         var nodesInfo = action.nodesInfo;
-        return _objectSpread$8(_objectSpread$8({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref10) {
-          var nodeId = _ref10.nodeId,
-            x = _ref10.x,
-            y = _ref10.y;
+        return _objectSpread$8(_objectSpread$8({}, nodes), Object.assign.apply(Object, [{}].concat(_toConsumableArray(nodesInfo.map(function (_ref14) {
+          var nodeId = _ref14.nodeId,
+            x = _ref14.x,
+            y = _ref14.y;
           return _defineProperty$1({}, nodeId, _objectSpread$8(_objectSpread$8({}, nodes[nodeId]), {}, {
             x: x,
             y: y
@@ -35969,12 +36019,24 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     dragNodes = _useState4[0],
     setDrag = _useState4[1];
-  var _useReducer = React.useReducer(connectNodesReducer(nodesReducer$1, {
+  var initialStageParams = _initialStageParams || tempState.stage;
+  var _useReducer = React.useReducer(stageReducer, {
+      scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
+      translate: {
+        x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
+        y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
+      }
+    }),
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    stageState = _useReducer2[0],
+    dispatchStageState = _useReducer2[1];
+  var _useReducer3 = React.useReducer(connectNodesReducer(nodesReducer$1, {
       nodeTypes: nodeTypes,
       portTypes: portTypes,
       cache: cache,
       circularBehavior: circularBehavior,
-      context: context
+      context: context,
+      stageState: stageState
     }), {}, function () {
       return initialNodesState || {
         nodesState: [{
@@ -35986,11 +36048,11 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
         currentStateIndex: 0
       };
     }),
-    _useReducer2 = _slicedToArray(_useReducer, 2),
-    _useReducer2$ = _useReducer2[0],
-    nodesState = _useReducer2$.nodesState,
-    currentStateIndex = _useReducer2$.currentStateIndex,
-    dispatchNodes = _useReducer2[1];
+    _useReducer4 = _slicedToArray(_useReducer3, 2),
+    _useReducer4$ = _useReducer4[0],
+    nodesState = _useReducer4$.nodesState,
+    currentStateIndex = _useReducer4$.currentStateIndex,
+    dispatchNodes = _useReducer4[1];
   var _useSelect = useSelect(nodesState[currentStateIndex].state || initialNodesState.nodesState[initialNodesState.currentStateIndex], nodesState[Math.max(currentStateIndex - 1, 0)].state || {}),
     _useSelect2 = _slicedToArray(_useSelect, 5),
     selectedNodes = _useSelect2[0],
@@ -36033,17 +36095,6 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     shouldRecalculateConnections = _useState6[0],
     setShouldRecalculateConnections = _useState6[1];
-  var initialStageParams = _initialStageParams || tempState.stage;
-  var _useReducer3 = React.useReducer(stageReducer, {
-      scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
-      translate: {
-        x: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t = initialStageParams.translate) === null || _initialStageParams$t === void 0 ? void 0 : _initialStageParams$t.x) === "number" ? initialStageParams.translate.x : 0,
-        y: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : (_initialStageParams$t2 = initialStageParams.translate) === null || _initialStageParams$t2 === void 0 ? void 0 : _initialStageParams$t2.y) === "number" ? initialStageParams.translate.y : 0
-      }
-    }),
-    _useReducer4 = _slicedToArray(_useReducer3, 2),
-    stageState = _useReducer4[0],
-    dispatchStageState = _useReducer4[1];
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
