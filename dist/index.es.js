@@ -34313,29 +34313,31 @@ var nodesReducer = function nodesReducer(_ref) {
       }
     case "PASTE_NODES":
       {
-        var JSONString = localStorage.getItem("clipboard");
-        var _JSON$parse = JSON.parse(JSONString),
-          application = _JSON$parse.application,
-          _newNodes = _JSON$parse.nodes;
-        if (application === "PythonRPA" && _newNodes) {
-          var newJSONString = _.keys(_newNodes).reduce(function (jsonString, id) {
-            var newId = nanoid(10);
-            return jsonString.replaceAll("\"".concat(id, "\""), "\"".concat(newId, "\""));
-          }, JSON.stringify(_newNodes));
-          var newJSON = JSON.parse(newJSONString);
-          _.forOwn(newJSON, function (_, key) {
-            newJSON[key] = _objectSpread$8(_objectSpread$8({}, newJSON[key]), {}, {
-              x: newJSON[key].x + 20,
-              y: newJSON[key].y + 20
+        try {
+          var JSONString = localStorage.getItem("clipboard");
+          var raw = JSON.parse(JSONString);
+          if ((raw === null || raw === void 0 ? void 0 : raw.application) !== "PythonRPA") return nodes;
+          var _newNodes = raw.nodes;
+          if (_newNodes) {
+            var newJSONString = _.keys(_newNodes).reduce(function (jsonString, id) {
+              var newId = nanoid(10);
+              return jsonString.replaceAll("\"".concat(id, "\""), "\"".concat(newId, "\""));
+            }, JSON.stringify(_newNodes));
+            var newJSON = JSON.parse(newJSONString);
+            _.forOwn(newJSON, function (_, key) {
+              newJSON[key] = _objectSpread$8(_objectSpread$8({}, newJSON[key]), {}, {
+                x: newJSON[key].x + 20,
+                y: newJSON[key].y + 20
+              });
             });
-          });
-          localStorage.setItem("clipboard", JSON.stringify({
-            application: "PythonRPA",
-            nodes: newJSON
-          }));
-          return _objectSpread$8(_objectSpread$8({}, nodes), newJSON);
-        }
-        return nodes;
+            localStorage.setItem("clipboard", JSON.stringify({
+              application: "PythonRPA",
+              nodes: newJSON
+            }));
+            return _objectSpread$8(_objectSpread$8({}, nodes), newJSON);
+          }
+          return nodes;
+        } catch (_unused) {}
       }
     case "REMOVE_NODE":
       {

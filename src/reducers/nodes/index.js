@@ -160,38 +160,44 @@ export const nodesReducer = (
     }
 
     case "PASTE_NODES": {
-      const JSONString = localStorage.getItem("clipboard");
-      const { application, nodes: newNodes } = JSON.parse(JSONString);
+      try {
+        const JSONString = localStorage.getItem("clipboard");
+        const raw = JSON.parse(JSONString);
 
-      if (application === "PythonRPA" && newNodes) {
-        const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
-          const newId = nanoid(10);
-          return jsonString.replaceAll(`"${id}"`, `"${newId}"`);
-        }, JSON.stringify(newNodes));
-        const newJSON = JSON.parse(newJSONString);
+        if (raw?.application !== "PythonRPA") return nodes;
 
-        _.forOwn(newJSON, (_, key) => {
-          newJSON[key] = {
-            ...newJSON[key],
-            x: newJSON[key].x + 20,
-            y: newJSON[key].y + 20,
+        const { nodes: newNodes } = raw;
+
+        if (newNodes) {
+          const newJSONString = _.keys(newNodes).reduce((jsonString, id) => {
+            const newId = nanoid(10);
+            return jsonString.replaceAll(`"${id}"`, `"${newId}"`);
+          }, JSON.stringify(newNodes));
+          const newJSON = JSON.parse(newJSONString);
+
+          _.forOwn(newJSON, (_, key) => {
+            newJSON[key] = {
+              ...newJSON[key],
+              x: newJSON[key].x + 20,
+              y: newJSON[key].y + 20,
+            };
+          });
+          localStorage.setItem(
+            "clipboard",
+            JSON.stringify({
+              application: "PythonRPA",
+              nodes: newJSON,
+            })
+          );
+
+          return {
+            ...nodes,
+            ...newJSON,
           };
-        });
-        localStorage.setItem(
-          "clipboard",
-          JSON.stringify({
-            application: "PythonRPA",
-            nodes: newJSON,
-          })
-        );
+        }
 
-        return {
-          ...nodes,
-          ...newJSON,
-        };
-      }
-
-      return nodes;
+        return nodes;
+      } catch {}
     }
 
     case "REMOVE_NODE": {
