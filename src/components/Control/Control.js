@@ -76,6 +76,15 @@ const Control = ({
             options={
               getOptions ? getOptions(inputData, executionContext) : options
             }
+            onChange={(...args) => {
+              commonProps.onChange(...args);
+              onPress?.(
+                args,
+                onPressButton,
+                executionContext,
+                triggerRecalculation
+              );
+            }}
             placeholder={placeholder}
             defaultValue={defaultValue}
           />

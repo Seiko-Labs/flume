@@ -1,8 +1,10 @@
-import { omit } from "lodash/object";
+import omit from "lodash/omit";
+import difference from "lodash/difference";
+import keys from "lodash/keys";
+import pickBy from "lodash/pickBy";
 import { deleteConnection } from "../../connectionCalculator";
 import { checkForCircularNodes } from "../../utilities";
-import nanoid from "nanoid/non-secure/index";
-import _ from "lodash";
+import nanoid from "nanoid/non-secure";
 import removeNode from "./removeNode";
 import addConnection from "./addConnection";
 import removeConnection from "./removeConnection";
@@ -11,7 +13,7 @@ import getDefaultData from "./getDefaultData";
 const copyObj = (o) => JSON.parse(JSON.stringify(o));
 
 const copyNodes = (nodes, selectedNodeIds, clearView = true) => {
-  const nodesToDelete = _.difference(_.keys(nodes), selectedNodeIds);
+  const nodesToDelete = difference(keys(nodes), selectedNodeIds);
   const nodesToCopy = nodesToDelete.reduce(
     (stayNodes, id) => removeNode(stayNodes, id, clearView),
     nodes
@@ -37,22 +39,21 @@ export const nodesReducer = (
       currentStateIndex >= 0 &&
       nodesState[currentStateIndex].state) ||
     {};
+
   switch (action.type) {
     case "ADD_CONNECTION": {
       const { input, output } = action;
       const inputIsNotConnected =
         !nodes[input.nodeId].connections.inputs[input.portName];
-      if (inputIsNotConnected) {
-        const allowCircular =
-          circularBehavior === "warn" || circularBehavior === "allow";
-        const newNodes = addConnection(nodes, input, output, portTypes);
-        const isCircular = checkForCircularNodes(newNodes, output.nodeId);
-        if (isCircular && !allowCircular) {
-          return nodes;
-        } else {
-          return newNodes;
-        }
-      } else return nodes;
+
+      if (!inputIsNotConnected) return nodes;
+
+      const allowCircular =
+        circularBehavior === "warn" || circularBehavior === "allow";
+      const newNodes = addConnection(nodes, input, output, portTypes);
+      const isCircular = checkForCircularNodes(newNodes, output.nodeId);
+
+      return isCircular && !allowCircular ? nodes : newNodes;
     }
 
     case "REMOVE_CONNECTION": {
@@ -74,14 +75,14 @@ export const nodesReducer = (
         nodes[transput.nodeId].connections[cnxType][transput.portName];
       if (!connections || !connections.length) return nodes;
 
-      return connections.reduce((nodes, cnx) => {
+      return connections.reduce((accNodes, cnx) => {
         const [input, output] =
           transputType === "input" ? [transput, cnx] : [cnx, transput];
         const id =
           output.nodeId + output.portName + input.nodeId + input.portName;
         delete cache.current.connections[id];
         deleteConnection({ id });
-        return removeConnection(nodes, input, output);
+        return removeConnection(accNodes, input, output);
       }, nodes);
     }
 
@@ -94,13 +95,11 @@ export const nodesReducer = (
         y,
         info,
         type: nodeType,
-        connections: {
-          inputs: {},
-          outputs: {},
-        },
+        connections: { inputs: {}, outputs: {} },
         inputData: {},
         expanded: true,
       };
+
       newNode.inputData = getDefaultData({
         node: newNode,
         nodeType: nodeTypes[nodeType],
@@ -118,27 +117,23 @@ export const nodesReducer = (
     }
 
     case "COPY_NODES": {
-      const selectedNodeIds = _.difference(
+      const selectedNodeIds = difference(
         action.selectedNodeIds,
-        _.keys(_.pickBy(nodes, ({ root }) => root))
+        keys(pickBy(nodes, ({ root }) => root))
       );
       if (!selectedNodeIds.length) return nodes;
-
       copyNodes(nodes, selectedNodeIds, false);
-
       return nodes;
     }
 
     case "CUT_NODES": {
-      const selectedNodeIds = _.difference(
+      const selectedNodeIds = difference(
         action.selectedNodeIds,
-        _.keys(_.pickBy(nodes, ({ root }) => root))
+        keys(pickBy(nodes, ({ root }) => root))
       );
-
       if (!selectedNodeIds.length) return nodes;
 
       copyNodes(nodes, selectedNodeIds);
-
       return selectedNodeIds.reduce(
         (stayNodes, id) => removeNode(stayNodes, id),
         nodes
@@ -146,11 +141,10 @@ export const nodesReducer = (
     }
 
     case "DEL_NODES": {
-      const selectedNodeIds = _.difference(
+      const selectedNodeIds = difference(
         action.selectedNodeIds,
-        _.keys(_.pickBy(nodes, ({ root }) => root))
+        keys(pickBy(nodes, ({ root }) => root))
       );
-
       if (!selectedNodeIds.length) return nodes;
 
       return selectedNodeIds.reduce(
@@ -160,142 +154,152 @@ export const nodesReducer = (
     }
 
     case "PASTE_NODES": {
-      const JSONString = localStorage.getItem("clipboard");
-      const { application, nodes: newNodes } = JSON.parse(JSONString);
+      let JSONString = null;
+      try {
+        JSONString = localStorage.getItem("clipboard");
+      } catch {
+        return nodes;
+      }
+      if (!JSONString) return nodes;
 
-      if (application === "PythonRPA" && newNodes) {
-        const oldMap = new Map();
-
-        const editorArea = document.getElementById(window.STAGE_ID);
-        const { top, left } = editorArea.getBoundingClientRect();
-        const fc = (positions) => {
-          if (positions.length === 0) return null;
-
-          const { x, y } = positions.reduce(
-            (acc, pos) => ({
-              x: acc.x + pos.x,
-              y: acc.y + pos.y,
-            }),
-            { x: 0, y: 0 }
-          );
-
-          return {
-            x: x / positions.length,
-            y: y / positions.length,
-          };
-        };
-
-        const pasteResult = Object.fromEntries(
-          (() => {
-            const entries = Object.entries(newNodes);
-            const center = fc(entries.map(([_, body]) => body));
-
-            const replacer = (entry) => {
-              let result = JSON.stringify(entry);
-              oldMap.forEach((newId, oldId) => {
-                result = result.replace(new RegExp(oldId, "g"), newId);
-              });
-
-              return JSON.parse(result);
-            };
-
-            const result = entries
-              .map(([oldId, body]) => {
-                const newId = nanoid(10);
-
-                oldMap.set(oldId, newId);
-
-                return [newId, body];
-              })
-              .map(([newId, body]) => {
-                body.connections = {
-                  inputs: replacer(body.connections.inputs),
-                  outputs: replacer(body.connections.outputs),
-                };
-
-                const lastMousePosition = localStorage.getItem(
-                  "lastMousePosition"
-                )
-                  ? JSON.parse(localStorage.getItem("lastMousePosition"))
-                  : { x: 20, y: 20 };
-
-                const scaledMousePosition = {
-                  x:
-                    (lastMousePosition.x - left - stageState.translate.x) /
-                    stageState.scale,
-                  y:
-                    (lastMousePosition.y - top - stageState.translate.y) /
-                    stageState.scale,
-                };
-
-                const offset = {
-                  x: center.x - body.x,
-                  y: center.y - body.y,
-                };
-
-                return [
-                  newId,
-                  {
-                    ...body,
-                    id: newId,
-                    x: scaledMousePosition.x - offset.x,
-                    y: scaledMousePosition.y - offset.y,
-                  },
-                ];
-              });
-
-            return result;
-          })()
-        );
-
-        return {
-          ...nodes,
-          ...pasteResult,
-        };
+      let parsed;
+      try {
+        parsed = JSON.parse(JSONString);
+      } catch {
+        return nodes;
       }
 
-      return nodes;
+      const { application, nodes: newNodes } = parsed;
+      if (application !== "PythonRPA" || !newNodes) return nodes;
+
+      const oldMap = new Map();
+      const editorArea = document.getElementById(window.STAGE_ID);
+      if (!editorArea) return nodes;
+
+      const { top, left } = editorArea.getBoundingClientRect();
+      const fc = (positions) => {
+        if (!positions.length) return null;
+        const { x, y } = positions.reduce(
+          (acc, pos) => ({ x: acc.x + pos.x, y: acc.y + pos.y }),
+          { x: 0, y: 0 }
+        );
+        return { x: x / positions.length, y: y / positions.length };
+      };
+
+      const pasteResult = Object.fromEntries(
+        (() => {
+          const entries = Object.entries(newNodes);
+          const center = fc(entries.map(([_, body]) => body));
+
+          const replacer = (entry) => {
+            let result = JSON.stringify(entry);
+            oldMap.forEach((newId, oldId) => {
+              result = result.replace(new RegExp(oldId, "g"), newId);
+            });
+            return JSON.parse(result);
+          };
+
+          const result = entries
+            .map(([oldId, body]) => {
+              const newId = nanoid(10);
+              oldMap.set(oldId, newId);
+              return [newId, body];
+            })
+            .map(([newId, body]) => {
+              body.connections = {
+                inputs: replacer(body.connections.inputs),
+                outputs: replacer(body.connections.outputs),
+              };
+
+              const lastMousePositionRaw =
+                localStorage.getItem("lastMousePosition");
+              const lastMousePosition = lastMousePositionRaw
+                ? JSON.parse(lastMousePositionRaw)
+                : { x: 20, y: 20 };
+
+              const scaledMousePosition = {
+                x:
+                  (lastMousePosition.x - left - stageState.translate.x) /
+                  stageState.scale,
+                y:
+                  (lastMousePosition.y - top - stageState.translate.y) /
+                  stageState.scale,
+              };
+
+              const offset = {
+                x: center.x - body.x,
+                y: center.y - body.y,
+              };
+
+              return [
+                newId,
+                {
+                  ...body,
+                  id: newId,
+                  x: scaledMousePosition.x - offset.x,
+                  y: scaledMousePosition.y - offset.y,
+                },
+              ];
+            });
+
+          return result;
+        })()
+      );
+
+      return {
+        ...nodes,
+        ...pasteResult,
+      };
     }
 
     case "REMOVE_NODE": {
       const { nodeId } = action;
+      const result = removeNode(nodes, nodeId);
 
-      return removeNode(nodes, nodeId);
+      return result;
     }
 
     case "HYDRATE_DEFAULT_NODES": {
       const newNodes = { ...nodes };
-
       for (const key in newNodes) {
         if (newNodes[key].defaultNode) {
           const newNodeId = nanoid(10);
           const { id, defaultNode, ...node } = newNodes[key];
-
           newNodes[newNodeId] = { ...node, id: newNodeId };
           delete newNodes[key];
         }
       }
-
       return newNodes;
     }
 
     case "SET_PORT_DATA": {
+      // Safer merge: guard against missing node/port buckets
       const { nodeId, portName, controlName, data, setValue } = action;
-      let newData = {
-        ...nodes[nodeId].inputData,
+
+      const node = nodes[nodeId];
+      if (!node) return nodes;
+
+      const prevInputData = node.inputData ?? {};
+      const prevPortData = prevInputData[portName] ?? {};
+
+      let nextInputData = {
+        ...prevInputData,
         [portName]: {
-          ...nodes[nodeId].inputData[portName],
+          ...prevPortData,
           [controlName]: data,
         },
       };
-      if (setValue) {
-        newData = setValue(newData, nodes[nodeId].inputData);
+
+      if (typeof setValue === "function") {
+        // allow setValue to adjust the whole inputData (pass previous for diffing)
+        nextInputData = setValue(nextInputData, prevInputData) ?? nextInputData;
       }
+
       return {
         ...nodes,
         [nodeId]: {
-          ...nodes[nodeId],
-          inputData: newData,
+          ...node,
+          inputData: nextInputData,
         },
       };
     }
@@ -325,24 +329,17 @@ export const nodesReducer = (
 
     case "SET_MULTIPLE_NODES_COORDINATES": {
       const { nodesInfo } = action;
-      return {
-        ...nodes,
-        ...Object.assign(
-          {},
-          ...nodesInfo.map(({ nodeId, x, y }) => ({
-            [nodeId]: {
-              ...nodes[nodeId],
-              x,
-              y,
-            },
-          }))
-        ),
-      };
+      const updates = Object.assign(
+        {},
+        ...nodesInfo.map(({ nodeId, x, y }) => ({
+          [nodeId]: { ...nodes[nodeId], x, y },
+        }))
+      );
+      return { ...nodes, ...updates };
     }
 
     case "UPDATE_NODE_ACTION_DATA": {
       const { data, nodeId } = action;
-
       return {
         ...nodes,
         [nodeId]: {
@@ -364,36 +361,45 @@ export const connectNodesReducer = (reducer, environment) => (state, action) =>
   reducer(state, action, environment);
 
 export default (...props) => {
-  if (props[0].nodesState.length > 30) {
-    const truncatedState = [props[0].nodesState[props[0].currentStateIndex]];
+  const [stateArg, action] = props;
 
-    props[0].nodesState = truncatedState;
-    props[0].currentStateIndex = 0;
-  }
-  let { nodesState, currentStateIndex } = props[0];
+  // Avoid mutating incoming args
+  const baseState =
+    stateArg.nodesState.length > 30
+      ? {
+          nodesState: [stateArg.nodesState[stateArg.currentStateIndex]],
+          currentStateIndex: 0,
+        }
+      : stateArg;
 
-  switch (props[1].type) {
+  let { nodesState, currentStateIndex } = baseState;
+
+  switch (action.type) {
     case "UNDO_CHANGES": {
       return currentStateIndex > 0
         ? { currentStateIndex: currentStateIndex - 1, nodesState }
-        : copyObj(props[0]);
+        : copyObj(baseState);
     }
+
     case "REDO_CHANGES": {
       return currentStateIndex + 1 < nodesState.length
         ? { currentStateIndex: currentStateIndex + 1, nodesState }
-        : copyObj(props[0]);
+        : copyObj(baseState);
     }
-    case "COPY_NODES": {
-      nodesReducer(...props);
-      return copyObj(props[0]);
-    }
-    case "COMMENT": {
-      const nodes = props[0].nodesState[props[0].currentStateIndex].state;
-      const newState = copyObj(props[0]);
 
-      for (const node of nodesState) {
-        const { id, value } = props[1];
-        for (const nodeID of Object.keys(node.state)) {
+    case "COPY_NODES": {
+      nodesReducer(baseState, action, props[2]); // side-effect: writes clipboard
+      return copyObj(baseState);
+    }
+
+    case "COMMENT": {
+      const nodes = nodesState[currentStateIndex].state;
+      const newState = copyObj(baseState);
+      const { id, value } = action;
+
+      // Walk stored frames (original behavior), but update current frame
+      for (const frame of nodesState) {
+        for (const nodeID of Object.keys(frame.state)) {
           if (id === nodeID) {
             newState.nodesState[newState.currentStateIndex].state = {
               ...nodes,
@@ -407,10 +413,11 @@ export default (...props) => {
       }
       return newState;
     }
+
     case "TOGGLE_NODE_VIEW": {
-      const { id: nodeId, doExpand } = props[1];
-      const nodes = props[0].nodesState[props[0].currentStateIndex].state;
-      const newState = copyObj(props[0]);
+      const { id: nodeId, doExpand } = action;
+      const nodes = nodesState[currentStateIndex].state;
+      const newState = copyObj(baseState);
 
       newState.nodesState[newState.currentStateIndex].state = {
         ...nodes,
@@ -419,41 +426,55 @@ export default (...props) => {
           expanded: doExpand ? doExpand : !nodes[nodeId].expanded,
         },
       };
-
       return newState;
     }
+
     default: {
-      const nodesState = props[0].nodesState;
-      const nodes = nodesReducer(...props);
-      const isSlice =
-        nodesState.length > 1 && currentStateIndex < nodesState.length - 1;
+      const test = () => {
+        const filteredNodes = Object.fromEntries(
+          Object.entries(nodesReducer(baseState, action, props[2])).filter(
+            ([id, nodeObject]) => nodeObject && nodeObject.id !== undefined
+          )
+        );
 
-      if (props[1].type === "SET_PORT_DATA") {
-        nodesState[currentStateIndex].state = nodes;
-        return {
-          nodesState,
-          currentStateIndex,
-        };
-      }
+        const isSlice =
+          nodesState.length > 1 && currentStateIndex < nodesState.length - 1;
 
-      return props[1].type === "HYDRATE_DEFAULT_NODES"
-        ? {
-            nodesState: [{ action: props[1], state: nodes }],
-            currentStateIndex: 0,
-          }
-        : {
-            nodesState: [
-              ...nodesState.slice(
-                0,
-                isSlice ? currentStateIndex + 1 : nodesState.length
-              ),
-              {
-                action: props[1],
-                state: nodes,
-              },
-            ],
-            currentStateIndex: currentStateIndex + 1,
+        if (action.type === "SET_PORT_DATA") {
+          // Keep the same history index, but update immutably
+          const ns = nodesState.slice();
+          ns[currentStateIndex] = {
+            ...ns[currentStateIndex],
+            state: filteredNodes,
+            action,
           };
+          return { nodesState: ns, currentStateIndex };
+        }
+
+        if (action.type === "HYDRATE_DEFAULT_NODES") {
+          return {
+            nodesState: [{ action, state: filteredNodes }],
+            currentStateIndex: 0,
+          };
+        }
+
+        const nextNodesState = [
+          ...nodesState.slice(
+            0,
+            isSlice ? currentStateIndex + 1 : nodesState.length
+          ),
+          { action, state: filteredNodes },
+        ];
+
+        return {
+          nodesState: nextNodesState,
+          currentStateIndex: currentStateIndex + 1,
+        };
+      };
+
+      const result = test();
+
+      return result;
     }
   }
 };

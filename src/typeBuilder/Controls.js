@@ -40,6 +40,7 @@ const Controls = {
       options: define(config.options, []),
       getOptions: define(config.getOptions, undefined),
       placeholder: define(config.placeholder, undefined),
+      onPress: define(config.onPress, () => {}),
     })
   ),
   number: buildControlType(

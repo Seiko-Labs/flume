@@ -182,9 +182,9 @@ export const createConnections = (
                         ? `${
                             inputName === "errorAction"
                               ? "#F16969"
-                              : nodeInfo.category.tileBackground || "white"
+                              : nodeInfo?.category?.tileBackground || "white"
                           }`
-                        : nodeInfo.category.tileBackground || "white"
+                        : nodeInfo?.category?.tileBackground || "white"
                     }`
                   );
                 }
