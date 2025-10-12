@@ -384,6 +384,16 @@ const Stage = forwardRef(
         >
           {Object.values(nodes).map(({ x, y, ...node }, i) => {
             const nodeInfo = nodeTypes[node.type];
+
+            if (!nodeInfo) {
+              console.error(
+                `Node type "${node.type}" not found. (${
+                  node.type
+                } in ${JSON.stringify(nodeTypes)})`
+              );
+              return null;
+            }
+
             return (
               <rect
                 key={i}
