@@ -10663,7 +10663,7 @@ function useRaf(callback, isActive) {
     }, [isActive]);
 }
 
-var _excluded$2 = ["x", "y"];
+var _excluded$3 = ["x", "y"];
 function _wrapRegExp$2() { _wrapRegExp$2 = function _wrapRegExp(re, groups) { return new BabelRegExp(re, void 0, groups); }; var _super = RegExp.prototype, _groups = new WeakMap(); function BabelRegExp(re, flags, groups) { var _this = new RegExp(re, flags); return _groups.set(_this, groups || _groups.get(re)), _setPrototypeOf(_this, BabelRegExp.prototype); } function buildGroups(result, re) { var g = _groups.get(re); return Object.keys(g).reduce(function (groups, name) { var i = g[name]; if ("number" == typeof i) groups[name] = result[i];else { for (var k = 0; void 0 === result[i[k]] && k + 1 < i.length;) k++; groups[name] = result[i[k]]; } return groups; }, Object.create(null)); } return _inherits$2(BabelRegExp, RegExp), BabelRegExp.prototype.exec = function (str) { var result = _super.exec.call(this, str); if (result) { result.groups = buildGroups(result, this); var indices = result.indices; indices && (indices.groups = buildGroups(indices, this)); } return result; }, BabelRegExp.prototype[Symbol.replace] = function (str, substitution) { if ("string" == typeof substitution) { var groups = _groups.get(this); return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) { var group = groups[name]; return "$" + (Array.isArray(group) ? group.join("$") : group); })); } if ("function" == typeof substitution) { var _this = this; return _super[Symbol.replace].call(this, str, function () { var args = arguments; return "object" != _typeof(args[args.length - 1]) && (args = [].slice.call(args)).push(buildGroups(args, _this)), substitution.apply(this, args); }); } return _super[Symbol.replace].call(this, str, substitution); }, _wrapRegExp$2.apply(this, arguments); }
 var getBoundsOfBoxes = function getBoundsOfBoxes(box1, box2) {
   return {
@@ -10736,6 +10736,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
     children = _ref3.children,
     nodes = _ref3.nodes,
     spaceIsPressed = _ref3.spaceIsPressed,
+    middleMouseIsPressed = _ref3.middleMouseIsPressed,
     focusNode = _ref3.focusNode;
   var translateWrapper = React.useRef();
   var svg = React.useRef();
@@ -10803,8 +10804,12 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
     var selection = d3SvgSelectionRef.current;
     var zoomAndPanHandler = zoomAndPanHandlerRef.current;
     if (!d3Zoom || !d3Selection || !selection || !zoomAndPanHandler) return;
+    var panIsPressed = spaceIsPressed || middleMouseIsPressed;
     d3Zoom.filter(function (e) {
-      if (e.type === "mousedown") return spaceIsPressed ? e : false;
+      if (e.type === "mousedown") {
+        if (e.button === 1) return true;
+        return panIsPressed ? e : false;
+      }
       return e;
     });
     d3Zoom.on("zoom", function (event) {
@@ -10901,7 +10906,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
       d3Zoom.on("end", null);
       d3Zoom.on("start", null);
     };
-  }, [spaceIsPressed, focusNode, scale]);
+  }, [spaceIsPressed, middleMouseIsPressed, focusNode, scale]);
   var nodeTypes = React.useContext(NodeTypesContext);
   var dispatchNodes = React.useContext(NodeDispatchContext);
   var _useState3 = React.useState(false),
@@ -10966,6 +10971,9 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
     ref: wrapper,
     onContextMenu: handleContextMenu,
     onMouseDown: function onMouseDown(e) {
+      if (e.button === 1) {
+        e.preventDefault();
+      }
       document.activeElement.blur();
     }
   }, menuOpen ? /*#__PURE__*/React__default["default"].createElement(Portal$1, null, /*#__PURE__*/React__default["default"].createElement(ContextMenu$1, {
@@ -11002,7 +11010,7 @@ var Stage = /*#__PURE__*/React.forwardRef(function (_ref3, wrapper) {
   }, Object.values(nodes).map(function (_ref5, i) {
     var x = _ref5.x,
       y = _ref5.y,
-      node = _objectWithoutProperties(_ref5, _excluded$2);
+      node = _objectWithoutProperties(_ref5, _excluded$3);
     var nodeInfo = nodeTypes[node.type];
     if (!nodeInfo) {
       console.error("Node type \"".concat(node.type, "\" not found. (").concat(node.type, " in ").concat(JSON.stringify(nodeTypes), ")"));
@@ -11904,33 +11912,81 @@ var OptionChip = function OptionChip(_ref3) {
   }, "\u2715"));
 };
 
+var _excluded$2 = ["label", "data", "onChange", "nodeData", "code"];
 function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var Control = function Control(_ref) {
-  var type = _ref.type,
-    name = _ref.name,
-    nodeId = _ref.nodeId,
-    portName = _ref.portName,
-    label = _ref.label,
-    inputLabel = _ref.inputLabel,
+var DateTime = function DateTime(_ref) {
+  var label = _ref.label,
     data = _ref.data,
-    allData = _ref.allData,
-    render = _ref.render,
-    predicate = _ref.predicate,
-    _ref$options = _ref.options,
-    options = _ref$options === void 0 ? [] : _ref$options,
-    placeholder = _ref.placeholder,
-    validate = _ref.validate,
-    inputData = _ref.inputData,
-    triggerRecalculation = _ref.triggerRecalculation,
-    updateNodeConnections = _ref.updateNodeConnections,
-    getOptions = _ref.getOptions,
-    setValue = _ref.setValue,
-    defaultValue = _ref.defaultValue,
-    isMonoControl = _ref.isMonoControl,
+    _onChange = _ref.onChange,
     nodeData = _ref.nodeData,
-    _onPress = _ref.onPress,
-    code = _ref.code;
+    code = _ref.code,
+    commonProps = _objectWithoutProperties(_ref, _excluded$2);
+  var ref = React.useRef(null);
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    style: {
+      position: "relative",
+      display: "flex",
+      gap: "2px"
+    }
+  }, /*#__PURE__*/React__default["default"].createElement(TextInput$1, _extends$4({}, commonProps, {
+    placeholder: "YYYY-MM-DDTHH:MM:SSZ",
+    code: code,
+    data: data,
+    nodeData: nodeData,
+    onChange: function onChange(value) {
+      _onChange(value);
+    }
+  })), /*#__PURE__*/React__default["default"].createElement(Button$1, {
+    label: label,
+    onPress: function onPress() {
+      if (!ref.current) return;
+      ref.current.showPicker();
+    }
+  }), /*#__PURE__*/React__default["default"].createElement("input", {
+    type: "datetime-local",
+    ref: ref,
+    value: data,
+    style: {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      opacity: 0,
+      width: 0,
+      height: 0
+    },
+    onChange: function onChange(e) {
+      // Example format: 2025-12-31T19:30:00Z
+
+      _onChange(e.target.value);
+    }
+  }));
+};
+var Control = function Control(_ref2) {
+  var type = _ref2.type,
+    name = _ref2.name,
+    nodeId = _ref2.nodeId,
+    portName = _ref2.portName,
+    label = _ref2.label,
+    inputLabel = _ref2.inputLabel,
+    data = _ref2.data,
+    allData = _ref2.allData,
+    render = _ref2.render,
+    predicate = _ref2.predicate,
+    _ref2$options = _ref2.options,
+    options = _ref2$options === void 0 ? [] : _ref2$options,
+    placeholder = _ref2.placeholder,
+    validate = _ref2.validate,
+    inputData = _ref2.inputData,
+    triggerRecalculation = _ref2.triggerRecalculation,
+    updateNodeConnections = _ref2.updateNodeConnections,
+    getOptions = _ref2.getOptions,
+    setValue = _ref2.setValue,
+    defaultValue = _ref2.defaultValue,
+    isMonoControl = _ref2.isMonoControl,
+    nodeData = _ref2.nodeData,
+    _onPress = _ref2.onPress,
+    code = _ref2.code;
   var nodesDispatch = React.useContext(NodeDispatchContext);
   var executionContext = React.useContext(ContextContext);
   var calculatedLabel = isMonoControl ? inputLabel : label;
@@ -11964,6 +12020,15 @@ var Control = function Control(_ref) {
       data: data
     };
     switch (type) {
+      case "datetime":
+        return /*#__PURE__*/React__default["default"].createElement(DateTime, _extends$4({}, commonProps, {
+          predicate: predicate,
+          placeholder: placeholder,
+          validate: validate,
+          nodeData: nodeData,
+          code: code,
+          label: label
+        }));
       case "select":
         return /*#__PURE__*/React__default["default"].createElement(Select$1, _extends$4({}, commonProps, {
           options: getOptions ? getOptions(inputData, executionContext) : options,
@@ -33226,7 +33291,7 @@ var Selection = /*#__PURE__*/function (_React$PureComponent) {
       return true;
     });
     _defineProperty$1(_assertThisInitialized(_this), "onMouseDown", function (e) {
-      if (_this.props.disabled || e.button === 2 || e.nativeEvent && e.nativeEvent.which === 2) {
+      if (_this.props.disabled || e.button === 2 || e.button === 1 || e.nativeEvent && e.nativeEvent.which === 2) {
         return;
       }
       if (_this.init(e, e.pageX, e.pageY)) {
@@ -33696,6 +33761,13 @@ var Controls = {
       onPress: define(config.onPress, function () {})
     };
   }),
+  datetime: buildControlType({
+    type: "datetime",
+    name: "datetime",
+    defaultValue: ""
+  }, function () {}, function () {
+    return {};
+  }),
   number: buildControlType({
     type: "number",
     name: "number",
@@ -34099,10 +34171,14 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState2 = _slicedToArray(_useState, 2),
     spaceIsPressed = _useState2[0],
     setSpaceIsPressed = _useState2[1];
-  var _useState3 = React.useState([]),
+  var _useState3 = React.useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    dragNodes = _useState4[0],
-    setDrag = _useState4[1];
+    middleMouseIsPressed = _useState4[0],
+    setMiddleMouseIsPressed = _useState4[1];
+  var _useState5 = React.useState([]),
+    _useState6 = _slicedToArray(_useState5, 2),
+    dragNodes = _useState6[0],
+    setDrag = _useState6[1];
   var initialStageParams = _initialStageParams || tempState.stage;
   var _useReducer = React.useReducer(stageReducer, {
       scale: typeof (initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale) === "number" ? clamp_1(initialStageParams === null || initialStageParams === void 0 ? void 0 : initialStageParams.scale, 0.1, 7) : 1,
@@ -34156,6 +34232,18 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       document.addEventListener("keyup", handleDocumentKeyUp);
     }
   };
+  var handleDocumentMouseUp = function handleDocumentMouseUp(e) {
+    if (e.button === 1) {
+      setMiddleMouseIsPressed(false);
+      document.removeEventListener("mouseup", handleDocumentMouseUp);
+    }
+  };
+  var handleDocumentMouseDown = function handleDocumentMouseDown(e) {
+    if (e.button === 1 && editorRef.current && editorRef.current.contains(e.target)) {
+      setMiddleMouseIsPressed(true);
+      document.addEventListener("mouseup", handleDocumentMouseUp);
+    }
+  };
   React.useImperativeHandle(ref, function () {
     return {
       getNodes: function getNodes() {
@@ -34171,14 +34259,17 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     // triggerRecalculation();
 
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleDocumentMouseDown);
     return function () {
-      return document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleDocumentMouseDown);
+      document.removeEventListener("mouseup", handleDocumentMouseUp);
     };
   }, []);
-  var _useState5 = React.useState(true),
-    _useState6 = _slicedToArray(_useState5, 2),
-    shouldRecalculateConnections = _useState6[0],
-    setShouldRecalculateConnections = _useState6[1];
+  var _useState7 = React.useState(true),
+    _useState8 = _slicedToArray(_useState7, 2),
+    shouldRecalculateConnections = _useState8[0],
+    setShouldRecalculateConnections = _useState8[1];
   var triggerRecalculation = function triggerRecalculation() {
     setShouldRecalculateConnections(true);
   };
@@ -34313,13 +34404,13 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     value: connector.options || {}
   }, /*#__PURE__*/React__default["default"].createElement(RecalculateStageRectContext.Provider, {
     value: recalculateStageRect
-  }, !spaceIsPressed && editorRef.current && /*#__PURE__*/React__default["default"].createElement(Selection, {
+  }, !spaceIsPressed && !middleMouseIsPressed && editorRef.current && /*#__PURE__*/React__default["default"].createElement(Selection, {
     target: editorRef.current,
     elements: nodeRefs.map(function (n) {
       return n[1].current;
     }),
     onSelectionChange: function onSelectionChange(i) {
-      spaceIsPressed || handleSelection(i, tempState.multiselect);
+      spaceIsPressed || middleMouseIsPressed || handleSelection(i, tempState.multiselect);
     },
     offset: {
       top: 0,
@@ -34338,6 +34429,7 @@ var NodeEditor = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     ref: editorRef,
     editorId: editorId,
     spaceIsPressed: spaceIsPressed,
+    middleMouseIsPressed: middleMouseIsPressed,
     scale: stageState.scale,
     translate: stageState.translate,
     spaceToPan: true,

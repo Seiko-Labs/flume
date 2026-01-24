@@ -1,11 +1,70 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Button from "../Button";
 import styles from "./Control.css";
 import Checkbox from "../Checkbox/Checkbox";
 import TextInput from "../FieldInput/TextInput";
 import Select from "../Select/Select";
+import TextInputStyles from "../FieldInput/TextInput.css";
 import { NodeDispatchContext, ContextContext } from "../../context";
 import { memo } from "react";
+
+const DateTime = ({
+  label,
+  data,
+  onChange,
+  nodeData,
+  code,
+  ...commonProps
+}) => {
+  const ref = useRef(null);
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        display: "flex",
+        gap: "2px",
+      }}
+    >
+      <TextInput
+        {...commonProps}
+        placeholder="YYYY-MM-DDTHH:MM:SSZ"
+        code={code}
+        data={data}
+        nodeData={nodeData}
+        onChange={(value) => {
+          onChange(value);
+        }}
+      />
+      <Button
+        label={label}
+        onPress={() => {
+          if (!ref.current) return;
+          ref.current.showPicker();
+        }}
+      />
+
+      <input
+        type="datetime-local"
+        ref={ref}
+        value={data}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          opacity: 0,
+          width: 0,
+          height: 0,
+        }}
+        onChange={(e) => {
+          // Example format: 2025-12-31T19:30:00Z
+
+          onChange(e.target.value);
+        }}
+      />
+    </div>
+  );
+};
 
 const Control = ({
   type,
@@ -69,6 +128,18 @@ const Control = ({
       data,
     };
     switch (type) {
+      case "datetime":
+        return (
+          <DateTime
+            {...commonProps}
+            predicate={predicate}
+            placeholder={placeholder}
+            validate={validate}
+            nodeData={nodeData}
+            code={code}
+            label={label}
+          />
+        );
       case "select":
         return (
           <Select

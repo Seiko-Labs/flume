@@ -75,6 +75,7 @@ const Stage = forwardRef(
       children,
       nodes,
       spaceIsPressed,
+      middleMouseIsPressed,
       focusNode,
     },
     wrapper
@@ -158,8 +159,13 @@ const Stage = forwardRef(
 
       if (!d3Zoom || !d3Selection || !selection || !zoomAndPanHandler) return;
 
+      const panIsPressed = spaceIsPressed || middleMouseIsPressed;
+
       d3Zoom.filter((e) => {
-        if (e.type === "mousedown") return spaceIsPressed ? e : false;
+        if (e.type === "mousedown") {
+          if (e.button === 1) return true;
+          return panIsPressed ? e : false;
+        }
         return e;
       });
 
@@ -271,7 +277,7 @@ const Stage = forwardRef(
         d3Zoom.on("end", null);
         d3Zoom.on("start", null);
       };
-    }, [spaceIsPressed, focusNode, scale]);
+    }, [spaceIsPressed, middleMouseIsPressed, focusNode, scale]);
 
     const nodeTypes = useContext(NodeTypesContext);
     const dispatchNodes = useContext(NodeDispatchContext);
@@ -337,6 +343,9 @@ const Stage = forwardRef(
         ref={wrapper}
         onContextMenu={handleContextMenu}
         onMouseDown={(e) => {
+          if (e.button === 1) {
+            e.preventDefault();
+          }
           document.activeElement.blur();
         }}
       >

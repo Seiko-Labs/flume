@@ -43,6 +43,15 @@ const Controls = {
       onPress: define(config.onPress, () => {}),
     })
   ),
+  datetime: buildControlType(
+    {
+      type: "datetime",
+      name: "datetime",
+      defaultValue: "",
+    },
+    () => {},
+    () => ({})
+  ),
   number: buildControlType(
     {
       type: "number",

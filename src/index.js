@@ -69,6 +69,7 @@ export const NodeEditor = forwardRef(
     const stage = useRef();
     const editorRef = useRef();
     const [spaceIsPressed, setSpaceIsPressed] = useState(false);
+    const [middleMouseIsPressed, setMiddleMouseIsPressed] = useState(false);
     const [dragNodes, setDrag] = useState([]);
 
     const initialStageParams = _initialStageParams || tempState.stage;
@@ -144,6 +145,24 @@ export const NodeEditor = forwardRef(
       }
     };
 
+    const handleDocumentMouseUp = (e) => {
+      if (e.button === 1) {
+        setMiddleMouseIsPressed(false);
+        document.removeEventListener("mouseup", handleDocumentMouseUp);
+      }
+    };
+
+    const handleDocumentMouseDown = (e) => {
+      if (
+        e.button === 1 &&
+        editorRef.current &&
+        editorRef.current.contains(e.target)
+      ) {
+        setMiddleMouseIsPressed(true);
+        document.addEventListener("mouseup", handleDocumentMouseUp);
+      }
+    };
+
     useImperativeHandle(ref, () => ({
       getNodes() {
         return nodesState[currentStateIndex].state;
@@ -156,8 +175,13 @@ export const NodeEditor = forwardRef(
       // triggerRecalculation();
 
       document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("mousedown", handleDocumentMouseDown);
 
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("mousedown", handleDocumentMouseDown);
+        document.removeEventListener("mouseup", handleDocumentMouseUp);
+      };
     }, []);
 
     const [shouldRecalculateConnections, setShouldRecalculateConnections] =
@@ -311,12 +335,14 @@ export const NodeEditor = forwardRef(
                         <RecalculateStageRectContext.Provider
                           value={recalculateStageRect}
                         >
-                          {!spaceIsPressed && editorRef.current && (
+                          {!spaceIsPressed &&
+                            !middleMouseIsPressed &&
+                            editorRef.current && (
                             <Selection
                               target={editorRef.current}
                               elements={nodeRefs.map((n) => n[1].current)}
                               onSelectionChange={(i) => {
-                                spaceIsPressed ||
+                                (spaceIsPressed || middleMouseIsPressed) ||
                                   handleSelection(i, tempState.multiselect);
                               }}
                               offset={{
@@ -341,6 +367,7 @@ export const NodeEditor = forwardRef(
                             ref={editorRef}
                             editorId={editorId}
                             spaceIsPressed={spaceIsPressed}
+                            middleMouseIsPressed={middleMouseIsPressed}
                             scale={stageState.scale}
                             translate={stageState.translate}
                             spaceToPan={true}

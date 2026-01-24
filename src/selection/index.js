@@ -130,6 +130,7 @@ export default class Selection extends React.PureComponent {
     if (
       this.props.disabled ||
       e.button === 2 ||
+      e.button === 1 ||
       (e.nativeEvent && e.nativeEvent.which === 2)
     ) {
       return;
