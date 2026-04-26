@@ -6287,9 +6287,9 @@ var getNative$2 = _getNative,
     root$3 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative$2(root$3, 'Set');
+var Set$2 = getNative$2(root$3, 'Set');
 
-var _Set = Set$1;
+var _Set = Set$2;
 
 var getNative$1 = _getNative,
     root$2 = _root;
@@ -6302,7 +6302,7 @@ var _WeakMap = WeakMap$2;
 var DataView = _DataView,
     Map$1 = _Map,
     Promise$1 = _Promise,
-    Set = _Set,
+    Set$1 = _Set,
     WeakMap$1 = _WeakMap,
     baseGetTag$1 = _baseGetTag,
     toSource = _toSource;
@@ -6320,7 +6320,7 @@ var dataViewTag$2 = '[object DataView]';
 var dataViewCtorString = toSource(DataView),
     mapCtorString = toSource(Map$1),
     promiseCtorString = toSource(Promise$1),
-    setCtorString = toSource(Set),
+    setCtorString = toSource(Set$1),
     weakMapCtorString = toSource(WeakMap$1);
 
 /**
@@ -6336,7 +6336,7 @@ var getTag$4 = baseGetTag$1;
 if ((DataView && getTag$4(new DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
     (Map$1 && getTag$4(new Map$1) != mapTag$3) ||
     (Promise$1 && getTag$4(Promise$1.resolve()) != promiseTag) ||
-    (Set && getTag$4(new Set) != setTag$3) ||
+    (Set$1 && getTag$4(new Set$1) != setTag$3) ||
     (WeakMap$1 && getTag$4(new WeakMap$1) != weakMapTag$1)) {
   getTag$4 = function(value) {
     var result = baseGetTag$1(value),
@@ -33224,8 +33224,8 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$6(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function getOffset(props) {
@@ -33244,7 +33244,7 @@ function getOffset(props) {
 }
 var Selection = /*#__PURE__*/function (_React$PureComponent) {
   _inherits$2(Selection, _React$PureComponent);
-  var _super = _createSuper$1(Selection);
+  var _super = _createSuper(Selection);
   function Selection(props) {
     var _this;
     _classCallCheck(this, Selection);
@@ -33819,88 +33819,14 @@ var Controls = {
   })
 };
 
-function _isNativeFunction(fn) {
-  return Function.toString.call(fn).indexOf("[native code]") !== -1;
-}
-
-function _isNativeReflectConstruct$1() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-  try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _construct(Parent, args, Class) {
-  if (_isNativeReflectConstruct$1()) {
-    _construct = Reflect.construct.bind();
-  } else {
-    _construct = function _construct(Parent, args, Class) {
-      var a = [null];
-      a.push.apply(a, args);
-      var Constructor = Function.bind.apply(Parent, a);
-      var instance = new Constructor();
-      if (Class) _setPrototypeOf(instance, Class.prototype);
-      return instance;
-    };
-  }
-  return _construct.apply(null, arguments);
-}
-
-function _wrapNativeSuper(Class) {
-  var _cache = typeof Map === "function" ? new Map() : undefined;
-  _wrapNativeSuper = function _wrapNativeSuper(Class) {
-    if (Class === null || !_isNativeFunction(Class)) return Class;
-    if (typeof Class !== "function") {
-      throw new TypeError("Super expression must either be null or a function");
-    }
-    if (typeof _cache !== "undefined") {
-      if (_cache.has(Class)) return _cache.get(Class);
-      _cache.set(Class, Wrapper);
-    }
-    function Wrapper() {
-      return _construct(Class, arguments, _getPrototypeOf(this).constructor);
-    }
-    Wrapper.prototype = Object.create(Class.prototype, {
-      constructor: {
-        value: Wrapper,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    return _setPrototypeOf(Wrapper, Class);
-  };
-  return _wrapNativeSuper(Class);
-}
-
 function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var LoopError = /*#__PURE__*/function (_Error) {
-  _inherits$2(LoopError, _Error);
-  var _super = _createSuper(LoopError);
-  function LoopError(message, code) {
-    var _this;
-    _classCallCheck(this, LoopError);
-    _this = _super.call(this, message);
-    _this.code = code;
-    return _this;
-  }
-  return _createClass(LoopError);
-}( /*#__PURE__*/_wrapNativeSuper(Error));
-_defineProperty$1(LoopError, "maxLoopsExceeded", 1);
 var RootEngine = /*#__PURE__*/function () {
   function RootEngine(config, resolveInputControls, fireNodeFunction, errorCallback) {
     _classCallCheck(this, RootEngine);
     _defineProperty$1(this, "getRootNode", function (nodes) {
       var roots = Object.values(nodes).filter(function (n) {
-        return n.root;
+        return n === null || n === void 0 ? void 0 : n.root;
       });
       if (roots.length > 1) {
         throw new Error("The root engine must not be called with more than one root node.");
@@ -33911,25 +33837,12 @@ var RootEngine = /*#__PURE__*/function () {
     this.fireNodeFunction = fireNodeFunction;
     this.resolveInputControls = resolveInputControls;
     this.errorCallback = errorCallback;
-    this.loops = 0;
-    this.maxLoops = 1000;
   }
   _createClass(RootEngine, [{
-    key: "resetLoops",
-    value: function resetLoops(maxLoops) {
-      this.maxLoops = maxLoops !== undefined ? maxLoops : 1000;
-      this.loops = 0;
-    }
-  }, {
-    key: "checkLoops",
-    value: function checkLoops() {
-      this.loops++;
-    }
-  }, {
     key: "setFireFunction",
     value: function setFireFunction(resolveNodes) {
       this.fireNodeFunction = function (node, inputValues, nodeType, context) {
-        return resolveNodes[node.type] ? resolveNodes[node.type](node, inputValues, nodeType, context) : inputValues;
+        return resolveNodes !== null && resolveNodes !== void 0 && resolveNodes[node.type] ? resolveNodes[node.type](node, inputValues, nodeType, context) : inputValues;
       };
     }
   }, {
@@ -33944,64 +33857,117 @@ var RootEngine = /*#__PURE__*/function () {
         return obj;
       }, {});
     }
+
+    /**
+     * Resolves input values for a node (controls + connected values).
+     * `state` provides:
+     *  - visiting: detects cycles (DFS gray set)
+     *  - cache: memoizes node outputs
+     */
   }, {
     key: "resolveInputValues",
-    value: function resolveInputValues(node, nodeType, nodes, context) {
-      var _this2 = this;
+    value: function resolveInputValues(node, nodeType, nodes, context, state) {
+      var _this = this;
       var inputs = nodeType.inputs;
       if (typeof inputs === "function") {
         inputs = inputs(node.inputData, node.connections, context);
       }
       return inputs.reduce(function (obj, input) {
-        var inputConnections = node.connections.inputs[input.name] || [];
+        var _node$connections, _node$connections$inp;
+        var inputConnections = ((_node$connections = node.connections) === null || _node$connections === void 0 ? void 0 : (_node$connections$inp = _node$connections.inputs) === null || _node$connections$inp === void 0 ? void 0 : _node$connections$inp[input.name]) || [];
         if (inputConnections.length > 0) {
-          obj[input.name] = _this2.getValueOfConnection(inputConnections[0], nodes, context);
+          obj[input.name] = _this.getValueOfConnection(inputConnections[0], nodes, context, state);
         } else {
-          obj[input.name] = _this2.resolveInputControls(input.type, node.inputData[input.name] || {}, context);
+          var _node$inputData;
+          obj[input.name] = _this.resolveInputControls(input.type, ((_node$inputData = node.inputData) === null || _node$inputData === void 0 ? void 0 : _node$inputData[input.name]) || {}, context);
         }
         return obj;
       }, {});
     }
+
+    /**
+     * Computes the output of a node by resolving its inputs and firing the node function.
+     * Adds:
+     *  - cycle detection (visiting set)
+     *  - memoization (cache map)
+     */
+  }, {
+    key: "computeNodeOutputs",
+    value: function computeNodeOutputs(nodeId, nodes, context, state) {
+      var _this$config, _this$config$nodeType;
+      var visiting = state.visiting,
+        cache = state.cache;
+      if (cache.has(nodeId)) return cache.get(nodeId);
+      if (visiting.has(nodeId)) {
+        throw new Error("Cycle detected while resolving node \"".concat(nodeId, "\"."));
+      }
+      var outputNode = nodes[nodeId];
+      if (!outputNode) {
+        throw new Error("Connection references missing node \"".concat(nodeId, "\"."));
+      }
+      var outputNodeType = (_this$config = this.config) === null || _this$config === void 0 ? void 0 : (_this$config$nodeType = _this$config.nodeTypes) === null || _this$config$nodeType === void 0 ? void 0 : _this$config$nodeType[outputNode.type];
+      if (!outputNodeType) {
+        throw new Error("Missing nodeType definition for \"".concat(outputNode.type, "\" (node \"").concat(nodeId, "\")."));
+      }
+      visiting.add(nodeId);
+      var inputValues = this.resolveInputValues(outputNode, outputNodeType, nodes, context, state);
+      var outputs = this.fireNodeFunction(outputNode, inputValues, outputNodeType, context);
+      cache.set(nodeId, outputs);
+      visiting["delete"](nodeId);
+      return outputs;
+    }
   }, {
     key: "getValueOfConnection",
-    value: function getValueOfConnection(connection, nodes, context) {
-      this.checkLoops();
-      var outputNode = nodes[connection.nodeId];
-      var outputNodeType = this.config.nodeTypes[outputNode.type];
-      var inputValues = this.resolveInputValues(outputNode, outputNodeType, nodes, context);
-      return this.fireNodeFunction(outputNode, inputValues, outputNodeType, context)[connection.portName];
+    value: function getValueOfConnection(connection, nodes, context, state) {
+      var outputs = this.computeNodeOutputs(connection.nodeId, nodes, context, state);
+      return outputs === null || outputs === void 0 ? void 0 : outputs[connection.portName];
     }
   }, {
     key: "resolveRootNode",
     value: function resolveRootNode(nodes) {
-      var _this3 = this;
+      var _this2 = this;
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var rootNode = options.rootNodeId ? nodes[options.rootNodeId] : this.getRootNode(nodes);
-      if (rootNode) {
-        var inputs = this.config.nodeTypes[rootNode.type].inputs;
+      var state = {
+        visiting: new Set(),
+        cache: new Map()
+      };
+      try {
+        var _this$config2, _this$config2$nodeTyp, _rootNode$connections;
+        var rootNode = options.rootNodeId ? nodes[options.rootNodeId] : this.getRootNode(nodes);
+        if (!rootNode) {
+          console.error("A root node was not found. The Root Engine requires that exactly one node be marked as the root node.");
+          return {};
+        }
+        var rootNodeType = (_this$config2 = this.config) === null || _this$config2 === void 0 ? void 0 : (_this$config2$nodeTyp = _this$config2.nodeTypes) === null || _this$config2$nodeTyp === void 0 ? void 0 : _this$config2$nodeTyp[rootNode.type];
+        if (!rootNodeType) {
+          throw new Error("Missing nodeType definition for root type \"".concat(rootNode.type, "\"."));
+        }
+        var inputs = rootNodeType.inputs;
         if (typeof inputs === "function") {
           inputs = inputs(rootNode.inputData, rootNode.connections, options.context);
         }
+
+        // Controls on the root itself (unconnected defaults)
         var controlValues = inputs.reduce(function (obj, input) {
-          obj[input.name] = _this3.resolveInputControls(input.type, rootNode.inputData[input.name] || {}, options.context);
+          var _rootNode$inputData;
+          obj[input.name] = _this2.resolveInputControls(input.type, ((_rootNode$inputData = rootNode.inputData) === null || _rootNode$inputData === void 0 ? void 0 : _rootNode$inputData[input.name]) || {}, options.context);
           return obj;
         }, {});
-        var inputValues = this.reduceRootInputs(rootNode.connections.inputs, function (inputName, connection) {
-          var value;
-          value = _this3.getValueOfConnection(connection[0], nodes, options.context);
+
+        // Values coming from connections into the root
+        var inputValues = this.reduceRootInputs(((_rootNode$connections = rootNode.connections) === null || _rootNode$connections === void 0 ? void 0 : _rootNode$connections.inputs) || {}, function (inputName, connectionList) {
+          var first = connectionList === null || connectionList === void 0 ? void 0 : connectionList[0];
+          var value = first ? _this2.getValueOfConnection(first, nodes, options.context, state) : undefined;
           return {
             name: inputName,
             value: value
           };
         });
-        if (options.onlyResolveConnected) {
-          return inputValues;
-        } else {
-          return _objectSpread$2(_objectSpread$2({}, controlValues), inputValues);
-        }
-      } else {
-        console.error("A root node was not found. The Root Engine requires that exactly one node be marked as the root node.");
-        return {};
+        if (options.onlyResolveConnected) return inputValues;
+        return _objectSpread$2(_objectSpread$2({}, controlValues), inputValues);
+      } catch (err) {
+        if (typeof this.errorCallback === "function") this.errorCallback(err);
+        throw err;
       }
     }
   }]);
