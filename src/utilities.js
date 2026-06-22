@@ -1,5 +1,6 @@
 export const checkForCircularNodes = (nodes, startNodeId) => {
   let isCircular = false;
+  const visited = new Set();
   const walk = (nodeId) => {
     const outputs = Object.values(nodes[nodeId].connections.outputs);
     for (const outputConnections of outputs) {
@@ -10,7 +11,8 @@ export const checkForCircularNodes = (nodes, startNodeId) => {
         if (connectedTo.nodeId === startNodeId) {
           isCircular = true;
           break;
-        } else {
+        } else if (!visited.has(connectedTo.nodeId)) {
+          visited.add(connectedTo.nodeId);
           walk(connectedTo.nodeId);
         }
       }

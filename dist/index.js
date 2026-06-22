@@ -30353,6 +30353,9 @@ function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o
 function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
   var isCircular = false;
+  // `visited` both kills the exponential re-walk of shared subtrees and
+  // terminates on any pre-existing cycle (not just cycles through startNodeId).
+  var visited = new Set();
   var walk = function walk(nodeId) {
     var outputs = Object.values(nodes[nodeId].connections.outputs);
     for (var _i = 0, _outputs = outputs; _i < _outputs.length; _i++) {
@@ -30368,7 +30371,8 @@ var checkForCircularNodes = function checkForCircularNodes(nodes, startNodeId) {
           if (connectedTo.nodeId === startNodeId) {
             isCircular = true;
             break;
-          } else {
+          } else if (!visited.has(connectedTo.nodeId)) {
+            visited.add(connectedTo.nodeId);
             walk(connectedTo.nodeId);
           }
         }
@@ -33857,13 +33861,6 @@ var RootEngine = /*#__PURE__*/function () {
         return obj;
       }, {});
     }
-
-    /**
-     * Resolves input values for a node (controls + connected values).
-     * `state` provides:
-     *  - visiting: detects cycles (DFS gray set)
-     *  - cache: memoizes node outputs
-     */
   }, {
     key: "resolveInputValues",
     value: function resolveInputValues(node, nodeType, nodes, context, state) {
@@ -33884,13 +33881,6 @@ var RootEngine = /*#__PURE__*/function () {
         return obj;
       }, {});
     }
-
-    /**
-     * Computes the output of a node by resolving its inputs and firing the node function.
-     * Adds:
-     *  - cycle detection (visiting set)
-     *  - memoization (cache map)
-     */
   }, {
     key: "computeNodeOutputs",
     value: function computeNodeOutputs(nodeId, nodes, context, state) {
